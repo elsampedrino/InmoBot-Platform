@@ -1,0 +1,136 @@
+{
+  "casa-villa-urquiza-002": [
+    {
+      "success": true,
+      "public_id": "fotos_demo/casa-villa-urquiza-002/foto01",
+      "url": "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420190/fotos_demo/casa-villa-urquiza-002/foto01.jpg",
+      "formato": "jpg",
+      "tamaño_kb": 168.3251953125
+    },
+    {
+      "success": true,
+      "public_id": "fotos_demo/casa-villa-urquiza-002/foto02",
+      "url": "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420190/fotos_demo/casa-villa-urquiza-002/foto02.jpg",
+      "formato": "jpg",
+      "tamaño_kb": 138.7470703125
+    },
+    {
+      "success": true,
+      "public_id": "fotos_demo/casa-villa-urquiza-002/foto03",
+      "url": "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420191/fotos_demo/casa-villa-urquiza-002/foto03.jpg",
+      "formato": "jpg",
+      "tamaño_kb": 69.4453125
+    },
+    {
+      "success": true,
+      "public_id": "fotos_demo/casa-villa-urquiza-002/foto04",
+      "url": "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420191/fotos_demo/casa-villa-urquiza-002/foto04.jpg",
+      "formato": "jpg",
+      "tamaño_kb": 224.931640625
+    },
+    {
+      "success": true,
+      "public_id": "fotos_demo/casa-villa-urquiza-002/foto05",
+      "url": "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420192/fotos_demo/casa-villa-urquiza-002/foto05.jpg",
+      "formato": "jpg",
+      "tamaño_kb": 150.3310546875
+    }
+  ],
+  "depto-belgrano-004": [
+    {
+      "success": true,
+      "public_id": "fotos_demo/depto-belgrano-004/foto01",
+      "url": "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420193/fotos_demo/depto-belgrano-004/foto01.jpg",
+      "formato": "jpg",
+      "tamaño_kb": 158.09765625
+    },
+    {
+      "success": true,
+      "public_id": "fotos_demo/depto-belgrano-004/foto02",
+      "url": "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420194/fotos_demo/depto-belgrano-004/foto02.jpg",
+      "formato": "jpg",
+      "tamaño_kb": 113.5478515625
+    },
+    {
+      "success": true,
+      "public_id": "fotos_demo/depto-belgrano-004/foto03",
+      "url": "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420195/fotos_demo/depto-belgrano-004/foto03.jpg",
+      "formato": "jpg",
+      "tamaño_kb": 110.2607421875
+    },
+    {
+      "success": true,
+      "public_id": "fotos_demo/depto-belgrano-004/foto04",
+      "url": "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420196/fotos_demo/depto-belgrano-004/foto04.jpg",
+      "formato": "jpg",
+      "tamaño_kb": 49.7529296875
+    },
+    {
+      "success": true,
+      "public_id": "fotos_demo/depto-belgrano-004/foto05",
+      "url": "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420197/fotos_demo/depto-belgrano-004/foto05.jpg",
+      "formato": "jpg",
+      "tamaño_kb": 164.4404296875
+    }
+  ],
+  "depto-palermo-001": [
+    {
+      "success": true,
+      "public_id": "fotos_demo/depto-palermo-001/foto01",
+      "url": "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420197/fotos_demo/depto-palermo-001/foto01.jpg",
+      "formato": "jpg",
+      "tamaño_kb": 93.3837890625
+    },
+    {
+      "success": true,
+      "public_id": "fotos_demo/depto-palermo-001/foto02",
+      "url": "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420198/fotos_demo/depto-palermo-001/foto02.jpg",
+      "formato": "jpg",
+      "tamaño_kb": 111.7958984375
+    },
+    {
+      "success": true,
+      "public_id": "fotos_demo/depto-palermo-001/foto03",
+      "url": "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420199/fotos_demo/depto-palermo-001/foto03.jpg",
+      "formato": "jpg",
+      "tamaño_kb": 97.91015625
+    },
+    {
+      "success": true,
+      "public_id": "fotos_demo/depto-palermo-001/foto04",
+      "url": "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420199/fotos_demo/depto-palermo-001/foto04.jpg",
+      "formato": "jpg",
+      "tamaño_kb": 72.66796875
+    },
+    {
+      "success": true,
+      "public_id": "fotos_demo/depto-palermo-001/foto05",
+      "url": "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420200/fotos_demo/depto-palermo-001/foto05.jpg",
+      "formato": "jpg",
+      "tamaño_kb": 84.2861328125
+    }
+  ],
+  "local-microcentro-003": [
+    {
+      "success": true,
+      "public_id": "fotos_demo/local-microcentro-003/foto01",
+      "url": "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420201/fotos_demo/local-microcentro-003/foto01.jpg",
+      "formato": "jpg",
+      "tamaño_kb": 112.7578125
+    },
+    {
+      "success": true,
+      "public_id": "fotos_demo/local-microcentro-003/foto02",
+      "url": "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420202/fotos_demo/local-microcentro-003/foto02.jpg",
+      "formato": "jpg",
+      "tamaño_kb": 141.3857421875
+    },
+    {
+      "success": true,
+      "public_id": "fotos_demo/local-microcentro-003/foto03",
+      "url": "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420202/fotos_demo/local-microcentro-003/foto03.jpg",
+      "formato": "jpg",
+      "tamaño_kb": 116.9423828125
+    }
+  ]
+}

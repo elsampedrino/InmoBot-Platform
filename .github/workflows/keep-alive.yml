@@ -1,0 +1,27 @@
+name: Keep N8N Alive
+
+on:
+  schedule:
+    # Ejecutar cada 10 minutos
+    - cron: '*/10 * * * *'
+  workflow_dispatch: # Permite ejecutar manualmente
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping N8N Webhook
+        run: |
+          echo "🚀 Haciendo ping a N8N en Render..."
+          response=$(curl -s -o /dev/null -w "%{http_code}" https://n8n-bot-inmobiliario.onrender.com/)
+          echo "📡 Status Code: $response"
+          if [ $response -eq 200 ] || [ $response -eq 404 ]; then
+            echo "✅ N8N está activo"
+          else
+            echo "⚠️ N8N respondió con código: $response"
+          fi
+
+      - name: Ping Webhook Chat
+        run: |
+          echo "🔔 Verificando endpoint del webhook..."
+          curl -X GET https://n8n-bot-inmobiliario.onrender.com/webhook/chat || echo "⚠️ Endpoint no responde a GET (normal)"

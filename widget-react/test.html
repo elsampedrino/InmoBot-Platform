@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Widget InmoBot</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 40px;
+      background: #f0f0f0;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #333;
+    }
+    .status {
+      padding: 16px;
+      margin: 20px 0;
+      border-radius: 8px;
+      background: #e3f2fd;
+      color: #1976d2;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🤖 Test del Widget InmoBot</h1>
+    <div class="status" id="status">
+      Esperando que el widget se cargue...
+    </div>
+    <p><strong>Instrucciones:</strong></p>
+    <ol>
+      <li>El botón flotante debería aparecer abajo a la derecha</li>
+      <li>Haz click en el botón para abrir el chat</li>
+      <li>Prueba enviar un mensaje</li>
+    </ol>
+  </div>
+
+  <!-- Importar el widget en modo desarrollo -->
+  <script type="module">
+    console.log('🚀 Script module iniciado');
+
+    (async () => {
+      try {
+        const module = await import('/src/index.js');
+        console.log('✅ Módulo importado:', module);
+        console.log('✅ window.InmoBot:', window.InmoBot);
+
+        // Esperar un momento adicional
+        await new Promise(resolve => setTimeout(resolve, 500));
+
+        if (window.InmoBot) {
+          console.log('🎯 Inicializando widget...');
+
+          window.InmoBot.init({
+            apiUrl: 'https://n8n-bot-inmobiliario.onrender.com/webhook/chat',
+            primaryColor: '#2563eb',
+            botName: 'AsistenteBot',
+            welcomeMessage: '¡Hola! Soy tu asistente inmobiliario virtual. ¿En qué te puedo ayudar hoy? 🏠',
+            placeholderText: 'Escribe tu consulta...',
+            position: 'bottom-right',
+            buttonSize: '60px',
+            chatWidth: '380px',
+            chatHeight: '600px'
+          });
+
+          document.getElementById('status').innerHTML = '✅ Widget cargado correctamente. Mira abajo a la derecha →';
+          document.getElementById('status').style.background = '#e8f5e9';
+          document.getElementById('status').style.color = '#2e7d32';
+        } else {
+          document.getElementById('status').innerHTML = '❌ Error: window.InmoBot no está disponible después de importar';
+          document.getElementById('status').style.background = '#ffebee';
+          document.getElementById('status').style.color = '#c62828';
+          console.error('❌ window.InmoBot no está definido');
+        }
+      } catch (error) {
+        console.error('❌ Error al cargar el módulo:', error);
+        document.getElementById('status').innerHTML = '❌ Error al cargar: ' + error.message;
+        document.getElementById('status').style.background = '#ffebee';
+        document.getElementById('status').style.color = '#c62828';
+      }
+    })();
+  </script>
+</body>
+</html>

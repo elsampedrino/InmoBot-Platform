@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demo Widget InmoBot</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 40px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    }
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+    .info {
+      padding: 20px;
+      background: #e3f2fd;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+    .arrow {
+      position: fixed;
+      bottom: 100px;
+      right: 100px;
+      background: rgba(0,0,0,0.8);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 16px;
+      animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🤖 Demo Widget InmoBot</h1>
+    <div class="info">
+      <p><strong>El widget está cargando...</strong></p>
+      <p>El botón flotante debería aparecer abajo a la derecha en unos segundos.</p>
+      <p>Si ves el botón, haz click para abrir el chat y prueba enviar un mensaje.</p>
+    </div>
+  </div>
+
+  <div class="arrow">
+    👉 Mira aquí
+  </div>
+
+  <!-- Cargar el widget -->
+  <script type="module">
+    console.log('🚀 Importando widget...');
+
+    // Importar y esperar a que se ejecute
+    import('/src/index.js').then(() => {
+      console.log('📦 Módulo importado');
+
+      // Esperar un tick para que window.InmoBot esté disponible
+      setTimeout(() => {
+        console.log('🔍 Buscando window.InmoBot...', window.InmoBot);
+
+        if (window.InmoBot) {
+          console.log('✅ Widget encontrado, inicializando...');
+
+          window.InmoBot.init({
+            apiUrl: 'https://n8n-bot-inmobiliario.onrender.com/webhook/chat',
+            primaryColor: '#2563eb',
+            botName: 'AsistenteBot',
+            welcomeMessage: '¡Hola! Soy tu asistente inmobiliario virtual. ¿En qué te puedo ayudar hoy? 🏠',
+            placeholderText: 'Escribe tu consulta...',
+            position: 'bottom-right',
+            buttonSize: '60px',
+            chatWidth: '380px',
+            chatHeight: '600px'
+          });
+
+          console.log('✅ Widget inicializado correctamente');
+
+          // Actualizar UI
+          const info = document.querySelector('.info');
+          info.innerHTML = '<p><strong style="color: green;">✅ Widget cargado!</strong></p><p>Haz click en el botón flotante abajo a la derecha para abrir el chat.</p>';
+        } else {
+          console.error('❌ window.InmoBot no está disponible');
+          const info = document.querySelector('.info');
+          info.innerHTML = '<p><strong style="color: red;">❌ Error: Widget no disponible</strong></p>';
+        }
+      }, 100);
+    }).catch(error => {
+      console.error('❌ Error al importar:', error);
+      const info = document.querySelector('.info');
+      info.innerHTML = '<p><strong style="color: red;">❌ Error: ' + error.message + '</strong></p>';
+    });
+  </script>
+</body>
+</html>

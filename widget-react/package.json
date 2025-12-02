@@ -1,0 +1,30 @@
+{
+  "name": "inmobot-widget",
+  "version": "1.0.0",
+  "description": "Widget de chatbot inmobiliario con IA",
+  "main": "dist/inmobot-widget.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "build:widget": "vite build --config vite.config.js"
+  },
+  "keywords": [
+    "chatbot",
+    "widget",
+    "real-estate",
+    "inmobiliaria",
+    "ai"
+  ],
+  "author": "Damián",
+  "license": "MIT",
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.2.1",
+    "terser": "^5.44.1",
+    "vite": "^5.0.12"
+  }
+}

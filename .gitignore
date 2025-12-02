@@ -1,0 +1,47 @@
+# Node modules
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build outputs
+dist/
+build/
+*.iife.js
+
+# Cache
+.vite/
+.cache/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Claves y credenciales (IMPORTANTE: no subir)
+Claves_y_URLs/
+*.key
+*API*Key*.txt
+*credentials*.txt
+
+# Workflows de N8N con credenciales
+N8N*.json
+n8n*.json
+
+# Logs
+logs/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files
+*.tmp
+*.temp

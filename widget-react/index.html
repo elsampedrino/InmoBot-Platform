@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InmoBot Widget - Demo</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .demo-container {
+      max-width: 800px;
+      width: 100%;
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    h1 {
+      color: #1f2937;
+      margin-bottom: 10px;
+      font-size: 32px;
+    }
+
+    .subtitle {
+      color: #6b7280;
+      margin-bottom: 30px;
+      font-size: 18px;
+    }
+
+    .feature-list {
+      list-style: none;
+      margin-bottom: 30px;
+    }
+
+    .feature-list li {
+      padding: 12px 0;
+      color: #4b5563;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .feature-list li::before {
+      content: "✓";
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      background: #10b981;
+      color: white;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 24px;
+      font-weight: bold;
+      flex-shrink: 0;
+    }
+
+    .cta {
+      background: #2563eb;
+      color: white;
+      padding: 16px 32px;
+      border-radius: 12px;
+      border: none;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: inline-block;
+    }
+
+    .cta:hover {
+      background: #1d4ed8;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+    }
+
+    .code-block {
+      background: #1f2937;
+      color: #e5e7eb;
+      padding: 20px;
+      border-radius: 12px;
+      margin-top: 30px;
+      overflow-x: auto;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .code-block code {
+      color: #10b981;
+    }
+
+    .note {
+      background: #fef3c7;
+      border-left: 4px solid #f59e0b;
+      padding: 16px;
+      border-radius: 8px;
+      margin-top: 20px;
+      color: #78350f;
+    }
+
+    .arrow {
+      position: fixed;
+      bottom: 100px;
+      right: 100px;
+      color: white;
+      font-size: 16px;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 12px 20px;
+      border-radius: 12px;
+      animation: bounce 2s infinite;
+      pointer-events: none;
+      z-index: 9998;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @media (max-width: 768px) {
+      .demo-container {
+        padding: 24px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .arrow {
+        bottom: 80px;
+        right: 80px;
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-container">
+    <h1>🤖 InmoBot Widget</h1>
+    <p class="subtitle">Chatbot inmobiliario con IA para tu sitio web</p>
+
+    <ul class="feature-list">
+      <li>Respuestas inteligentes con Claude AI</li>
+      <li>Interfaz moderna y responsive</li>
+      <li>Fácil integración con una línea de código</li>
+      <li>Personalizable (colores, textos, posición)</li>
+      <li>Historial de conversación</li>
+      <li>Typing indicator y animaciones</li>
+      <li>Compatible con móviles y desktop</li>
+    </ul>
+
+    <button class="cta" onclick="alert('El chatbot ya está activo! Mirá abajo a la derecha 👉')">
+      Ver Demo en Vivo
+    </button>
+
+    <div class="code-block">
+<strong>Integración:</strong>
+
+<code>&lt;!-- Pegar en tu HTML antes de &lt;/body&gt; --&gt;
+&lt;script src="https://cdn.tudominio.com/inmobot-widget.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  InmoBot.init({
+    apiUrl: 'https://n8n-bot-inmobiliario.onrender.com/webhook/chat',
+    primaryColor: '#2563eb',
+    botName: 'AsistenteBot',
+    welcomeMessage: '¡Hola! ¿En qué te puedo ayudar?'
+  });
+&lt;/script&gt;</code>
+    </div>
+
+    <div class="note">
+      <strong>💡 Nota:</strong> Este es un demo de desarrollo. 
+      Para producción, necesitás buildear el widget con <code>npm run build</code> 
+      y hostear el archivo resultante en un CDN.
+    </div>
+  </div>
+
+  <div class="arrow">
+    👉 Probá el chatbot aquí
+  </div>
+
+  <!-- Importar el widget en modo desarrollo -->
+  <script type="module" src="/src/index.js"></script>
+  
+  <!-- Configuración del widget -->
+  <script>
+    // Esperar a que InmoBot esté disponible
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        if (window.InmoBot) {
+          window.InmoBot.init({
+            apiUrl: 'https://n8n-bot-inmobiliario.onrender.com/webhook/chat',
+            primaryColor: '#2563eb',
+            botName: 'AsistenteBot',
+            welcomeMessage: '¡Hola! Soy tu asistente inmobiliario virtual. ¿En qué te puedo ayudar hoy? 🏠',
+            placeholderText: 'Escribe tu consulta...',
+            position: 'bottom-right',
+            buttonSize: '60px',
+            chatWidth: '380px',
+            chatHeight: '600px'
+          });
+        }
+      }, 500);
+    });
+  </script>
+</body>
+</html>
