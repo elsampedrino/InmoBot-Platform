@@ -50,7 +50,7 @@ cd widget-react
 npm run preview
 ```
 
-Luego abre: http://localhost:4173
+Luego abre: http://localhost:41|3
 
 **IMPORTANTE:** No abras `dist/index.html` directamente con doble click, ya que el navegador bloqueará los scripts por seguridad. Usa siempre `npm run preview`.
 
