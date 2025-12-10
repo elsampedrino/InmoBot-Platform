@@ -1,0 +1,251 @@
+{
+  "propiedades": [
+    {
+      "id": "PROP-001",
+      "tipo": "Departamento",
+      "operacion": "Alquiler",
+      "titulo": "Depto 2 ambientes luminoso en Palermo Soho",
+      "direccion": {
+        "calle": "Gorriti 4532, Piso 3° B",
+        "barrio": "Palermo Soho",
+        "ciudad": "CABA",
+        "cp": "C1414"
+      },
+      "precio": {
+        "valor": 950,
+        "moneda": "USD",
+        "periodo": "mes"
+      },
+      "expensas": 85000,
+      "caracteristicas": {
+        "ambientes": 2,
+        "dormitorios": 1,
+        "banios": 1,
+        "superficie_total": 45,
+        "superficie_cubierta": 42
+      },
+      "detalles": {
+        "antiguedad": 8,
+        "estado": "Excelente",
+        "piso": 3,
+        "ascensor": true,
+        "balcon": true,
+        "cochera": false,
+        "baulera": false,
+        "mascotas": false,
+        "amoblado": "No",
+        "calefaccion": "Central",
+        "agua_caliente": "Central"
+      },
+      "descripcion": "Hermoso departamento de 2 ambientes en el corazón de Palermo Soho. Living-comedor integrado con cocina equipada, dormitorio amplio con placard, baño completo con bañera. Muy luminoso con balcón al frente. Ubicación privilegiada a metros de Plaza Serrano, rodeado de bares, restaurantes y tiendas de diseño.",
+      "requisitos": [
+        "Garantía propietaria en CABA",
+        "Depósito 1 mes",
+        "Último recibo de sueldo"
+      ],
+      "disponibilidad": "2025-01-01",
+      "estado_publicacion": "Disponible",
+      "carpeta_fotos": "fotos_demo/depto-palermo-001",
+      "fotos": {
+        "cloudinary_base": "https://res.cloudinary.com/dikb9wzup/image/upload",
+        "carpeta": "fotos_demo/depto-palermo-001",
+        "cantidad": 5,
+        "urls": [
+          "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420197/fotos_demo/depto-palermo-001/foto01.jpg",
+          "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420198/fotos_demo/depto-palermo-001/foto02.jpg",
+          "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420199/fotos_demo/depto-palermo-001/foto03.jpg",
+          "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420199/fotos_demo/depto-palermo-001/foto04.jpg",
+          "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420200/fotos_demo/depto-palermo-001/foto05.jpg"
+        ],
+        "destacados": ["Luminoso", "Balcón", "Semi-amoblado", "Ubicación privilegiada"]
+      },
+      "tags": ["alquiler", "departamento", "2ambientes", "palermo", "balcon", "luminoso", "amoblado"]
+    },
+    {
+      "id": "PROP-002",
+      "tipo": "Casa",
+      "operacion": "Venta",
+      "titulo": "Casa 4 ambientes con jardín y parrilla en Villa Urquiza",
+      "direccion": {
+        "calle": "Bauness 2145",
+        "barrio": "Villa Urquiza",
+        "ciudad": "CABA",
+        "cp": "C1431"
+      },
+      "precio": {
+        "valor": 295000,
+        "moneda": "USD",
+        "periodo": null
+      },
+      "expensas": null,
+      "caracteristicas": {
+        "ambientes": 4,
+        "dormitorios": 3,
+        "banios": 2,
+        "superficie_total": 180,
+        "superficie_cubierta": 120,
+        "superficie_jardin": 60
+      },
+      "detalles": {
+        "antiguedad": 0,
+        "estado": "Excelente (reciclada hace 5 años)",
+        "piso": null,
+        "ascensor": false,
+        "balcon": false,
+        "cochera": true,
+        "cochera_capacidad": 2,
+        "baulera": false,
+        "mascotas": true,
+        "amoblado": "No",
+        "calefaccion": "Central",
+        "agua_caliente": "Termotanque"
+      },
+      "descripcion": "Hermosa casa reciclada hace solo 5 años en excelente estado. Planta Baja: Living-comedor amplio con salida al jardín, cocina moderna integrada, toilette y lavadero. Primer Piso: 3 dormitorios (principal en suite con vestidor), baño completo y terraza con parrilla. Su ubicación en Villa Urquiza es inmejorable, rodeado de colegios, restaurantes y comercios. Excelente conectividad.",
+      "requisitos": [
+        "PB + 1P",
+        "Cochera para 2 autos",
+        "Terraza con parrilla",
+        "Jardín con parrilla"
+      ],
+      "disponibilidad": "Inmediata",
+      "estado_publicacion": "Disponible",
+      "carpeta_fotos": "fotos_demo/casa-villa-urquiza-002",
+      "fotos": {
+        "cloudinary_base": "https://res.cloudinary.com/dikb9wzup/image/upload",
+        "carpeta": "fotos_demo/casa-villa-urquiza-002",
+        "cantidad": 5,
+        "urls": [
+          "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420190/fotos_demo/casa-villa-urquiza-002/foto01.jpg",
+          "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420190/fotos_demo/casa-villa-urquiza-002/foto02.jpg",
+          "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420191/fotos_demo/casa-villa-urquiza-002/foto03.jpg",
+          "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420191/fotos_demo/casa-villa-urquiza-002/foto04.jpg",
+          "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420192/fotos_demo/casa-villa-urquiza-002/foto05.jpg"
+        ],
+        "destacados": ["Reciclada", "Jardín", "Cochera x2", "Terraza parrilla"]
+      },
+      "tags": ["venta", "casa", "4ambientes", "villa-urquiza", "jardin", "cochera", "parrilla"]
+    },
+    {
+      "id": "PROP-003",
+      "tipo": "Local Comercial",
+      "operacion": "Alquiler",
+      "titulo": "Local comercial 60m² en Microcentro - Zona financiera",
+      "direccion": {
+        "calle": "San Martín 240",
+        "barrio": "Microcentro",
+        "ciudad": "CABA",
+        "cp": "C1004"
+      },
+      "precio": {
+        "valor": 1200,
+        "moneda": "USD",
+        "periodo": "mes"
+      },
+      "expensas": 45000,
+      "caracteristicas": {
+        "ambientes": null,
+        "dormitorios": null,
+        "banios": 1,
+        "superficie_total": 60,
+        "superficie_cubierta": 60
+      },
+      "detalles": {
+        "antiguedad": 20,
+        "estado": "Muy bueno",
+        "piso": "PB",
+        "ascensor": false,
+        "balcon": false,
+        "cochera": false,
+        "baulera": false,
+        "mascotas": false,
+        "amoblado": "No",
+        "calefaccion": "Split",
+        "agua_caliente": "Eléctrico"
+      },
+      "descripcion": "Excelente local comercial en pleno Microcentro financiero. 60m² en planta baja con amplia vidriera a la calle. Baño completo y depósito. Aire acondicionado frío/calor. Ideal para oficina, comercio minorista, o showroom. Ubicación estratégica a pasos del Obelisco y principales líneas de subte y colectivos.",
+      "requisitos": [
+        "Garantía propietaria",
+        "Depósito 2 meses",
+        "Habilitación comercial (a cargo del inquilino)"
+      ],
+      "disponibilidad": "2025-02-01",
+      "estado_publicacion": "Disponible",
+      "carpeta_fotos": "fotos_demo/local-microcentro-003",
+      "fotos": {
+        "cloudinary_base": "https://res.cloudinary.com/dikb9wzup/image/upload",
+        "carpeta": "fotos_demo/local-microcentro-003",
+        "cantidad": 3,
+        "urls": [
+          "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420201/fotos_demo/local-microcentro-003/foto01.jpg",
+          "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420202/fotos_demo/local-microcentro-003/foto02.jpg",
+          "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420202/fotos_demo/local-microcentro-003/foto03.jpg"
+        ],
+        "destacados": ["Microcentro", "Vidriera", "PB", "60m²"]
+      },
+      "tags": ["alquiler", "local", "comercial", "microcentro", "vidriera", "oficina"]
+    },
+    {
+      "id": "PROP-004",
+      "tipo": "Departamento",
+      "operacion": "Alquiler",
+      "titulo": "Depto 3 ambientes con cochera en Belgrano R",
+      "direccion": {
+        "calle": "Juramento 2850, Piso 5° A",
+        "barrio": "Belgrano R",
+        "ciudad": "CABA",
+        "cp": "C1428"
+      },
+      "precio": {
+        "valor": 1350,
+        "moneda": "USD",
+        "periodo": "mes"
+      },
+      "expensas": 120000,
+      "caracteristicas": {
+        "ambientes": 3,
+        "dormitorios": 2,
+        "banios": 2,
+        "superficie_total": 75,
+        "superficie_cubierta": 70
+      },
+      "detalles": {
+        "antiguedad": 12,
+        "estado": "Muy bueno",
+        "piso": 5,
+        "ascensor": true,
+        "balcon": true,
+        "cochera": true,
+        "cochera_capacidad": 1,
+        "baulera": true,
+        "mascotas": true,
+        "amoblado": "Semi-amoblado",
+        "calefaccion": "Central",
+        "agua_caliente": "Central"
+      },
+      "descripcion": "Amplio departamento de 3 ambientes en Belgrano R. Living-comedor con balcón corrido, cocina equipada completa, 2 dormitorios con placards (principal en suite), baño completo. Incluye cochera cubierta y baulera. Excelente ubicación cerca de Cabildo, colegios y transporte. Semi-amoblado (cocina equipada, placards empotrados).",
+      "requisitos": [
+        "Garantía propietaria en CABA o aval bancario",
+        "Depósito 1 mes",
+        "Recibo de sueldo",
+        "Acepta mascotas pequeñas"
+      ],
+      "disponibilidad": "2025-01-15",
+      "estado_publicacion": "Disponible",
+      "carpeta_fotos": "fotos_demo/depto-belgrano-004",
+      "fotos": {
+        "cloudinary_base": "https://res.cloudinary.com/dikb9wzup/image/upload",
+        "carpeta": "fotos_demo/depto-belgrano-004",
+        "cantidad": 5,
+        "urls": [
+          "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420193/fotos_demo/depto-belgrano-004/foto01.jpg",
+          "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420194/fotos_demo/depto-belgrano-004/foto02.jpg",
+          "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420195/fotos_demo/depto-belgrano-004/foto03.jpg",
+          "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420196/fotos_demo/depto-belgrano-004/foto04.jpg",
+          "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420197/fotos_demo/depto-belgrano-004/foto05.jpg"
+        ],
+        "destacados": ["Cochera", "Baulera", "2 baños", "Balcón", "Mascotas"]
+      },
+      "tags": ["alquiler", "departamento", "3ambientes", "belgrano", "cochera", "mascotas", "balcon"]
+    }
+  ]
+}

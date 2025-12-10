@@ -5,7 +5,11 @@
       "Bash(npm run build:*)",
       "Bash(npm install:*)",
       "Bash(npm run preview:*)",
-      "Bash(git remote add:*)"
+      "Bash(git remote add:*)",
+      "Bash(npm run dev:*)",
+      "Bash(code --install-extension:*)",
+      "Bash(code --uninstall-extension:*)",
+      "Bash(node -e \"const {Client}=require(''pg'');const fs=require(''fs'');const c=new Client({connectionString:''postgresql://n8n_b4cl_user:grrYrWL7KFLO7xF6uy1F1lJVDmSG0uCI@dpg-d4llmj8dl3ps7388nfeg-a.oregon-postgres.render.com/n8n_b4cl'',ssl:{rejectUnauthorized:false}});c.connect().then(()=>c.query(fs.readFileSync(''Documentacion/vista_costos_estadisticas.sql'',''utf8''))).then(()=>{console.log(''✅ Vistas de costos creadas exitosamente'');return c.query(''SELECT * FROM dashboard_summary_con_costos'')}).then(r=>{console.log(''\\n📊 Dashboard con costos:'');console.log(JSON.stringify(r.rows[0],null,2));c.end()}).catch(e=>{console.error(''❌'',e.message);c.end()})\")"
     ],
     "deny": [],
     "ask": []
