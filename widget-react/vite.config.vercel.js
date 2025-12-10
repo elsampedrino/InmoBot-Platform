@@ -10,7 +10,7 @@ export default defineConfig({
   build: {
     // NO usar modo lib - generar sitio web completo
     outDir: 'dist',
-    emptyOutDir: true,
+    emptyOutDir: false, // NO borrar dist para mantener los archivos del widget
     rollupOptions: {
       input: 'index.html' // Usar el index.html como entrada
     }

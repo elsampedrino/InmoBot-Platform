@@ -5,10 +5,11 @@
   "main": "dist/inmobot-widget.js",
   "scripts": {
     "dev": "vite",
-    "build": "vite build --config vite.config.vercel.js",
-    "build:vercel": "vite build --config vite.config.vercel.js",
-    "preview": "vite preview",
-    "build:widget": "vite build --config vite.config.js"
+    "build": "npm run build:widget && npm run build:demo",
+    "build:widget": "vite build --config vite.config.js",
+    "build:demo": "vite build --config vite.config.vercel.js",
+    "build:vercel": "npm run build:widget && npm run build:demo",
+    "preview": "vite preview"
   },
   "keywords": [
     "chatbot",
