@@ -8,10 +8,10 @@ Agregá este código **justo antes de la etiqueta `</body>`** en todas las pági
 
 ```html
 <!-- CSS del widget -->
-<link rel="stylesheet" href="https://demo-chat-bot-inmobiliaria-7tup5j69z.vercel.app/inmobot-widget.css">
+<link rel="stylesheet" href="https://inmobot-widget.vercel.app/inmobot-widget.css">
 
 <!-- JavaScript del widget -->
-<script src="https://demo-chat-bot-inmobiliaria-7tup5j69z.vercel.app/inmobot-widget.iife.js"></script>
+<script src="https://inmobot-widget.vercel.app/inmobot-widget.iife.js"></script>
 
 <!-- Inicialización del widget -->
 <script>
@@ -90,4 +90,4 @@ Podés cambiar estos parámetros en la configuración:
 
 Si necesitás ayuda con la integración o querés personalizar algo más, contactá al equipo de desarrollo.
 
-**URL de demo**: https://demo-chat-bot-inmobiliaria-7tup5j69z.vercel.app
+**URL de demo**: https://inmobot-widget.vercel.app
