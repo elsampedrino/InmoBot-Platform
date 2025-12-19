@@ -606,8 +606,10 @@
   /* Área de mensajes ajustada */
   .chat-messages {
     padding: 16px;
-    /* Ajustar altura considerando header + input + footer */
-    height: calc(100dvh - 160px) !important;
+    /* Usar flex en vez de altura fija para mejor adaptación */
+    flex: 1 1 auto;
+    min-height: 0; /* Permite que flex funcione correctamente */
+    overflow-y: auto;
   }
 
   /* Action buttons más táctiles */

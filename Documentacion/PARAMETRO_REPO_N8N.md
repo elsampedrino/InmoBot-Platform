@@ -150,39 +150,31 @@ const url = REPOS[repo] || REPOS['0'];
 
 console.log(`[REPO SELECTOR] repo=${repo}, url=${url}`);
 
-// 4. Hacer fetch de las propiedades
-try {
-  const response = await fetch(url);
+// 4. Hacer request HTTP usando helpers de N8N
+const response = await this.helpers.httpRequest({
+  method: 'GET',
+  url: url,
+  returnFullResponse: true
+});
 
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-
-  const data = await response.text();
-
-  return {
-    json: {
-      data: data,
-      repo: repo,
-      url: url,
-      timestamp: new Date().toISOString()
-    }
-  };
-
-} catch (error) {
-  console.error('[REPO SELECTOR] Error:', error.message);
-
-  return {
-    json: {
-      error: true,
-      errorType: 'GITHUB_ERROR',
-      errorCode: 'ERR_FETCH_PROPERTIES',
-      errorMessage: error.message,
-      response: 'Lo siento, estamos teniendo problemas para acceder a nuestras propiedades. ¿Podrías intentar nuevamente en unos minutos?',
-      timestamp: new Date().toISOString()
-    }
-  };
+if (response.statusCode !== 200) {
+  throw new Error(`HTTP error! status: ${response.statusCode}`);
 }
+
+// 5. Convertir a string si viene como objeto (N8N puede parsear automáticamente)
+let data = response.body;
+if (typeof data === 'object') {
+  data = JSON.stringify(data);
+}
+
+return {
+  json: {
+    data: data,
+    repo: repo,
+    url: url,
+    timestamp: new Date().toISOString()
+  }
+};
 ```
 
 4. **Configurar el nodo:**

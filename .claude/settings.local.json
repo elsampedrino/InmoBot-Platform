@@ -13,7 +13,12 @@
       "Bash(python:*)",
       "Bash(pip show:*)",
       "Bash(npm run build:vercel:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push)",
+      "Bash(dir \"c:\\\\Desarrollo\\\\InmoBot\\\\ChatBOT-Inmobiliaria-VCode\")",
+      "Bash(findstr:*)",
+      "Bash(git push:*)"
     ],
     "deny": [],
     "ask": []

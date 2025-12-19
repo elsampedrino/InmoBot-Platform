@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiempo Compartido Mabu - Foz do Iguaçu - Oportunidad de Inversión</title>
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 3px solid #0066cc;
+            padding-bottom: 30px;
+        }
+        .title {
+            font-size: 2.5em;
+            color: #0066cc;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .subtitle {
+            font-size: 1.3em;
+            color: #666;
+            font-style: italic;
+        }
+        .highlight-box {
+            background: linear-gradient(135deg, #0066cc, #0052a3);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        .highlight-box h2 {
+            margin: 0 0 15px 0;
+            font-size: 1.8em;
+        }
+        .price {
+            font-size: 2.2em;
+            font-weight: bold;
+            color: #ffd700;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        .section {
+            margin: 40px 0;
+        }
+        .section h2 {
+            color: #0066cc;
+            font-size: 1.8em;
+            border-left: 5px solid #0066cc;
+            padding-left: 15px;
+            margin-bottom: 20px;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+        .feature-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #0066cc;
+        }
+        .feature-item h3 {
+            color: #0066cc;
+            margin-top: 0;
+            font-size: 1.2em;
+        }
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 25px;
+            margin: 35px 0;
+        }
+        .image-container {
+            text-align: center;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .image-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+        }
+        .image-container img {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            border-radius: 15px 15px 0 0;
+        }
+        .image-caption {
+            padding: 15px 20px;
+            font-style: italic;
+            color: #555;
+            font-size: 0.95em;
+            line-height: 1.4;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        }
+        
+        /* Galería destacada para la primera imagen */
+        .hero-image-gallery {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            margin: 40px 0;
+        }
+        .hero-image-container {
+            text-align: center;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+        .hero-image-container img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+        .hero-image-caption {
+            padding: 20px;
+            font-size: 1.1em;
+            color: #333;
+            font-weight: 500;
+            background: linear-gradient(135deg, #0066cc, #0052a3);
+            color: white;
+        }
+        .investment-benefits {
+            background: #e8f4fd;
+            padding: 30px;
+            border-radius: 10px;
+            border: 2px solid #0066cc;
+            margin: 30px 0;
+        }
+        .investment-benefits h3 {
+            color: #0066cc;
+            font-size: 1.5em;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .benefits-list {
+            list-style: none;
+            padding: 0;
+        }
+        .benefits-list li {
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="%230066cc" viewBox="0 0 24 24"><path d="M9 16.17L5.53 12.7c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41l4.18 4.18c.39.39 1.02.39 1.41 0L20.29 7.71c.39-.39.39-1.02 0-1.41-.39-.39-1.02-.39-1.41 0L9 16.17z"/></svg>') no-repeat left top;
+            background-size: 20px;
+            padding-left: 30px;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        .contact-box {
+            background: #333;
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 40px;
+        }
+        .contact-box h3 {
+            margin-top: 0;
+            color: #ffd700;
+        }
+        .whatsapp {
+            background: #25d366;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 15px;
+        }
+        .legal-text {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+        }
+        @media print {
+            body { background: white; padding: 20px; }
+            .container { box-shadow: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">TIEMPO COMPARTIDO MABU</h1>
+            <p class="subtitle">Resort 5 Estrellas - Foz do Iguaçu, Brasil</p>
+            <p class="subtitle">📍 A minutos de las Cataratas del Iguazú</p>
+        </div>
+
+        <!-- Imagen hero para impacto inmediato -->
+        <div class="hero-image-gallery">
+            <div class="hero-image-container">
+                <img src="Mabu1.webp" alt="Vista espectacular del Resort Mabu Thermas">
+                <div class="hero-image-caption">
+                    🌊 Resort 5 Estrellas con Aguas Termales • Parque Acuático Completo • A minutos de las Cataratas del Iguazú
+                </div>
+            </div>
+        </div>
+
+
+        <div class="section">
+            <h2>🏨 El Complejo Resort</h2>
+            <div class="image-gallery">
+                <div class="image-container">
+                    <img src="Mabu1.webp" alt="Vista panorámica del Resort Mabu con parque acuático">
+                    <div class="image-caption">Vista panorámica del complejo con parque acuático y piscinas termales</div>
+                </div>
+                <div class="image-container">
+                    <img src="Mabu2.webp" alt="Vista aérea completa del Resort Mabu">
+                    <div class="image-caption">Vista aérea del hotel y todo el complejo de entretenimiento acuático</div>
+                </div>
+            </div>
+            
+            <div class="image-gallery">
+                <div class="image-container">
+                    <img src="Mabu3.webp" alt="Parque acuático con toboganes y atracciones">
+                    <div class="image-caption">Increíble parque acuático con toboganes, piscina de olas y entretenimiento familiar</div>
+                </div>
+                <div class="image-container">
+                    <img src="Mabu4.webp" alt="Vista completa del parque acuático desde altura">
+                    <div class="image-caption">Vista completa de las atracciones acuáticas y zonas de descanso</div>
+                </div>
+            </div>
+            
+            <p style="font-size: 1.1em; text-align: justify;">
+                <strong>Mabu Thermas Resort</strong> es un exclusivo hotel resort 5 estrellas ubicado estratégicamente 
+                en Foz do Iguaçu, a pocos minutos de las majestuosas Cataratas del Iguazú, en la frontera con Argentina. 
+                Este complejo de lujo combina el confort de un hotel de clase mundial con las relajantes aguas termales 
+                naturales de la región.
+            </p>
+
+            <div class="features-grid">
+                <div class="feature-item">
+                    <h3>🌊 Aguas Termales</h3>
+                    <p>Acceso exclusivo a aguas termales naturales con propiedades terapéuticas y relajantes.</p>
+                </div>
+                <div class="feature-item">
+                    <h3>🏊 Parque Acuático</h3>
+                    <p>Completo parque acuático con piscina de olas, toboganes y atracciones para toda la familia.</p>
+                </div>
+                <div class="feature-item">
+                    <h3>🍽️ Gastronomía</h3>
+                    <p>Múltiples restaurantes y bares con cocina internacional y especialidades locales.</p>
+                </div>
+                <div class="feature-item">
+                    <h3>🎯 Entretenimiento</h3>
+                    <p>Amplias instalaciones recreativas y programas de entretenimiento para todas las edades.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🏠 Su Departamento de Lujo</h2>
+            <div class="image-gallery">
+                <div class="image-container">
+                    <img src="Depto1.webp" alt="Habitación principal del departamento">
+                    <div class="image-caption">Habitación principal con cama queen size, aire acondicionado y TV LED 42"</div>
+                </div>
+                <div class="image-container">
+                    <img src="Depto2.webp" alt="Vista del dormitorio y acceso al baño">
+                    <div class="image-caption">Dormitorio elegante con vista hacia el baño principal y ante baño</div>
+                </div>
+            </div>
+            
+            <div class="image-gallery">
+                <div class="image-container">
+                    <img src="Depto3.webp" alt="Baño principal con vanitory de granito">
+                    <div class="image-caption">Baño completo con vanitory de granito, iluminación LED y amenities de lujo</div>
+                </div>
+                <div class="image-container">
+                    <img src="Depto4.webp" alt="Sala de estar con futón cama">
+                    <div class="image-caption">Sala de estar con futón cama para 2 personas adicionales y vista al balcón</div>
+                </div>
+            </div>
+
+            <p style="font-size: 1.1em; text-align: justify;">
+                <strong>Departamento de 2 ambientes en el 8° piso</strong> con vista panorámica espectacular 
+                a todo el complejo. Este lujoso apartamento ofrece todo el confort y la elegancia que usted merece 
+                para sus vacaciones ideales.
+            </p>
+
+            <div class="features-grid">
+                <div class="feature-item">
+                    <h3>🛏️ Dormitorio Principal</h3>
+                    <p>Cama queen size de dos plazas, aire acondicionado y TV LED 42"</p>
+                </div>
+                <div class="feature-item">
+                    <h3>🛋️ Sala de Estar</h3>
+                    <p>Futón cama para 2 personas adicionales y TV LED 42"</p>
+                </div>
+                <div class="feature-item">
+                    <h3>🍳 Kitchenette</h3>
+                    <p>Cocina completamente equipada para preparar sus comidas favoritas</p>
+                </div>
+                <div class="feature-item">
+                    <h3>🚿 Baño Completo</h3>
+                    <p>Baño principal y ante baño con amenities de primera calidad</p>
+                </div>
+                <div class="feature-item">
+                    <h3>🌅 Balcón Amplio</h3>
+                    <p>Vista panorámica al complejo y espacios verdes circundantes</p>
+                </div>
+                <div class="feature-item">
+                    <h3>🚗 Cochera Incluida</h3>
+                    <p>Estacionamiento privado incluido en el precio</p>
+                </div>
+                <div class="feature-item">
+                    <h3>🔒 Seguridad</h3>
+                    <p>Caja de seguridad individual para sus objetos de valor</p>
+                </div>
+                <div class="feature-item">
+                    <h3>❄️ Climatización</h3>
+                    <p>Aire acondicionado frío/calor en ambos ambientes</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="investment-benefits">
+            <h3>💰 ¿Por qué es una EXCELENTE INVERSIÓN?</h3>
+            <ul class="benefits-list">
+                <li><strong>Contrato a 48 años heredable</strong> - Su inversión se transmite a sus descendientes directos</li>
+                <li><strong>2 semanas anuales garantizadas</strong> - Una en temporada alta y otra en temporada media</li>
+                <li><strong>Membresía RCI incluida</strong> - Acceso a más de 4,000 hoteles en todo el mundo para intercambios</li>
+                <li><strong>Generación de ingresos</strong> - Puede alquilar el departamento cuando no lo use</li>
+                <li><strong>Administración profesional</strong> - El complejo puede gestionar los alquileres por usted</li>
+                <li><strong>Ubicación privilegiada</strong> - Cerca de una de las 7 maravillas naturales del mundo</li>
+                <li><strong>Revalorización constante</strong> - El turismo en Foz do Iguaçu crece año tras año</li>
+                <li><strong>Flexibilidad total</strong> - Use, alquile o intercambie según sus necesidades</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>💼 Detalles de la Inversión</h2>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <h3>💵 Precio de Venta</h3>
+                    <p><strong>US$ 9.000</strong> (Precio negociable)</p>
+                </div>
+                <div class="feature-item">
+                    <h3>🏢 Expensas Mensuales</h3>
+                    <p><strong>US$ 65 aproximadamente</strong></p>
+                </div>
+                <div class="feature-item">
+                    <h3>📅 Período de Uso</h3>
+                    <p><strong>2 semanas anuales</strong> (alta y media temporada)</p>
+                </div>
+                <div class="feature-item">
+                    <h3>📱 Sistema de Reservas</h3>
+                    <p>Reservas online o vía WhatsApp con la administración</p>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="section">
+            <h2>🌍 Membresía RCI - Vacaciones Mundiales</h2>
+            <p style="font-size: 1.1em; text-align: justify;">
+                Su inversión incluye una <strong>membresía con RCI</strong>, la red de intercambio de tiempo compartido 
+                más grande del mundo. Con más de <strong>4,000 hoteles afiliados en todos los continentes</strong>, 
+                puede intercambiar una o ambas semanas para vacacionar en destinos como:
+            </p>
+            <div style="text-align: center; margin: 20px 0;">
+                <strong style="color: #0066cc;">🗽 Nueva York • 🗼 París • 🏖️ Cancún • 🍝 Roma • 🏔️ Alpes Suizos • 🌸 Tokio • ✈️ ¡Y muchos más!</strong>
+            </div>
+        </div>
+
+        <div class="contact-box">
+            <h3>📞 Contacto Directo</h3>
+            <p style="font-size: 1.2em; margin: 10px 0;">
+                <strong>Damián</strong><br>
+                📱 <strong>15-5996-8052</strong>
+            </p>
+            <a href="https://wa.me/5491559968052" class="whatsapp">💬 Contactar por WhatsApp</a>
+            <p style="margin-top: 20px; font-size: 0.95em;">
+                ¡No pierdas esta oportunidad única de inversión en placer para vos y toda tu familia!<br>
+                Consultame sin compromiso y negocia el mejor precio.
+            </p>
+        </div>
+
+        <div class="legal-text">
+            <p><strong>Información legal:</strong> El tiempo compartido cuenta con contrato por 48 años heredable 
+            a descendientes directos. Las expensas mensuales cubren mantenimiento, servicios y acceso a todas 
+            las instalaciones del resort. Los intercambios internacionales están sujetos a disponibilidad 
+            y condiciones de RCI.</p>
+        </div>
+    </div>
+    <!-- CSS del widget -->
+    <link rel="stylesheet" href="https://inmobot-widget.vercel.app/inmobot-widget.css">
+
+    <!-- JavaScript del widget -->
+    <script src="https://inmobot-widget.vercel.app/inmobot-widget.iife.js"></script>
+
+    <!-- Inicialización del widget -->
+    <script>
+    InmoBot.init({
+        apiUrl: 'https://n8n-bot-inmobiliario.onrender.com/webhook/chat-basico',
+        primaryColor: '#25d366',
+        repo: '0',
+        botName: 'InmoBot',
+        welcomeMessage: '¡Hola! Soy tu asistente inmobiliario virtual. ¿En qué te puedo ayudar hoy? 🏠',
+        placeholderText: 'Escribe tu consulta...',
+        position: 'bottom-right',
+        buttonSize: '70px',
+        chatWidth: '400px',
+        chatHeight: '650px'
+    });
+    </script>
+</body>
+</html>
