@@ -1,0 +1,20 @@
+# Archivos de configuración con credenciales
+.env
+
+# Archivos Excel de prueba (solo commitear templates vacíos)
+Template_Propiedades_*.xlsx
+
+# Archivos JSON de prueba
+propiedades_*.json
+*.backup.json
+
+# Carpetas de fotos de prueba
+fotos/
+fotos_*/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
