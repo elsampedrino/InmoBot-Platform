@@ -1,8 +1,8 @@
 {
   "metadata": {
     "total_propiedades": 4,
-    "ultima_actualizacion": "2025-12-28T10:39:06.442515",
-    "version": "2.0.0",
+    "ultima_actualizacion": "2025-12-28T10:45:00.000000",
+    "version": "2.0.1",
     "formato": "estandarizado_bbr",
     "descripcion": "Catálogo de propiedades demo para testing",
     "notas": [
@@ -14,6 +14,14 @@
           "Conversión de detalles de objeto a array",
           "Ajuste de expensas dentro de precio",
           "Formato de superficie con unidades"
+        ]
+      },
+      {
+        "fecha": "2025-12-28T10:45:00.000000",
+        "accion": "Limpieza de campos no estandarizados",
+        "cambios": [
+          "Eliminado campo 'periodo' de precio (no es parte del estándar BBR)",
+          "Eliminado campo 'superficie_jardin' de características (no es parte del estándar BBR)"
         ]
       }
     ]
@@ -34,7 +42,6 @@
       "precio": {
         "valor": 950,
         "moneda": "USD",
-        "periodo": "mes",
         "expensas": 85000
       },
       "descripcion": "Hermoso departamento de 2 ambientes en el corazón de Palermo Soho. Living-comedor integrado con cocina equipada, dormitorio amplio con placard, baño completo con bañera. Muy luminoso con balcón al frente. Ubicación privilegiada a metros de Plaza Serrano, rodeado de bares, restaurantes y tiendas de diseño.",
@@ -74,8 +81,7 @@
       },
       "precio": {
         "valor": 295000,
-        "moneda": "USD",
-        "periodo": null
+        "moneda": "USD"
       },
       "descripcion": "Hermosa casa reciclada hace solo 5 años en excelente estado. Planta Baja: Living-comedor amplio con salida al jardín, cocina moderna integrada, toilette y lavadero. Primer Piso: 3 dormitorios (principal en suite con vestidor), baño completo y terraza con parrilla. Su ubicación en Villa Urquiza es inmejorable, rodeado de colegios, restaurantes y comercios. Excelente conectividad.",
       "fotos": {
@@ -93,7 +99,6 @@
         "dormitorios": 3,
         "superficie_total": "180 m²",
         "superficie_cubierta": "120 m²",
-        "superficie_jardin": 60,
         "banios": 2
       },
       "detalles": [
@@ -116,7 +121,6 @@
       "precio": {
         "valor": 1200,
         "moneda": "USD",
-        "periodo": "mes",
         "expensas": 45000
       },
       "descripcion": "Excelente local comercial en pleno Microcentro financiero. 60m² en planta baja con amplia vidriera a la calle. Baño completo y depósito. Aire acondicionado frío/calor. Ideal para oficina, comercio minorista, o showroom. Ubicación estratégica a pasos del Obelisco y principales líneas de subte y colectivos.",
@@ -152,7 +156,6 @@
       "precio": {
         "valor": 1350,
         "moneda": "USD",
-        "periodo": "mes",
         "expensas": 120000
       },
       "descripcion": "Amplio departamento de 3 ambientes en Belgrano R. Living-comedor con balcón corrido, cocina equipada completa, 2 dormitorios con placards (principal en suite), baño completo. Incluye cochera cubierta y baulera. Excelente ubicación cerca de Cabildo, colegios y transporte. Semi-amoblado (cocina equipada, placards empotrados).",
