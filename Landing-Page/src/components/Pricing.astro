@@ -1,0 +1,259 @@
+---
+// Planes y precios - Basado exclusivamente en pricing.md
+const plans = [
+  {
+    name: "Básico",
+    price: "$150.000",
+    period: "/ mes",
+    description: "Ideal para inmobiliarias chicas o que recién empiezan",
+    recommended: false,
+    features: [
+      "Chatbot Inmobiliario en tu Web",
+      "Responde consultas de propiedades",
+      "Filtrado por tipo/zona/precio",
+      "Características (pileta, cochera, etc.)",
+      "Catálogo de hasta 100 propiedades",
+      "Hasta 3 imágenes por propiedad",
+      "Actualización del catálogo: mensual",
+      "Respuestas automáticas 24/7"
+    ],
+    motor: [
+      "Interpretación simple de consultas",
+      "Filtrado rápido por precio, tipo y características",
+      "Ideal para respuestas habituales",
+      "Optimizado para velocidad y bajo costo",
+      "Procesamiento por consulta individual"
+    ],
+    cta: "Consultar disponibilidad",
+    ctaLink: "#contacto",
+    gradient: "from-gray-600 to-gray-700"
+  },
+  {
+    name: "Pro",
+    price: "$220.000",
+    period: "/ mes",
+    badge: "Recomendado",
+    description: "Para inmobiliarias que quieren vender más",
+    recommended: true,
+    features: [
+      "Incluye todo el Plan Básico +",
+      "Captura de leads de contacto",
+      "Envío automático de leads a Telegram/Email",
+      "Estadísticas semanales automáticas",
+      "Métricas: consultas/propiedades vistas/conversión",
+      "Actualización del catálogo: 2 veces por mes"
+    ],
+    motor: [
+      "Interpretación avanzada del lenguaje natural",
+      "Comprende consultas complejas y combinadas",
+      "Prioriza propiedades más relevantes",
+      "Genera respuestas naturales y persuasivas",
+      "Optimizada para generar leads",
+      "Procesamiento independiente por consulta"
+    ],
+    cta: "Consultar disponibilidad",
+    ctaLink: "#contacto",
+    gradient: "from-violet-600 to-violet-700"
+  },
+  {
+    name: "Premium",
+    price: "Próximamente",
+    period: "",
+    description: "Para inmobiliarias que quieren escalar en serio",
+    recommended: false,
+    features: [
+      "Incluye todo el Plan PRO +",
+      "Seguimiento conversacional por sesión",
+      "Catálogo en base de datos",
+      "Actualización en tiempo real",
+      "Dashboard propio con métricas avanzadas",
+      "Gestión de leads (ABM)",
+      "Integraciones: WhatsApp/CRM",
+      "Personalización avanzada del bot"
+    ],
+    motor: [
+      "Interpretación avanzada de consultas",
+      "Seguimiento conversacional por sesión (contexto activo)",
+      "Comprensión de repreguntas y ajustes progresivos",
+      "Refinamiento dinámico de resultados",
+      "Priorización inteligente según intención",
+      "Mayor precisión en filtros complejos",
+      "Optimización para relevancia y menor ruido"
+    ],
+    cta: "Agendar llamada",
+    ctaLink: "#contacto",
+    gradient: "from-cyan-600 to-blue-700"
+  }
+];
+
+// Tabla comparativa de características
+const comparisonFeatures = [
+  { feature: "Captura y envío de Leads", basico: false, pro: true, premium: true },
+  { feature: "Estadísticas semanales", basico: false, pro: true, premium: true },
+  { feature: "Interpretación de lenguaje natural", basico: true, pro: true, premium: true },
+  { feature: "Respuestas optimizadas para conversión", basico: true, pro: true, premium: true },
+  { feature: "Contexto conversacional por sesión", basico: false, pro: false, premium: true },
+  { feature: "Refinamiento progresivo de búsqueda", basico: false, pro: false, premium: true },
+  { feature: "Personalización avanzada de BOT", basico: false, pro: false, premium: true },
+  { feature: "Actualización de Catálogo On Line", basico: false, pro: false, premium: true },
+  { feature: "Integraciones WhatsApp/CRM", basico: false, pro: false, premium: true },
+  { feature: "Dashboard propio", basico: false, pro: false, premium: true }
+];
+---
+
+<section id="precios" class="py-20 bg-gradient-to-br from-violet-50 via-white to-cyan-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Título de sección -->
+    <div class="text-center mb-16">
+      <h2 class="text-4xl sm:text-5xl font-bold mb-4 bg-gradient-to-r from-violet-600 to-cyan-500 bg-clip-text text-transparent">
+        Planes y Precios
+      </h2>
+      <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+        Elegí el plan que mejor se adapte a las necesidades de tu inmobiliaria
+      </p>
+    </div>
+
+    <!-- Cards de planes -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+      {plans.map((plan) => (
+        <div class={`relative ${plan.recommended ? 'md:-mt-4 md:mb-0' : ''}`}>
+          <!-- Badge de recomendado -->
+          {plan.badge && (
+            <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 z-20">
+              <span class="bg-gradient-to-r from-violet-600 to-cyan-500 text-white px-4 py-1 rounded-full text-sm font-semibold shadow-lg">
+                ⭐ {plan.badge}
+              </span>
+            </div>
+          )}
+
+          <!-- Card -->
+          <div class={`h-full bg-white rounded-3xl shadow-xl border-2 ${
+            plan.recommended ? 'border-violet-300 shadow-2xl shadow-violet-200/50' : 'border-gray-200'
+          } overflow-hidden relative`}>
+            {/* Gradiente superior */}
+            <div class={`h-2 bg-gradient-to-r ${plan.gradient}`}></div>
+
+            <div class="p-8">
+              {/* Header del plan */}
+              <h3 class="text-2xl font-bold text-gray-900 mb-2">{plan.name}</h3>
+              <p class="text-gray-600 text-sm mb-6 min-h-[40px]">{plan.description}</p>
+
+              {/* Precio */}
+              <div class="mb-6">
+                <div class="flex items-baseline gap-1">
+                  <span class={`text-4xl font-bold bg-gradient-to-r ${plan.gradient} bg-clip-text text-transparent`}>
+                    {plan.price}
+                  </span>
+                  {plan.period && (
+                    <span class="text-gray-500 text-lg">{plan.period}</span>
+                  )}
+                </div>
+              </div>
+
+              {/* Features */}
+              <div class="mb-8">
+                <h4 class="font-semibold text-gray-900 mb-3 text-sm uppercase tracking-wide">Características:</h4>
+                <ul class="space-y-2 mb-6">
+                  {plan.features.map((feature) => (
+                    <li class="flex items-start gap-2 text-sm text-gray-700">
+                      <span class="text-green-500 mt-0.5">✓</span>
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <h4 class="font-semibold text-gray-900 mb-3 text-sm uppercase tracking-wide">Motor IA:</h4>
+                <ul class="space-y-2">
+                  {plan.motor.map((item) => (
+                    <li class="flex items-start gap-2 text-sm text-gray-600">
+                      <span class="text-violet-500 mt-0.5">•</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* CTA */}
+              <a
+                href={plan.ctaLink}
+                class={`block w-full text-center px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
+                  plan.recommended
+                    ? `bg-gradient-to-r ${plan.gradient} text-white hover:shadow-xl hover:scale-105`
+                    : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
+                }`}
+              >
+                {plan.cta}
+              </a>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Implementación inicial -->
+    <div class="text-center mb-12">
+      <div class="inline-block bg-gradient-to-r from-emerald-50 to-teal-50 rounded-2xl p-6 border border-emerald-200">
+        <h3 class="text-xl font-bold text-gray-900 mb-2">Implementación inicial</h3>
+        <p class="text-gray-700 mb-2">
+          Incluye configuración, carga del catálogo y puesta en producción.
+        </p>
+        <p class="text-2xl font-bold text-emerald-600">
+          <span class="line-through text-gray-400 text-lg mr-2">$50.000 ARS</span>
+          <span class="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+            Bonificado por lanzamiento
+          </span> 🔥
+        </p>
+      </div>
+    </div>
+
+    <!-- Tabla comparativa -->
+    <div class="bg-white rounded-3xl shadow-xl border border-gray-200 overflow-hidden">
+      <div class="p-8">
+        <h3 class="text-2xl font-bold text-center mb-8 bg-gradient-to-r from-violet-600 to-cyan-500 bg-clip-text text-transparent">
+          Comparación de Planes
+        </h3>
+
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead>
+              <tr class="border-b-2 border-gray-200">
+                <th class="text-left py-4 px-4 font-semibold text-gray-900">Característica</th>
+                <th class="text-center py-4 px-4 font-semibold text-gray-900">Básico</th>
+                <th class="text-center py-4 px-4 font-semibold text-violet-700">Pro ⭐</th>
+                <th class="text-center py-4 px-4 font-semibold text-gray-900">Premium</th>
+              </tr>
+            </thead>
+            <tbody>
+              {comparisonFeatures.map((item, index) => (
+                <tr class={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
+                  <td class="py-3 px-4 text-sm text-gray-700">{item.feature}</td>
+                  <td class="py-3 px-4 text-center">
+                    {item.basico ? (
+                      <span class="text-green-500 text-xl">✅</span>
+                    ) : (
+                      <span class="text-gray-300 text-xl">❌</span>
+                    )}
+                  </td>
+                  <td class="py-3 px-4 text-center bg-violet-50">
+                    {item.pro ? (
+                      <span class="text-green-500 text-xl">✅</span>
+                    ) : (
+                      <span class="text-gray-300 text-xl">❌</span>
+                    )}
+                  </td>
+                  <td class="py-3 px-4 text-center">
+                    {item.premium ? (
+                      <span class="text-green-500 text-xl">✅</span>
+                    ) : (
+                      <span class="text-gray-300 text-xl">❌</span>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

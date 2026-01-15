@@ -1,0 +1,117 @@
+---
+// Diferenciadores tecnológicos - Explicados en lenguaje simple
+const differentiators = [
+  {
+    title: "IA entrenada para inmobiliarias",
+    description: "Nuestro asistente está específicamente diseñado y entrenado para entender el lenguaje del sector inmobiliario. Comprende términos técnicos, características de propiedades y las necesidades típicas de los clientes.",
+    icon: "🎓",
+    highlight: "Especialización vertical"
+  },
+  {
+    title: "Respuestas naturales",
+    description: "Gracias a los últimos avances en IA conversacional, el bot genera respuestas fluidas y naturales, como si estuvieras hablando con una persona real. No son mensajes predefinidos ni rígidos.",
+    icon: "💬",
+    highlight: "Lenguaje natural avanzado"
+  },
+  {
+    title: "Alta velocidad",
+    description: "Las consultas se procesan en pocos segundos. Tus clientes no esperan, obtienen resultados al instante, mejorando significativamente la experiencia de usuario.",
+    icon: "⚡",
+    highlight: "Respuestas en segundos"
+  },
+  {
+    title: "Escalabilidad",
+    description: "Podés atender cientos de consultas simultáneas sin perder calidad ni velocidad. Crece tu negocio sin preocuparte por la capacidad de atención.",
+    icon: "📈",
+    highlight: "Sin límites de concurrencia"
+  }
+];
+---
+
+<section id="tecnologia" class="py-20 text-white relative overflow-hidden">
+  <!-- Fondo con imagen -->
+  <div
+    class="absolute inset-0"
+    style="background-image: url('/Background_Tecnologia.png'); background-size: cover; background-position: center; filter: blur(4px); opacity: 0.25; transform: scale(1.05);"
+  ></div>
+  <!-- Overlay oscuro para legibilidad -->
+  <div class="absolute inset-0 bg-gray-900/75"></div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <!-- Título de sección -->
+    <div class="text-center mb-16">
+      <h2 class="text-4xl sm:text-5xl font-bold mb-4 pb-2 bg-gradient-to-r from-violet-400 to-cyan-400 bg-clip-text text-transparent leading-tight">
+        Tecnología de última generación
+      </h2>
+      <p class="text-xl text-gray-300 max-w-2xl mx-auto">
+        Lo que hace posible una experiencia excepcional para tus clientes
+      </p>
+    </div>
+
+    <!-- Grid de diferenciadores -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+      {differentiators.map((diff, index) => (
+        <div class="group relative">
+          <!-- Card -->
+          <div class="h-full bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-8 border border-gray-700 hover:border-violet-500 transition-all duration-300 relative overflow-hidden">
+            {/* Brillo en hover */}
+            <div class="absolute inset-0 bg-gradient-to-br from-violet-600/10 to-cyan-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+            <div class="relative z-10">
+              {/* Número */}
+              <div class="text-violet-500/30 text-5xl font-bold mb-4">
+                0{index + 1}
+              </div>
+
+              {/* Ícono */}
+              <div class="text-5xl mb-4 transform group-hover:scale-110 transition-transform duration-300">
+                {diff.icon}
+              </div>
+
+              {/* Highlight badge */}
+              <div class="inline-block mb-4">
+                <span class="text-xs font-semibold px-3 py-1 bg-gradient-to-r from-violet-600 to-cyan-600 rounded-full">
+                  {diff.highlight}
+                </span>
+              </div>
+
+              {/* Título */}
+              <h3 class="text-2xl font-bold mb-3 text-white">
+                {diff.title}
+              </h3>
+
+              {/* Descripción */}
+              <p class="text-gray-300 leading-relaxed">
+                {diff.description}
+              </p>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Stats destacados -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
+      <div class="text-center p-6 bg-gradient-to-br from-violet-900/50 to-purple-900/50 rounded-2xl border border-violet-500/30">
+        <div class="text-4xl font-bold mb-2 bg-gradient-to-r from-violet-400 to-cyan-400 bg-clip-text text-transparent">
+          99.9%
+        </div>
+        <p class="text-gray-300">Disponibilidad garantizada</p>
+      </div>
+
+      <div class="text-center p-6 bg-gradient-to-br from-cyan-900/50 to-blue-900/50 rounded-2xl border border-cyan-500/30">
+        <div class="text-4xl font-bold mb-2 bg-gradient-to-r from-cyan-400 to-violet-400 bg-clip-text text-transparent">
+          Respuesta Rápida
+        </div>
+        <p class="text-gray-300">En pocos segundos</p>
+      </div>
+
+      <div class="text-center p-6 bg-gradient-to-br from-purple-900/50 to-violet-900/50 rounded-2xl border border-purple-500/30">
+        <div class="text-4xl font-bold mb-2 bg-gradient-to-r from-violet-400 to-cyan-400 bg-clip-text text-transparent">
+          24/7
+        </div>
+        <p class="text-gray-300">Atención sin interrupciones</p>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,78 @@
+---
+// Cómo funciona - 4 pasos con íconos
+const steps = [
+  {
+    number: "01",
+    title: "El cliente pregunta en tu web",
+    description: "Un visitante consulta por propiedades directamente desde tu sitio web en lenguaje natural.",
+    icon: "💬"
+  },
+  {
+    number: "02",
+    title: "La IA entiende la necesidad",
+    description: "El asistente interpreta la consulta, detecta preferencias y filtra el catálogo inteligentemente.",
+    icon: "🧠"
+  },
+  {
+    number: "03",
+    title: "Muestra propiedades relevantes",
+    description: "Solo propiedades que coinciden con lo que el cliente busca, con imágenes, precio y datos clave.",
+    icon: "🏢"
+  },
+  {
+    number: "04",
+    title: "Te llega el lead listo para contactar",
+    description: "Captura los datos del interesado y te los envía automáticamente para que cierres la venta.",
+    icon: "✅"
+  }
+];
+---
+
+<section id="como-funciona" class="py-20 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Título de sección -->
+    <div class="text-center mb-16">
+      <h2 class="text-4xl sm:text-5xl font-bold mb-4 bg-gradient-to-r from-violet-600 to-cyan-500 bg-clip-text text-transparent">
+        Cómo funciona
+      </h2>
+      <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+        Automatizá la atención de consultas y convertí visitas en leads calificados en 4 pasos simples
+      </p>
+    </div>
+
+    <!-- Grid de pasos -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      {steps.map((step, index) => (
+        <div class="relative group">
+          <!-- Línea conectora (solo desktop, no en el último) -->
+          {index < steps.length - 1 && (
+            <div class="hidden lg:block absolute top-16 left-full w-full h-0.5 bg-gradient-to-r from-violet-300 to-cyan-300 -z-10"></div>
+          )}
+
+          <!-- Card -->
+          <div class="bg-gradient-to-br from-violet-50 to-cyan-50 rounded-2xl p-6 h-full border border-violet-100 hover:shadow-xl hover:scale-105 transition-all duration-300">
+            <!-- Número -->
+            <div class="text-violet-300 text-6xl font-bold mb-2 opacity-50">
+              {step.number}
+            </div>
+
+            <!-- Ícono -->
+            <div class="text-5xl mb-4 transform group-hover:scale-110 transition-transform duration-300">
+              {step.icon}
+            </div>
+
+            <!-- Título -->
+            <h3 class="text-xl font-bold text-gray-900 mb-3">
+              {step.title}
+            </h3>
+
+            <!-- Descripción -->
+            <p class="text-gray-600 text-sm leading-relaxed">
+              {step.description}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

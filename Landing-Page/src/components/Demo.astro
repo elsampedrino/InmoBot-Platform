@@ -1,0 +1,384 @@
+---
+// Demo en vivo - Widget de chat mock funcional
+---
+
+<section id="demo" class="py-20 bg-gradient-to-br from-gray-50 to-violet-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Título de sección -->
+    <div class="text-center mb-12">
+      <h2 class="text-4xl sm:text-5xl font-bold mb-4 bg-gradient-to-r from-violet-600 to-cyan-500 bg-clip-text text-transparent">
+        Probalo como si fueras un cliente real
+      </h2>
+      <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+        Escribí tu consulta y experimentá cómo el asistente interpreta necesidades y muestra propiedades relevantes en segundos.
+      </p>
+    </div>
+
+    <!-- Widget de chat -->
+    <div class="max-w-2xl mx-auto">
+      <div class="bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-200">
+        <!-- Header del chat -->
+        <div class="bg-gradient-to-r from-violet-600 to-cyan-500 px-4 py-3 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <div class="w-9 h-9 bg-white rounded-full flex items-center justify-center p-0.5">
+              <img src="https://inmobot-widget.vercel.app/inmobot-logo.jpg" alt="InmoBot" class="w-full h-full rounded-full object-cover" />
+            </div>
+            <div>
+              <h3 class="text-white font-semibold text-base">InmoBot</h3>
+              <p class="text-white/90 text-xs flex items-center gap-1">
+                <span class="text-green-400">●</span> En línea
+              </p>
+            </div>
+          </div>
+          <div class="flex gap-1.5">
+            <button class="w-7 h-7 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-colors">
+              <span class="text-white text-lg">+</span>
+            </button>
+            <button class="w-7 h-7 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Área de mensajes -->
+        <div id="chat-messages" class="h-96 overflow-y-auto p-6 space-y-4 bg-gray-50">
+          <!-- Mensaje de bienvenida -->
+          <div class="flex justify-start">
+            <div class="bg-white rounded-2xl rounded-tl-sm px-4 py-3 max-w-md shadow-sm border border-gray-100">
+              <p class="text-sm text-gray-800">
+                ¡Hola! Soy tu asistente inmobiliario. ¿Qué tipo de propiedad estás buscando?
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Input de mensaje -->
+        <div class="border-t border-gray-200 p-4 bg-white">
+          <form id="demo-chat-form" class="flex gap-3">
+            <input
+              id="demo-chat-input"
+              type="text"
+              placeholder="Ej: Busco un depto 2 ambientes en Palermo..."
+              class="flex-1 px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+            />
+            <button
+              type="submit"
+              class="w-12 h-12 bg-gradient-to-r from-violet-600 to-violet-700 text-white rounded-full hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center justify-center"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+              </svg>
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Disclaimer y limitación -->
+      <div class="text-center mt-6">
+        <div class="inline-block bg-gradient-to-r from-violet-50 to-cyan-50 rounded-xl px-6 py-3 border border-violet-200">
+          <p class="text-sm font-semibold text-violet-700">
+            ✅ Demo Real limitada a 3 consultas
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // ============================================
+  // DEMO WIDGET - CONEXIÓN REAL A N8N
+  // ============================================
+
+  // Configuración
+  const WEBHOOK_URL = 'https://n8n-bot-inmobiliario.onrender.com/webhook/chat';
+  const MAX_QUERIES = 3;
+
+  // Estado de la sesión (almacenado en sessionStorage)
+  let sessionId = sessionStorage.getItem('demo-session-id');
+  let queryCount = parseInt(sessionStorage.getItem('demo-query-count') || '0');
+
+  // Generar sessionId si no existe
+  if (!sessionId) {
+    sessionId = 'demo-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+    sessionStorage.setItem('demo-session-id', sessionId);
+  }
+
+  // Elementos del DOM
+  const form = document.getElementById('demo-chat-form') as HTMLFormElement;
+  const input = document.getElementById('demo-chat-input') as HTMLInputElement;
+  const messagesContainer = document.getElementById('chat-messages') as HTMLElement;
+
+  // Función para agregar mensaje
+  function addMessage(text: string, isUser: boolean) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `flex ${isUser ? 'justify-end' : 'justify-start'} animate-fade-in`;
+
+    const bubble = document.createElement('div');
+    bubble.className = `rounded-2xl px-4 py-3 max-w-md shadow-sm ${
+      isUser
+        ? 'bg-violet-600 text-white rounded-tr-sm'
+        : 'bg-white border border-gray-100 rounded-tl-sm'
+    }`;
+
+    bubble.innerHTML = `<p class="text-sm ${isUser ? 'text-white' : 'text-gray-800'}">${text}</p>`;
+
+    messageDiv.appendChild(bubble);
+    messagesContainer.appendChild(messageDiv);
+
+    // Scroll automático
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  }
+
+  // Función para parsear y renderizar respuesta del bot
+  function renderBotResponse(response: string) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'flex justify-start animate-fade-in';
+
+    const bubble = document.createElement('div');
+    bubble.className = 'rounded-2xl px-4 py-3 max-w-3xl shadow-sm bg-white border border-gray-100 rounded-tl-sm';
+
+    // Parsear la respuesta para extraer propiedades y texto
+    const parts = response.split('🏠 **');
+    const introText = parts[0].trim();
+    const properties = parts.slice(1);
+
+    let html = '';
+
+    // Texto introductorio (si existe)
+    if (introText) {
+      let introHtml = introText
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\n/g, '<br>');
+      html += `<div class="text-sm text-gray-800 mb-3">${introHtml}</div>`;
+    }
+
+    // Renderizar cada propiedad como card
+    properties.forEach(prop => {
+      // Extraer componentes de la propiedad
+      const lines = prop.split('\n').filter(l => l.trim());
+
+      if (lines.length === 0) return;
+
+      // Primera línea: Título (ya viene sin 🏠 ni **)
+      const title = lines[0].replace(/\*\*/g, '').trim();
+
+      // Buscar descripción (texto antes del precio)
+      let description = '';
+      let price = '';
+      let images: string[] = [];
+
+      for (let i = 1; i < lines.length; i++) {
+        const line = lines[i].trim();
+
+        // Detectar precio (líneas que empiezan con ** y contienen $ o USD)
+        if (line.startsWith('**') && (line.includes('$') || line.includes('USD'))) {
+          price = line.replace(/\*\*/g, '').trim();
+        }
+        // Detectar imágenes (líneas que empiezan con 📸)
+        else if (line.startsWith('📸')) {
+          // Extraer URLs de la línea
+          const urlMatches = line.match(/https?:\/\/[^\s]+/g);
+          if (urlMatches) {
+            images = urlMatches;
+          }
+        }
+        // Si no es precio ni imagen, es parte de la descripción
+        else if (!price) {
+          description += (description ? ' ' : '') + line;
+        }
+      }
+
+      // Construir card de propiedad
+      html += `
+        <div class="bg-gradient-to-br from-violet-50 to-cyan-50 rounded-xl p-4 mt-3 border border-violet-200">
+          <h4 class="text-sm font-bold text-violet-700 mb-2">${title}</h4>
+          ${description ? `<p class="text-xs text-gray-700 mb-2">${description}</p>` : ''}
+          ${price ? `<p class="text-sm font-semibold text-gray-900 mb-2">${price}</p>` : ''}
+
+          ${images.length > 0 ? `
+            <div class="grid grid-cols-3 gap-2 mt-3">
+              ${images.map(url => `
+                <a href="${url}" target="_blank" rel="noopener noreferrer" class="block rounded-lg overflow-hidden border-2 border-transparent hover:border-violet-500 hover:shadow-lg transition-all duration-200">
+                  <img
+                    src="${url}"
+                    alt="Propiedad"
+                    class="w-full h-20 object-cover hover:brightness-110 transition-all cursor-pointer"
+                    onerror="this.style.display='none'"
+                  />
+                </a>
+              `).join('')}
+            </div>
+          ` : ''}
+        </div>
+      `;
+    });
+
+    // Texto final (después de las propiedades, como el CTA de contacto)
+    // Lo filtramos para NO mostrar el mensaje de "dejar datos"
+    const finalText = parts.length > 1 ? response.split('📸').pop()?.trim() : '';
+    if (finalText && !finalText.includes('Dejar tus datos') && !finalText.includes('contact')) {
+      let finalHtml = finalText
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\n/g, '<br>');
+      html += `<div class="text-sm text-gray-700 mt-3 pt-3 border-t border-gray-200">${finalHtml}</div>`;
+    }
+
+    bubble.innerHTML = html;
+
+    messageDiv.appendChild(bubble);
+    messagesContainer.appendChild(messageDiv);
+
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  }
+
+  // Función para mostrar indicador de escritura
+  function showTypingIndicator() {
+    const typingDiv = document.createElement('div');
+    typingDiv.className = 'flex justify-start';
+    typingDiv.id = 'typing-indicator';
+
+    typingDiv.innerHTML = `
+      <div class="bg-white rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm border border-gray-100">
+        <div class="flex gap-1">
+          <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+          <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.1s"></div>
+          <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+        </div>
+      </div>
+    `;
+
+    messagesContainer.appendChild(typingDiv);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  }
+
+  // Función para ocultar indicador de escritura
+  function hideTypingIndicator() {
+    const typingIndicator = document.getElementById('typing-indicator');
+    if (typingIndicator) {
+      typingIndicator.remove();
+    }
+  }
+
+  // Función para llamar al webhook real
+  async function sendToN8N(message: string): Promise<string> {
+    try {
+      const response = await fetch(WEBHOOK_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: message,
+          sessionId: sessionId,
+          repo: 'demo' // Repo demo para testing
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Error en la respuesta del servidor');
+      }
+
+      const data = await response.json();
+      return data.response || 'Lo siento, hubo un error al procesar tu consulta.';
+
+    } catch (error) {
+      console.error('Error al conectar con N8N:', error);
+      return 'Lo siento, estamos experimentando problemas técnicos. Por favor, intentá nuevamente en unos momentos.';
+    }
+  }
+
+  // Manejar envío del formulario
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const userMessage = input.value.trim();
+    if (!userMessage) return;
+
+    // Verificar límite de consultas
+    if (queryCount >= MAX_QUERIES) {
+      addMessage(userMessage, true);
+      hideTypingIndicator();
+
+      setTimeout(() => {
+        renderBotResponse(
+          '⚠️ **Límite de consultas alcanzado**\n\n' +
+          'Has alcanzado el límite de 3 consultas de prueba.'
+        );
+      }, 500);
+
+      input.disabled = true;
+      return;
+    }
+
+    // Incrementar contador
+    queryCount++;
+    sessionStorage.setItem('demo-query-count', queryCount.toString());
+
+    // Agregar mensaje del usuario
+    addMessage(userMessage, true);
+
+    // Limpiar input y deshabilitar temporalmente
+    input.value = '';
+    input.disabled = true;
+
+    // Mostrar indicador de escritura
+    showTypingIndicator();
+
+    // Llamar al webhook real
+    const botResponse = await sendToN8N(userMessage);
+
+    // Ocultar indicador y mostrar respuesta
+    hideTypingIndicator();
+    renderBotResponse(botResponse);
+
+    // Re-habilitar input
+    input.disabled = false;
+    input.focus();
+
+    // Mostrar contador de consultas restantes
+    if (queryCount < MAX_QUERIES) {
+      const remaining = MAX_QUERIES - queryCount;
+      setTimeout(() => {
+        renderBotResponse(`ℹ️ Te quedan **${remaining} ${remaining === 1 ? 'consulta' : 'consultas'}** de prueba.`);
+      }, 1000);
+    }
+  });
+</script>
+
+<style>
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.3s ease-out;
+  }
+
+  #chat-messages::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  #chat-messages::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+
+  #chat-messages::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+  }
+
+  #chat-messages::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+  }
+</style>
