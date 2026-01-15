@@ -620,6 +620,16 @@
     overflow-y: auto;
   }
 
+  /* Imágenes en 2 columnas en mobile */
+  .message-images {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+  }
+
+  .message-image-thumbnail {
+    height: 90px;
+  }
+
   /* Action buttons más táctiles */
   .action-button {
     padding: 14px 16px;
