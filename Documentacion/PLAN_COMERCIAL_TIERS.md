@@ -55,7 +55,7 @@ Ofrecer **soluciones escalables** que crecen con el cliente, desde inmobiliarias
 - ✅ 1 Foto por Propiedad
 
 **Gestión:**
-- ✅ Actualización de propiedades vía JSON
+- ✅ Actualización de propiedades vía Excel estandarizado
 - ✅ Widget personalizable (colores, textos)
 - ✅ Integración simple a la Web de la Inmobiliaria
 
@@ -64,6 +64,7 @@ Ofrecer **soluciones escalables** que crecen con el cliente, desde inmobiliarias
 - ❌ Respuestas menos "humanas" (más técnicas)
 - ❌ Sin búsqueda semántica avanzada
 - ❌ Sin analytics/métricas
+- ❌ Sin leads de contactos
 - ❌ Sin actualizaciones en tiempo real
 - ❌ Soporte: email (respuesta 24-48hs)
 
@@ -102,8 +103,7 @@ Ofrecer **soluciones escalables** que crecen con el cliente, desde inmobiliarias
 
 **Datos:**
 - JSON estático en GitHub
-- Actualizaciones manuales (quincenal)
-- Versionado automático (Git)
+- Actualizaciones manuales (2 al mes)
 
 **Hosting:**
 - N8N: Render Starter
@@ -121,6 +121,8 @@ Ofrecer **soluciones escalables** que crecen con el cliente, desde inmobiliarias
 - ✅ Sugerencias proactivas de alternativas
 - ✅ Tono personalizado por marca
 - ✅ Captura de leads por Telegram
+- ✅ Reportes estadísticos semanales
+- ✅ Multi-Idioma (Español - Inglés - Portugués)
 
 **Gestión avanzada:**
 - ✅ Múltiples repositorios (1 bot, N inmobiliarias)
@@ -144,7 +146,7 @@ Ofrecer **soluciones escalables** que crecen con el cliente, desde inmobiliarias
 | Concepto | Precio (USD) | Precio (ARS)* |
 |----------|--------------|---------------|
 | Setup inicial | $50 | $50,000 |
-| Mensual | $200 | $200,000 |
+| Mensual | $200 | $220,000 |
 
 **Incluye:**
 - Todo del Tier 1
@@ -224,7 +226,7 @@ Ofrecer **soluciones escalables** que crecen con el cliente, desde inmobiliarias
 | Concepto | Precio (USD) | Precio (ARS)* |
 |----------|--------------|---------------|
 | Setup inicial | $800 | $800,000 |
-| Mensual | $250 | $250,000 |
+| Mensual | $300 | $300,000 |
 
 **Incluye:**
 - Todo del Tier 2
