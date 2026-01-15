@@ -31,7 +31,18 @@
       "Bash(set CLOUDINARY_CLOUD_NAME=dikb9wzup:*)",
       "Bash(set CLOUDINARY_API_KEY=298397144263636)",
       "Bash(set CLOUDINARY_API_SECRET=8JnHARLfkJCvvUyDAce73YBGYvw)",
-      "Bash(git reset:*)"
+      "Bash(git reset:*)",
+      "Bash(curl:*)",
+      "Bash(find:*)",
+      "Bash(node -p:*)",
+      "Bash(node migrate_add_repo.js:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nUnificar variable repo de integer a string en widget\n\n- Cambiar repo=''0''/''1'' por repo=''demo''/''bbr'' para consistencia\n- Actualizar comentarios para reflejar uso de strings\n- Facilita routing en workflows N8N \\(Telegram, stats, GitHub\\)\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git log:*)",
+      "Bash(psql:*)",
+      "Bash(npm create:*)",
+      "Bash(npx astro add:*)",
+      "Bash(vercel --prod:*)",
+      "Bash(npx vercel:*)"
     ],
     "deny": [],
     "ask": []
