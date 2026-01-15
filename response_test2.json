@@ -1,0 +1,11 @@
+{
+  "query": "INSERT INTO chat_logs (\n  session_id, consulta, idioma, success, error_type, response_time_ms,\n  tokens_haiku, tokens_sonnet, tokens_total, propiedades_mostradas, propiedades_ids\n) VALUES (\n  'test-session-002',\n  'tenes algun departamento para alquilar ?',\n  'es',\n  1,\n  NULL,\n  10803668,\n  13224,\n  0,\n  13224,\n  4,\n  ARRAY['PROP-001','PROP-002','PROP-003','PROP-004']\n)",
+  "error": false,
+  "response": "¡Hola! ¿Qué tipo de propiedad buscás?\n\n🏢 Departamento\n🏠 Casa\n🏪 Local comercial\n🏞️ Terreno\n\n¿Para alquilar o comprar?",
+  "sessionId": "test-session-002",
+  "consulta": "tenes algun departamento para alquilar ?",
+  "propiedadesMostradas": 4,
+  "timestamp": "2025-12-27T11:53:40.194Z",
+  "modelo": "claude-haiku-3.5",
+  "plan": "basico"
+}
