@@ -4,7 +4,7 @@
 :root {
   --primary-color: #2563eb;
   --button-size: 60px;
-  --chat-width: 380px;
+  --chat-width: 500px;
   --chat-height: 600px;
 }
 
@@ -362,39 +362,47 @@
 
 /* Secciones de mensaje (para propiedades múltiples) */
 .message-section {
-  margin-bottom: 16px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 12px;
+  padding: 12px;
+  background: #f3f4f6;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+}
+
+.message-section:first-child {
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin-bottom: 8px;
 }
 
 .message-section:last-child {
-  border-bottom: none;
   margin-bottom: 0;
-  padding-bottom: 0;
 }
 
-/* Imágenes en miniaturas */
+/* Imágenes en miniaturas - Grid de 3 columnas */
 .message-images {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 8px;
-  flex-wrap: wrap;
   margin-top: 12px;
 }
 
 .message-image-thumbnail {
-  width: 120px;
-  height: 120px;
+  width: 100%;
+  height: 80px;
   object-fit: cover;
   border-radius: 8px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   border: 2px solid transparent;
 }
 
 .message-image-thumbnail:hover {
-  transform: scale(1.05);
+  transform: scale(1.03);
   border-color: var(--primary-color);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  filter: brightness(1.1);
 }
 
 /* Typing indicator */

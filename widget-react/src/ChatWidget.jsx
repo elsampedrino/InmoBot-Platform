@@ -28,7 +28,7 @@ const ChatWidget = ({ config }) => {
     placeholderText = 'Escribe tu mensaje...',
     position = 'bottom-right',
     buttonSize = '60px',
-    chatWidth = '380px',
+    chatWidth = '500px',
     chatHeight = '600px',
     repo = 'demo' // 'demo' o 'bbr'
   } = config || {};
