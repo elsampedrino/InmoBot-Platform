@@ -93,6 +93,7 @@ def crear_excel_template():
         # Otros
         {'letra': 'AA', 'nombre': 'descripcion', 'titulo': 'Descripción', 'ancho': 50, 'obligatorio': True},
         {'letra': 'AB', 'nombre': 'disponibilidad', 'titulo': 'Disponibilidad', 'ancho': 15, 'obligatorio': False},
+        {'letra': 'AC', 'nombre': 'activa', 'titulo': 'Activa', 'ancho': 10, 'obligatorio': True, 'tipo': 'checkbox'},
     ]
 
     # ============================================
@@ -147,6 +148,7 @@ def crear_excel_template():
     ws['Z2'] = 'Sí'
     ws['AA2'] = 'Hermosa casa reciclada con jardín y parrilla. Living comedor, cocina integrada, 3 dormitorios.'
     ws['AB2'] = 'Inmediata'
+    ws['AC2'] = 'Sí'
 
     # Fila 3: Ejemplo departamento a estrenar (en pozo)
     ws['A3'] = 'PROP-002'
@@ -177,6 +179,7 @@ def crear_excel_template():
     ws['Z3'] = 'No'
     ws['AA3'] = 'Depto a estrenar en pozo de 2 ambientes con balcón. Cocina equipada, baño completo. Entrega Marzo 2026.'
     ws['AB3'] = '2026-03-01'
+    ws['AC3'] = 'Sí'
 
     # ============================================
     # VALIDACIONES DE DATOS
@@ -235,7 +238,7 @@ def crear_excel_template():
     dv_sino.error = 'Por favor, escriba "Sí" o "No"'
     dv_sino.errorTitle = 'Valor inválido'
     ws.add_data_validation(dv_sino)
-    for col_letra in ['R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']:
+    for col_letra in ['R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'AC']:
         dv_sino.add(f'{col_letra}2:{col_letra}1000')
 
     # Validación para números (precio, expensas, superficies)
@@ -266,6 +269,7 @@ def crear_excel_template():
         ["   - Calle, Barrio, Ciudad", ""],
         ["   - Precio, Moneda", ""],
         ["   - Descripción", ""],
+        ["   - Activa (Sí/No - indica si se muestra en el catálogo)", ""],
         ["", ""],
         ["2. CAMPO ID - MUY IMPORTANTE", ""],
         ["   - Formato: PROP-001, PROP-002, PROP-003, etc.", ""],
@@ -273,7 +277,7 @@ def crear_excel_template():
         ["   - Una vez asignado, NO CAMBIAR el ID de una propiedad", ""],
         ["   - Para actualizaciones mensuales: mantener el mismo ID", ""],
         ["   - Propiedades nuevas: usar el siguiente número disponible", ""],
-        ["   - Propiedades vendidas/alquiladas: ELIMINAR la fila completa", ""],
+        ["   - Propiedades vendidas/alquiladas: NO ELIMINAR, marcar Activa=No", ""],
         ["", ""],
         ["3. ESTADO CONSTRUCCIÓN (opcional)", ""],
         ["   - Usado (default)", ""],
@@ -293,15 +297,22 @@ def crear_excel_template():
         ["   - Unidades válidas: m² (metros), Ha (hectáreas)", ""],
         ["   - Ejemplos: '462 m²', '5.5 Ha', '120 m²'", ""],
         ["", ""],
-        ["6. CHECKBOXES (Sí/No) - Columnas R-Z", ""],
+        ["6. CHECKBOXES (Sí/No) - Columnas R-Z y AC", ""],
         ["   - Escribir 'Sí' o 'No' (sin acento también funciona)", ""],
         ["   - Dejar vacío = No", ""],
         ["   - Campos disponibles:", ""],
         ["     R: Ascensor  |  S: Balcón    |  T: Cochera  |  U: Baulera", ""],
         ["     V: Patio     |  W: Pileta    |  X: Quincho  |  Y: Parrilla", ""],
-        ["     Z: Mascotas", ""],
+        ["     Z: Mascotas  | AC: Activa (OBLIGATORIO)", ""],
         ["", ""],
-        ["7. FOTOS", ""],
+        ["7. CAMPO ACTIVA (columna AC) - MUY IMPORTANTE", ""],
+        ["   - Indica si la propiedad se muestra en el catálogo del bot", ""],
+        ["   - Activa=Sí: La propiedad aparece en búsquedas", ""],
+        ["   - Activa=No: La propiedad NO aparece (vendida/alquilada)", ""],
+        ["   - NUNCA eliminar filas, solo marcar Activa=No", ""],
+        ["   - Esto preserva el historial y estadísticas", ""],
+        ["", ""],
+        ["8. FOTOS", ""],
         ["   - Las carpetas deben estar numeradas (1, 2, 3, etc.)", ""],
         ["   - Dentro de cada carpeta: 01.jpg, 02.jpg, 03.jpg, etc.", ""],
         ["   - Estructura esperada:", ""],
@@ -313,16 +324,16 @@ def crear_excel_template():
         ["       ├── 01.jpg", ""],
         ["       └── 02.jpg", ""],
         ["", ""],
-        ["8. PROCESO PARA ACTUALIZACIONES MENSUALES", ""],
+        ["9. PROCESO PARA ACTUALIZACIONES MENSUALES", ""],
         ["   1. Abrir el Excel del mes anterior", ""],
-        ["   2. ELIMINAR filas de propiedades vendidas/alquiladas", ""],
+        ["   2. MARCAR Activa=No en propiedades vendidas/alquiladas (NO ELIMINAR)", ""],
         ["   3. MODIFICAR filas de propiedades con cambios (precio, etc.)", ""],
         ["   4. AGREGAR filas nuevas al final con IDs secuenciales", ""],
         ["   5. Guardar el archivo", ""],
         ["   6. Preparar las fotos en carpetas numeradas correspondiendo cada", ""],
         ["      fila del excel con el numero de carpeta de las fotos", ""],
         ["", ""],
-        ["9. VALIDACIONES", ""],
+        ["10. VALIDACIONES", ""],
         ["   - Los campos con listas desplegables NO permiten otros valores", ""],
         ["   - Los números deben ser mayores a 0", ""],
         ["   - Las fechas en formato: AAAA-MM-DD (ej: 2025-02-15)", ""],
@@ -334,7 +345,7 @@ def crear_excel_template():
         ws_instrucciones[f'A{i}'] = fila[0]
         if i == 1:
             ws_instrucciones[f'A{i}'].font = Font(size=14, bold=True, color='2563EB')
-        elif fila[0].startswith(('1.', '2.', '3.', '4.', '5.', '6.', '7.', '8.', '9.')):
+        elif fila[0].startswith(('1.', '2.', '3.', '4.', '5.', '6.', '7.', '8.', '9.', '10.')):
             ws_instrucciones[f'A{i}'].font = Font(size=12, bold=True)
 
     ws_instrucciones.column_dimensions['A'].width = 80

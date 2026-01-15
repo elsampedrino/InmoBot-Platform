@@ -192,6 +192,17 @@ def procesar_excel(archivo_excel, json_anterior_dict=None):
             # Otros
             descripcion = ws[f'AA{fila_num}'].value
             disponibilidad = ws[f'AB{fila_num}'].value
+            activa = ws[f'AC{fila_num}'].value
+
+            # ============================================
+            # FILTRAR PROPIEDADES INACTIVAS
+            # ============================================
+
+            # Solo procesar propiedades activas (Activa=Sí o Activa=Si)
+            if activa and str(activa).strip().lower() not in ['sí', 'si', 's', 'yes', 'y']:
+                print(f"  SKIP Fila {fila_num}: {propiedad_id} - Propiedad NO activa (Activa={activa})")
+                fila_num += 1
+                continue
 
             # ============================================
             # VALIDAR CAMPOS OBLIGATORIOS
@@ -207,6 +218,7 @@ def procesar_excel(archivo_excel, json_anterior_dict=None):
             if not precio_valor: campos_faltantes.append('Precio')
             if not precio_moneda: campos_faltantes.append('Moneda')
             if not descripcion: campos_faltantes.append('Descripción')
+            if not activa: campos_faltantes.append('Activa')
 
             if campos_faltantes:
                 errores.append(f"Fila {fila_num}: Faltan campos obligatorios: {', '.join(campos_faltantes)}")
