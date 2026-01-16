@@ -292,11 +292,16 @@ const ChatWidget = ({ config }) => {
     text = text.replace(/Ver fotos?:\s*/gi, '');
 
     // Detectar si el mensaje contiene las opciones de acción (multiidioma)
-    const hasActionButtonsES = text.includes('✅ Dejar tus datos de contacto') && text.includes('🔍 Ver otras opciones');
-    const hasActionButtonsEN = text.includes('✅ Leave your contact information') && text.includes('🔍 See other options');
-    const hasActionButtonsPT = text.includes('✅ Deixar seus dados de contato') && text.includes('🔍 Ver outras opções');
+    // Buscar el patrón de botones de contacto (más flexible)
+    const hasContactButton = text.includes('✅ Dejar tus datos') ||
+                             text.includes('✅ Leave your contact') ||
+                             text.includes('✅ Deixar seus dados');
 
-    const hasActionButtons = hasActionButtonsES || hasActionButtonsEN || hasActionButtonsPT;
+    const hasOtherOptionsButton = text.includes('🔍 Ver otras opciones') ||
+                                   text.includes('🔍 See other options') ||
+                                   text.includes('🔍 Ver outras opções');
+
+    const hasActionButtons = hasContactButton && hasOtherOptionsButton;
 
     // Si tiene botones de acción, separar el texto principal de las opciones
     let mainText = text;
@@ -304,22 +309,40 @@ const ChatWidget = ({ config }) => {
     let buttonLanguage = 'es'; // Default español
 
     if (hasActionButtons) {
-      // Detectar idioma y extraer el texto antes de las opciones
-      let optionsMatch = null;
-
-      if (hasActionButtonsES) {
-        optionsMatch = text.match(/(.*?)(?=¿Alguna de estas propiedades te interesa\?)/s);
-        buttonLanguage = 'es';
-      } else if (hasActionButtonsEN) {
-        optionsMatch = text.match(/(.*?)(?=Are any of these properties interesting to you\?)/s);
+      // Detectar idioma
+      if (text.includes('✅ Leave your contact')) {
         buttonLanguage = 'en';
-      } else if (hasActionButtonsPT) {
-        optionsMatch = text.match(/(.*?)(?=Alguma dessas propriedades te interessa\?)/s);
+      } else if (text.includes('✅ Deixar seus dados')) {
         buttonLanguage = 'pt';
+      }
+
+      // Extraer el texto antes de la pregunta de interés (más flexible con singular/plural)
+      // Buscar variantes: "¿Alguna de estas propiedades te interesa?", "¿Esta propiedad te interesa?", etc.
+      const questionPatterns = [
+        /(.*?)(?=¿(?:Alguna de estas propiedades|Esta propiedad|Te interesa alguna|Alguna propiedad) te interesa)/si,
+        /(.*?)(?=Are (?:any of these properties|this property) interesting)/si,
+        /(.*?)(?=(?:Alguma dessas propriedades|Esta propriedade) te interessa)/si,
+        /(.*?)(?=¿Te interesa)/si,
+        /(.*?)(?=Podés:)/si
+      ];
+
+      let optionsMatch = null;
+      for (const pattern of questionPatterns) {
+        optionsMatch = text.match(pattern);
+        if (optionsMatch) break;
       }
 
       if (optionsMatch) {
         mainText = optionsMatch[1].trim();
+        showButtons = true;
+      } else {
+        // Si no encontramos el patrón, mostrar botones de todas formas pero con todo el texto
+        // limpiando los botones del texto
+        mainText = text
+          .replace(/¿(?:Alguna de estas propiedades|Esta propiedad|Te interesa alguna).*?Podés:/gsi, '')
+          .replace(/✅ Dejar tus datos de contacto/g, '')
+          .replace(/🔍 Ver otras opciones/g, '')
+          .trim();
         showButtons = true;
       }
     }
