@@ -332,6 +332,13 @@
   color: white;
 }
 
+/* Secciones dentro de mensajes de usuario (ej: solicitud de contacto) */
+.message.user .message-section {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: white;
+}
+
 .message-time {
   font-size: 11px;
   color: #9ca3af;
