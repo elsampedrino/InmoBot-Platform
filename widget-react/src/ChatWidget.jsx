@@ -587,7 +587,7 @@ const ChatWidget = ({ config }) => {
           {/* Footer */}
           <div className="chat-footer">
             <span className="powered-by">
-              Powered by InmoBot
+              Powered by AutomatizacionIA
             </span>
           </div>
         </div>
