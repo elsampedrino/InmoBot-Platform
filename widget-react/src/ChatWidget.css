@@ -333,10 +333,20 @@
 }
 
 /* Secciones dentro de mensajes de usuario (ej: solicitud de contacto) */
-.message.user .message-section {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.3);
+/* Primera sección: sin fondo extra, hereda estilo del mensaje */
+.message.user .message-section:first-child {
+  background: transparent;
+  border: none;
+  padding: 0;
   color: white;
+}
+
+/* Secciones siguientes: fondo gris claro con texto negro (datos de contacto) */
+.message.user .message-section:not(:first-child) {
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  color: #1f2937;
+  margin-top: 8px;
 }
 
 .message-time {
