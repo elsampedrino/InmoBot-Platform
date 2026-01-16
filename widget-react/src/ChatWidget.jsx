@@ -488,23 +488,6 @@ const ChatWidget = ({ config }) => {
               >
                 <div className="message-content">
                   {renderMessage(message)}
-                  
-                  {/* Mostrar propiedades si hay */}
-                  {message.propiedades && message.propiedades.length > 0 && (
-                    <div className="propiedades-list">
-                      {message.propiedades.map((prop, idx) => (
-                        <div key={idx} className="propiedad-card">
-                          <strong>{prop.titulo}</strong>
-                          {prop.precio && (
-                            <div className="propiedad-precio">
-                              {prop.precio.moneda} {prop.precio.valor.toLocaleString()}
-                              {prop.precio.periodo && `/${prop.precio.periodo}`}
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  )}
                 </div>
                 <span className="message-time">{formatTime(message.timestamp)}</span>
               </div>
