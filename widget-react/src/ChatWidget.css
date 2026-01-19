@@ -610,12 +610,15 @@
   .chat-input-container {
     padding: 12px 16px;
     padding-bottom: max(12px, env(safe-area-inset-bottom)); /* Respeta notch/keyboard */
+    align-items: center; /* Centra verticalmente input y botón */
   }
 
   .chat-input {
     font-size: 16px !important; /* Previene zoom en iOS */
-    padding: 12px 16px;
-    min-height: 44px; /* Mínimo para touch en iOS */
+    padding: 10px 16px;
+    height: 44px; /* Altura fija igual al botón */
+    min-height: 44px;
+    box-sizing: border-box;
   }
 
   .send-button {
