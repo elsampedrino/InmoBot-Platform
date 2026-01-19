@@ -42,10 +42,14 @@ const ChatWidget = ({ config }) => {
     scrollToBottom();
   }, [messages]);
 
-  // Focus en input cuando se abre, y blur cuando se cierra
+  // Focus en input cuando se abre (solo en desktop, no en mobile para evitar que aparezca el teclado)
   useEffect(() => {
     if (isOpen && inputRef.current) {
-      inputRef.current.focus();
+      // Solo hacer autofocus en pantallas mayores a 480px (desktop/tablet)
+      const isMobile = window.innerWidth <= 480;
+      if (!isMobile) {
+        inputRef.current.focus();
+      }
     } else if (!isOpen) {
       // Cuando se cierra, remover focus de cualquier elemento
       if (document.activeElement && document.activeElement !== document.body) {
