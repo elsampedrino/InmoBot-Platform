@@ -424,7 +424,27 @@
 
 /* Typing indicator */
 .message.typing .message-content {
-  padding: 12px 20px;
+  padding: 12px 16px;
+  background: transparent;
+  box-shadow: none;
+}
+
+.typing-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: white;
+  padding: 10px 14px;
+  border-radius: 16px;
+  border-bottom-left-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.typing-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .typing-indicator {

@@ -500,10 +500,17 @@ const ChatWidget = ({ config }) => {
             {/* Typing indicator */}
             {isTyping && (
               <div className="message bot typing">
-                <div className="typing-indicator">
-                  <span></span>
-                  <span></span>
-                  <span></span>
+                <div className="typing-container">
+                  <img
+                    src="https://inmobot-widget.vercel.app/inmobot-logo.jpg"
+                    alt="InmoBot"
+                    className="typing-avatar"
+                  />
+                  <div className="typing-indicator">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
                 </div>
               </div>
             )}
