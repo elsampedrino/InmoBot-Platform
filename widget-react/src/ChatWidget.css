@@ -639,6 +639,19 @@
     height: 44px; /* Altura fija igual al botón */
     min-height: 44px;
     box-sizing: border-box;
+    overflow: hidden; /* Oculta scrollbar que aparece como línea vertical */
+  }
+
+  /* Ocultar scrollbar en mobile para evitar línea vertical */
+  .chat-input::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+
+  .chat-input {
+    -ms-overflow-style: none; /* IE/Edge */
+    scrollbar-width: none; /* Firefox */
   }
 
   .send-button {
