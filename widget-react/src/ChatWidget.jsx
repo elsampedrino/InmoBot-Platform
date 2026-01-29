@@ -25,7 +25,7 @@ const ChatWidget = ({ config }) => {
     primaryColor = '#2563eb',
     botName = 'AsistenteBot',
     welcomeMessage = '¡Hola! Soy tu asistente inmobiliario virtual. ¿En qué te puedo ayudar hoy?',
-    placeholderText = 'Escribe tu mensaje...',
+    placeholderText = 'Busco una propiedad para comprar por menos de 100.000 USD',
     position = 'bottom-right',
     buttonSize = '60px',
     chatWidth = '500px',
