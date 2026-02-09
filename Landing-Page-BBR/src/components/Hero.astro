@@ -1,0 +1,172 @@
+---
+// Hero component - Dinámico desde configuración
+import { getHero, getStats, getWidgetBot, getEmpresa } from '../lib/config';
+
+const hero = getHero();
+const stats = getStats();
+const widgetBot = getWidgetBot();
+const empresa = getEmpresa();
+---
+
+<section id="inicio" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+  <!-- Background Image with Overlay -->
+  <div class="absolute inset-0 z-0">
+    <img
+      src={hero.imagen_fondo}
+      alt="Propiedad de lujo"
+      class="w-full h-full object-cover"
+    />
+    <div class="absolute inset-0 bg-gradient-to-r from-[--color-bbr-blue]/80 to-[--color-bbr-blue]/40"></div>
+  </div>
+
+  <!-- Content -->
+  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-20">
+    <h1 class="hero-title text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight animate-fadeIn">
+      {hero.titulo_linea1}
+      <span class="block text-[--color-bbr-green]">{hero.titulo_linea2}</span>
+    </h1>
+
+    <p class="text-lg sm:text-xl md:text-2xl text-white/90 max-w-3xl mx-auto mb-10 animate-fadeIn" style="animation-delay: 0.2s;">
+      {hero.subtitulo}
+    </p>
+
+    <!-- CTA Buttons -->
+    <div class="flex flex-col sm:flex-row gap-4 justify-center animate-fadeIn" style="animation-delay: 0.4s;">
+      <a
+        href={hero.cta_principal.link}
+        class="inline-flex items-center justify-center gap-2 bg-[--color-bbr-green] hover:bg-[--color-bbr-green-dark] text-white px-8 py-4 rounded-full text-lg font-semibold transition-all hover:scale-105 shadow-lg"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        </svg>
+        {hero.cta_principal.texto}
+      </a>
+      <a
+        href={hero.cta_secundario.link}
+        class="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white border-2 border-white px-8 py-4 rounded-full text-lg font-semibold transition-all hover:scale-105 backdrop-blur-sm"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+        </svg>
+        {hero.cta_secundario.texto}
+      </a>
+    </div>
+
+    <!-- Stats -->
+    <div class="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8 animate-fadeIn" style="animation-delay: 0.6s;">
+      {stats.map((stat) => (
+        <div class="text-center">
+          <div class="text-4xl md:text-5xl font-bold text-[--color-bbr-green]">{stat.valor}</div>
+          <div class="text-white/80 mt-2">{stat.label}</div>
+        </div>
+      ))}
+
+      {/* InmoBot Destacado - Solo si está habilitado */}
+      {widgetBot.habilitado && widgetBot.mostrar_badge_innovacion && (
+        <div class="text-center relative col-span-2 md:col-span-1">
+          <div class="inmobot-highlight p-4 rounded-2xl">
+            <span class="innovation-badge">{widgetBot.texto_badge}</span>
+            <div class="flex items-center justify-center gap-2 mb-1">
+              <svg class="w-8 h-8 inmobot-icon" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2a2 2 0 012 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 017 7h1a1 1 0 011 1v3a1 1 0 01-1 1h-1v1a2 2 0 01-2 2H5a2 2 0 01-2-2v-1H2a1 1 0 01-1-1v-3a1 1 0 011-1h1a7 7 0 017-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 012-2zm-3 9a1 1 0 100 2 1 1 0 000-2zm6 0a1 1 0 100 2 1 1 0 000-2z"/>
+              </svg>
+              <div class="text-4xl md:text-5xl font-bold inmobot-value">{widgetBot.texto_destacado}</div>
+            </div>
+            <div class="text-white font-semibold text-lg">{widgetBot.subtexto_destacado}</div>
+            <div class="text-white/70 text-sm mt-1">{widgetBot.descripcion_destacado}</div>
+            <button onclick="document.querySelector('.chat-widget-button')?.click()" class="mt-3 inline-flex items-center gap-1 inmobot-cta text-sm font-medium cursor-pointer">
+              Probá el asistente
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  </div>
+
+  <!-- Scroll Indicator -->
+  <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+    <a href="#servicios" class="text-white/70 hover:text-white transition-colors">
+      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+      </svg>
+    </a>
+  </div>
+</section>
+
+<style is:global>
+  /* Hero title con efecto de sombra/despegue */
+  .hero-title {
+    text-shadow:
+      0 4px 8px rgba(0, 0, 0, 0.3),
+      0 8px 25px rgba(0, 0, 0, 0.2);
+  }
+
+  /* InmoBot Highlight Box */
+  .inmobot-highlight {
+    background: linear-gradient(135deg, rgba(139, 179, 29, 0.15) 0%, rgba(30, 58, 95, 0.3) 100%);
+    border: 2px solid rgba(139, 179, 29, 0.5);
+    position: relative;
+    backdrop-filter: blur(10px);
+  }
+
+  /* Colores para elementos del InmoBot (usan color primario del tema) */
+  .inmobot-highlight .inmobot-icon,
+  .inmobot-highlight .inmobot-value {
+    color: var(--color-bbr-green) !important;
+  }
+
+  .inmobot-highlight .inmobot-cta {
+    color: var(--color-bbr-green);
+    transition: color 0.2s;
+  }
+
+  .inmobot-highlight .inmobot-cta:hover {
+    color: white;
+  }
+
+  /* Badge de Innovación */
+  .innovation-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, var(--color-bbr-green) 0%, var(--color-bbr-green-dark) 100%);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 15px rgba(139, 179, 29, 0.5);
+    animation: pulse-badge 2s infinite;
+  }
+
+  @keyframes pulse-badge {
+    0%, 100% {
+      box-shadow: 0 4px 15px rgba(139, 179, 29, 0.4);
+    }
+    50% {
+      box-shadow: 0 4px 25px rgba(139, 179, 29, 0.7);
+    }
+  }
+
+  /* Animación fadeIn para el Hero */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fadeIn {
+    animation: fadeIn 0.8s ease-out forwards;
+    opacity: 0;
+  }
+</style>

@@ -1,0 +1,88 @@
+---
+// Servicios component - Dinámico desde configuración
+import { getServicios } from '../lib/config';
+
+const serviciosConfig = getServicios();
+
+// Mapeo de iconos para los servicios
+const iconos: Record<string, string> = {
+  home: `<svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+  </svg>`,
+  money: `<svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+  </svg>`,
+  document: `<svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+  </svg>`,
+  calculator: `<svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+  </svg>`,
+  users: `<svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+  </svg>`,
+  building: `<svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+  </svg>`,
+  key: `<svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
+  </svg>`
+};
+---
+
+<section id="servicios" class="py-20 bg-bbr-gray-light">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Section Header -->
+    <div class="mb-16">
+      <span class="section-label text-bbr-green font-light text-lg uppercase tracking-wider">
+        {serviciosConfig.titulo_seccion}
+      </span>
+      <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-bbr-blue mt-4 mb-6">
+        {serviciosConfig.subtitulo}
+      </h2>
+      <p class="text-lg text-bbr-gray max-w-2xl">
+        {serviciosConfig.descripcion}
+      </p>
+    </div>
+
+    <!-- Services Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {serviciosConfig.lista.map((servicio, index) => (
+        <div
+          class="service-card bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group"
+          style={`animation-delay: ${index * 0.1}s;`}
+        >
+          <div class="service-icon mb-6">
+            <Fragment set:html={iconos[servicio.icono] || iconos.key} />
+          </div>
+          <h3 class="text-xl font-bold text-bbr-blue mb-4">
+            {servicio.titulo}
+          </h3>
+          <p class="text-bbr-gray leading-relaxed">
+            {servicio.descripcion}
+          </p>
+        </div>
+      ))}
+    </div>
+
+  </div>
+</section>
+
+<style is:global>
+  /* Cards de servicios con borde verde izquierdo e inferior */
+  .service-card {
+    border-left: 4px solid var(--color-bbr-green);
+    border-bottom: 4px solid var(--color-bbr-green);
+  }
+
+  /* Iconos de servicios con efecto hover */
+  .service-icon {
+    color: var(--color-bbr-green);
+    transition: all 0.3s ease;
+  }
+
+  .service-card:hover .service-icon {
+    color: var(--color-bbr-blue);
+    transform: scale(1.15);
+  }
+</style>

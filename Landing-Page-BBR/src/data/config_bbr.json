@@ -1,0 +1,224 @@
+{
+  "empresa": {
+    "nombre": "BBR Grupo Inmobiliario",
+    "nombre_corto": "BBR",
+    "slogan": "Tu socio de confianza en bienes raíces",
+    "logo": "/images/logo-bbr.png",
+    "favicon": "/images/logo-bbr.png",
+    "descripcion_meta": "BBR Grupo Inmobiliario - Tu socio de confianza en bienes raíces"
+  },
+
+  "hero": {
+    "titulo_linea1": "Tu próximo hogar",
+    "titulo_linea2": "te está esperando",
+    "subtitulo": "En BBR Grupo Inmobiliario te acompañamos en cada paso para encontrar la propiedad perfecta para vos.",
+    "imagen_fondo": "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1920&q=80",
+    "cta_principal": {
+      "texto": "Propiedades Destacadas",
+      "link": "#propiedades"
+    },
+    "cta_secundario": {
+      "texto": "Contactanos",
+      "link": "#contacto"
+    }
+  },
+
+  "stats": [
+    {
+      "valor": "+100",
+      "label": "Propiedades Vendidas"
+    },
+    {
+      "valor": "+5",
+      "label": "Años de Experiencia"
+    },
+    {
+      "valor": "+50",
+      "label": "Clientes Satisfechos"
+    }
+  ],
+
+  "quienes_somos": {
+    "titulo_seccion": "Quiénes Somos",
+    "subtitulo": "BBR Grupo Inmobiliario",
+    "parrafos": [
+      "Somos una empresa inmobiliaria con más de 5 años de trayectoria en el mercado, especializada en la compra, venta y alquiler de propiedades. Nuestro equipo de profesionales está comprometido con brindar un servicio de excelencia.",
+      "Creemos que encontrar el hogar ideal es uno de los momentos más importantes en la vida de las personas, por eso nos dedicamos a acompañarte en cada paso del camino, con transparencia, compromiso y profesionalismo."
+    ],
+    "imagen": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1200&q=80",
+    "años_experiencia": "+5",
+    "valores": [
+      {
+        "titulo": "Confianza",
+        "descripcion": "Transparencia en cada operación",
+        "icono": "check"
+      },
+      {
+        "titulo": "Eficiencia",
+        "descripcion": "Resultados en tiempo récord",
+        "icono": "lightning"
+      },
+      {
+        "titulo": "Compromiso",
+        "descripcion": "Tu satisfacción es nuestra prioridad",
+        "icono": "heart"
+      },
+      {
+        "titulo": "Experiencia",
+        "descripcion": "Profesionales especializados",
+        "icono": "flask"
+      }
+    ]
+  },
+
+  "servicios": {
+    "titulo_seccion": "Nuestros Servicios",
+    "subtitulo": "¿Qué podemos hacer por vos?",
+    "descripcion": "Ofrecemos una amplia gama de servicios inmobiliarios para acompañarte en cada etapa de tu proyecto.",
+    "lista": [
+      {
+        "titulo": "Compra de Propiedades",
+        "descripcion": "Te ayudamos a encontrar la propiedad ideal según tus necesidades y presupuesto. Acompañamiento integral en todo el proceso.",
+        "icono": "home"
+      },
+      {
+        "titulo": "Venta de Propiedades",
+        "descripcion": "Maximizamos el valor de tu propiedad con estrategias de marketing efectivas y una amplia red de contactos.",
+        "icono": "money"
+      },
+      {
+        "titulo": "Alquiler",
+        "descripcion": "Gestionamos alquileres de forma profesional, garantizando seguridad tanto para propietarios como inquilinos.",
+        "icono": "document"
+      },
+      {
+        "titulo": "Tasaciones",
+        "descripcion": "Realizamos tasaciones profesionales y precisas para que conozcas el valor real de tu propiedad en el mercado.",
+        "icono": "calculator"
+      },
+      {
+        "titulo": "Asesoramiento Integral",
+        "descripcion": "Brindamos asesoramiento legal, financiero e impositivo para que tomes las mejores decisiones inmobiliarias.",
+        "icono": "users"
+      },
+      {
+        "titulo": "Administración",
+        "descripcion": "Administramos tu propiedad de manera eficiente, ocupándonos de todos los detalles para tu tranquilidad.",
+        "icono": "building"
+      }
+    ]
+  },
+
+  "contacto": {
+    "titulo_seccion": "Contacto",
+    "subtitulo": "¿Tenés alguna consulta?",
+    "descripcion": "Estamos para ayudarte. Contactanos por cualquiera de estos medios o completá el formulario y te responderemos a la brevedad.",
+    "telefono": {
+      "display": "+54 9 3407 402776",
+      "link": "+5493407402776"
+    },
+    "whatsapp": {
+      "numero": "5493407402776",
+      "mensaje_inicial": "Hola! Me gustaría consultar sobre propiedades"
+    },
+    "email": "bbrborrascabrucellaria@hotmail.com",
+    "direccion": "Avenida Irigoyen 920, Ramallo (Bs. As.)",
+    "horarios": {
+      "semana": "Lunes a Viernes: 9:00 - 18:00",
+      "sabado": "Sábados: 10:00 - 14:00"
+    },
+    "formulario": {
+      "titulo": "Envianos tu consulta",
+      "asunto_email": "Nueva consulta desde la web BBR",
+      "webhook_url": "https://n8n-bot-inmobiliario.onrender.com/webhook/formulario-contacto",
+      "origen": "BBR"
+    }
+  },
+
+  "redes_sociales": {
+    "instagram": "https://www.instagram.com/bbrgrupoinmob/",
+    "facebook": "https://www.facebook.com/bbrgrupoinmob",
+    "youtube": "https://www.youtube.com/channel/UCtKAQoVSE8OdHFLtY0l21lw/videos",
+    "twitter": "https://twitter.com/bbrgrupoinmob",
+    "web_comercial": "https://ramallo.descubri.ar/comercios/bbr-borrasca-brucellaria/"
+  },
+
+  "footer": {
+    "descripcion": "Tu socio de confianza en bienes raíces. Más de 5 años acompañando a familias a encontrar su hogar ideal.",
+    "desarrollado_por": {
+      "nombre": "AutomatizacionIA",
+      "link": "#"
+    }
+  },
+
+  "widget_bot": {
+    "habilitado": true,
+    "apiUrl": "https://n8n-bot-inmobiliario.onrender.com/webhook/Plan_PRO",
+    "contactUrl": "https://n8n-bot-inmobiliario.onrender.com/webhook/contact",
+    "repo": "bbr",
+    "nombre": "BBR Asistente",
+    "mensaje_bienvenida": "¡Hola! Soy el asistente virtual de BBR Grupo Inmobiliario. ¿En qué puedo ayudarte?",
+    "placeholder": "Busco una casa por menos de 100.000 USD",
+    "posicion": "bottom-right",
+    "tamaño_boton": "80px",
+    "ancho_chat": "500px",
+    "alto_chat": "600px",
+    "mostrar_badge_innovacion": true,
+    "texto_badge": "INNOVACIÓN",
+    "texto_destacado": "24/7",
+    "subtexto_destacado": "Asistente Virtual Inteligente",
+    "descripcion_destacado": "Primera inmobiliaria con IA en la zona"
+  },
+
+  "tema": {
+    "colores": {
+      "primario": "#8BB31D",
+      "primario_oscuro": "#7aa019",
+      "primario_claro": "#a5c94a",
+      "secundario": "#1e3a5f",
+      "secundario_claro": "#2d4a6f",
+      "gris_oscuro": "#2d3748",
+      "gris": "#4a5568",
+      "gris_claro": "#718096",
+      "fondo_gris": "#e8e8e8",
+      "fondo_gris_logo": "#6b7280",
+      "blanco": "#ffffff",
+      "off_white": "#f7f7f7"
+    },
+    "fuentes": {
+      "principal": "Space Grotesk",
+      "fallback": "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+      "tamaño_base": {
+        "desktop": "18px",
+        "tablet": "17px",
+        "mobile": "16px"
+      },
+      "google_fonts_url": "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+    }
+  },
+
+  "navegacion": {
+    "items": [
+      { "label": "Inicio", "href": "#inicio" },
+      { "label": "Servicios", "href": "#servicios" },
+      {
+        "label": "Ventas",
+        "submenu": [
+          { "label": "Casas", "href": "#ventas-casas" },
+          { "label": "Departamentos", "href": "#ventas-departamentos" },
+          { "label": "Lotes", "href": "#ventas-lotes" },
+          { "label": "Campos", "href": "#ventas-campos" }
+        ]
+      },
+      {
+        "label": "Alquileres",
+        "submenu": [
+          { "label": "Departamentos", "href": "#alquileres" },
+          { "label": "Locales", "href": "#alquileres" }
+        ]
+      },
+      { "label": "Quiénes Somos", "href": "#nosotros" },
+      { "label": "Contacto", "href": "#contacto" }
+    ]
+  }
+}

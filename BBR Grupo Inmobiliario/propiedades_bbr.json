@@ -2,9 +2,9 @@
   "propiedades": [
     {
       "id": "PROP-001",
-      "tipo": "Casa",
-      "operacion": "Venta",
-      "estado_construccion": "Usado",
+      "tipo": "casa",
+      "operacion": "venta",
+      "estado_construccion": "usado",
       "titulo": "Casa Venta - Ramallo",
       "direccion": {
         "calle": "Colón al 1100",
@@ -39,9 +39,9 @@
     },
     {
       "id": "PROP-002",
-      "tipo": "Casa",
-      "operacion": "Venta",
-      "estado_construccion": "Usado",
+      "tipo": "casa",
+      "operacion": "venta",
+      "estado_construccion": "usado",
       "titulo": "Casa Venta - Ramallo",
       "direccion": {
         "calle": "La Rioja al 600",
@@ -49,7 +49,7 @@
         "ciudad": "Ramallo"
       },
       "precio": {
-        "valor": 250000.0,
+        "valor": 260000.0,
         "moneda": "USD"
       },
       "descripcion": "Propiedad totalmente nueva en zona muy comercial. Cuenta con todos los servicios.",
@@ -75,9 +75,9 @@
     },
     {
       "id": "PROP-003",
-      "tipo": "Casa",
-      "operacion": "Venta",
-      "estado_construccion": "Usado",
+      "tipo": "casa",
+      "operacion": "venta",
+      "estado_construccion": "usado",
       "titulo": "Casa Venta - Ramallo",
       "direccion": {
         "calle": "Cucurrullo al 300",
@@ -111,9 +111,9 @@
     },
     {
       "id": "PROP-004",
-      "tipo": "Casa",
-      "operacion": "Venta",
-      "estado_construccion": "Usado",
+      "tipo": "casa",
+      "operacion": "venta",
+      "estado_construccion": "usado",
       "titulo": "Casa Venta - Ramallo",
       "direccion": {
         "calle": "Rafael Obligado al 400",
@@ -147,9 +147,9 @@
     },
     {
       "id": "PROP-005",
-      "tipo": "Casa",
-      "operacion": "Venta",
-      "estado_construccion": "Usado",
+      "tipo": "casa",
+      "operacion": "venta",
+      "estado_construccion": "usado",
       "titulo": "Casa Venta - Ramallo",
       "direccion": {
         "calle": "Cesar Niz al 100",
@@ -183,9 +183,9 @@
     },
     {
       "id": "PROP-006",
-      "tipo": "Casa",
-      "operacion": "Venta",
-      "estado_construccion": "Usado",
+      "tipo": "casa",
+      "operacion": "venta",
+      "estado_construccion": "usado",
       "titulo": "Casa Venta - Villa Ramallo",
       "direccion": {
         "calle": "Malvinas Argentinas al 800",
@@ -218,9 +218,9 @@
     },
     {
       "id": "PROP-007",
-      "tipo": "Casa",
-      "operacion": "Venta",
-      "estado_construccion": "Usado",
+      "tipo": "casa",
+      "operacion": "venta",
+      "estado_construccion": "usado",
       "titulo": "Casa Venta - Ramallo",
       "direccion": {
         "calle": "Colón al 1100",
@@ -254,9 +254,9 @@
     },
     {
       "id": "PROP-008",
-      "tipo": "Casa",
-      "operacion": "Venta",
-      "estado_construccion": "Semi construida",
+      "tipo": "casa",
+      "operacion": "venta",
+      "estado_construccion": "semi construida",
       "titulo": "Casa Venta - Ramallo",
       "direccion": {
         "calle": "Roque S. Peña al 700",
@@ -290,9 +290,9 @@
     },
     {
       "id": "PROP-009",
-      "tipo": "Casa",
-      "operacion": "Venta",
-      "estado_construccion": "Usado",
+      "tipo": "casa",
+      "operacion": "venta",
+      "estado_construccion": "usado",
       "titulo": "Casa Venta - Ramallo",
       "direccion": {
         "calle": "Colón al 1000",
@@ -324,9 +324,9 @@
     },
     {
       "id": "PROP-010",
-      "tipo": "Casa",
-      "operacion": "Venta",
-      "estado_construccion": "Usado",
+      "tipo": "casa",
+      "operacion": "venta",
+      "estado_construccion": "usado",
       "titulo": "Casa Venta - Ramallo",
       "direccion": {
         "calle": "San Francisco Javier al 000",
@@ -360,9 +360,9 @@
     },
     {
       "id": "PROP-011",
-      "tipo": "Casa",
-      "operacion": "Venta",
-      "estado_construccion": "Semi construida",
+      "tipo": "casa",
+      "operacion": "venta",
+      "estado_construccion": "semi construida",
       "titulo": "Casa Venta - Ramallo",
       "direccion": {
         "calle": "San Francisco Javier 2400",
@@ -394,9 +394,9 @@
     },
     {
       "id": "PROP-012",
-      "tipo": "Casa",
-      "operacion": "Venta",
-      "estado_construccion": "Usado",
+      "tipo": "casa",
+      "operacion": "venta",
+      "estado_construccion": "usado",
       "titulo": "Casa Venta - Ramallo",
       "direccion": {
         "calle": "Av. Mitre al 1300",
@@ -432,9 +432,9 @@
     },
     {
       "id": "PROP-013",
-      "tipo": "Casa",
-      "operacion": "Venta",
-      "estado_construccion": "Usado",
+      "tipo": "casa",
+      "operacion": "venta",
+      "estado_construccion": "usado",
       "titulo": "Venta - El Paraiso",
       "direccion": {
         "calle": "Martinez de Hoz esquina Felipe Olmedo",
@@ -467,9 +467,9 @@
     },
     {
       "id": "PROP-014",
-      "tipo": "Casa",
-      "operacion": "Venta",
-      "estado_construccion": "Usado",
+      "tipo": "casa",
+      "operacion": "venta",
+      "estado_construccion": "usado",
       "titulo": "Casa Venta - Ramallo",
       "direccion": {
         "calle": "Dr. Cucurullo al 400",
@@ -503,9 +503,9 @@
     },
     {
       "id": "PROP-015",
-      "tipo": "Casa",
-      "operacion": "Venta",
-      "estado_construccion": "Usado",
+      "tipo": "casa",
+      "operacion": "venta",
+      "estado_construccion": "usado",
       "titulo": "Casa Venta - Ramallo",
       "direccion": {
         "calle": "Av. Moreno al 0",
@@ -537,9 +537,9 @@
     },
     {
       "id": "PROP-016",
-      "tipo": "Casa",
-      "operacion": "Venta",
-      "estado_construccion": "Usado",
+      "tipo": "casa",
+      "operacion": "venta",
+      "estado_construccion": "usado",
       "titulo": "Casa Venta - Villa Ramallo",
       "direccion": {
         "calle": "Traverso al 200",
@@ -573,9 +573,9 @@
     },
     {
       "id": "PROP-017",
-      "tipo": "Casa",
-      "operacion": "Venta",
-      "estado_construccion": "Usado",
+      "tipo": "casa",
+      "operacion": "venta",
+      "estado_construccion": "usado",
       "titulo": "Casa Venta - Ramallo",
       "direccion": {
         "calle": "San Francisco Javier al 100",
@@ -607,9 +607,9 @@
     },
     {
       "id": "PROP-018",
-      "tipo": "Casa",
-      "operacion": "Venta",
-      "estado_construccion": "Usado",
+      "tipo": "casa",
+      "operacion": "venta",
+      "estado_construccion": "usado",
       "titulo": "Casa Venta - Ramallo",
       "direccion": {
         "calle": "Rafael Obligado al 2300",
@@ -643,9 +643,9 @@
     },
     {
       "id": "PROP-019",
-      "tipo": "Casa",
-      "operacion": "Venta",
-      "estado_construccion": "Usado",
+      "tipo": "casa",
+      "operacion": "venta",
+      "estado_construccion": "usado",
       "titulo": "Casa Venta - Ramallo",
       "direccion": {
         "calle": "Av. B. Mitre al 200",
@@ -679,9 +679,9 @@
     },
     {
       "id": "PROP-020",
-      "tipo": "Casa",
-      "operacion": "Venta",
-      "estado_construccion": "Usado",
+      "tipo": "casa",
+      "operacion": "venta",
+      "estado_construccion": "usado",
       "titulo": "Casa Venta - Ramallo",
       "direccion": {
         "calle": "Buenos Aires al 300",
@@ -714,9 +714,9 @@
     },
     {
       "id": "PROP-021",
-      "tipo": "Casa",
-      "operacion": "Venta",
-      "estado_construccion": "Usado",
+      "tipo": "casa",
+      "operacion": "venta",
+      "estado_construccion": "usado",
       "titulo": "Casa Venta - Ramallo",
       "direccion": {
         "calle": "Juan B. Justo al 900",
@@ -749,9 +749,9 @@
     },
     {
       "id": "PROP-022",
-      "tipo": "Casa",
-      "operacion": "Venta",
-      "estado_construccion": "Usado",
+      "tipo": "casa",
+      "operacion": "venta",
+      "estado_construccion": "usado",
       "titulo": "Casa Venta - Ramallo",
       "direccion": {
         "calle": "Salta al 600",
@@ -784,9 +784,9 @@
     },
     {
       "id": "PROP-023",
-      "tipo": "Casa",
-      "operacion": "Venta",
-      "estado_construccion": "Usado",
+      "tipo": "casa",
+      "operacion": "venta",
+      "estado_construccion": "usado",
       "titulo": "Casa Venta - Ramallo",
       "direccion": {
         "calle": "Jujuy al 500",
@@ -821,9 +821,9 @@
     },
     {
       "id": "PROP-024",
-      "tipo": "Casa",
-      "operacion": "Venta",
-      "estado_construccion": "Usado",
+      "tipo": "casa",
+      "operacion": "venta",
+      "estado_construccion": "usado",
       "titulo": "Casa Venta - Ramallo",
       "direccion": {
         "calle": "Colon al 1600",
@@ -855,9 +855,9 @@
     },
     {
       "id": "PROP-025",
-      "tipo": "Casa",
-      "operacion": "Venta",
-      "estado_construccion": "Usado",
+      "tipo": "casa",
+      "operacion": "venta",
+      "estado_construccion": "usado",
       "titulo": "Casa Venta - Ramallo",
       "direccion": {
         "calle": "Cordoba al 100",
@@ -891,9 +891,9 @@
     },
     {
       "id": "PROP-026",
-      "tipo": "Departamento",
-      "operacion": "Venta",
-      "estado_construccion": "Usado",
+      "tipo": "departamento",
+      "operacion": "venta",
+      "estado_construccion": "usado",
       "titulo": "Departamento Venta - Villa Ramallo",
       "direccion": {
         "calle": "Av. San Martín y Clark",
@@ -928,9 +928,9 @@
     },
     {
       "id": "PROP-027",
-      "tipo": "Departamento",
-      "operacion": "Alquiler",
-      "estado_construccion": "Usado",
+      "tipo": "departamento",
+      "operacion": "alquiler",
+      "estado_construccion": "usado",
       "titulo": "Departamento Alquiler - Ramallo",
       "direccion": {
         "calle": "J. B. Justo al 1500",
@@ -960,9 +960,9 @@
     },
     {
       "id": "PROP-028",
-      "tipo": "Terreno",
-      "operacion": "Venta",
-      "estado_construccion": "Usado",
+      "tipo": "terreno",
+      "operacion": "venta",
+      "estado_construccion": "usado",
       "titulo": "Terreno Venta - Ramallo",
       "direccion": {
         "calle": "Av. Mitre al 200 esq. Soldado Argentino",
@@ -988,9 +988,9 @@
     },
     {
       "id": "PROP-029",
-      "tipo": "Terreno",
-      "operacion": "Venta",
-      "estado_construccion": "Usado",
+      "tipo": "terreno",
+      "operacion": "venta",
+      "estado_construccion": "usado",
       "titulo": "Terreno Venta - Villa Ramallo",
       "direccion": {
         "calle": "20 de Junio al 700",
@@ -1016,9 +1016,9 @@
     },
     {
       "id": "PROP-030",
-      "tipo": "Terreno",
-      "operacion": "Venta",
-      "estado_construccion": "Usado",
+      "tipo": "terreno",
+      "operacion": "venta",
+      "estado_construccion": "usado",
       "titulo": "Terreno Venta - El Paraiso",
       "direccion": {
         "calle": "Soto y Calvo y F. Olmedo",
@@ -1043,9 +1043,9 @@
     },
     {
       "id": "PROP-031",
-      "tipo": "Campo",
-      "operacion": "Venta",
-      "estado_construccion": "Usado",
+      "tipo": "campo",
+      "operacion": "venta",
+      "estado_construccion": "usado",
       "titulo": "Campo Venta - Pergamino",
       "direccion": {
         "calle": "Zona rural, Pergamino.",
@@ -1071,9 +1071,9 @@
     },
     {
       "id": "PROP-032",
-      "tipo": "Campo",
-      "operacion": "Venta",
-      "estado_construccion": "Usado",
+      "tipo": "campo",
+      "operacion": "venta",
+      "estado_construccion": "usado",
       "titulo": "Campo Venta - Ramallo",
       "direccion": {
         "calle": "Zona rural, Ramallo",
@@ -1099,9 +1099,9 @@
     },
     {
       "id": "PROP-033",
-      "tipo": "Campo",
-      "operacion": "Venta",
-      "estado_construccion": "Usado",
+      "tipo": "campo",
+      "operacion": "venta",
+      "estado_construccion": "usado",
       "titulo": "Campo Venta - Paraiso",
       "direccion": {
         "calle": "Zona rural, El Paraiso",
@@ -1127,9 +1127,9 @@
     },
     {
       "id": "PROP-034",
-      "tipo": "Local Comercial",
-      "operacion": "Alquiler",
-      "estado_construccion": "Usado",
+      "tipo": "local comercial",
+      "operacion": "alquiler",
+      "estado_construccion": "usado",
       "titulo": "Local Comercial Alquiler - Ramallo",
       "direccion": {
         "calle": "Salta al 900",

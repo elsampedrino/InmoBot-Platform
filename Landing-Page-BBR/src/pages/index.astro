@@ -1,0 +1,34 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import Servicios from '../components/Servicios.astro';
+import QuienesSomos from '../components/QuienesSomos.astro';
+import Propiedades from '../components/Propiedades.astro';
+import VentasDepartamentos from '../components/VentasDepartamentos.astro';
+import VentasCasas from '../components/VentasCasas.astro';
+import VentasLotes from '../components/VentasLotes.astro';
+import VentasCampos from '../components/VentasCampos.astro';
+import Alquileres from '../components/Alquileres.astro';
+import Contacto from '../components/Contacto.astro';
+import Footer from '../components/Footer.astro';
+import FloatingButtons from '../components/FloatingButtons.astro';
+---
+
+<Layout title="Inicio" description="BBR Grupo Inmobiliario - Tu socio de confianza en bienes raíces. Compra, venta y alquiler de propiedades.">
+  <Header />
+  <main>
+    <Hero />
+    <Servicios />
+    <Propiedades />
+    <VentasCasas />
+    <VentasDepartamentos />
+    <VentasLotes />
+    <VentasCampos />
+    <Alquileres />
+    <QuienesSomos />
+    <Contacto />
+  </main>
+  <Footer />
+  <FloatingButtons />
+</Layout>

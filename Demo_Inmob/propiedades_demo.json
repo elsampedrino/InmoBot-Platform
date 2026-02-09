@@ -32,27 +32,25 @@
       "tipo": "departamento",
       "operacion": "alquiler",
       "estado_construccion": "usado",
-      "titulo": "Depto 2 ambientes luminoso en Palermo Soho",
+      "titulo": "Depto 2 ambientes luminoso en Padua",
       "direccion": {
-        "calle": "Gorriti 4532, Piso 3° B",
-        "barrio": "Palermo Soho",
-        "ciudad": "CABA",
-        "cp": "C1414"
+        "calle": "Noguera 532, Piso 3° B",
+        "barrio": "San Antonio de Padua",
+        "ciudad": "San Antonio de Padua",
+        "cp": "C1718"
       },
       "precio": {
-        "valor": 950,
-        "moneda": "USD",
+        "valor": 500000,
+        "moneda": "ARS",
         "expensas": 85000
       },
-      "descripcion": "Hermoso departamento de 2 ambientes en el corazón de Palermo Soho. Living-comedor integrado con cocina equipada, dormitorio amplio con placard, baño completo con bañera. Muy luminoso con balcón al frente. Ubicación privilegiada a metros de Plaza Serrano, rodeado de bares, restaurantes y tiendas de diseño.",
+      "descripcion": "Hermoso departamento de 2 ambientes cerca de la estacion. Living-comedor integrado con cocina equipada, dormitorio amplio con placard, baño completo con bañera. Muy luminoso con balcón al frente.",
       "fotos": {
         "carpeta": "fotos_demo/depto-palermo-001",
         "urls": [
           "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420197/fotos_demo/depto-palermo-001/foto01.jpg",
           "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420198/fotos_demo/depto-palermo-001/foto02.jpg",
-          "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420199/fotos_demo/depto-palermo-001/foto03.jpg",
-          "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420199/fotos_demo/depto-palermo-001/foto04.jpg",
-          "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420200/fotos_demo/depto-palermo-001/foto05.jpg"
+          "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420199/fotos_demo/depto-palermo-001/foto03.jpg"
         ]
       },
       "caracteristicas": {
@@ -72,38 +70,36 @@
       "tipo": "casa",
       "operacion": "venta",
       "estado_construccion": "a estrenar",
-      "titulo": "Casa 4 ambientes con jardín y parrilla en Villa Urquiza",
+      "titulo": "Casa 4 ambientes con jardín y parrilla Padua",
       "direccion": {
-        "calle": "Bauness 2145",
-        "barrio": "Villa Urquiza",
-        "ciudad": "CABA",
-        "cp": "C1431"
+        "calle": "Escalabrini Ortiz 145",
+        "barrio": "San Antonio de Padua",
+        "ciudad": "San Antonio de Padua",
+        "cp": "C1718"
       },
       "precio": {
-        "valor": 295000,
+        "valor": 215000,
         "moneda": "USD"
       },
-      "descripcion": "Hermosa casa reciclada hace solo 5 años en excelente estado. Planta Baja: Living-comedor amplio con salida al jardín, cocina moderna integrada, toilette y lavadero. Primer Piso: 3 dormitorios (principal en suite con vestidor), baño completo y terraza con parrilla. Su ubicación en Villa Urquiza es inmejorable, rodeado de colegios, restaurantes y comercios. Excelente conectividad.",
+      "descripcion": "Hermosa casa reciclada hace solo 5 años en excelente estado. Planta Baja: Living-comedor amplio con salida al jardín, cocina moderna integrada, toilette y lavadero. Primer Piso: 3 dormitorios (principal en suite con vestidor), baño completo y terraza con parrilla. Su ubicación es inmejorable, cerca de colegio, plaza y comercios. Excelente conectividad.",
       "fotos": {
         "carpeta": "fotos_demo/casa-villa-urquiza-002",
         "urls": [
           "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420190/fotos_demo/casa-villa-urquiza-002/foto01.jpg",
           "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420190/fotos_demo/casa-villa-urquiza-002/foto02.jpg",
-          "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420191/fotos_demo/casa-villa-urquiza-002/foto03.jpg",
-          "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420191/fotos_demo/casa-villa-urquiza-002/foto04.jpg",
-          "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420192/fotos_demo/casa-villa-urquiza-002/foto05.jpg"
+          "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420191/fotos_demo/casa-villa-urquiza-002/foto03.jpg"        
         ]
       },
       "caracteristicas": {
         "ambientes": 4,
         "dormitorios": 3,
-        "superficie_total": "180 m²",
+        "superficie_total": "300 m²",
         "superficie_cubierta": "120 m²",
         "banios": 2
       },
       "detalles": [
         "cochera",
-        "acepta_mascotas"
+        "jardin"
       ]
     },
     {
@@ -111,19 +107,19 @@
       "tipo": "local comercial",
       "operacion": "alquiler",
       "estado_construccion": "usado",
-      "titulo": "Local comercial 60m² en Microcentro - Zona financiera",
+      "titulo": "Local comercial 60m² en Libertador",
       "direccion": {
-        "calle": "San Martín 240",
-        "barrio": "Microcentro",
-        "ciudad": "CABA",
-        "cp": "C1004"
+        "calle": "Av. del Libertador 240",
+        "barrio": "Merlo",
+        "ciudad": "Merlo",
+        "cp": "C1718"
       },
       "precio": {
-        "valor": 1200,
-        "moneda": "USD",
+        "valor": 1000000,
+        "moneda": "ARS",
         "expensas": 45000
       },
-      "descripcion": "Excelente local comercial en pleno Microcentro financiero. 60m² en planta baja con amplia vidriera a la calle. Baño completo y depósito. Aire acondicionado frío/calor. Ideal para oficina, comercio minorista, o showroom. Ubicación estratégica a pasos del Obelisco y principales líneas de subte y colectivos.",
+      "descripcion": "Excelente local comercial en plena Libertador. 60m² con amplia vidriera a la calle. Baño completo y depósito. Aire acondicionado frío/calor. Ideal para oficina, comercio minorista, o showroom. Ubicación estratégica a 2 cuadras de la estación.",
       "fotos": {
         "carpeta": "fotos_demo/local-microcentro-003",
         "urls": [
@@ -146,27 +142,25 @@
       "tipo": "departamento",
       "operacion": "alquiler",
       "estado_construccion": "usado",
-      "titulo": "Depto 3 ambientes con cochera en Belgrano R",
+      "titulo": "Depto 3 ambientes con cochera",
       "direccion": {
-        "calle": "Juramento 2850, Piso 5° A",
-        "barrio": "Belgrano R",
-        "ciudad": "CABA",
-        "cp": "C1428"
+        "calle": "Juncal 650, Piso 5° A",
+        "barrio": "Merlo",
+        "ciudad": "Merlo",
+        "cp": "C1718"
       },
       "precio": {
-        "valor": 1350,
-        "moneda": "USD",
+        "valor": 850000,
+        "moneda": "ARS",
         "expensas": 120000
       },
-      "descripcion": "Amplio departamento de 3 ambientes en Belgrano R. Living-comedor con balcón corrido, cocina equipada completa, 2 dormitorios con placards (principal en suite), baño completo. Incluye cochera cubierta y baulera. Excelente ubicación cerca de Cabildo, colegios y transporte. Semi-amoblado (cocina equipada, placards empotrados).",
+      "descripcion": "Amplio departamento de 3 ambientes en Belgrano R. Living-comedor con balcón corrido, cocina equipada completa, 2 dormitorios con placards (principal en suite), baño completo. Incluye cochera cubierta y baulera. Semi-amoblado (cocina equipada, placards empotrados).",
       "fotos": {
         "carpeta": "fotos_demo/depto-belgrano-004",
         "urls": [
           "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420193/fotos_demo/depto-belgrano-004/foto01.jpg",
           "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420194/fotos_demo/depto-belgrano-004/foto02.jpg",
-          "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420195/fotos_demo/depto-belgrano-004/foto03.jpg",
-          "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420196/fotos_demo/depto-belgrano-004/foto04.jpg",
-          "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420197/fotos_demo/depto-belgrano-004/foto05.jpg"
+          "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420195/fotos_demo/depto-belgrano-004/foto03.jpg"
         ]
       },
       "caracteristicas": {

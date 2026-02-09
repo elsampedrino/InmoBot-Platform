@@ -1,0 +1,358 @@
+---
+// Contacto component - Dinámico desde configuración
+import { getContacto, getRedesSociales, getTelefonoUrl, getEmailUrl } from '../lib/config';
+
+const contacto = getContacto();
+const redes = getRedesSociales();
+---
+
+<section id="contacto" class="py-20 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+      <!-- Contact Info -->
+      <div>
+        <span class="section-label text-bbr-green font-light text-lg uppercase tracking-wider">
+          {contacto.titulo_seccion}
+        </span>
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-bbr-blue mt-4 mb-6">
+          {contacto.subtitulo}
+        </h2>
+        <p class="text-lg text-bbr-gray mb-8">
+          {contacto.descripcion}
+        </p>
+
+        <!-- Contact Details -->
+        <div class="space-y-6">
+          <a href={getTelefonoUrl()} class="contact-item group">
+            <div class="contact-icon-box group-hover:bg-bbr-green">
+              <svg class="w-6 h-6 text-bbr-green group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="font-semibold text-bbr-blue">Teléfono</p>
+              <p>{contacto.telefono.display}</p>
+            </div>
+          </a>
+
+          <a href={getEmailUrl()} class="contact-item group">
+            <div class="contact-icon-box group-hover:bg-bbr-green">
+              <svg class="w-6 h-6 text-bbr-green group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="font-semibold text-bbr-blue">Email</p>
+              <p class="text-sm">{contacto.email}</p>
+            </div>
+          </a>
+
+          <div class="contact-item">
+            <div class="contact-icon-box">
+              <svg class="w-6 h-6 text-bbr-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="font-semibold text-bbr-blue">Dirección</p>
+              <p>{contacto.direccion}</p>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <div class="contact-icon-box">
+              <svg class="w-6 h-6 text-bbr-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="font-semibold text-bbr-blue">Horarios</p>
+              <p>{contacto.horarios.semana}</p>
+              <p>{contacto.horarios.sabado}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Social Media -->
+        <div class="mt-8 pt-8 border-t border-gray-200">
+          <p class="font-semibold text-bbr-blue mb-4">Seguinos en redes</p>
+          <div class="flex gap-4">
+            {redes.instagram && (
+              <a href={redes.instagram} target="_blank" rel="noopener" class="social-btn" title="Instagram">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                </svg>
+              </a>
+            )}
+            {redes.facebook && (
+              <a href={redes.facebook} target="_blank" rel="noopener" class="social-btn" title="Facebook">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                </svg>
+              </a>
+            )}
+            {redes.youtube && (
+              <a href={redes.youtube} target="_blank" rel="noopener" class="social-btn" title="YouTube">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                </svg>
+              </a>
+            )}
+            {redes.twitter && (
+              <a href={redes.twitter} target="_blank" rel="noopener" class="social-btn" title="X (Twitter)">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                </svg>
+              </a>
+            )}
+            {redes.web_comercial && (
+              <a href={redes.web_comercial} target="_blank" rel="noopener" class="social-btn" title="Página Comercial">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+                </svg>
+              </a>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <div class="bg-bbr-off-white rounded-2xl p-8 lg:p-10">
+        <h3 class="text-2xl font-bold text-bbr-blue mb-6">{contacto.formulario.titulo}</h3>
+        <form
+          id="contact-form"
+          class="space-y-6"
+          data-webhook-url={contacto.formulario.webhook_url}
+          data-origen={contacto.formulario.origen}
+        >
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div>
+              <label for="nombre" class="block text-sm font-medium text-bbr-gray-dark mb-2">
+                Nombre completo *
+              </label>
+              <input
+                type="text"
+                id="nombre"
+                name="nombre"
+                required
+                class="form-input"
+                placeholder="Tu nombre"
+              />
+            </div>
+            <div>
+              <label for="email" class="block text-sm font-medium text-bbr-gray-dark mb-2">
+                Email *
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                class="form-input"
+                placeholder="tu@email.com"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label for="telefono" class="block text-sm font-medium text-bbr-gray-dark mb-2">
+              Teléfono
+            </label>
+            <input
+              type="tel"
+              id="telefono"
+              name="telefono"
+              class="form-input"
+              placeholder="+54 9 11 1234-5678"
+            />
+          </div>
+
+          <div>
+            <label for="asunto" class="block text-sm font-medium text-bbr-gray-dark mb-2">
+              Asunto
+            </label>
+            <select
+              id="asunto"
+              name="asunto"
+              class="form-input bg-white"
+            >
+              <option value="">Seleccioná una opción</option>
+              <option value="compra">Quiero comprar una propiedad</option>
+              <option value="venta">Quiero vender mi propiedad</option>
+              <option value="alquiler">Quiero alquilar</option>
+              <option value="tasacion">Necesito una tasación</option>
+              <option value="otro">Otro</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="mensaje" class="block text-sm font-medium text-bbr-gray-dark mb-2">
+              Mensaje *
+            </label>
+            <textarea
+              id="mensaje"
+              name="mensaje"
+              rows="4"
+              required
+              class="form-input resize-none"
+              placeholder="Contanos en qué podemos ayudarte..."
+            ></textarea>
+          </div>
+
+          <button
+            type="submit"
+            id="submit-btn"
+            class="submit-btn"
+          >
+            <span id="btn-text">Enviar mensaje</span>
+            <svg id="btn-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+            </svg>
+          </button>
+
+          <!-- Mensaje de éxito/error -->
+          <div id="form-message" class="hidden text-center py-3 px-4 rounded-xl font-medium"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement;
+  const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+  const btnText = document.getElementById('btn-text') as HTMLSpanElement;
+  const btnIcon = document.getElementById('btn-icon') as SVGElement;
+  const formMessage = document.getElementById('form-message') as HTMLDivElement;
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const webhookUrl = form.dataset.webhookUrl;
+    const origen = form.dataset.origen;
+
+    if (!webhookUrl) return;
+
+    // Deshabilitar botón mientras envía
+    submitBtn.disabled = true;
+    btnText.textContent = 'Enviando...';
+    btnIcon.style.display = 'none';
+    formMessage.classList.add('hidden');
+
+    const formData = new FormData(form);
+    const data: Record<string, string> = { origen: origen || 'desconocido' };
+    formData.forEach((value, key) => { data[key] = value as string; });
+    data.timestamp = new Date().toISOString();
+
+    try {
+      const response = await fetch(webhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      if (response.ok) {
+        formMessage.textContent = '¡Mensaje enviado! Te contactaremos a la brevedad.';
+        formMessage.className = 'text-center py-3 px-4 rounded-xl font-medium bg-green-100 text-green-700';
+        form.reset();
+      } else {
+        throw new Error('Error en el envío');
+      }
+    } catch (error) {
+      formMessage.textContent = 'Hubo un error al enviar. Intentá de nuevo o contactanos por WhatsApp.';
+      formMessage.className = 'text-center py-3 px-4 rounded-xl font-medium bg-red-100 text-red-700';
+    } finally {
+      submitBtn.disabled = false;
+      btnText.textContent = 'Enviar mensaje';
+      btnIcon.style.display = '';
+    }
+  });
+</script>
+
+<style is:global>
+  /* Contact items */
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: var(--color-bbr-gray);
+    transition: color 0.2s;
+  }
+
+  a.contact-item:hover {
+    color: var(--color-bbr-green);
+  }
+
+  .contact-icon-box {
+    width: 3.5rem;
+    height: 3.5rem;
+    background-color: rgba(139, 179, 29, 0.1);
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+  }
+
+  .group:hover .contact-icon-box.group-hover\:bg-bbr-green {
+    background-color: var(--color-bbr-green);
+  }
+
+  .group:hover .group-hover\:text-white {
+    color: white;
+  }
+
+  /* Social buttons */
+  .social-btn {
+    width: 3rem;
+    height: 3rem;
+    background-color: var(--color-bbr-blue);
+    color: white;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+  }
+
+  .social-btn:hover {
+    background-color: var(--color-bbr-green);
+  }
+
+  /* Form inputs */
+  .form-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+    border: 1px solid #e5e7eb;
+    outline: none;
+    transition: all 0.2s;
+  }
+
+  .form-input:focus {
+    border-color: var(--color-bbr-green);
+    box-shadow: 0 0 0 3px rgba(139, 179, 29, 0.2);
+  }
+
+  /* Submit button */
+  .submit-btn {
+    width: 100%;
+    background-color: var(--color-bbr-green);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s;
+  }
+
+  .submit-btn:hover {
+    background-color: var(--color-bbr-green-dark);
+    transform: scale(1.02);
+  }
+</style>

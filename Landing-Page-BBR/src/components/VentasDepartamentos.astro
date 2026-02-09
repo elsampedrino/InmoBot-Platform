@@ -1,0 +1,463 @@
+---
+// VentasDepartamentos component - BBR Grupo Inmobiliario
+// Departamentos en Venta - Datos cargados desde GitHub JSON centralizado
+import { getDepartamentosVenta } from '../lib/propiedades';
+
+const departamentosVenta = await getDepartamentosVenta();
+
+// Función para formatear precio
+const formatPrecio = (precio: {valor: number, moneda: string}) => {
+  return `${precio.moneda} ${precio.valor.toLocaleString('es-AR')}`;
+};
+
+// Función para capitalizar detalles
+const capitalizar = (texto: string) => {
+  return texto.charAt(0).toUpperCase() + texto.slice(1);
+};
+---
+
+<section id="ventas-departamentos" class="py-20 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Section Header -->
+    <div class="mb-16">
+      <span class="section-label text-bbr-green font-light text-lg uppercase tracking-wider">
+        Ventas
+      </span>
+      <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-bbr-blue mt-4 mb-6">
+        Departamentos en Venta
+      </h2>
+      <p class="text-lg text-bbr-gray max-w-2xl">
+        Encontrá el departamento ideal en las mejores ubicaciones de la zona.
+      </p>
+    </div>
+
+    <!-- Properties Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {departamentosVenta.map((propiedad) => (
+        <article class="property-card group" data-property-id={propiedad.id}>
+          <!-- Image Container -->
+          <div class="relative aspect-[4/3] overflow-hidden">
+            <img
+              src={propiedad.fotos[0]}
+              alt={propiedad.titulo}
+              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+            />
+            <!-- Badge -->
+            <span class="property-badge badge-venta">
+              Venta
+            </span>
+            <!-- Price -->
+            <div class="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm px-4 py-2 rounded-lg">
+              <span class="text-lg font-bold text-bbr-blue">{formatPrecio(propiedad.precio)}</span>
+            </div>
+          </div>
+
+          <!-- Content -->
+          <div class="p-6">
+            <h3 class="property-title">
+              {propiedad.titulo}
+            </h3>
+            <p class="text-bbr-gray flex items-center gap-2 mb-4">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+              </svg>
+              {propiedad.direccion.calle}, {propiedad.direccion.ciudad}
+            </p>
+
+            <!-- Features -->
+            <div class="flex items-center gap-4 pt-4 border-t border-gray-100">
+              {propiedad.caracteristicas.ambientes && (
+                <div class="flex items-center gap-1 text-sm text-bbr-gray">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                  </svg>
+                  <span>{propiedad.caracteristicas.ambientes} amb.</span>
+                </div>
+              )}
+              {propiedad.caracteristicas.dormitorios && (
+                <div class="flex items-center gap-1 text-sm text-bbr-gray">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v11a1 1 0 001 1h16a1 1 0 001-1V7M3 7l9-4 9 4M12 22V11"/>
+                  </svg>
+                  <span>{propiedad.caracteristicas.dormitorios} dorm.</span>
+                </div>
+              )}
+              <div class="flex items-center gap-1 text-sm text-bbr-gray">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
+                </svg>
+                <span>{propiedad.caracteristicas.superficie_total}</span>
+              </div>
+              <button
+                class="property-link ver-detalle-btn"
+                data-property={JSON.stringify(propiedad)}
+              >
+                <span>Ver más</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <!-- Mensaje si no hay propiedades -->
+    {departamentosVenta.length === 0 && (
+      <div class="text-center py-12">
+        <p class="text-bbr-gray text-lg">No hay departamentos en venta disponibles en este momento.</p>
+      </div>
+    )}
+  </div>
+</section>
+
+<!-- Modal de detalle de propiedad -->
+<div id="property-modal" class="property-modal">
+  <div class="property-modal-overlay"></div>
+  <div class="property-modal-content">
+    <button class="property-modal-close">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+    </button>
+
+    <div class="property-modal-body">
+      <!-- Galería de fotos -->
+      <div class="property-modal-gallery">
+        <div class="property-modal-main-image">
+          <img id="modal-main-image" src="" alt="Propiedad" />
+        </div>
+        <div id="modal-thumbnails" class="property-modal-thumbnails">
+          <!-- Thumbnails se generan dinámicamente -->
+        </div>
+      </div>
+
+      <!-- Info de la propiedad -->
+      <div class="property-modal-info">
+        <div class="property-modal-badge badge-venta">Venta</div>
+        <h2 id="modal-titulo" class="text-2xl font-bold text-bbr-blue mb-2"></h2>
+        <p id="modal-direccion" class="text-bbr-gray flex items-center gap-2 mb-4">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+          </svg>
+          <span></span>
+        </p>
+
+        <div id="modal-precio" class="text-3xl font-bold text-bbr-green mb-6"></div>
+
+        <p id="modal-descripcion" class="text-bbr-gray mb-6"></p>
+
+        <!-- Características -->
+        <div class="mb-6">
+          <h3 class="font-semibold text-bbr-blue mb-3">Características</h3>
+          <div id="modal-caracteristicas" class="grid grid-cols-2 gap-3">
+            <!-- Se genera dinámicamente -->
+          </div>
+        </div>
+
+        <!-- Detalles/Amenities -->
+        <div id="modal-detalles-container" class="mb-6">
+          <h3 class="font-semibold text-bbr-blue mb-3">Detalles</h3>
+          <div id="modal-detalles" class="flex flex-wrap gap-2">
+            <!-- Se genera dinámicamente -->
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <a href="#contacto" class="btn-consultar" onclick="document.getElementById('property-modal').classList.remove('active')">
+          Consultar por esta propiedad
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Modal styles */
+  .property-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .property-modal.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .property-modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+  }
+
+  .property-modal-content {
+    position: relative;
+    background: white;
+    border-radius: 1rem;
+    max-width: 1000px;
+    width: calc(100% - 2rem);
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+    transform: scale(0.9) translateY(20px);
+    transition: transform 0.3s ease;
+  }
+
+  .property-modal.active .property-modal-content {
+    transform: scale(1) translateY(0);
+  }
+
+  .property-modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 10;
+    background: white;
+    border-radius: 50%;
+    padding: 0.5rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s;
+  }
+
+  .property-modal-close:hover {
+    background: #f3f4f6;
+    transform: scale(1.1);
+  }
+
+  .property-modal-body {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 768px) {
+    .property-modal-body {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  /* Gallery */
+  .property-modal-gallery {
+    background: #f3f4f6;
+    padding: 1rem;
+  }
+
+  .property-modal-main-image {
+    aspect-ratio: 4/3;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    margin-bottom: 0.75rem;
+  }
+
+  .property-modal-main-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .property-modal-thumbnails {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+  }
+
+  .property-modal-thumbnail {
+    aspect-ratio: 4/3;
+    border-radius: 0.375rem;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.2s;
+  }
+
+  .property-modal-thumbnail:hover,
+  .property-modal-thumbnail.active {
+    border-color: #8BB31D;
+  }
+
+  .property-modal-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Info */
+  .property-modal-info {
+    padding: 1.5rem;
+  }
+
+  .property-modal-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 0.75rem;
+  }
+
+  .caracteristica-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    background: #f9fafb;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    color: #4b5563;
+  }
+
+  .caracteristica-item svg {
+    width: 20px !important;
+    height: 20px !important;
+    min-width: 20px;
+    flex-shrink: 0;
+    color: #8BB31D;
+  }
+
+  .detalle-tag {
+    display: inline-block;
+    padding: 0.375rem 0.75rem;
+    background: #e5f3d3;
+    color: #5d7a10;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  .btn-consultar {
+    display: block;
+    width: 100%;
+    text-align: center;
+    background-color: #8BB31D;
+    color: white;
+    padding: 0.875rem 1.5rem;
+    border-radius: 9999px;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+  }
+
+  .btn-consultar:hover {
+    background-color: #7aa019;
+    box-shadow: 0 8px 20px rgba(139, 179, 29, 0.4);
+    transform: translateY(-2px);
+  }
+</style>
+
+<script>
+  // Modal functionality
+  document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('property-modal');
+    const overlay = modal?.querySelector('.property-modal-overlay');
+    const closeBtn = modal?.querySelector('.property-modal-close');
+    const verDetalleBtns = document.querySelectorAll('.ver-detalle-btn');
+
+    // Abrir modal
+    verDetalleBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const propertyData = JSON.parse((btn as HTMLElement).dataset.property || '{}');
+        openModal(propertyData);
+      });
+    });
+
+    // Cerrar modal
+    closeBtn?.addEventListener('click', () => closeModal());
+    overlay?.addEventListener('click', () => closeModal());
+
+    // Cerrar con ESC
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal?.classList.contains('active')) {
+        closeModal();
+      }
+    });
+
+    function openModal(property: any) {
+      if (!modal) return;
+
+      // Título y dirección
+      const tituloEl = document.getElementById('modal-titulo');
+      const direccionEl = document.getElementById('modal-direccion')?.querySelector('span');
+      if (tituloEl) tituloEl.textContent = property.titulo;
+      if (direccionEl) direccionEl.textContent = `${property.direccion.calle}, ${property.direccion.ciudad}`;
+
+      // Precio
+      const precioEl = document.getElementById('modal-precio');
+      if (precioEl) precioEl.textContent = `${property.precio.moneda} ${property.precio.valor.toLocaleString('es-AR')}`;
+
+      // Descripción
+      const descEl = document.getElementById('modal-descripcion');
+      if (descEl) descEl.textContent = property.descripcion;
+
+      // Imagen principal
+      const mainImage = document.getElementById('modal-main-image') as HTMLImageElement;
+      if (mainImage) mainImage.src = property.fotos[0];
+
+      // Thumbnails
+      const thumbsContainer = document.getElementById('modal-thumbnails');
+      if (thumbsContainer) {
+        thumbsContainer.innerHTML = property.fotos.map((foto: string, index: number) => `
+          <div class="property-modal-thumbnail ${index === 0 ? 'active' : ''}" data-src="${foto}">
+            <img src="${foto}" alt="Foto ${index + 1}" />
+          </div>
+        `).join('');
+
+        // Click en thumbnails
+        thumbsContainer.querySelectorAll('.property-modal-thumbnail').forEach(thumb => {
+          thumb.addEventListener('click', () => {
+            const src = (thumb as HTMLElement).dataset.src;
+            if (mainImage && src) mainImage.src = src;
+            thumbsContainer.querySelectorAll('.property-modal-thumbnail').forEach(t => t.classList.remove('active'));
+            thumb.classList.add('active');
+          });
+        });
+      }
+
+      // Características
+      const caracContainer = document.getElementById('modal-caracteristicas');
+      if (caracContainer) {
+        const carac = property.caracteristicas;
+        let html = '';
+        if (carac.ambientes) html += `<div class="caracteristica-item"><svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg><span>${carac.ambientes} ambientes</span></div>`;
+        if (carac.dormitorios) html += `<div class="caracteristica-item"><svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v11a1 1 0 001 1h16a1 1 0 001-1V7M3 7l9-4 9 4M12 22V11"/></svg><span>${carac.dormitorios} dormitorio${carac.dormitorios > 1 ? 's' : ''}</span></div>`;
+        if (carac.banios) html += `<div class="caracteristica-item"><svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg><span>${carac.banios} baño${carac.banios > 1 ? 's' : ''}</span></div>`;
+        if (carac.superficie_total) html += `<div class="caracteristica-item"><svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg><span>${carac.superficie_total} totales</span></div>`;
+        if (carac.superficie_cubierta) html += `<div class="caracteristica-item"><svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg><span>${carac.superficie_cubierta} cubiertos</span></div>`;
+        caracContainer.innerHTML = html;
+      }
+
+      // Detalles
+      const detallesContainer = document.getElementById('modal-detalles');
+      const detallesWrapper = document.getElementById('modal-detalles-container');
+      if (detallesContainer && detallesWrapper) {
+        if (property.detalles && property.detalles.length > 0) {
+          detallesWrapper.style.display = 'block';
+          detallesContainer.innerHTML = property.detalles.map((detalle: string) =>
+            `<span class="detalle-tag">${detalle.charAt(0).toUpperCase() + detalle.slice(1)}</span>`
+          ).join('');
+        } else {
+          detallesWrapper.style.display = 'none';
+        }
+      }
+
+      // Mostrar modal
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      modal?.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  });
+</script>

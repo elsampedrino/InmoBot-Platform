@@ -1,0 +1,132 @@
+---
+// Visión futura - Roadmap de características
+const futureFeatures = [
+  {
+    title: "WhatsApp",
+    description: "Integración directa con WhatsApp Business para que tus clientes consulten desde su app favorita.",
+    icon: `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>`,
+    iconBg: "bg-[#25D366]",
+    status: "En desarrollo"
+  },
+  {
+    title: "CRM",
+    description: "Sincronización automática de leads con tu sistema de gestión de clientes existente.",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5m.75-9 3-3 2.148 2.148A12.061 12.061 0 0 1 16.5 7.605" /></svg>`,
+    iconBg: "bg-violet-600",
+    status: "Planificado"
+  },
+  {
+    title: "Dashboard",
+    description: "Panel de control completo con métricas en tiempo real, análisis de tendencias y reportes personalizados.",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" /></svg>`,
+    iconBg: "bg-cyan-600",
+    status: "Planificado"
+  },
+  {
+    title: "Multi-rubro",
+    description: "Expansión a otros sectores: automotriz, hotelería, retail y más. Asistentes inteligentes para cualquier industria.",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418" /></svg>`,
+    iconBg: "bg-gray-900",
+    status: "Visión 2026"
+  }
+];
+---
+
+<section id="futuro" class="py-20 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Contenedor principal -->
+    <div class="bg-gradient-to-br from-white via-violet-50 to-white rounded-3xl shadow-xl border border-gray-200 overflow-hidden p-8 md:p-12">
+      <!-- Título de sección -->
+      <div class="section-header mb-16">
+        <div class="flex items-start gap-4">
+          <div class="vertical-line"></div>
+          <div>
+            <h2 class="text-4xl sm:text-5xl font-bold mb-2 bg-gradient-to-r from-violet-600 to-cyan-500 bg-clip-text text-transparent">
+              El futuro del asistente
+            </h2>
+            <p class="text-lg text-gray-600">
+              Estamos trabajando en nuevas funcionalidades para seguir mejorando tu experiencia
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Badge Próximamente centrado -->
+      <div class="text-center mb-12">
+        <span class="text-base font-semibold px-5 py-2.5 bg-gradient-to-r from-violet-100 to-cyan-100 text-violet-700 rounded-full border border-violet-200" style="font-family: 'Space Grotesk', sans-serif;">
+          Próximamente
+        </span>
+      </div>
+
+      <!-- Grid de features futuras -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+        {futureFeatures.map((feature) => (
+          <div class="group relative">
+            <!-- Card -->
+            <div class="card-future h-full bg-gradient-to-br from-violet-50 to-cyan-50 rounded-2xl p-6 border border-violet-200 hover:border-violet-300 hover:shadow-xl hover:scale-105 transition-all duration-300 relative overflow-hidden">
+              {/* Badge de estado */}
+              <div class="absolute top-4 right-4">
+                <span class="text-xs font-semibold px-2 py-1 bg-white/80 text-violet-700 rounded-full border border-violet-200">
+                  {feature.status}
+                </span>
+              </div>
+
+              {/* Ícono alineado a la izquierda */}
+              <div class={`w-16 h-16 ${feature.iconBg} rounded-2xl flex items-center justify-center mb-4 transform group-hover:scale-110 transition-transform duration-300 text-white`}>
+                <Fragment set:html={feature.icon} />
+              </div>
+
+              {/* Título */}
+              <h3 class="text-2xl font-bold text-gray-900 mb-3">
+                {feature.title}
+              </h3>
+
+              {/* Descripción */}
+              <p class="text-gray-600 text-base leading-relaxed">
+                {feature.description}
+              </p>
+
+              {/* Barra de progreso decorativa */}
+              <div class="mt-4 h-1 w-16 bg-gradient-to-r from-violet-600 to-cyan-500 rounded-full group-hover:w-full transition-all duration-500"></div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <!-- Mensaje de expansión multi-rubro -->
+      <div class="mt-8 text-center">
+        <div class="inline-block bg-gradient-to-r from-violet-50 to-cyan-50 rounded-2xl p-8 border border-violet-100 shadow-lg">
+          <div class="flex items-center justify-center gap-3 mb-4">
+            <div class="w-12 h-12 bg-gray-900 rounded-xl flex items-center justify-center text-white">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418" />
+              </svg>
+            </div>
+            <h3 class="text-xl text-gray-700 font-medium">
+              Más allá del sector inmobiliario
+            </h3>
+          </div>
+          <p class="text-gray-600 leading-relaxed max-w-2xl mx-auto">
+            Nuestra visión es llevar la automatización inteligente a cualquier industria. <strong>InmoBot</strong> es solo el comienzo.
+            Estamos desarrollando asistentes especializados para automotriz, hotelería, retail y más sectores que necesiten
+            atención automatizada y captura de leads efectiva.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .card-future {
+    font-family: 'Space Grotesk', sans-serif;
+  }
+
+  .vertical-line {
+    width: 4px;
+    min-height: 70px;
+    background: linear-gradient(180deg, #8b5cf6 0%, #06b6d4 100%);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+</style>

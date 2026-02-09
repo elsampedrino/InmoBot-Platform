@@ -1,0 +1,80 @@
+---
+// Quienes Somos component - Dinámico desde configuración
+import { getQuienesSomos, getEmpresa } from '../lib/config';
+
+const quienesSomos = getQuienesSomos();
+const empresa = getEmpresa();
+
+// Mapeo de iconos para los valores
+const iconos: Record<string, string> = {
+  check: `<svg class="w-6 h-6 text-bbr-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+  </svg>`,
+  lightning: `<svg class="w-6 h-6 text-bbr-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+  </svg>`,
+  heart: `<svg class="w-6 h-6 text-bbr-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+  </svg>`,
+  flask: `<svg class="w-6 h-6 text-bbr-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+  </svg>`,
+  star: `<svg class="w-6 h-6 text-bbr-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
+  </svg>`
+};
+---
+
+<section id="nosotros" class="py-20 bg-bbr-gray-light">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <!-- Image -->
+      <div class="relative">
+        <div class="aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl">
+          <img
+            src={quienesSomos.imagen}
+            alt="Interior elegante con sillón"
+            class="w-full h-full object-cover"
+          />
+        </div>
+        <!-- Floating Card -->
+        <div class="absolute -bottom-6 -right-6 bg-bbr-green text-white p-6 rounded-2xl shadow-xl hidden md:block">
+          <div class="text-4xl font-bold">{quienesSomos.años_experiencia}</div>
+          <div class="text-sm">Años de experiencia</div>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="lg:pl-8">
+        <span class="section-label text-bbr-green font-light text-lg uppercase tracking-wider">
+          {quienesSomos.titulo_seccion}
+        </span>
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mt-4 mb-6">
+          <span class="text-bbr-blue">{empresa.nombre_corto}</span> <span class="text-bbr-green">{quienesSomos.subtitulo.replace(empresa.nombre_corto, '').trim()}</span>
+        </h2>
+
+        {quienesSomos.parrafos.map((parrafo) => (
+          <p class="text-lg text-bbr-gray mb-6 leading-relaxed">
+            {parrafo}
+          </p>
+        ))}
+
+        <!-- Values -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+          {quienesSomos.valores.map((valor) => (
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 bg-bbr-green-10 rounded-xl flex items-center justify-center flex-shrink-0">
+                <Fragment set:html={iconos[valor.icono] || iconos.star} />
+              </div>
+              <div>
+                <h4 class="font-bold text-bbr-blue">{valor.titulo}</h4>
+                <p class="text-sm text-bbr-gray">{valor.descripcion}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>

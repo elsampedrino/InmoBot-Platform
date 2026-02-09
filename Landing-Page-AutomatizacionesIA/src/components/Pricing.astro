@@ -1,0 +1,360 @@
+---
+// Planes y precios - Basado exclusivamente en pricing.md
+const plans = [
+  {
+    name: "Básico",
+    price: "$180.000",
+    period: "/ mes",
+    description: "Ideal para inmobiliarias chicas o que recién empiezan",
+    recommended: false,
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12"><path stroke-linecap="round" stroke-linejoin="round" d="m21 7.5-9-5.25L3 7.5m18 0-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" /></svg>`,
+    features: [
+      "Chatbot Inmobiliario en tu Web",
+      "Responde consultas de propiedades",
+      "Filtrado por tipo/operación/precio",
+      "Catálogo de hasta 100 propiedades",
+      "1 imagen por propiedad",
+      "Actualización del catálogo: mensual",
+      "Respuestas automáticas 24/7"
+    ],
+    motor: [
+      "Interpretación simple de consultas",
+      "Filtrado rápido por tipo, operación y precio",
+      "Ideal para respuestas habituales",
+      "Optimizado para velocidad y bajo costo",
+      "Procesamiento por consulta individual"
+    ],
+    cta: "Consultar disponibilidad",
+    ctaLink: "#contacto",
+    gradient: "from-gray-600 to-gray-700",
+    bgClass: "bg-white",
+    showCta: true,
+    iconBg: "bg-gray-900",
+    checkColor: "text-gray-900",
+    bulletColor: "text-gray-700"
+  },
+  {
+    name: "Pro",
+    price: "$300.000",
+    period: "/ mes",
+    badge: "Recomendado",
+    description: "Para inmobiliarias que quieren vender más",
+    recommended: true,
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z" /></svg>`,
+    features: [
+      "Incluye todo el Plan Básico +",
+      "Filtrado por características (pileta, cochera, etc.)",
+      "Captura de leads de contacto",
+      "Envío automático de leads a Telegram/Email",
+      "Estadísticas semanales automáticas",
+      "Métricas: consultas/propiedades vistas/conversión",
+      "Actualización del catálogo: 2 veces por mes"
+    ],
+    motor: [
+      "Interpretación avanzada del lenguaje natural",
+      "Comprende consultas complejas y combinadas",
+      "Prioriza propiedades más relevantes",
+      "Genera respuestas naturales y persuasivas",
+      "Optimizada para generar leads",
+      "Procesamiento independiente por consulta"
+    ],
+    cta: "Consultar disponibilidad",
+    ctaLink: "#contacto",
+    gradient: "from-violet-600 to-violet-700",
+    bgClass: "bg-gradient-to-br from-cyan-50 to-cyan-100",
+    showCta: true,
+    iconBg: "bg-violet-600",
+    checkColor: "text-violet-600",
+    bulletColor: "text-violet-500"
+  },
+  {
+    name: "Premium",
+    price: "Próximamente",
+    period: "",
+    description: "Para inmobiliarias que quieren escalar en serio",
+    recommended: false,
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="w-12 h-12"><path d="M2.5 7.5l4.5 2.5 5-5 5 5 4.5-2.5-1.5 9H4l-1.5-9zM4 18h16v2H4v-2z"/></svg>`,
+    features: [
+      "Incluye todo el Plan PRO +",
+      "Seguimiento conversacional por sesión",
+      "Catálogo en base de datos",
+      "Actualización en tiempo real",
+      "Dashboard propio con métricas avanzadas",
+      "Gestión de leads (ABM)",
+      "Integraciones: WhatsApp/CRM",
+      "Personalización avanzada del bot"
+    ],
+    motor: [
+      "Interpretación avanzada de consultas",
+      "Seguimiento conversacional por sesión (contexto activo)",
+      "Comprensión de repreguntas y ajustes progresivos",
+      "Refinamiento dinámico de resultados",
+      "Priorización inteligente según intención",
+      "Mayor precisión en filtros complejos",
+      "Optimización para relevancia y menor ruido"
+    ],
+    cta: "",
+    ctaLink: "#contacto",
+    gradient: "from-cyan-600 to-blue-700",
+    bgClass: "bg-white",
+    showCta: false,
+    iconBg: "bg-cyan-600",
+    checkColor: "text-cyan-600",
+    bulletColor: "text-cyan-500"
+  }
+];
+
+// Tabla comparativa de características
+const comparisonFeatures = [
+  { feature: "Captura y envío de Leads", basico: false, pro: true, premium: true },
+  { feature: "Estadísticas semanales", basico: false, pro: true, premium: true },
+  { feature: "Interpretación de lenguaje natural", basico: true, pro: true, premium: true },
+  { feature: "Respuestas optimizadas para conversión", basico: true, pro: true, premium: true },
+  { feature: "Contexto conversacional por sesión", basico: false, pro: false, premium: true },
+  { feature: "Refinamiento progresivo de búsqueda", basico: false, pro: false, premium: true },
+  { feature: "Personalización avanzada de BOT", basico: false, pro: false, premium: true },
+  { feature: "Actualización de Catálogo On Line", basico: false, pro: false, premium: true },
+  { feature: "Integraciones WhatsApp/CRM", basico: false, pro: false, premium: true },
+  { feature: "Dashboard propio", basico: false, pro: false, premium: true }
+];
+---
+
+<section id="precios" class="py-20 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Contenedor principal -->
+    <div class="bg-white rounded-3xl shadow-xl border border-gray-200 overflow-hidden p-8 md:p-12">
+      <!-- Título de sección -->
+      <div class="text-center mb-16">
+        <h2 class="text-4xl sm:text-5xl font-bold mb-4 bg-gradient-to-r from-violet-600 to-cyan-500 bg-clip-text text-transparent">
+          Planes y Precios
+        </h2>
+        <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+          Elegí el plan que mejor se adapte a las necesidades de tu inmobiliaria
+        </p>
+      </div>
+
+      <!-- Cards de planes -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+        {plans.map((plan) => (
+          <div class={`relative ${plan.recommended ? 'md:-mt-4 md:mb-0' : ''}`}>
+            <!-- Badge de recomendado -->
+            {plan.badge && (
+              <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 z-20">
+                <span class="bg-gradient-to-r from-violet-600 to-cyan-500 text-white px-4 py-1 rounded-full text-sm font-semibold shadow-lg">
+                  ⭐ {plan.badge}
+                </span>
+              </div>
+            )}
+
+            <!-- Card -->
+            <div class={`card-pricing h-full ${plan.bgClass} rounded-3xl shadow-xl border-2 ${
+              plan.recommended ? 'border-cyan-300 shadow-2xl shadow-cyan-200/50 pro-card' : 'border-gray-200'
+            } overflow-hidden relative flex flex-col`}>
+              {/* Efecto de brillo animado para Pro */}
+              {plan.recommended && (
+                <div class="shine-effect absolute inset-0 pointer-events-none"></div>
+              )}
+
+              {/* Gradiente superior */}
+              <div class={`h-2 bg-gradient-to-r ${plan.gradient}`}></div>
+
+              <div class="p-8 flex flex-col flex-grow">
+                {/* Ícono del plan */}
+                <div class="flex justify-center mb-4">
+                  <div class={`w-24 h-24 ${plan.iconBg} rounded-2xl flex items-center justify-center text-white`}>
+                    <Fragment set:html={plan.icon} />
+                  </div>
+                </div>
+
+                {/* Header del plan */}
+                <h3 class="text-3xl font-bold text-gray-900 mb-3 text-center">{plan.name}</h3>
+                <p class="text-gray-600 text-base mb-6 min-h-[48px] text-center">{plan.description}</p>
+
+                {/* Precio */}
+                <div class="mb-6 text-center">
+                  <div class="flex items-baseline gap-1 justify-center">
+                    <span class={`text-4xl font-bold bg-gradient-to-r ${plan.gradient} bg-clip-text text-transparent`}>
+                      {plan.price}
+                    </span>
+                    {plan.period && (
+                      <span class="text-gray-500 text-lg">{plan.period}</span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Features */}
+                <div class="flex-grow">
+                  <h4 class="font-semibold text-gray-900 mb-3 text-base uppercase tracking-wide">Características:</h4>
+                  <ul class="space-y-2 mb-6">
+                    {plan.features.map((feature) => (
+                      <li class="flex items-start gap-2 text-base text-gray-700">
+                        <span class={`${plan.checkColor} text-lg font-bold`}>✓</span>
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <h4 class="font-semibold text-gray-900 mb-3 text-base uppercase tracking-wide">Motor IA:</h4>
+                  <ul class="space-y-2">
+                    {plan.motor.map((item) => (
+                      <li class="flex items-start gap-2 text-base text-gray-600">
+                        <span class={`${plan.bulletColor} text-xl font-bold`}>•</span>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* CTA - alineado abajo */}
+                {plan.showCta && (
+                  <div class="mt-8">
+                    <a
+                      href={plan.ctaLink}
+                      class={`block w-full text-center px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
+                        plan.recommended
+                          ? `bg-gradient-to-r ${plan.gradient} text-white hover:shadow-xl hover:scale-105`
+                          : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
+                      }`}
+                    >
+                      {plan.cta}
+                    </a>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <!-- Implementación inicial -->
+      <div class="mt-16 text-center">
+        <div class="inline-block bg-gradient-to-r from-violet-50 to-cyan-50 rounded-2xl p-8 border border-violet-100 shadow-lg">
+          <div class="flex items-center justify-center gap-3 mb-4">
+            <div class="w-12 h-12 bg-gray-900 rounded-xl flex items-center justify-center text-white">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 11.25v8.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 1 0 9.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1 1 14.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" />
+              </svg>
+            </div>
+            <p class="text-xl text-gray-700 font-medium">
+              Implementación inicial
+            </p>
+          </div>
+          <p class="text-gray-600 mb-4">
+            Incluye configuración, carga del catálogo y puesta en producción.
+          </p>
+          <p class="text-2xl font-bold">
+            <span class="line-through text-gray-400 text-lg mr-2">$50.000 ARS</span>
+            <span class="bg-gradient-to-r from-violet-600 to-violet-700 bg-clip-text text-transparent">
+              Bonificado por lanzamiento
+            </span>
+          </p>
+        </div>
+      </div>
+
+      <!-- Tabla comparativa -->
+      <div class="mt-16 bg-gradient-to-br from-violet-50 to-cyan-50 rounded-3xl border border-violet-100 overflow-hidden">
+        <div class="p-8">
+          <h3 class="text-2xl font-bold text-center mb-8 bg-gradient-to-r from-violet-600 to-cyan-500 bg-clip-text text-transparent">
+            Comparación de Planes
+          </h3>
+
+          <div class="overflow-x-auto">
+            <table class="table-comparison w-full">
+              <thead>
+                <tr class="border-b-2 border-violet-200">
+                  <th class="text-left py-4 px-4 font-semibold text-gray-900 uppercase tracking-wide text-base">Característica</th>
+                  <th class="text-center py-4 px-4 font-semibold text-gray-900 uppercase tracking-wide text-base">Básico</th>
+                  <th class="text-center py-4 px-4 font-semibold text-violet-700 uppercase tracking-wide text-base">Pro ⭐</th>
+                  <th class="text-center py-4 px-4 font-semibold text-gray-900 uppercase tracking-wide text-base">Premium</th>
+                </tr>
+              </thead>
+              <tbody>
+                {comparisonFeatures.map((item, index) => (
+                  <tr class={index % 2 === 0 ? 'bg-white/50' : 'bg-transparent'}>
+                    <td class="py-3 px-4 text-base text-gray-700">{item.feature}</td>
+                    {/* Básico - Color oscuro */}
+                    <td class="py-3 px-4 text-center">
+                      {item.basico ? (
+                        <span class="inline-flex items-center justify-center w-8 h-8 bg-gray-900 rounded-lg">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="white" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                          </svg>
+                        </span>
+                      ) : (
+                        <span class="inline-flex items-center justify-center w-8 h-8 bg-gray-200 rounded-lg">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="#9ca3af" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                          </svg>
+                        </span>
+                      )}
+                    </td>
+                    {/* Pro - Color violeta */}
+                    <td class="py-3 px-4 text-center bg-violet-100/50">
+                      {item.pro ? (
+                        <span class="inline-flex items-center justify-center w-8 h-8 bg-violet-600 rounded-lg">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="white" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                          </svg>
+                        </span>
+                      ) : (
+                        <span class="inline-flex items-center justify-center w-8 h-8 bg-violet-200 rounded-lg">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="#a78bfa" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                          </svg>
+                        </span>
+                      )}
+                    </td>
+                    {/* Premium - Color cyan */}
+                    <td class="py-3 px-4 text-center">
+                      {item.premium ? (
+                        <span class="inline-flex items-center justify-center w-8 h-8 bg-cyan-600 rounded-lg">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="white" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                          </svg>
+                        </span>
+                      ) : (
+                        <span class="inline-flex items-center justify-center w-8 h-8 bg-cyan-100 rounded-lg">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="#67e8f9" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                          </svg>
+                        </span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .card-pricing,
+  .table-comparison {
+    font-family: 'Space Grotesk', sans-serif;
+  }
+
+  /* Efecto de brillo animado para la card Pro */
+  .shine-effect {
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.4) 50%,
+      transparent 100%
+    );
+    transform: translateX(-100%);
+    animation: shine 3s ease-in-out infinite;
+  }
+
+  @keyframes shine {
+    0% {
+      transform: translateX(-100%);
+    }
+    50%, 100% {
+      transform: translateX(100%);
+    }
+  }
+</style>

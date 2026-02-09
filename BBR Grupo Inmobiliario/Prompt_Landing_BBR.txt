@@ -1,0 +1,16 @@
+Hola !, tengo un nuevo desafío para encarar !. Viste que ayer integre el widget a la web de Cristian(https://www.bbrborrascabrucellaria.com/).
+Bueno, el me dijo que quería rediseñar la pagina en algún momento porque no esta linda(lo cual concuerdo mucho jaja) es muy estática y no tiene
+una gama de colores homogénea. El la construyo en el mismo Builder de Hostinger que ayer tuve que usar para integrar el widget y la verdad que
+no es muy amigable. El otro día buscando la web de Cristian, porque no la había visto, me tope sin querer con otra con casi el mismo nombre
+(https://www.bbr.com.ar/), la estuve mirando y me encanto el diseño , la gama de colores como esta armado el layout, como agrupa las imágenes 
+con una sola foto y si accedes muestra el detalle completo. Como esta diseñado y organizado el header y el footer. Los botones flotantes de la
+derecha (al que le sumaria el de nuestro widget por supuesto con un tamaño mayor al del whatsapp y del correo). Obviamente que esa web tiene
+mas secciones pero no importa, con usar las que corresponden a la web de Cris y separar la de "Quienes Somos" de "Servicios" estaría bien. 
+En la de Quienes Somos usaría de fondo la imagen del sillon y en la de Servicios la del reloj con la lampara porque creo que ambas están en la gama.
+Usaría la gama de colores que tiene el logo de Cris. Osea, reemplazaría los naranjas de esta web modelo por el verde claro del logo,
+el color oscuro del footer por el gris oscuro también del logo y usaría también el color de la sigla BBR (parece un azul muy oscuro) para resaltar
+algunas otras cosas. Me gusta la fuente y el color de la misma de esa web con el fondo blanco, eso lo replicaría igual. Y el Hero podemos buscar alguna
+imagen similar a la que tiene la web modelo que esta muy bien. Tambien podemos usar la imagen del sillón con el velador y la planta que usa en quienes somos
+para armar la sección de quienes somos. Me armas una web en Astro en una carpeta nueva que se llame Landing-Page-BBR con estas características ?
+
+

@@ -1,0 +1,162 @@
+---
+import '../styles/global.css';
+import { getEmpresa, getWidgetBot, getTema, getColores } from '../lib/config';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const empresa = getEmpresa();
+const widgetBot = getWidgetBot();
+const tema = getTema();
+const colores = getColores();
+
+const { title, description = empresa.descripcion_meta } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content={description} />
+  <link rel="icon" type="image/png" href={empresa.favicon} />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href={tema.fuentes.google_fonts_url} rel="stylesheet">
+
+  <title>{title} | {empresa.nombre}</title>
+
+  <!-- Variables CSS dinámicas desde configuración -->
+  <style define:vars={{
+    colorPrimario: colores.primario,
+    colorPrimarioOscuro: colores.primario_oscuro,
+    colorPrimarioClaro: colores.primario_claro,
+    colorSecundario: colores.secundario,
+    colorSecundarioClaro: colores.secundario_claro,
+    colorGrisOscuro: colores.gris_oscuro,
+    colorGris: colores.gris,
+    colorGrisClaro: colores.gris_claro,
+    colorFondoGris: colores.fondo_gris,
+    colorFondoGrisLogo: colores.fondo_gris_logo,
+    colorBlanco: colores.blanco,
+    colorOffWhite: colores.off_white,
+    fuentePrincipal: `'${tema.fuentes.principal}', ${tema.fuentes.fallback}`,
+    fontSizeDesktop: tema.fuentes.tamaño_base.desktop,
+    fontSizeTablet: tema.fuentes.tamaño_base.tablet,
+    fontSizeMobile: tema.fuentes.tamaño_base.mobile
+  }}>
+    :root {
+      --color-bbr-green: var(--colorPrimario);
+      --color-bbr-green-dark: var(--colorPrimarioOscuro);
+      --color-bbr-green-light: var(--colorPrimarioClaro);
+      --color-bbr-blue: var(--colorSecundario);
+      --color-bbr-blue-light: var(--colorSecundarioClaro);
+      --color-bbr-gray-dark: var(--colorGrisOscuro);
+      --color-bbr-gray: var(--colorGris);
+      --color-bbr-gray-light: var(--colorGrisClaro);
+      --color-bbr-white: var(--colorBlanco);
+      --color-bbr-off-white: var(--colorOffWhite);
+      --font-sans: var(--fuentePrincipal);
+    }
+
+    /* Tamaños de fuente responsive */
+    html {
+      font-size: var(--fontSizeDesktop);
+    }
+
+    @media (max-width: 1024px) {
+      html {
+        font-size: var(--fontSizeTablet);
+      }
+    }
+
+    @media (max-width: 768px) {
+      html {
+        font-size: var(--fontSizeMobile);
+      }
+    }
+  </style>
+</head>
+<body class="bg-white">
+  <slot />
+
+  <!-- InmoBot Widget - Solo si está habilitado -->
+  {widgetBot.habilitado && (
+    <>
+      <script src="https://inmobot-widget.vercel.app/inmobot-widget.iife.js"></script>
+      <link rel="stylesheet" href="https://inmobot-widget.vercel.app/inmobot-widget.css" />
+    </>
+  )}
+
+  <script define:vars={{ widgetBot, colores }}>
+    document.addEventListener('DOMContentLoaded', function() {
+      if (widgetBot.habilitado && window.InmoBot) {
+        window.InmoBot.init({
+          apiUrl: widgetBot.apiUrl,
+          contactUrl: widgetBot.contactUrl,
+          repo: widgetBot.repo,
+          primaryColor: colores.secundario,
+          botName: widgetBot.nombre,
+          welcomeMessage: widgetBot.mensaje_bienvenida,
+          placeholderText: widgetBot.placeholder,
+          position: widgetBot.posicion,
+          buttonSize: widgetBot.tamaño_boton,
+          chatWidth: widgetBot.ancho_chat,
+          chatHeight: widgetBot.alto_chat
+        });
+      }
+    });
+  </script>
+
+  <!-- Fix: Asegurar que el scroll no quede bloqueado al navegar -->
+  <script>
+    // Restaurar scroll cuando se navega por anchors
+    document.addEventListener('click', function(e) {
+      const target = e.target.closest('a[href^="#"]');
+      if (target) {
+        // Si no hay modal activo, asegurar que el body pueda hacer scroll
+        const modal = document.getElementById('property-modal');
+        if (!modal || !modal.classList.contains('active')) {
+          document.body.style.overflow = '';
+        }
+      }
+    });
+
+    // Restaurar scroll al hacer scroll con el mouse/touch
+    document.addEventListener('wheel', function() {
+      const modal = document.getElementById('property-modal');
+      if (!modal || !modal.classList.contains('active')) {
+        if (document.body.style.overflow === 'hidden') {
+          document.body.style.overflow = '';
+        }
+      }
+    }, { passive: true });
+
+    document.addEventListener('touchmove', function() {
+      const modal = document.getElementById('property-modal');
+      if (!modal || !modal.classList.contains('active')) {
+        if (document.body.style.overflow === 'hidden') {
+          document.body.style.overflow = '';
+        }
+      }
+    }, { passive: true });
+  </script>
+
+  <!-- Ajuste para que el widget quede arriba de los otros botones flotantes -->
+  <style>
+    .chat-widget-container.bottom-right {
+      bottom: 140px !important;
+    }
+    /* Botón del widget más grande y destacado */
+    .chat-widget-button {
+      width: 80px !important;
+      height: 80px !important;
+      box-shadow: 0 6px 25px rgba(30, 58, 95, 0.5) !important;
+    }
+  </style>
+</body>
+</html>

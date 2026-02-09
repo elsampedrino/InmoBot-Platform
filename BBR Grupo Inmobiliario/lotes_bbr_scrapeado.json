@@ -1,0 +1,293 @@
+{
+  "propiedades": [
+    {
+      "id": "LOTE-001",
+      "tipo": "lote",
+      "operacion": "venta",
+      "estado_construccion": "terreno",
+      "titulo": "Lote en Av. San Martín al 200 - Ramallo",
+      "direccion": {
+        "calle": "Avenida San Martín al 200",
+        "barrio": "Centro",
+        "ciudad": "Ramallo"
+      },
+      "precio": {
+        "valor": 0,
+        "moneda": "USD",
+        "nota": "Consultar"
+      },
+      "descripcion": "Excelente terreno de 10 x 25 mts. (250 m2), en inmejorable y estratégica zona de la ciudad. Ideal para proyecto de inversión, como locales comerciales, gastronómicos o edificio habitacional entre otros. Ubicado sobre Avenida Mitre al 200, una de las principales avenidas de la localidad y, en esquina con calle Soldado Argentino, en la zona de la costa, a metros del acceso al paseo del río y balnearios. En sus cercanías se encuentra el Club Náutico y Pescadores de Ramallo (CNPR) y el paseo del puerto, con cunas para embarcaciones. Además, existen varios locales gastronómicos y comerciales. No muy lejos de su emplazamiento nos encontramos con la plaza principal José María Bustos, el centro comercial y clubes de la ciudad. Sin dejar de mencionar dos colegios primarios, dos colegios secundarios y un jardín de infantes a pocas cuadras. Este terreno posee, además, la particularidad que cuenta con dos casas construidas y aptas para habitar, tanto para alquilar como uso propio. Ambas disponen de cómodos espacios, living, comedor y cocina. Cómodos dormitorios y baño completo. Patio, lavadero y garaje. Cuentan con todos los servicios, agua corriente, cloacas, electricidad y pavimento. La amplia disponibilidad de acción sobre el terreno y su estratégica ubicación lo hacen el lugar ideal para invertir.",
+      "fotos": {
+        "urls": [
+          "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=247,fit=crop/YbNx47glRgCN7rnx/frente-mP4p73VxzXUK6El5.png",
+          "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=crop/YbNx47glRgCN7rnx/3-dOqb7ZzM5yhRXVBZ.png",
+          "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=crop/YbNx47glRgCN7rnx/4-Y4L48PGorzcJBoG1.png",
+          "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=crop/YbNx47glRgCN7rnx/8-dWxlwLXMzlseZ0BY.png",
+          "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=crop/YbNx47glRgCN7rnx/11-AVLJzxwPB5HX9qER.png",
+          "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=crop/YbNx47glRgCN7rnx/9-mk3Dy4ZlXJfP1beQ.png",
+          "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=crop/YbNx47glRgCN7rnx/12-mk3DyGxvNyIkz30Z.png"
+        ]
+      },
+      "caracteristicas": {
+        "superficie_total": "250 m²",
+        "medidas": "10 x 25 mts"
+      },
+      "detalles": [
+        "agua corriente",
+        "cloacas",
+        "electricidad",
+        "calle pavimentada",
+        "cerca de la costa",
+        "incluye 2 casas",
+        "zona comercial",
+        "ideal inversión"
+      ]
+    },
+    {
+      "id": "LOTE-002",
+      "tipo": "lote",
+      "operacion": "venta",
+      "estado_construccion": "terreno",
+      "titulo": "Lote 33 - Barrio Privado Q47 - Ramallo",
+      "direccion": {
+        "calle": "Calle España, entre calles Frondizi y Ruta 1001",
+        "barrio": "Barrio Privado Q47",
+        "ciudad": "Ramallo"
+      },
+      "precio": {
+        "valor": 0,
+        "moneda": "USD",
+        "nota": "Consultar"
+      },
+      "descripcion": "Excelente lote de 20,00 x 36,66 mts.(Lote 33), ubicado en barrio privado Q47, sobre calle España, entre calles Frondizi y Ruta 1001 de Ramallo. El desarrollo más hermoso, mejor ubicado y de mayor crecimiento de los últimos meses. Se encuentra ubicado a 5 minutos de la ciudad cabecera de Ramallo y a tan solo 200 mts. de la ruta provincial n°51 con conexión directa con la ruta nacional n°9. Cuenta con los servicios de agua corriente, cloacas y electricidad.",
+      "fotos": {
+        "urls": [
+          "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=230,fit=crop/YbNx47glRgCN7rnx/40e77ba5-8faf-40b4-bf42-d33343561468-mxB0Gp9gaKCZPPa9.jpg",
+          "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=crop/YbNx47glRgCN7rnx/a3743033-9915-491b-a4c4-052d7365560c-AVLG46BNZzHjg5zG.jpg",
+          "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=crop/YbNx47glRgCN7rnx/a26bc8a4-dd7f-40a7-bf7f-598814617ed2-mk30Xpx5RnCEDPbO.jpg",
+          "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=crop/YbNx47glRgCN7rnx/035bcf9c-463b-457f-a7d3-f6537e95a54d-Yyvqap52b1u0L8xa.jpg",
+          "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=crop/YbNx47glRgCN7rnx/3133c95a-e0d8-4e7a-9b31-fcda571cd070-Yg2gBpXlbGhoLKGe.jpg"
+        ]
+      },
+      "caracteristicas": {
+        "superficie_total": "733.35 m²",
+        "medidas": "20.00 x 36.66 mts"
+      },
+      "detalles": [
+        "barrio privado",
+        "agua corriente",
+        "cloacas",
+        "electricidad",
+        "5 min del centro",
+        "200m de ruta 51",
+        "conexión ruta 9"
+      ]
+    },
+    {
+      "id": "LOTE-003",
+      "tipo": "lote",
+      "operacion": "venta",
+      "estado_construccion": "terreno",
+      "titulo": "Lote en El Paraíso - Felipe Olmedo y Soto y Calvo",
+      "direccion": {
+        "calle": "Felipe Olmedo y Soto y Calvo",
+        "barrio": "El Paraíso",
+        "ciudad": "El Paraíso"
+      },
+      "precio": {
+        "valor": 0,
+        "moneda": "USD",
+        "nota": "Consultar"
+      },
+      "descripcion": "Excelente lote de 17,90 x 26,00 mts., ubicado en esquina, cruce de Calles Felipe Olmedo y Soto y Calvo en la localidad de El Paraíso. Hermosa y pintoresca localidad rural de gran tranquilidad. Este posee una casa con posibilidad seguir construyendo y ampliando. Se encuentra ubicado a 10 km de la ciudad cabecera de Ramallo y a tan solo 8 km de la ruta provincial n°51 y a 5 km, con conexión directa, con la ruta nacional n°9. Cuenta con los servicios de agua y luz.",
+      "fotos": {
+        "urls": [
+          "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=247,fit=crop/YbNx47glRgCN7rnx/faa83a91-50b7-49f5-b975-ffe286ac8c2d-mjE8qq9O7Duk14q1.jpg",
+          "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=crop/YbNx47glRgCN7rnx/dcf67f70-b989-4fb2-8eb4-913ecd2d4f70-YanOqq9QQijMklq.jpg",
+          "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=crop/YbNx47glRgCN7rnx/33cdfa39-4ab5-4546-b6f2-35a1a35400df-mp8eqq9DOZCVLxV1.jpg",
+          "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=crop/YbNx47glRgCN7rnx/paraiso-m2Woaa82M1H53GP0.jpg"
+        ]
+      },
+      "caracteristicas": {
+        "superficie_total": "465.4 m²",
+        "medidas": "17.90 x 26.00 mts"
+      },
+      "detalles": [
+        "esquina",
+        "agua",
+        "electricidad",
+        "zona rural",
+        "tranquilo",
+        "incluye casa",
+        "posibilidad de ampliación",
+        "10km de Ramallo",
+        "conexión ruta 9"
+      ]
+    },
+    {
+      "id": "LOTE-004",
+      "tipo": "lote",
+      "operacion": "venta",
+      "estado_construccion": "terreno",
+      "titulo": "5 Lotes en Esquina R. Obligado y La Rioja - Ramallo",
+      "direccion": {
+        "calle": "Esquina R. Obligado y La Rioja",
+        "barrio": "Centro",
+        "ciudad": "Ramallo"
+      },
+      "precio": {
+        "valor": 0,
+        "moneda": "USD",
+        "nota": "Consultar"
+      },
+      "descripcion": "Cinco (5) lotes., ubicados en las esquinas de las calles Rafael Obligado y La Rioja. Barrio con gran tranquilidad y crecimiento. Se encuentra a pocas cuadras de Av. San Martín (ruta provincial n° 51). Cuenta con todos los servicios.",
+      "fotos": {
+        "urls": [
+          "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=247,fit=crop/YbNx47glRgCN7rnx/20220113_171827-YbN5neVEM8C5Pz7k.jpg",
+          "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=crop/YbNx47glRgCN7rnx/20220113_171846-dJo0e8R8jVtzrLGW.jpg",
+          "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=crop/YbNx47glRgCN7rnx/20220113_171839-Y4LgO3RoWOFe1O11.jpg",
+          "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=crop/YbNx47glRgCN7rnx/020220113_172154-mp8N3zyGQGfoZp5O.jpg",
+          "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=crop/YbNx47glRgCN7rnx/020220113_172104-dJo0e8ROnNh9vB4Z.jpg",
+          "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=crop/YbNx47glRgCN7rnx/020220113_171922-AGBjM7Rj9ZI8pN7n.jpg"
+        ]
+      },
+      "caracteristicas": {
+        "cantidad_lotes": 5,
+        "superficie_total": "Consultar"
+      },
+      "detalles": [
+        "esquina",
+        "todos los servicios",
+        "5 lotes disponibles",
+        "barrio tranquilo",
+        "zona en crecimiento",
+        "cerca de Av. San Martín"
+      ]
+    },
+    {
+      "id": "LOTE-005",
+      "tipo": "lote",
+      "operacion": "venta",
+      "estado_construccion": "terreno",
+      "titulo": "Lote 47 - Barrio Privado Q47 - Ramallo",
+      "direccion": {
+        "calle": "Calle Frondizi, entre calles España y Av. Mitre",
+        "barrio": "Barrio Privado Q47",
+        "ciudad": "Ramallo"
+      },
+      "precio": {
+        "valor": 0,
+        "moneda": "USD",
+        "nota": "Consultar"
+      },
+      "descripcion": "Excelente lote de 20,85 x 37,68 mts. (Lote 47), ubicado en barrio privado Q47, sobre calle Frondizi, entre calles España y Av. Mitre de Ramallo. El desarrollo más hermoso, mejor ubicado y de mayor crecimiento de los últimos meses. Se encuentra ubicado a 5 minutos de la ciudad cabecera de Ramallo y a tan solo 200 mts. de la ruta provincial n°51 con conexión directa con la ruta nacional n°9. Cuenta con los servicios de agua corriente, cloacas y electricidad.",
+      "fotos": {
+        "urls": [
+          "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=247,fit=crop/YbNx47glRgCN7rnx/img-AGBNlw3WZ1uxkXLN.jpg",
+          "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=crop/YbNx47glRgCN7rnx/img-YKb9DyNojeiQDLWp.jpg",
+          "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=crop/YbNx47glRgCN7rnx/img-m2W6GZrlrGuM4BRo.jpg",
+          "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=crop/YbNx47glRgCN7rnx/img-dWxj5RLW1EI0P9ne.jpg",
+          "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=crop/YbNx47glRgCN7rnx/img-d95vGxZkvRsNaW5B.jpg"
+        ]
+      },
+      "caracteristicas": {
+        "superficie_total": "785.47 m²",
+        "medidas": "20.85 x 37.68 mts"
+      },
+      "detalles": [
+        "barrio privado",
+        "agua corriente",
+        "cloacas",
+        "electricidad",
+        "5 min del centro",
+        "200m de ruta 51",
+        "conexión ruta 9"
+      ]
+    },
+    {
+      "id": "LOTE-006",
+      "tipo": "lote",
+      "operacion": "venta",
+      "estado_construccion": "terreno",
+      "titulo": "2 Lotes en Loteo Defensores - Villa Ramallo",
+      "direccion": {
+        "calle": "Entre calles Ing. Iribas y Sarmiento",
+        "barrio": "Loteo Defensores",
+        "ciudad": "Villa Ramallo"
+      },
+      "precio": {
+        "valor": 0,
+        "moneda": "USD",
+        "nota": "Consultar"
+      },
+      "descripcion": "Dos (2) lotes a la venta de 10 x 30 mts. c/u.(*). Loteo defensores, entre calles Ing. Iribas y Samiento, en Villa Ramallo . Excelente ubicación. Zona en auge urbanistico. Cuentan con todos los servicios. (*) Se venden por separado. A consideración del comprador, la opción de compra de los dos lotes juntos.",
+      "fotos": {
+        "urls": [
+          "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=247,fit=crop/YbNx47glRgCN7rnx/1c7ea3da-b175-4b3d-b014-31970888382c-mv0yaZaN85FpxEP4.jpg",
+          "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=crop/YbNx47glRgCN7rnx/ad59a9a2-7bed-462e-a27f-e9af1ab74c50-dWxaqoJy0jIW5V6Y.jpg",
+          "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=crop/YbNx47glRgCN7rnx/1c7ea3da-b175-4b3d-b014-31970888382---2c-Y4L6bw32oyF7QnZl.jpg",
+          "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=crop/YbNx47glRgCN7rnx/a667cae0-e90b-4c73-a300-5eb3e2b8a82a-AE0X9jeojauE5KZO.jpg",
+          "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=crop/YbNx47glRgCN7rnx/3656b3d0-c6f4-4e82-b312-73e040b26257-m6Lxzlkw9ps513aK.jpg",
+          "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=crop/YbNx47glRgCN7rnx/terrenos-roganre-m2W5joo363HXPbDA.jpg"
+        ]
+      },
+      "caracteristicas": {
+        "cantidad_lotes": 2,
+        "superficie_total": "300 m² c/u",
+        "medidas": "10 x 30 mts c/u"
+      },
+      "detalles": [
+        "2 lotes disponibles",
+        "venta separada o conjunta",
+        "todos los servicios",
+        "zona en auge urbanístico",
+        "excelente ubicación"
+      ]
+    },
+    {
+      "id": "LOTE-007",
+      "tipo": "lote",
+      "operacion": "venta",
+      "estado_construccion": "terreno",
+      "titulo": "Lote en Velázquez al 900 - Ramallo",
+      "direccion": {
+        "calle": "Velázquez al 900",
+        "barrio": "Cerca de Av. Belgrano",
+        "ciudad": "Ramallo"
+      },
+      "precio": {
+        "valor": 0,
+        "moneda": "USD",
+        "nota": "Consultar"
+      },
+      "descripcion": "Excelente lote de 10 x 30 mts., ubicado sobre calle Velázquez al 900 a metros de Av. Belgrano y a 200 mts. de ruta camino de la costa y GNC. Barrio con gran tranquilidad y en crecimiento. Cuenta con los servicios de agua corriente, gas y electricidad (no cuenta con cloacas).",
+      "fotos": {
+        "urls": [
+          "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=230,fit=crop/YbNx47glRgCN7rnx/whatsapp-image-2021-12-24-at-19.32.53-1-m5Kg5GVoVnhKOlPK.jpeg",
+          "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=crop/YbNx47glRgCN7rnx/whatsapp-image-2021-12-24-at-19.32.53-mjED1wMMZxfvJMgz.jpeg",
+          "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=375,fit=crop/YbNx47glRgCN7rnx/whatsapp-image-2021-12-24-at-19.32.52-A1aNnp44k4HX8vMe.jpeg"
+        ]
+      },
+      "caracteristicas": {
+        "superficie_total": "300 m²",
+        "medidas": "10 x 30 mts"
+      },
+      "detalles": [
+        "agua corriente",
+        "gas",
+        "electricidad",
+        "sin cloacas",
+        "cerca de Av. Belgrano",
+        "200m de ruta costa",
+        "barrio tranquilo",
+        "zona en crecimiento"
+      ]
+    }
+  ],
+  "metadata": {
+    "fuente": "https://www.bbrborrascabrucellaria.com/lotes",
+    "fecha_scraping": "2026-02-08",
+    "total_propiedades": 7,
+    "nota": "Precios no disponibles en la web - requieren consulta directa"
+  }
+}

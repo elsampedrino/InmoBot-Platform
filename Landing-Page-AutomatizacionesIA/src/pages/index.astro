@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
 import Hero from '../components/Hero.astro';
 import HowItWorks from '../components/HowItWorks.astro';
 import Demo from '../components/Demo.astro';
@@ -15,17 +16,28 @@ import Footer from '../components/Footer.astro';
   title="InmoBot - Asistente Inmobiliario con IA | Automatizaciones IA"
   description="El asistente inmobiliario con IA que atiende y vende por vos, 24/7. Respondé consultas, mostrá propiedades y capturá leads sin esfuerzo."
 >
+  <!-- Header Navigation -->
+  <Header />
+
   <!-- Hero Section -->
   <Hero />
 
-  <!-- Cómo funciona -->
-  <HowItWorks />
+  <!-- Contenedor Cómo funciona -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+    <div class="bg-white rounded-3xl shadow-xl border border-gray-200 overflow-hidden">
+      <HowItWorks />
+    </div>
+  </div>
+
+  <!-- Contenedor Beneficios -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 mb-8">
+    <div class="bg-white rounded-3xl shadow-xl border border-gray-200 overflow-hidden">
+      <Benefits />
+    </div>
+  </div>
 
   <!-- Demo en vivo -->
   <Demo />
-
-  <!-- Beneficios -->
-  <Benefits />
 
   <!-- Planes y Precios -->
   <Pricing />
@@ -42,3 +54,4 @@ import Footer from '../components/Footer.astro';
   <!-- Footer -->
   <Footer />
 </Layout>
+
