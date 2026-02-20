@@ -597,9 +597,9 @@ const ChatWidget = ({ config }) => {
 
           {/* Footer */}
           <div className="chat-footer">
-            <span className="powered-by">
+            <a href="https://www.automatizacionia.com.ar" target="_blank" rel="noopener noreferrer" className="powered-by">
               Powered by AutomatizacionIA
-            </span>
+            </a>
           </div>
         </div>
       )}
