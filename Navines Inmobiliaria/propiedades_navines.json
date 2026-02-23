@@ -1,0 +1,784 @@
+{
+  "metadata": {
+    "total_propiedades": 23,
+    "fecha_actualizacion": "2026-02-20",
+    "inmobiliaria": "Navines Inmobiliaria",
+    "fuente": "Scraping web"
+  },
+  "propiedades": [
+    {
+      "id": "PROP-001",
+      "tipo": "lote",
+      "operacion": "venta",
+      "estado_construccion": "terreno",
+      "titulo": "Terreno en San Pedro",
+      "direccion": {
+        "calle": "Calle Boulevard Moreno 1900",
+        "barrio": "San Pedro",
+        "ciudad": "San Pedro",
+        "cp": "2930"
+      },
+      "precio": {
+        "valor": 22000,
+        "moneda": "USD",
+        "expensas": null
+      },
+      "caracteristicas": {
+        "ambientes": null,
+        "dormitorios": null,
+        "banos": null,
+        "cocheras": null,
+        "superficie_total": "300 m²",
+        "superficie_cubierta": null
+      },
+      "descripcion": "",
+      "descripcion_corta": "Terreno de 300 m² (10 x 30 m) es el lienzo perfecto para desarrollar la propiedad que tenés en mente. Una zona consolidada con excelente accesibilidad.",
+      "fotos": [
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_69935571af68a.jpeg",
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_69935571afc28.jpeg",
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_69935571afe2a.jpeg"
+      ],
+      "detalles": []
+    },
+    {
+      "id": "PROP-002",
+      "tipo": "lote",
+      "operacion": "venta",
+      "estado_construccion": "terreno",
+      "titulo": "Terreno en San Pedro",
+      "direccion": {
+        "calle": "",
+        "barrio": "San Pedro",
+        "ciudad": "San Pedro",
+        "cp": "2930"
+      },
+      "precio": {
+        "valor": 38000,
+        "moneda": "USD",
+        "expensas": null
+      },
+      "caracteristicas": {
+        "ambientes": null,
+        "dormitorios": null,
+        "banos": null,
+        "cocheras": null,
+        "superficie_total": "870 m²",
+        "superficie_cubierta": null
+      },
+      "descripcion": "",
+      "descripcion_corta": "Venta directa de Lote de 870 m² sobre asfalto en una ubicación privilegiada: Calle Estrada y Arcuri. Lo mejor de todo: FINANCIACIÓN DIRECTA de Propietario.",
+      "fotos": [
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_695fb0074d29a.png"
+      ],
+      "detalles": []
+    },
+    {
+      "id": "PROP-003",
+      "tipo": "lote",
+      "operacion": "venta",
+      "estado_construccion": "terreno",
+      "titulo": "Terreno en San Pedro",
+      "direccion": {
+        "calle": "Callejón Vivero 2 pinos San Pedro",
+        "barrio": "San Pedro",
+        "ciudad": "San Pedro",
+        "cp": "2930"
+      },
+      "precio": {
+        "valor": 230000,
+        "moneda": "USD",
+        "expensas": null
+      },
+      "caracteristicas": {
+        "ambientes": null,
+        "dormitorios": null,
+        "banos": null,
+        "cocheras": null,
+        "superficie_total": null,
+        "superficie_cubierta": null
+      },
+      "descripcion": "",
+      "descripcion_corta": "No busques más: 17.000 m² U$s 230.000 (o la mitad: 8.500 m² en solo U$s 115.000) en la zona más exclusiva. Lindero al Barrio La Calandria. Potencial infinito para desarrollo turístico, urbano o casas de fin de semana.",
+      "fotos": [
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_69407328a2172.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_69407328a2cb2.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_69407328a3533.jpg"
+      ],
+      "detalles": []
+    },
+    {
+      "id": "PROP-004",
+      "tipo": "lote",
+      "operacion": "venta",
+      "estado_construccion": "terreno",
+      "titulo": "Terreno en San Pedro",
+      "direccion": {
+        "calle": "",
+        "barrio": "San Pedro",
+        "ciudad": "San Pedro",
+        "cp": "2930"
+      },
+      "precio": {
+        "valor": 20000,
+        "moneda": "USD",
+        "expensas": null
+      },
+      "caracteristicas": {
+        "ambientes": null,
+        "dormitorios": null,
+        "banos": null,
+        "cocheras": null,
+        "superficie_total": "750 m²",
+        "superficie_cubierta": null
+      },
+      "descripcion": "",
+      "descripcion_corta": "⚡️ ¡Vendida en Tiempo Récord! Demostrando la Demanda de la Zona ¡Felicitaciones a los nuevos propietarios! Cerramos con éxito la venta de este excelente lote de 750 m² en el codiciado paraje de Vuelta de Obligado.",
+      "fotos": [
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_691fb5674ebcd.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_691fb5674eee2.jpg"
+      ],
+      "detalles": []
+    },
+    {
+      "id": "PROP-005",
+      "tipo": "lote",
+      "operacion": "venta",
+      "estado_construccion": "terreno",
+      "titulo": "Terreno en San Pedro",
+      "direccion": {
+        "calle": "",
+        "barrio": "San Pedro",
+        "ciudad": "San Pedro",
+        "cp": "2930"
+      },
+      "precio": {
+        "valor": 150000,
+        "moneda": "USD",
+        "expensas": null
+      },
+      "caracteristicas": {
+        "ambientes": null,
+        "dormitorios": null,
+        "banos": null,
+        "cocheras": null,
+        "superficie_total": "930 m²",
+        "superficie_cubierta": null
+      },
+      "descripcion": "",
+      "descripcion_corta": "¡El Terreno Que Su Próximo Gran Proyecto Necesita! Ponemos a su disposición un conjunto de tres lotes que suman una imponente superficie de 930 m² en una ubicación verdaderamente premium y de alta visibilidad.",
+      "fotos": [
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_691f2a63864b6.png",
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_691f2a63866cb.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_691f2a63868b8.jpg"
+      ],
+      "detalles": []
+    },
+    {
+      "id": "PROP-006",
+      "tipo": "lote",
+      "operacion": "venta",
+      "estado_construccion": "terreno",
+      "titulo": "Terreno en San Pedro",
+      "direccion": {
+        "calle": "",
+        "barrio": "San Pedro",
+        "ciudad": "San Pedro",
+        "cp": "2930"
+      },
+      "precio": {
+        "valor": 60000,
+        "moneda": "USD",
+        "expensas": null
+      },
+      "caracteristicas": {
+        "ambientes": null,
+        "dormitorios": null,
+        "banos": null,
+        "cocheras": null,
+        "superficie_total": "300 m²",
+        "superficie_cubierta": null
+      },
+      "descripcion": "",
+      "descripcion_corta": "Presentamos una inmejorable oportunidad para adquirir un terreno con todos los servicios instalados en una de las zonas residenciales más demandadas y consolidadas de la ciudad.",
+      "fotos": [
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_691f234a03683.png",
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_691f234a055b3.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_691f234a09308.jpg"
+      ],
+      "detalles": []
+    },
+    {
+      "id": "PROP-007",
+      "tipo": "lote",
+      "operacion": "venta",
+      "estado_construccion": "terreno",
+      "titulo": "Terreno en San Pedro",
+      "direccion": {
+        "calle": "",
+        "barrio": "San Pedro",
+        "ciudad": "San Pedro",
+        "cp": "2930"
+      },
+      "precio": {
+        "valor": 26000,
+        "moneda": "USD",
+        "expensas": null
+      },
+      "caracteristicas": {
+        "ambientes": null,
+        "dormitorios": null,
+        "banos": null,
+        "cocheras": null,
+        "superficie_total": "1250 m²",
+        "superficie_cubierta": null
+      },
+      "descripcion": "",
+      "descripcion_corta": "Este no es un lote más: es una pieza de tierra con ubicación privilegiada en el histórico y sereno paraje de Vuelta de Obligado, Partido de San Pedro.",
+      "fotos": [
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_691f183b4dd94.png",
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_691f183b4e114.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_691f183b4e32f.jpg"
+      ],
+      "detalles": []
+    },
+    {
+      "id": "PROP-008",
+      "tipo": "lote",
+      "operacion": "venta",
+      "estado_construccion": "terreno",
+      "titulo": "Terreno en San Pedro",
+      "direccion": {
+        "calle": "H Irigoyen 1900",
+        "barrio": "San Pedro",
+        "ciudad": "San Pedro",
+        "cp": "2930"
+      },
+      "precio": {
+        "valor": 450000,
+        "moneda": "USD",
+        "expensas": null
+      },
+      "caracteristicas": {
+        "ambientes": null,
+        "dormitorios": null,
+        "banos": null,
+        "cocheras": null,
+        "superficie_total": "6500 m²",
+        "superficie_cubierta": null
+      },
+      "descripcion": "",
+      "descripcion_corta": "En esta oportunidad presentamos este maravilloso predio, compuesto de 6500 m2, ubicado en la interseccion de las calles H. Dipietri, en la ciudad de San Pedro.",
+      "fotos": [
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_690f593eccdf1.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_690f595d37fc2.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_690f59788b441.jpg"
+      ],
+      "detalles": []
+    },
+    {
+      "id": "PROP-009",
+      "tipo": "lote",
+      "operacion": "venta",
+      "estado_construccion": "terreno",
+      "titulo": "Terreno en San Pedro",
+      "direccion": {
+        "calle": "Bottaro 1400",
+        "barrio": "San Pedro",
+        "ciudad": "San Pedro",
+        "cp": "2930"
+      },
+      "precio": {
+        "valor": 100,
+        "moneda": "USD",
+        "expensas": null
+      },
+      "caracteristicas": {
+        "ambientes": null,
+        "dormitorios": null,
+        "banos": null,
+        "cocheras": null,
+        "superficie_total": "330 m²",
+        "superficie_cubierta": null
+      },
+      "descripcion": "",
+      "descripcion_corta": "Ofrecemos para la venta 2 lotes, que totalizan una superficie de 330 m2, los mismos estan situados en calle Bottaro, entre calles Lavalle y Chacabuco de la Ciudad de San Pedro.",
+      "fotos": [
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_6903721be7622.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_6903724ac3592.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_6903727c268ca.jpg"
+      ],
+      "detalles": []
+    },
+    {
+      "id": "PROP-010",
+      "tipo": "lote",
+      "operacion": "venta",
+      "estado_construccion": "terreno",
+      "titulo": "Terreno en San Pedro",
+      "direccion": {
+        "calle": "Saavedra y Bottaro 500",
+        "barrio": "San Pedro",
+        "ciudad": "San Pedro",
+        "cp": "2930"
+      },
+      "precio": {
+        "valor": 250000,
+        "moneda": "USD",
+        "expensas": null
+      },
+      "caracteristicas": {
+        "ambientes": null,
+        "dormitorios": null,
+        "banos": null,
+        "cocheras": null,
+        "superficie_total": "850 m²",
+        "superficie_cubierta": null
+      },
+      "descripcion": "",
+      "descripcion_corta": "Espectular esquina, situada en la interseccion de las calles Bottaro y Saavedra de la Ciudad de San Pedro. Cuenta con 850 m2 de superficie, aptos para el desarrollo de diferentes proyectos de construccion.",
+      "fotos": [
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_68ff643edcbec.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_68ff6472c68d5.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_68ff64b1c1174.jpg"
+      ],
+      "detalles": []
+    },
+    {
+      "id": "PROP-011",
+      "tipo": "lote",
+      "operacion": "venta",
+      "estado_construccion": "terreno",
+      "titulo": "Terreno en San Pedro",
+      "direccion": {
+        "calle": "Rivadavia y Garret 500",
+        "barrio": "San Pedro",
+        "ciudad": "San Pedro",
+        "cp": "2930"
+      },
+      "precio": {
+        "valor": 22000,
+        "moneda": "USD",
+        "expensas": null
+      },
+      "caracteristicas": {
+        "ambientes": null,
+        "dormitorios": null,
+        "banos": null,
+        "cocheras": null,
+        "superficie_total": "195 m²",
+        "superficie_cubierta": null
+      },
+      "descripcion": "",
+      "descripcion_corta": "Ofrecemos para la venta este hermoso lote baldio en esquina, situado en la interseccion de las calles Rivadavia Y Garret de la Ciudad de San Pedro. Cuenta con 195 m2 y posee pasaje de todos los servicios por su frente.",
+      "fotos": [
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_68ff6098e3152.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_68ff61111915e.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_68ff616197bd4.jpg"
+      ],
+      "detalles": []
+    },
+    {
+      "id": "PROP-012",
+      "tipo": "lote",
+      "operacion": "venta",
+      "estado_construccion": "terreno",
+      "titulo": "Terreno en San Pedro",
+      "direccion": {
+        "calle": "Salta y French 3175",
+        "barrio": "San Pedro",
+        "ciudad": "San Pedro",
+        "cp": "2930"
+      },
+      "precio": {
+        "valor": 22000,
+        "moneda": "USD",
+        "expensas": null
+      },
+      "caracteristicas": {
+        "ambientes": null,
+        "dormitorios": null,
+        "banos": null,
+        "cocheras": null,
+        "superficie_total": "200 m²",
+        "superficie_cubierta": null
+      },
+      "descripcion": "",
+      "descripcion_corta": "Excelente lote de 200 m2, ubicado en la interseccion de las calles Salta y French de la Ciudad de San Pedro; posee todos los servicios y es apto por sus cualidades para la construccion de mas de una vivienda, lo que permite optimizar el valor del met",
+      "fotos": [
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_68fa90275f572.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_68fa903812f3a.jpg"
+      ],
+      "detalles": []
+    },
+    {
+      "id": "PROP-013",
+      "tipo": "lote",
+      "operacion": "venta",
+      "estado_construccion": "terreno",
+      "titulo": "Terreno en San Pedro",
+      "direccion": {
+        "calle": "Lucio Mansilla 4100",
+        "barrio": "San Pedro",
+        "ciudad": "San Pedro",
+        "cp": "2930"
+      },
+      "precio": {
+        "valor": 22000,
+        "moneda": "USD",
+        "expensas": null
+      },
+      "caracteristicas": {
+        "ambientes": null,
+        "dormitorios": null,
+        "banos": null,
+        "cocheras": null,
+        "superficie_total": "1800 m²",
+        "superficie_cubierta": null
+      },
+      "descripcion": "",
+      "descripcion_corta": "Presentamos Nordeste, este hermoso desarrollo con un 80 % de lotes vendidos, aptos para la construccion de viviendas unifamiliares, para destinos de vivienda permanente o para fin de semana.",
+      "fotos": [
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_68f9319f7edc2.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_68f931bb08012.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_68f931d76ea45.jpg"
+      ],
+      "detalles": []
+    },
+    {
+      "id": "PROP-014",
+      "tipo": "lote",
+      "operacion": "venta",
+      "estado_construccion": "terreno",
+      "titulo": "Terreno en San Pedro",
+      "direccion": {
+        "calle": "La Calandria 100",
+        "barrio": "San Pedro",
+        "ciudad": "San Pedro",
+        "cp": "2930"
+      },
+      "precio": {
+        "valor": 28000,
+        "moneda": "USD",
+        "expensas": null
+      },
+      "caracteristicas": {
+        "ambientes": null,
+        "dormitorios": null,
+        "banos": null,
+        "cocheras": null,
+        "superficie_total": "1077 m²",
+        "superficie_cubierta": null
+      },
+      "descripcion": "",
+      "descripcion_corta": "Ofrecemos para la venta un hermoso lote, ubicado en la urbanizacion denomina \"La Calandria\", un barrio nuevo en las afueras de San Pedro, con un entorno natural y rodeado de muy lindas viviendas de residencia permanente.",
+      "fotos": [
+        "https://navinesinmob.com.ar/imagenes/galerias/ced0bdb41e97e6ee1f575555576aa395.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/a761f564889ccb1db29ac8a0ac4d4b63.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/c447e8519eb36969c8ff28aeb57c5530.jpg"
+      ],
+      "detalles": []
+    },
+    {
+      "id": "PROP-015",
+      "tipo": "lote",
+      "operacion": "venta",
+      "estado_construccion": "terreno",
+      "titulo": "Terreno en San Pedro",
+      "direccion": {
+        "calle": "Nuestra Senora del Socorro 1300",
+        "barrio": "San Pedro",
+        "ciudad": "San Pedro",
+        "cp": "2930"
+      },
+      "precio": {
+        "valor": 35000,
+        "moneda": "USD",
+        "expensas": null
+      },
+      "caracteristicas": {
+        "ambientes": null,
+        "dormitorios": null,
+        "banos": null,
+        "cocheras": null,
+        "superficie_total": "250 m²",
+        "superficie_cubierta": null
+      },
+      "descripcion": "",
+      "descripcion_corta": "Hermoso lote de 250 m2, ubicado en calle Socorro, entre calles Libertad y Colon de la Ciudad de San Pedro. Cuenta con tapial en su frente. Todos los servicios.",
+      "fotos": [
+        "https://navinesinmob.com.ar/imagenes/galerias/eb301c7fbcf705bcaedf312198d18a68.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/a995e1dffe339d10369049ea1bda5e57.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/17c30b5c76e1407aa703c3fb1b1e610b.jpg"
+      ],
+      "detalles": []
+    },
+    {
+      "id": "PROP-016",
+      "tipo": "lote",
+      "operacion": "venta",
+      "estado_construccion": "terreno",
+      "titulo": "Terreno en San Pedro",
+      "direccion": {
+        "calle": "Obligado 1750",
+        "barrio": "San Pedro",
+        "ciudad": "San Pedro",
+        "cp": "2930"
+      },
+      "precio": {
+        "valor": 35000,
+        "moneda": "USD",
+        "expensas": null
+      },
+      "caracteristicas": {
+        "ambientes": null,
+        "dormitorios": null,
+        "banos": null,
+        "cocheras": null,
+        "superficie_total": "300 m²",
+        "superficie_cubierta": null
+      },
+      "descripcion": "",
+      "descripcion_corta": "Lote en venta, ubicado en calle Obligado al 1700, entre calles Romulo Nahon y Humanes. Zona E2: Apto para construccion de deposito. Martillero y Corredor Publico de contacto: Sebastian D.",
+      "fotos": [
+        "https://navinesinmob.com.ar/imagenes/galerias/a4ffc31c534f3659b8a65defef5e6b11.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/9ad365aa19f5e95087b078993d752575.jpg"
+      ],
+      "detalles": []
+    },
+    {
+      "id": "PROP-017",
+      "tipo": "lote",
+      "operacion": "venta",
+      "estado_construccion": "terreno",
+      "titulo": "Terreno en San Pedro",
+      "direccion": {
+        "calle": "Carlos Pellegrini 800",
+        "barrio": "San Pedro",
+        "ciudad": "San Pedro",
+        "cp": "2930"
+      },
+      "precio": {
+        "valor": 600000,
+        "moneda": "USD",
+        "expensas": null
+      },
+      "caracteristicas": {
+        "ambientes": null,
+        "dormitorios": null,
+        "banos": null,
+        "cocheras": null,
+        "superficie_total": "610 m²",
+        "superficie_cubierta": null
+      },
+      "descripcion": "",
+      "descripcion_corta": "Importante propiedad, ubicada en calle Carlos Pellegrini al 800, entre calles Obligado y Las Heras; pleno centro de la ciudad de San Pedro. 610 m2 de terreno / 300 m2 edificados.",
+      "fotos": [
+        "https://navinesinmob.com.ar/imagenes/galerias/72fad6421a8dc5e4c5a462c97e7ffee0.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/2dccc1583bb981ca4d3b8c4adaa830bf.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/739fc561eddb4943122e673146350ef9.jpg"
+      ],
+      "detalles": []
+    },
+    {
+      "id": "PROP-018",
+      "tipo": "lote",
+      "operacion": "venta",
+      "estado_construccion": "terreno",
+      "titulo": "Terreno en San Pedro",
+      "direccion": {
+        "calle": "Gomendio 240",
+        "barrio": "San Pedro",
+        "ciudad": "San Pedro",
+        "cp": "2930"
+      },
+      "precio": {
+        "valor": 120000,
+        "moneda": "USD",
+        "expensas": null
+      },
+      "caracteristicas": {
+        "ambientes": null,
+        "dormitorios": null,
+        "banos": null,
+        "cocheras": null,
+        "superficie_total": "215 m²",
+        "superficie_cubierta": null
+      },
+      "descripcion": "",
+      "descripcion_corta": "Excelente lote de 215 m2, ubicado en calle M.A de Gomendio 240 de la Ciudad de San Pedro. Inmejorable ubicacion, a 2 cuadras de barrancas, en zona residencial.",
+      "fotos": [
+        "https://navinesinmob.com.ar/imagenes/galerias/e0799e7cb33f752b6331cc975c7cbfdb.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/35c7acde323342e2ffeb097d99b54403.jpg"
+      ],
+      "detalles": []
+    },
+    {
+      "id": "PROP-019",
+      "tipo": "lote",
+      "operacion": "venta",
+      "estado_construccion": "terreno",
+      "titulo": "Terreno en San Pedro",
+      "direccion": {
+        "calle": "Maximo Millan 1900",
+        "barrio": "San Pedro",
+        "ciudad": "San Pedro",
+        "cp": "2930"
+      },
+      "precio": {
+        "valor": 40000,
+        "moneda": "USD",
+        "expensas": null
+      },
+      "caracteristicas": {
+        "ambientes": null,
+        "dormitorios": null,
+        "banos": null,
+        "cocheras": null,
+        "superficie_total": "600 m²",
+        "superficie_cubierta": null
+      },
+      "descripcion": "",
+      "descripcion_corta": "Hermosos lotes con destino residencial en venta; ubicados sobre calle Maximo Millan/ H. Irigoyen y transversales. Frente al nuevo hotel; en carcanias a las barrancas y zona costanera.",
+      "fotos": [
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_690a6eea34595.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_690a6f0cb0724.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_690a6f2d53f63.jpg"
+      ],
+      "detalles": []
+    },
+    {
+      "id": "PROP-020",
+      "tipo": "lote",
+      "operacion": "venta",
+      "estado_construccion": "terreno",
+      "titulo": "Terreno en San Pedro",
+      "direccion": {
+        "calle": "Facundo Quiroga 550",
+        "barrio": "San Pedro",
+        "ciudad": "San Pedro",
+        "cp": "2930"
+      },
+      "precio": {
+        "valor": 80000,
+        "moneda": "USD",
+        "expensas": null
+      },
+      "caracteristicas": {
+        "ambientes": null,
+        "dormitorios": null,
+        "banos": null,
+        "cocheras": null,
+        "superficie_total": "320 m²",
+        "superficie_cubierta": null
+      },
+      "descripcion": "",
+      "descripcion_corta": "Lote de 320 m2 (10 mts x 32 mts), ubicado en calle Facundo Quiroga al 500, entre calles Bottaro y Avenida 11 de Setiembre. Todos los servicios. FACILIDADES DE PAGO.",
+      "fotos": [
+        "https://navinesinmob.com.ar/imagenes/galerias/dc5f9c0eb9f774481e7d0c42108e235e.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/37b05f44b2bc127de779cbcc2bcc787d.jpg"
+      ],
+      "detalles": []
+    },
+    {
+      "id": "PROP-021",
+      "tipo": "lote",
+      "operacion": "venta",
+      "estado_construccion": "terreno",
+      "titulo": "Terreno en San Pedro",
+      "direccion": {
+        "calle": "Calle 28 y Calle 9 500",
+        "barrio": "San Pedro",
+        "ciudad": "San Pedro",
+        "cp": "2930"
+      },
+      "precio": {
+        "valor": 280000,
+        "moneda": "USD",
+        "expensas": null
+      },
+      "caracteristicas": {
+        "ambientes": null,
+        "dormitorios": null,
+        "banos": null,
+        "cocheras": null,
+        "superficie_total": "5000 m²",
+        "superficie_cubierta": null
+      },
+      "descripcion": "",
+      "descripcion_corta": "5000 m2 divididos en 4 parcelas de 1250 m2 ubicados en Vuelta de Obligado, Partido de San Pedro; sobre barrancas y con una privilegiada vista al Rio Parana.",
+      "fotos": [
+        "https://navinesinmob.com.ar/imagenes/galerias/45ab6e32377f03df5d9ec02e1142fe88.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/f191bb1ed9aa418021e81389ff7f6509.jpg"
+      ],
+      "detalles": []
+    },
+    {
+      "id": "PROP-022",
+      "tipo": "lote",
+      "operacion": "venta",
+      "estado_construccion": "terreno",
+      "titulo": "Terreno en San Pedro",
+      "direccion": {
+        "calle": "Calle 29 100",
+        "barrio": "San Pedro",
+        "ciudad": "San Pedro",
+        "cp": "2930"
+      },
+      "precio": {
+        "valor": 150000,
+        "moneda": "USD",
+        "expensas": null
+      },
+      "caracteristicas": {
+        "ambientes": null,
+        "dormitorios": null,
+        "banos": null,
+        "cocheras": null,
+        "superficie_total": "3200 m²",
+        "superficie_cubierta": null
+      },
+      "descripcion": "",
+      "descripcion_corta": "Magnifico lote de 3200 m2 sobre barrancas en Vuelta de Obligado, Partido de San Pedro; vista directa al Rio Parana, sobre la unica calle pavimentada de Vuelta de Obligado, cercano al sitio historico.",
+      "fotos": [
+        "https://navinesinmob.com.ar/imagenes/galerias/468edf5df69ca44261b7bd8b3edb9900.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/89504bb0a81df3f7747813662785b185.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/a2fdb76a5129a3ba40db74480db3ccb3.jpg"
+      ],
+      "detalles": []
+    },
+    {
+      "id": "PROP-023",
+      "tipo": "lote",
+      "operacion": "venta",
+      "estado_construccion": "terreno",
+      "titulo": "Terreno en San Pedro",
+      "direccion": {
+        "calle": "Lucio Mansilla 2600",
+        "barrio": "San Pedro",
+        "ciudad": "San Pedro",
+        "cp": "2930"
+      },
+      "precio": {
+        "valor": 28000,
+        "moneda": "USD",
+        "expensas": null
+      },
+      "caracteristicas": {
+        "ambientes": null,
+        "dormitorios": null,
+        "banos": null,
+        "cocheras": null,
+        "superficie_total": "1000 m²",
+        "superficie_cubierta": null
+      },
+      "descripcion": "",
+      "descripcion_corta": "Excelente lote de 1000 m2 ( 20 mts de frente x 50 mts de fondo), sito en el fantastico emprendimiento Driving Golf, con acceso pavimentado y vista directa al Rio Parana, sobre zona de Barrancas.",
+      "fotos": [
+        "https://navinesinmob.com.ar/imagenes/galerias/461392f463f491bac7490e7aa39eccf2.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/3a8e0cd69d1899beeccd6e9d3c1b40cf.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/d5901f22e36b83fa48ab823203c1b6f2.jpg"
+      ],
+      "detalles": []
+    }
+  ]
+}

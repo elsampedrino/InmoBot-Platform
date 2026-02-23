@@ -1,0 +1,847 @@
+{
+  "metadata": {
+    "total_propiedades": 20,
+    "fecha_actualizacion": "2026-02-20",
+    "inmobiliaria": "Navines Inmobiliaria",
+    "fuente": "Scraping web"
+  },
+  "propiedades": [
+    {
+      "id": "PROP-001",
+      "tipo": "casa",
+      "operacion": "venta",
+      "estado_construccion": "usado",
+      "titulo": "Casa en venta - San Pedro",
+      "direccion": {
+        "calle": "Libertad 1362",
+        "barrio": "San Pedro",
+        "ciudad": "San Pedro",
+        "cp": "2930"
+      },
+      "precio": {
+        "valor": 110000,
+        "moneda": "USD",
+        "expensas": null
+      },
+      "caracteristicas": {
+        "ambientes": null,
+        "dormitorios": 3,
+        "banos": 1,
+        "cocheras": 1,
+        "superficie_total": "400 m²",
+        "superficie_cubierta": null,
+        "antiguedad": "10 años"
+      },
+      "descripcion": "",
+      "descripcion_corta": "Casa en venta ubicada en San Pedro. Cuenta con 3 dormitorios, ideal para familias. Dispone de un baño y un toilette. La propiedad ofrece un ambiente luminoso gracias a su diseño y orientación.",
+      "fotos": [
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_6942f466bf7ea.png",
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_6942f466bfecd.png",
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_6942f466c0209.png"
+      ],
+      "detalles": [
+        "Agua corriente",
+        "Cloacas",
+        "Cochera cubierta",
+        "Cocina funcional",
+        "Electricidad",
+        "Galería",
+        "Gas natural",
+        "Jardín",
+        "Living comedor",
+        "Parque",
+        "Parrilla",
+        "Patio",
+        "Pavimento",
+        "Teléfono"
+      ]
+    },
+    {
+      "id": "PROP-002",
+      "tipo": "casa",
+      "operacion": "venta",
+      "estado_construccion": "usado",
+      "titulo": "Casa en venta - San Pedro",
+      "direccion": {
+        "calle": "",
+        "barrio": "San Pedro",
+        "ciudad": "San Pedro",
+        "cp": "2930"
+      },
+      "precio": {
+        "valor": 40000,
+        "moneda": "USD",
+        "expensas": null
+      },
+      "caracteristicas": {
+        "ambientes": null,
+        "dormitorios": null,
+        "banos": null,
+        "cocheras": null,
+        "superficie_total": "50 m²",
+        "superficie_cubierta": null,
+        "antiguedad": null
+      },
+      "descripcion": "",
+      "descripcion_corta": "Esta es la oportunidad ideal para inversores, constructores o aquellos que buscan diseñar su casa desde cero en una de las ubicaciones más codiciadas de la ciudad: a metros de la hermosa Costanera de San Pedro.",
+      "fotos": [
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_691f7ff5ebc67.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_691f7ff5ec017.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_691f7ff5ec19b.jpg"
+      ],
+      "detalles": [
+        "Agua corriente",
+        "Cloacas",
+        "Electricidad",
+        "Galería",
+        "Gas natural",
+        "Parque",
+        "Pavimento",
+        "Teléfono",
+        "Terraza"
+      ]
+    },
+    {
+      "id": "PROP-003",
+      "tipo": "casa",
+      "operacion": "venta",
+      "estado_construccion": "usado",
+      "titulo": "Casa en venta - San Pedro",
+      "direccion": {
+        "calle": "Av Sarmiento bis 2417",
+        "barrio": "San Pedro",
+        "ciudad": "San Pedro",
+        "cp": "2930"
+      },
+      "precio": {
+        "valor": 55000,
+        "moneda": "USD",
+        "expensas": null
+      },
+      "caracteristicas": {
+        "ambientes": null,
+        "dormitorios": 2,
+        "banos": 2,
+        "cocheras": 1,
+        "superficie_total": "115 m²",
+        "superficie_cubierta": null,
+        "antiguedad": "15 años"
+      },
+      "descripcion": "",
+      "descripcion_corta": "Muy buena casa en venta, situada en Av. Sarmiento Bis N 2417 de la Ciudad de San Pedro, en el barrio denominado Parque Sarmiento. Cuenta con 70 m2 edificados, sobre lote de 115 m2.",
+      "fotos": [
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_6900d695ebba7.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_6900d782a4bab.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_6900d7b6b3d42.jpg"
+      ],
+      "detalles": [
+        "Agua corriente",
+        "Cable",
+        "Cloacas",
+        "Electricidad",
+        "Galería",
+        "Gas natural",
+        "Parque",
+        "Parrilla",
+        "Patio",
+        "Pavimento",
+        "Teléfono"
+      ]
+    },
+    {
+      "id": "PROP-004",
+      "tipo": "casa",
+      "operacion": "venta",
+      "estado_construccion": "usado",
+      "titulo": "Casa en venta - San Pedro",
+      "direccion": {
+        "calle": "Independencia 1047",
+        "barrio": "San Pedro",
+        "ciudad": "San Pedro",
+        "cp": "2930"
+      },
+      "precio": {
+        "valor": 180000,
+        "moneda": "USD",
+        "expensas": null
+      },
+      "caracteristicas": {
+        "ambientes": null,
+        "dormitorios": 3,
+        "banos": 2,
+        "cocheras": 2,
+        "superficie_total": "350 m²",
+        "superficie_cubierta": null,
+        "antiguedad": "25 años"
+      },
+      "descripcion": "",
+      "descripcion_corta": "Vivienda muy comoda y en excelente estado de conservacion, ubicada en calle Independencia N 1047 de la Ciudad de San Pedro. Zona residencial con un crecimiento importante.",
+      "fotos": [
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_68fa98d25af19.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_68fa98f05b3ef.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_68fa990961e38.jpg"
+      ],
+      "detalles": [
+        "Agua corriente",
+        "Cable",
+        "Cloacas",
+        "Electricidad",
+        "Galería",
+        "Gas natural",
+        "Lavadero",
+        "Parque",
+        "Parrilla",
+        "Patio",
+        "Pavimento",
+        "Quincho",
+        "Seguridad",
+        "Teléfono",
+        "Terraza"
+      ]
+    },
+    {
+      "id": "PROP-005",
+      "tipo": "casa",
+      "operacion": "venta",
+      "estado_construccion": "usado",
+      "titulo": "Casa en venta - San Pedro",
+      "direccion": {
+        "calle": "Saavedra 745",
+        "barrio": "San Pedro",
+        "ciudad": "San Pedro",
+        "cp": "2930"
+      },
+      "precio": {
+        "valor": 65000,
+        "moneda": "USD",
+        "expensas": null
+      },
+      "caracteristicas": {
+        "ambientes": null,
+        "dormitorios": 2,
+        "banos": 1,
+        "cocheras": 1,
+        "superficie_total": "275 m²",
+        "superficie_cubierta": null,
+        "antiguedad": "40 años"
+      },
+      "descripcion": "",
+      "descripcion_corta": "Casa en venta, ubicada en calle Saavedra 745 de la Ciudad de San Pedro, cercana a Av 11 de Setiembre y zona de barrancas. Cuenta con todos los servicios instalados; de buena calidad constructiva, es apta para quien busca una vivienda para vivir en fo",
+      "fotos": [
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_68fa933217b64.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_68fa93461e0ce.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_68fa93578ce75.jpg"
+      ],
+      "detalles": [
+        "Agua corriente",
+        "Cable",
+        "Cloacas",
+        "Electricidad",
+        "Galería",
+        "Gas natural",
+        "Parrilla",
+        "Patio",
+        "Pavimento",
+        "Teléfono"
+      ]
+    },
+    {
+      "id": "PROP-006",
+      "tipo": "casa",
+      "operacion": "venta",
+      "estado_construccion": "usado",
+      "titulo": "Casa en venta - San Pedro",
+      "direccion": {
+        "calle": "Saavedra 247",
+        "barrio": "San Pedro",
+        "ciudad": "San Pedro",
+        "cp": "2930"
+      },
+      "precio": {
+        "valor": 200000,
+        "moneda": "USD",
+        "expensas": null
+      },
+      "caracteristicas": {
+        "ambientes": null,
+        "dormitorios": 4,
+        "banos": 4,
+        "cocheras": null,
+        "superficie_total": "500 m²",
+        "superficie_cubierta": null,
+        "antiguedad": "60 años"
+      },
+      "descripcion": "",
+      "descripcion_corta": "Hermosa casa estilo colonial en venta, ubicada en calle Saavedra N 247 de la Ciudad de San Pedro, dentro de una zona residencial por excelencia, cercana al centro y zona de barrancas.",
+      "fotos": [
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_68f92ee08370f.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_68f92f2ece8ff.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_68f92f46e91c0.jpg"
+      ],
+      "detalles": [
+        "Agua corriente",
+        "Cable",
+        "Cloacas",
+        "Electricidad",
+        "Galería",
+        "Gas natural",
+        "Parrilla",
+        "Patio",
+        "Pavimento",
+        "Seguridad",
+        "Teléfono"
+      ]
+    },
+    {
+      "id": "PROP-007",
+      "tipo": "casa",
+      "operacion": "venta",
+      "estado_construccion": "usado",
+      "titulo": "Casa en venta - San Pedro",
+      "direccion": {
+        "calle": "R. Obligado 1185",
+        "barrio": "San Pedro",
+        "ciudad": "San Pedro",
+        "cp": "2930"
+      },
+      "precio": {
+        "valor": 200000,
+        "moneda": "USD",
+        "expensas": null
+      },
+      "caracteristicas": {
+        "ambientes": null,
+        "dormitorios": 4,
+        "banos": 3,
+        "cocheras": 2,
+        "superficie_total": "235 m²",
+        "superficie_cubierta": null,
+        "antiguedad": "15 años"
+      },
+      "descripcion": "",
+      "descripcion_corta": "Ofrecemos para la venta una hermosa vivienda, ubicada en calle Obligado N 1185 de la Ciudad de San Pedro, la que esta compuesta de: P.B: Living comedor/ local/ cocina/ bano/ dormitorio/ garage para 2 vehiculos/ lavadero y patio.",
+      "fotos": [
+        "https://navinesinmob.com.ar/imagenes/galerias/ff46b421c329f511768c8179555cc6d4.jpg"
+      ],
+      "detalles": [
+        "Galería",
+        "Lavadero",
+        "Living comedor",
+        "Patio",
+        "Teléfono",
+        "Terraza"
+      ]
+    },
+    {
+      "id": "PROP-008",
+      "tipo": "casa",
+      "operacion": "venta",
+      "estado_construccion": "usado",
+      "titulo": "Casa en venta - San Pedro",
+      "direccion": {
+        "calle": "Carlos Gardel 260",
+        "barrio": "San Pedro",
+        "ciudad": "San Pedro",
+        "cp": "2930"
+      },
+      "precio": {
+        "valor": 100000,
+        "moneda": "USD",
+        "expensas": null
+      },
+      "caracteristicas": {
+        "ambientes": null,
+        "dormitorios": 3,
+        "banos": 3,
+        "cocheras": 1,
+        "superficie_total": "910 m²",
+        "superficie_cubierta": null,
+        "antiguedad": "20 años"
+      },
+      "descripcion": "",
+      "descripcion_corta": "Ofrecemos para la venta esta gran oportunidad, compuesta de local comercial, casa y terreno, ubicados sobre calle Carlos Gardel N 260 de la Ciudad de San Pedro.",
+      "fotos": [
+        "https://navinesinmob.com.ar/imagenes/galerias/aa9a116474591376a666d5f8d99d1a03.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/26fd0e2d7cd3e4ae591aee8280cab1c0.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/a0e57d746eec730b7fcbc0507cdf6097.jpg"
+      ],
+      "detalles": [
+        "Galería",
+        "Lavadero",
+        "Parque",
+        "Patio",
+        "Teléfono"
+      ]
+    },
+    {
+      "id": "PROP-009",
+      "tipo": "casa",
+      "operacion": "venta",
+      "estado_construccion": "usado",
+      "titulo": "Casa en venta - San Pedro",
+      "direccion": {
+        "calle": "Caseros y Salta 300",
+        "barrio": "San Pedro",
+        "ciudad": "San Pedro",
+        "cp": "2930"
+      },
+      "precio": {
+        "valor": 85000,
+        "moneda": "USD",
+        "expensas": null
+      },
+      "caracteristicas": {
+        "ambientes": null,
+        "dormitorios": 4,
+        "banos": 2,
+        "cocheras": 1,
+        "superficie_total": "203 m²",
+        "superficie_cubierta": null,
+        "antiguedad": "40 años"
+      },
+      "descripcion": "",
+      "descripcion_corta": "Ofrecemos para la venta una hermosa casa y departamento, ubicados en la interseccion de las calles Salta y Caseros de la Ciudad de San Pedro. La casa se encuentra en P.B, posee 130 m2 construidos, sobre un lote de 203 m2.",
+      "fotos": [
+        "https://navinesinmob.com.ar/imagenes/galerias/7fa8f0cf9c97f584a7bab3afe5a94a5a.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/e7fdc435b4d6acb4693a75f7a6769d0e.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/3d44681b088bd475bdbb5bcf9c662d59.jpg"
+      ],
+      "detalles": [
+        "Galería",
+        "Lavadero",
+        "Patio",
+        "Teléfono",
+        "Terraza"
+      ]
+    },
+    {
+      "id": "PROP-010",
+      "tipo": "casa",
+      "operacion": "venta",
+      "estado_construccion": "usado",
+      "titulo": "Casa en venta - San Pedro",
+      "direccion": {
+        "calle": "11 de Setiembre 2515",
+        "barrio": "San Pedro",
+        "ciudad": "San Pedro",
+        "cp": "2930"
+      },
+      "precio": {
+        "valor": 40000,
+        "moneda": "USD",
+        "expensas": null
+      },
+      "caracteristicas": {
+        "ambientes": null,
+        "dormitorios": 2,
+        "banos": 1,
+        "cocheras": 1,
+        "superficie_total": "215 m²",
+        "superficie_cubierta": null,
+        "antiguedad": "30 años"
+      },
+      "descripcion": "",
+      "descripcion_corta": "OPORTUNIDAD: Casa ubicada sobre Av. 11 de Setiembre 2515 de la Ciudad de San Pedro. Esta compuesta de 2 dormitorios- livion comedor-cocina- bano- galeria- lavadero con parrilla-cochera- patio en su frente y fondo.",
+      "fotos": [
+        "https://navinesinmob.com.ar/imagenes/galerias/193b23e2051fa98f2ad93d4f52026f00.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_691b893742ec4.png"
+      ],
+      "detalles": [
+        "Galería",
+        "Lavadero",
+        "Parrilla",
+        "Patio",
+        "Teléfono"
+      ]
+    },
+    {
+      "id": "PROP-011",
+      "tipo": "casa",
+      "operacion": "venta",
+      "estado_construccion": "usado",
+      "titulo": "Casa en venta - San Pedro",
+      "direccion": {
+        "calle": "Los Liquidambar 56",
+        "barrio": "San Pedro",
+        "ciudad": "San Pedro",
+        "cp": "2930"
+      },
+      "precio": {
+        "valor": 110000,
+        "moneda": "USD",
+        "expensas": null
+      },
+      "caracteristicas": {
+        "ambientes": null,
+        "dormitorios": 1,
+        "banos": 1,
+        "cocheras": 1,
+        "superficie_total": "245 m²",
+        "superficie_cubierta": null,
+        "antiguedad": "10 años"
+      },
+      "descripcion": "",
+      "descripcion_corta": "Ofrecemos para la venta esta hermosa casa de fin de semana, ubicada dentro del predio del Club Los Andes, unico barrio cerrado de San Pedro. Edificada sobre lote de 245 m2, cuenta con 70 m2 de excelente construccion.",
+      "fotos": [
+        "https://navinesinmob.com.ar/imagenes/galerias/b17227019451ba21edc77d6b18c7257a.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/dfd3e3455a1fdb2cd69401a43d72d8fe.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/59ff6489d40e2e3bc997e296fb4e86bf.jpg"
+      ],
+      "detalles": [
+        "Galería",
+        "Parque",
+        "Pileta",
+        "Teléfono"
+      ]
+    },
+    {
+      "id": "PROP-012",
+      "tipo": "casa",
+      "operacion": "venta",
+      "estado_construccion": "usado",
+      "titulo": "Casa en venta - San Pedro",
+      "direccion": {
+        "calle": "Zanucolli 39",
+        "barrio": "San Pedro",
+        "ciudad": "San Pedro",
+        "cp": "2930"
+      },
+      "precio": {
+        "valor": 65000,
+        "moneda": "USD",
+        "expensas": null
+      },
+      "caracteristicas": {
+        "ambientes": null,
+        "dormitorios": 2,
+        "banos": 1,
+        "cocheras": 1,
+        "superficie_total": "262 m²",
+        "superficie_cubierta": null,
+        "antiguedad": "50 años"
+      },
+      "descripcion": "",
+      "descripcion_corta": "Ofrecemos para la venta esta hermosa vivienda, ubicada en calle Zanucolli N 39 de la Ciudad de San Pedro, a mts de calle B. Mitre, en uno de los ingresos a la Ciudad de San Pedro.",
+      "fotos": [
+        "https://navinesinmob.com.ar/imagenes/galerias/d0fd3e3eecf775d0f8a95968ab3149b1.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/63444b5630b2f773ef80db08fa1c1d8c.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/a87d2cb8bf8eeae70a52e9eff41c2df0.jpg"
+      ],
+      "detalles": [
+        "Galería",
+        "Living comedor",
+        "Parque",
+        "Patio",
+        "Pileta",
+        "Teléfono"
+      ]
+    },
+    {
+      "id": "PROP-013",
+      "tipo": "casa",
+      "operacion": "venta",
+      "estado_construccion": "usado",
+      "titulo": "Casa en venta - San Pedro",
+      "direccion": {
+        "calle": "Combate de Obligado 1510",
+        "barrio": "San Pedro",
+        "ciudad": "San Pedro",
+        "cp": "2930"
+      },
+      "precio": {
+        "valor": 65000,
+        "moneda": "USD",
+        "expensas": null
+      },
+      "caracteristicas": {
+        "ambientes": null,
+        "dormitorios": 2,
+        "banos": 1,
+        "cocheras": 2,
+        "superficie_total": "240 m²",
+        "superficie_cubierta": null,
+        "antiguedad": "35 años"
+      },
+      "descripcion": "",
+      "descripcion_corta": "Casa en venta, ubicada en calle Combate de Obligado N 1510 de la Ciudad de San Pedro. 100 m2 edificados emplazados sobre lote de 240 m2 (PH). La vvienda cuenta con las siguientes comodidades: Living/ Comedor diario/ cocina/ bano/ 2 dormitorios/ garag",
+      "fotos": [
+        "https://navinesinmob.com.ar/imagenes/galerias/88f69684cb6059b3777bf0f8f54cf680.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/8a98ea7222fe9d83c8b34dbd83c7d11b.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/f39cc419ad2263ee80a621aeb65848fd.jpg"
+      ],
+      "detalles": [
+        "Galería",
+        "Patio",
+        "Teléfono"
+      ]
+    },
+    {
+      "id": "PROP-014",
+      "tipo": "casa",
+      "operacion": "venta",
+      "estado_construccion": "usado",
+      "titulo": "Casa en venta - San Pedro",
+      "direccion": {
+        "calle": "Club Los Andes 500",
+        "barrio": "San Pedro",
+        "ciudad": "San Pedro",
+        "cp": "2930"
+      },
+      "precio": {
+        "valor": 250000,
+        "moneda": "USD",
+        "expensas": null
+      },
+      "caracteristicas": {
+        "ambientes": null,
+        "dormitorios": 3,
+        "banos": 3,
+        "cocheras": 2,
+        "superficie_total": "450 m²",
+        "superficie_cubierta": null,
+        "antiguedad": "25 años"
+      },
+      "descripcion": "",
+      "descripcion_corta": "Ofrecemos para la venta esta hermosa vivienda, situada dentro del Club Los Andes, unico barrio privado de la Ciudad de San Pedro; donde hay diferentes actividades deportivas, canchas de futbol, tenis, paddle, pileta.",
+      "fotos": [
+        "https://navinesinmob.com.ar/imagenes/galerias/7b5b5e7ced37ce8d22d5f3a0933a376a.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/fae9884915f42aa8a38bc8fbc01d4d31.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/8234d213cf5c11208c918964fc4cf763.jpg"
+      ],
+      "detalles": [
+        "Galería",
+        "Parque",
+        "Pileta",
+        "Seguridad",
+        "Teléfono"
+      ]
+    },
+    {
+      "id": "PROP-015",
+      "tipo": "casa",
+      "operacion": "venta",
+      "estado_construccion": "usado",
+      "titulo": "Casa en venta - San Pedro",
+      "direccion": {
+        "calle": "Alvear 85",
+        "barrio": "San Pedro",
+        "ciudad": "San Pedro",
+        "cp": "2930"
+      },
+      "precio": {
+        "valor": 85000,
+        "moneda": "USD",
+        "expensas": null
+      },
+      "caracteristicas": {
+        "ambientes": null,
+        "dormitorios": 2,
+        "banos": 1,
+        "cocheras": null,
+        "superficie_total": "156 m²",
+        "superficie_cubierta": null,
+        "antiguedad": "35 años"
+      },
+      "descripcion": "",
+      "descripcion_corta": "OPORTUNIDAD DE INVERSION: Local comercial con vivienda, ubicado en calle Gral Alvear N 85 de la Ciudad de San Pedro, entre calles Bartolome Mitre y 25 de Mayo; excelente ubicacion comercial-residencial.",
+      "fotos": [
+        "https://navinesinmob.com.ar/imagenes/galerias/c404b60caac7c338c15c7a4594baf35e.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/6bae28a954cb357e0b45cc4d6ece58c8.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/40f8cbb91c8951c2df2714cfff453d58.jpg"
+      ],
+      "detalles": [
+        "Galería",
+        "Teléfono"
+      ]
+    },
+    {
+      "id": "PROP-016",
+      "tipo": "casa",
+      "operacion": "venta",
+      "estado_construccion": "usado",
+      "titulo": "Casa en venta - San Pedro",
+      "direccion": {
+        "calle": "Libertad 655",
+        "barrio": "San Pedro",
+        "ciudad": "San Pedro",
+        "cp": "2930"
+      },
+      "precio": {
+        "valor": 80000,
+        "moneda": "USD",
+        "expensas": null
+      },
+      "caracteristicas": {
+        "ambientes": null,
+        "dormitorios": 2,
+        "banos": 1,
+        "cocheras": 1,
+        "superficie_total": "365 m²",
+        "superficie_cubierta": null,
+        "antiguedad": "20 años"
+      },
+      "descripcion": "",
+      "descripcion_corta": "Casa en venta, ubicada en calle Libertad N 655 de la ciudad de San Pedro, entre Av. Sarmiento y calle Uruguay. Cuenta con un lote de 365 m2 y una superficie construida de 100 m2.",
+      "fotos": [
+        "https://navinesinmob.com.ar/imagenes/galerias/a079f4bd3ce2d4b9074b7a34e158fb90.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/04fc19409f7d709e3d769a3b69c61566.jpg"
+      ],
+      "detalles": [
+        "Galería",
+        "Teléfono"
+      ]
+    },
+    {
+      "id": "PROP-017",
+      "tipo": "casa",
+      "operacion": "venta",
+      "estado_construccion": "usado",
+      "titulo": "Casa en venta - San Pedro",
+      "direccion": {
+        "calle": "Rivadavia 1290",
+        "barrio": "San Pedro",
+        "ciudad": "San Pedro",
+        "cp": "2930"
+      },
+      "precio": {
+        "valor": 50000,
+        "moneda": "USD",
+        "expensas": null
+      },
+      "caracteristicas": {
+        "ambientes": null,
+        "dormitorios": 2,
+        "banos": 1,
+        "cocheras": 1,
+        "superficie_total": "136 m²",
+        "superficie_cubierta": null,
+        "antiguedad": "70 años"
+      },
+      "descripcion": "",
+      "descripcion_corta": "Casa para reciclar, ubicada en calle Rivadavia 1290, esquina calle Colon de la Ciudad de San Pedro, cuenta con 136 m2 de lote propio y una superficie construida de 115 m2.",
+      "fotos": [
+        "https://navinesinmob.com.ar/imagenes/galerias/0ec56d3d6f5417e3317e4b4a1f3b8fb9.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_691f8dbe27759.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/galeria_691f8dbe28073.jpg"
+      ],
+      "detalles": [
+        "Galería",
+        "Teléfono"
+      ]
+    },
+    {
+      "id": "PROP-018",
+      "tipo": "casa",
+      "operacion": "venta",
+      "estado_construccion": "usado",
+      "titulo": "Casa en venta - San Pedro",
+      "direccion": {
+        "calle": "Mariano Moreno 648",
+        "barrio": "San Pedro",
+        "ciudad": "San Pedro",
+        "cp": "2930"
+      },
+      "precio": {
+        "valor": 52000,
+        "moneda": "USD",
+        "expensas": null
+      },
+      "caracteristicas": {
+        "ambientes": null,
+        "dormitorios": 2,
+        "banos": 1,
+        "cocheras": 1,
+        "superficie_total": "440 m²",
+        "superficie_cubierta": null,
+        "antiguedad": "20 años"
+      },
+      "descripcion": "",
+      "descripcion_corta": "Hermosa casa quinta en venta, ubicada en Rio Tala, Partido de San Pedro. Cuenta con 440 m2 de terreno y una superficie edificada de 80 m2, distribuidos en comedor, cocina, dormitorios, bano, galeria y deposito de guardado en el parque.",
+      "fotos": [
+        "https://navinesinmob.com.ar/imagenes/galerias/82b6d679d02a26280485025803de8bce.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/a59e0e0c04a27a644ce815eff0e80eba.jpg",
+        "https://navinesinmob.com.ar/imagenes/galerias/48f9fec001f559e2b1065d8f56b42787.jpg"
+      ],
+      "detalles": [
+        "Alarma",
+        "Galería",
+        "Internet",
+        "Parque",
+        "Pileta",
+        "Teléfono"
+      ]
+    },
+    {
+      "id": "PROP-019",
+      "tipo": "casa",
+      "operacion": "venta",
+      "estado_construccion": "usado",
+      "titulo": "Casa en venta - San Pedro",
+      "direccion": {
+        "calle": "Ituzaingo 1146",
+        "barrio": "San Pedro",
+        "ciudad": "San Pedro",
+        "cp": "2930"
+      },
+      "precio": {
+        "valor": 35000,
+        "moneda": "USD",
+        "expensas": null
+      },
+      "caracteristicas": {
+        "ambientes": null,
+        "dormitorios": 1,
+        "banos": 1,
+        "cocheras": 1,
+        "superficie_total": "95 m²",
+        "superficie_cubierta": null,
+        "antiguedad": "50 años"
+      },
+      "descripcion": "",
+      "descripcion_corta": "Casa a refaccionar, ubicada en calle Itizaingo N 1146 de la Ciudad de San Pedro. Excelente ubicacion. Martillero y Corredor Publico de contacto: Sebastian D.",
+      "fotos": [
+        "https://navinesinmob.com.ar/imagenes/galerias/940ccdc48771c94d27011253eba5e804.jpg"
+      ],
+      "detalles": [
+        "Galería",
+        "Teléfono"
+      ]
+    },
+    {
+      "id": "PROP-020",
+      "tipo": "casa",
+      "operacion": "venta",
+      "estado_construccion": "usado",
+      "titulo": "Casa en venta - San Pedro",
+      "direccion": {
+        "calle": "Av 3 de Febrero 385",
+        "barrio": "San Pedro",
+        "ciudad": "San Pedro",
+        "cp": "2930"
+      },
+      "precio": {
+        "valor": 67000,
+        "moneda": "USD",
+        "expensas": null
+      },
+      "caracteristicas": {
+        "ambientes": null,
+        "dormitorios": 1,
+        "banos": 1,
+        "cocheras": null,
+        "superficie_total": "136 m²",
+        "superficie_cubierta": null,
+        "antiguedad": "40 años"
+      },
+      "descripcion": "",
+      "descripcion_corta": "Casa y local, ubicado en Av. 3 de Febrero N 385 de la Ciudad de San Pedro. MUY BUEN ESTADO GENERAL. IDEAL INVERSION Martillero y Corredor Publico de contacto: Sebastian D.",
+      "fotos": [
+        "https://navinesinmob.com.ar/imagenes/galerias/af415713eb5bfd82749af7ea7fcdc76a.jpg"
+      ],
+      "detalles": [
+        "Galería",
+        "Teléfono"
+      ]
+    }
+  ]
+}

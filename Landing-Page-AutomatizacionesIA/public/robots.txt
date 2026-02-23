@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://www.automatizacionia.com.ar/sitemap-index.xml

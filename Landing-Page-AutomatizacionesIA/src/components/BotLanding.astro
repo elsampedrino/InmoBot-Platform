@@ -1,0 +1,208 @@
+---
+// Bot + Landing - Servicio combinado
+const features = [
+  {
+    title: "Una sola fuente de datos",
+    description: "El mismo catálogo de propiedades alimenta al bot y a tu landing page. Actualizás en un solo lugar y se refleja en todos los canales.",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" /></svg>`,
+    iconBg: "bg-violet-600"
+  },
+  {
+    title: "Implementación simple",
+    description: "Nos encargamos de todo. Solo necesitás tu catálogo de propiedades y nosotros configuramos el bot y la landing en días.",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.745 3.745 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z" /></svg>`,
+    iconBg: "bg-cyan-600"
+  },
+  {
+    title: "Mantenimiento sin esfuerzo",
+    description: "Actualizás tu catálogo y todo se sincroniza automáticamente. Sin intervención técnica, sin complicaciones.",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" /></svg>`,
+    iconBg: "bg-gray-900"
+  },
+  {
+    title: "Diseño moderno y responsivo",
+    description: "Tu landing se adapta a cualquier dispositivo: celular, tablet o escritorio. Experiencia perfecta en todas las pantallas.",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" /></svg>`,
+    iconBg: "bg-gray-900"
+  },
+  {
+    title: "Velocidad y rendimiento",
+    description: "Web desarrollada con estándares de última generación. Tu página carga en menos de un segundo. Una experiencia rápida y fluida que tus clientes van a notar desde el primer momento.",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z" /></svg>`,
+    iconBg: "bg-violet-600"
+  },
+  {
+    title: "Escalable y profesional",
+    description: "Tu landing crece con tu negocio. Cualquier mejora/actualización/nueva funcionalidad en nuestra plantilla se refleja automáticamente en tu página.",
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" /></svg>`,
+    iconBg: "bg-cyan-600"
+  }
+];
+---
+
+<section id="bot-landing" class="py-20 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Contenedor principal -->
+    <div class="relative bg-gradient-to-br from-white via-cyan-50 to-white rounded-3xl shadow-xl border border-gray-200 p-8 md:p-12">
+      <!-- Badge Nuevo Servicio -->
+      <div class="absolute -top-4 right-8">
+        <span class="text-base font-semibold px-5 py-2.5 bg-gradient-to-r from-violet-100 to-cyan-100 text-violet-700 rounded-full border border-violet-200 shadow-md" style="font-family: 'Space Grotesk', sans-serif;">
+          Nuevo Servicio
+        </span>
+      </div>
+
+      <!-- Título de sección -->
+      <div class="section-header mb-12">
+        <div class="flex items-start gap-4">
+          <div class="vertical-line"></div>
+          <div>
+            <h2 class="text-4xl sm:text-5xl font-bold pb-2 mb-2 bg-gradient-to-r from-violet-600 to-cyan-500 bg-clip-text text-transparent">
+              Bot + Landing Page
+            </h2>
+            <p class="text-lg text-gray-600">
+              Tu presencia digital completa en un solo servicio. Un asistente inteligente y una web profesional que comparten la misma información.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Diagrama visual de unificación -->
+      <div class="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6 mb-14">
+        <div class="flex items-center gap-3 bg-white rounded-2xl px-6 py-4 border border-violet-200 shadow-md">
+          <div class="w-10 h-10 bg-violet-600 rounded-xl flex items-center justify-center text-white">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z" /></svg>
+          </div>
+          <span class="font-bold text-gray-800 text-lg">Bot IA</span>
+        </div>
+
+        <div class="flex flex-col items-center">
+          <div class="hidden md:flex items-center gap-1 text-violet-400">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" /></svg>
+          </div>
+          <div class="md:hidden text-violet-400">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 rotate-90"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" /></svg>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3 bg-gradient-to-r from-violet-600 to-cyan-600 rounded-2xl px-6 py-4 shadow-lg">
+          <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center text-white">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" /></svg>
+          </div>
+          <span class="font-bold text-white text-lg">Catálogo único</span>
+        </div>
+
+        <div class="flex flex-col items-center">
+          <div class="hidden md:flex items-center gap-1 text-cyan-400">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" /></svg>
+          </div>
+          <div class="md:hidden text-cyan-400">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 rotate-90"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" /></svg>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3 bg-white rounded-2xl px-6 py-4 border border-cyan-200 shadow-md">
+          <div class="w-10 h-10 bg-cyan-600 rounded-xl flex items-center justify-center text-white">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418" /></svg>
+          </div>
+          <span class="font-bold text-gray-800 text-lg">Landing Web</span>
+        </div>
+      </div>
+
+      <!-- Grid de features -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {features.map((feature) => (
+          <div class="group relative">
+            <div class="card-feature h-full bg-white rounded-2xl p-8 border border-cyan-200 hover:border-cyan-300 hover:shadow-xl hover:scale-105 transition-all duration-300">
+              <!-- Ícono -->
+              <div class={`w-16 h-16 ${feature.iconBg} rounded-2xl flex items-center justify-center mb-4 text-white transform group-hover:scale-110 transition-transform duration-300`}>
+                <Fragment set:html={feature.icon} />
+              </div>
+
+              <!-- Título -->
+              <h3 class="text-2xl font-bold text-gray-900 mb-3">
+                {feature.title}
+              </h3>
+
+              <!-- Descripción -->
+              <p class="text-gray-600 text-base leading-relaxed">
+                {feature.description}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <!-- CTA -->
+      <div class="mt-10">
+        <div class="rounded-2xl p-8 shadow-lg bg-gradient-to-r from-violet-600 to-cyan-600">
+          <div class="flex items-center justify-center gap-3 mb-3">
+            <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center text-white">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 0 0-2.455 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z" /></svg>
+            </div>
+            <p class="text-xl text-white font-medium uppercase tracking-wide">
+              Todo incluido, todo sincronizado
+            </p>
+          </div>
+          <p class="text-lg text-white/80 text-center whitespace-nowrap">
+            Consultá por nuestros planes que incluyen Bot + Landing Page y llevá tu inmobiliaria al siguiente nivel.
+          </p>
+        </div>
+      </div>
+
+      <!-- Testimonio -->
+      <div class="mt-10">
+        <div class="relative bg-gradient-to-br from-violet-50 to-cyan-50 rounded-2xl border border-violet-100 p-8">
+          <!-- Comillas decorativas -->
+          <div class="absolute top-4 left-6 text-6xl text-violet-200 font-serif leading-none select-none">"</div>
+
+          <div class="relative z-10">
+            <!-- Estrellas -->
+            <div class="flex justify-center gap-1 mb-4">
+              {[...Array(5)].map(() => (
+                <svg class="w-5 h-5 text-yellow-400 fill-yellow-400" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              ))}
+            </div>
+
+            <!-- Cita -->
+            <blockquote class="text-center text-gray-700 text-lg leading-relaxed mb-6 px-4" style="font-family: 'Space Grotesk', sans-serif;">
+              "Implementamos el bot y la landing al mismo tiempo y fue un cambio enorme. Los clientes consultan a cualquier hora, el bot responde con las propiedades correctas al instante y nos llega un mensaje con lo que más les interesa a nuestros clientes. La web quedó muy profesional y carga muy rápido. Totalmente recomendable."
+            </blockquote>
+
+            <!-- Autor -->
+            <div class="flex items-center justify-center gap-4">
+              <div class="w-12 h-12 bg-gradient-to-br from-violet-600 to-cyan-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                C
+              </div>
+              <div class="text-left">
+                <p class="font-semibold text-gray-900">Cristian Brucellaria</p>
+                <a
+                  href="https://www.brucellariabienesraices.com.ar"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-sm text-violet-600 hover:text-cyan-600 transition-colors duration-200 hover:underline"
+                >
+                  BBR - Brucellaria Bienes Raíces →
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  .card-feature {
+    font-family: 'Space Grotesk', sans-serif;
+  }
+
+  .vertical-line {
+    width: 4px;
+    min-height: 70px;
+    background: linear-gradient(180deg, #8b5cf6 0%, #06b6d4 100%);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+</style>

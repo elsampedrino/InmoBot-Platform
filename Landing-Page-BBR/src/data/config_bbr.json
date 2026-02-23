@@ -1,17 +1,17 @@
 {
   "empresa": {
-    "nombre": "BBR Grupo Inmobiliario",
+    "nombre": "BBR - Brucellaria Bienes Raíces",
     "nombre_corto": "BBR",
     "slogan": "Tu socio de confianza en bienes raíces",
     "logo": "/images/logo-bbr.png",
     "favicon": "/images/logo-bbr.png",
-    "descripcion_meta": "BBR Grupo Inmobiliario - Tu socio de confianza en bienes raíces"
+    "descripcion_meta": "BBR - Brucellaria Bienes Raíces - Tu socio de confianza en bienes raíces"
   },
 
   "hero": {
     "titulo_linea1": "Tu próximo hogar",
     "titulo_linea2": "te está esperando",
-    "subtitulo": "En BBR Grupo Inmobiliario te acompañamos en cada paso para encontrar la propiedad perfecta para vos.",
+    "subtitulo": "En Brucellaria Bienes Raíces te acompañamos en cada paso para encontrar la propiedad perfecta para vos.",
     "imagen_fondo": "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1920&q=80",
     "cta_principal": {
       "texto": "Propiedades Destacadas",
@@ -40,7 +40,7 @@
 
   "quienes_somos": {
     "titulo_seccion": "Quiénes Somos",
-    "subtitulo": "BBR Brucellaria Bienes Raíces",
+    "subtitulo": "BBR - Brucellaria Bienes Raíces",
     "parrafos": [
       "Somos una empresa inmobiliaria con más de 5 años de trayectoria en el mercado, especializada en la compra, venta y alquiler de propiedades. Nuestro equipo de profesionales está comprometido con brindar un servicio de excelencia.",
       "Creemos que encontrar el hogar ideal es uno de los momentos más importantes en la vida de las personas, por eso nos dedicamos a acompañarte en cada paso del camino, con transparencia, compromiso y profesionalismo."
@@ -147,7 +147,7 @@
     "descripcion": "Tu socio de confianza en bienes raíces. Más de 5 años acompañando a familias a encontrar su hogar ideal.",
     "desarrollado_por": {
       "nombre": "AutomatizacionIA",
-      "link": "#"
+      "link": "https://www.automatizacionia.com.ar"
     }
   },
 
@@ -157,8 +157,8 @@
     "contactUrl": "https://n8n-bot-inmobiliario.onrender.com/webhook/contact",
     "repo": "bbr",
     "nombre": "BBR Asistente",
-    "mensaje_bienvenida": "¡Hola! Soy el asistente virtual de BBR Grupo Inmobiliario. ¿En qué puedo ayudarte?",
-    "placeholder": "Busco una casa por menos de 100.000 USD",
+    "mensaje_bienvenida": "¡Hola! Soy el asistente virtual de BBR. ¿En qué puedo ayudarte?",
+    "placeholder": "Busco una casa para comprar",
     "posicion": "bottom-right",
     "tamaño_boton": "80px",
     "ancho_chat": "500px",
