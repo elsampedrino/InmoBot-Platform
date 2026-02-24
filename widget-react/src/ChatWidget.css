@@ -565,6 +565,13 @@
 .powered-by {
   font-size: 11px;
   color: #9ca3af;
+  text-decoration: underline;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.powered-by:hover {
+  color: #7c3aed;
 }
 
 /* Responsive */
