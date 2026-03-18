@@ -1,0 +1,168 @@
+"""
+Pydantic schemas para requests y responses de la API.
+"""
+import uuid
+from typing import Any
+
+from pydantic import BaseModel, Field
+
+
+# ─── CHAT ─────────────────────────────────────────────────────────────────────
+
+class ChatMessageRequest(BaseModel):
+    """Payload del endpoint principal POST /chat/message."""
+    empresa_slug: str = Field(..., description="Slug único de la empresa (tenant)")
+    canal: str = Field(..., description="Canal de entrada: 'web' | 'whatsapp' | 'instagram'")
+    session_id: str = Field(..., description="ID de sesión del usuario en el canal")
+    mensaje: str = Field(..., min_length=1, max_length=2000, description="Mensaje del usuario")
+    metadata: dict[str, Any] = Field(default_factory=dict, description="Metadata adicional del canal")
+
+
+class ItemBrief(BaseModel):
+    """Resumen de un item para incluir en la respuesta conversacional."""
+    id_item: str
+    titulo: str
+    precio: float | None = None
+    moneda: str | None = None
+    descripcion_corta: str | None = None
+    fotos: list[str] = []
+    atributos: dict[str, Any] = {}
+
+
+class ChatMessageResponse(BaseModel):
+    """Respuesta del endpoint principal POST /chat/message."""
+    session_id: str
+    conversation_id: int | None = None
+    respuesta: str
+    items: list[ItemBrief] = []
+    route: str
+    stage: str
+    lead_capturado: bool = False
+    metadata: dict[str, Any] = {}
+
+
+# ─── WEBHOOKS ─────────────────────────────────────────────────────────────────
+
+class WebhookWidgetPayload(BaseModel):
+    """Payload recibido desde el widget web."""
+    empresa_slug: str
+    session_id: str
+    mensaje: str
+    metadata: dict[str, Any] = {}
+
+
+class WebhookWhatsAppPayload(BaseModel):
+    """Payload normalizado recibido desde WhatsApp Business."""
+    empresa_slug: str
+    phone_number: str
+    message_id: str
+    mensaje: str
+    metadata: dict[str, Any] = {}
+
+
+# ─── CATÁLOGO ─────────────────────────────────────────────────────────────────
+
+class ItemResponse(BaseModel):
+    """Representación completa de un item del catálogo."""
+    id_item: str
+    id_empresa: int
+    id_rubro: int
+    tipo: str
+    categoria: str | None
+    titulo: str
+    descripcion: str | None
+    descripcion_corta: str | None
+    precio: float | None
+    moneda: str | None
+    activo: bool
+    destacado: bool
+    atributos: dict[str, Any]
+    media: dict[str, Any]
+
+
+class ItemListResponse(BaseModel):
+    items: list[ItemResponse]
+    total: int
+    page: int
+    page_size: int
+
+
+# ─── LEADS ────────────────────────────────────────────────────────────────────
+
+class LeadCreateRequest(BaseModel):
+    id_empresa: int
+    nombre: str | None = None
+    telefono: str | None = None
+    email: str | None = None
+    canal: str | None = None
+    metadata: dict[str, Any] = {}
+
+
+class LeadUpdateRequest(BaseModel):
+    nombre: str | None = None
+    telefono: str | None = None
+    email: str | None = None
+    estado: str | None = None
+    metadata: dict[str, Any] | None = None
+
+
+class LeadResponse(BaseModel):
+    id_lead: int
+    id_empresa: int
+    nombre: str | None
+    telefono: str | None
+    email: str | None
+    canal: str | None
+    estado: str
+    metadata: dict[str, Any]
+
+
+class LeadListResponse(BaseModel):
+    leads: list[LeadResponse]
+    total: int
+
+
+# ─── ANALYTICS ────────────────────────────────────────────────────────────────
+
+class ChatLogResponse(BaseModel):
+    id_log: str
+    id_empresa: int
+    session_id: str | None
+    canal: str | None
+    route_elegida: str | None
+    intent_detectada: str | None
+    hubo_fallback_ia: bool
+    model_usado: str | None
+    tokens_input: int | None
+    tokens_output: int | None
+    response_time_ms: int | None
+    items_mostrados_count: int
+    created_at: str
+
+
+class ConversionLogResponse(BaseModel):
+    id_conversion: str
+    id_empresa: int
+    id_lead: int | None
+    evento: str
+    route: str | None
+    metadata: dict[str, Any]
+    created_at: str
+
+
+class AnalyticsSummaryResponse(BaseModel):
+    total_chats: int
+    total_conversiones: int
+    total_leads: int
+    routes_distribution: dict[str, int]
+    conversion_events_distribution: dict[str, int]
+    avg_response_time_ms: float | None
+    periodo: str
+
+
+# ─── HEALTH ───────────────────────────────────────────────────────────────────
+
+class HealthResponse(BaseModel):
+    status: str
+    version: str
+    db: str = "unknown"
