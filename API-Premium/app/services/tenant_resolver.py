@@ -22,6 +22,7 @@ from app.core.logging import get_logger
 from app.models.db_models import (
     Empresa,
     EmpresaPromptOverride,
+    EmpresaRubro,
     Plan,
     RubroPrompt,
     RubroSchema,
@@ -57,7 +58,7 @@ class TenantResolver:
             HTTPException 403: Empresa inactiva.
         """
         empresa = await self._get_empresa(empresa_slug)
-        effective_rubro_id = id_rubro or empresa.id_rubro or 1
+        effective_rubro_id = id_rubro or await self._get_default_rubro_id(empresa.id_empresa)
 
         rubro_prompt, rubro_schema, override, plan = await self._load_config(
             empresa.id_empresa, effective_rubro_id, empresa.id_plan
@@ -94,6 +95,24 @@ class TenantResolver:
         )
 
     # ─── Helpers privados ─────────────────────────────────────────────────────
+
+    async def _get_default_rubro_id(self, id_empresa: int) -> int:
+        """
+        Devuelve el id_rubro por defecto de la empresa desde empresa_rubros.
+        Si no hay ninguno marcado como default, toma el primero activo.
+        Si no tiene rubros asignados, devuelve 1 como fallback.
+        """
+        result = await self.db.execute(
+            select(EmpresaRubro)
+            .where(
+                EmpresaRubro.id_empresa == id_empresa,
+                EmpresaRubro.activo == True,  # noqa: E712
+            )
+            .order_by(EmpresaRubro.es_default.desc())
+            .limit(1)
+        )
+        er = result.scalar_one_or_none()
+        return er.id_rubro if er else 1
 
     async def _get_empresa(self, slug: str) -> Empresa:
         result = await self.db.execute(

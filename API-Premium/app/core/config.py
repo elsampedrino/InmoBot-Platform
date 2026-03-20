@@ -1,5 +1,4 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from typing import List
 
 
 class Settings(BaseSettings):
@@ -23,7 +22,12 @@ class Settings(BaseSettings):
     API_KEY_HEADER: str = "X-API-Key"
 
     # ─── CORS ─────────────────────────────────────────────────────────────────
-    CORS_ORIGINS: List[str] = ["*"]
+    # Separado por comas: "http://a.com,http://b.com"  o  "*"
+    CORS_ORIGINS: str = "*"
+
+    @property
+    def cors_origins_list(self) -> list[str]:
+        return [o.strip() for o in self.CORS_ORIGINS.split(",") if o.strip()]
 
     # ─── Logging ──────────────────────────────────────────────────────────────
     LOG_LEVEL: str = "INFO"

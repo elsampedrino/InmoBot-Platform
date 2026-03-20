@@ -70,7 +70,7 @@ class Empresa(Base):
 
     id_empresa: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     nombre: Mapped[str] = mapped_column(Text, nullable=False)
-    id_rubro: Mapped[int | None] = mapped_column(Integer, ForeignKey("rubros.id_rubro", ondelete="RESTRICT"))
+    # id_rubro NO está en empresas — se define en empresa_rubros (ver EmpresaRubro)
     id_plan: Mapped[int | None] = mapped_column(Integer, ForeignKey("planes.id_plan", ondelete="RESTRICT"))
     permite_followup: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     activa: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
@@ -80,16 +80,52 @@ class Empresa(Base):
     updated_at: Mapped[Any] = mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
     __table_args__ = (
-        Index("idx_empresas_rubro", "id_rubro"),
         Index("idx_empresas_plan", "id_plan"),
     )
 
-    rubro: Mapped["Rubro | None"] = relationship("Rubro")
     plan: Mapped["Plan | None"] = relationship("Plan")
+    rubros_empresa: Mapped[list["EmpresaRubro"]] = relationship("EmpresaRubro", back_populates="empresa")
     prompt_override: Mapped["EmpresaPromptOverride | None"] = relationship(
         "EmpresaPromptOverride", back_populates="empresa", uselist=False,
         primaryjoin="and_(Empresa.id_empresa == EmpresaPromptOverride.id_empresa, EmpresaPromptOverride.activo == True)"
     )
+
+
+# ─── EMPRESA_RUBROS ───────────────────────────────────────────────────────────
+# Relación muchos-a-muchos: una empresa puede operar en varios rubros.
+# es_default=True identifica el rubro principal de la empresa.
+
+class EmpresaRubro(Base):
+    __tablename__ = "empresa_rubros"
+
+    id_empresa: Mapped[int] = mapped_column(Integer, ForeignKey("empresas.id_empresa", ondelete="CASCADE"), primary_key=True)
+    id_rubro: Mapped[int] = mapped_column(Integer, ForeignKey("rubros.id_rubro", ondelete="RESTRICT"), primary_key=True)
+    activo: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+    es_default: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    created_at: Mapped[Any] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    updated_at: Mapped[Any] = mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+
+    empresa: Mapped["Empresa"] = relationship("Empresa", back_populates="rubros_empresa")
+    rubro: Mapped["Rubro"] = relationship("Rubro")
+
+
+# ─── EMPRESA_RUBRO_CATALOGOS ──────────────────────────────────────────────────
+# Config del catálogo (fuente de datos) por empresa + rubro.
+
+class EmpresaRuboCatalogo(Base):
+    __tablename__ = "empresa_rubro_catalogos"
+
+    id_empresa: Mapped[int] = mapped_column(Integer, ForeignKey("empresas.id_empresa", ondelete="CASCADE"), primary_key=True)
+    id_rubro: Mapped[int] = mapped_column(Integer, ForeignKey("rubros.id_rubro", ondelete="RESTRICT"), primary_key=True)
+    activo: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+    catalog_source: Mapped[str | None] = mapped_column(Text)   # 'github_json', 'db', etc.
+    export_format: Mapped[str | None] = mapped_column(Text)
+    github_repo: Mapped[str | None] = mapped_column(Text)
+    github_branch: Mapped[str | None] = mapped_column(Text)
+    github_path: Mapped[str | None] = mapped_column(Text)
+    github_raw_url: Mapped[str | None] = mapped_column(Text)
+    created_at: Mapped[Any] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    updated_at: Mapped[Any] = mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
 
 # ─── ITEMS ───────────────────────────────────────────────────────────────────
