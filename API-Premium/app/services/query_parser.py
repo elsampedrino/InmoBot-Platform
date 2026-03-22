@@ -108,6 +108,29 @@ _PAT_CARO = re.compile(
 # Factor de ajuste para "más barato" / "más caro"
 _PRICE_ADJUST_FACTOR = 0.75   # "más barato" → max * 0.75
 
+# ─── REGLAS DE NEGOCIO DEL PARSER ────────────────────────────────────────────
+# Estas decisiones son explícitas e intencionadas. Cambiarlas tiene impacto
+# directo en los resultados de búsqueda.
+#
+# AMBIENTES  → match exacto (=) en SearchEngine
+#   Rationale: en el mercado inmobiliario argentino, "2 ambientes" y "3 ambientes"
+#   son categorías distintas. No se amplía el match automáticamente.
+#
+# DORMITORIOS → mínimo (>=) en SearchEngine
+#   Rationale: "quiero 2 dormitorios" significa "al menos 2". Una propiedad con
+#   3 dormitorios satisface la búsqueda; lo contrario no es cierto.
+#
+# PRECIO RELATIVO ("más barato" / "más caro") → ±25% sobre el precio activo
+#   Constante: _PRICE_ADJUST_FACTOR = 0.75
+#   "más barato" → precio_max * 0.75    (reduce el techo)
+#   "más caro"   → precio_min / 0.75    (sube el piso)
+#   Solo aplica si hay filters_activos con precio previo.
+#
+# SIN FILTROS ÚTILES → catálogo de inicio acotado (ver SearchEngine._MAX_ITEMS_NO_FILTERS)
+#   Si el parser no extrae tipo, zona, precio ni atributos, SearchEngine devuelve
+#   un muestrario inicial en lugar de volcar todo el catálogo sin contexto.
+# ─────────────────────────────────────────────────────────────────────────────
+
 
 class QueryParser:
 

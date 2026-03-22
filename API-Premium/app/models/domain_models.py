@@ -58,6 +58,24 @@ class SearchFilters:
     # Texto libre para full-text search como fallback
     texto_libre: str | None = None
 
+    def has_useful_filters(self) -> bool:
+        """
+        True si el filtro contiene al menos un criterio explícito del usuario,
+        más allá de id_empresa / id_rubro / activo (que son siempre implícitos).
+
+        Usado por SearchEngine para detectar búsquedas sin contexto y aplicar
+        la regla de catálogo-de-inicio (máx. _MAX_ITEMS_NO_FILTERS items).
+        """
+        return bool(
+            self.tipo
+            or self.categoria
+            or self.zona
+            or self.precio_min is not None
+            or self.precio_max is not None
+            or self.atributos
+            or self.texto_libre
+        )
+
 
 # ─── ITEMS ────────────────────────────────────────────────────────────────────
 

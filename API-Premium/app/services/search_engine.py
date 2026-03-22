@@ -30,6 +30,15 @@ from app.repositories.items_repository import ItemsRepository
 
 logger = get_logger(__name__)
 
+# ─── REGLA DE NEGOCIO: catálogo de inicio ────────────────────────────────────
+# Si el parser no extrae filtros útiles (has_useful_filters() == False),
+# no se vuelca el catálogo completo. Se devuelven como máximo este número
+# de items activos, ordenados por destacado DESC, created_at DESC.
+# Esto es independiente de MAX_ITEMS_PER_RESPONSE: aplica aunque ese setting
+# se aumente en el futuro.
+_MAX_ITEMS_NO_FILTERS = 5
+# ─────────────────────────────────────────────────────────────────────────────
+
 
 class SearchEngine:
     def __init__(self, db: AsyncSession) -> None:
@@ -46,7 +55,23 @@ class SearchEngine:
         """
         Ejecuta la búsqueda principal sobre la tabla items.
         Construye el WHERE dinámico según los filtros disponibles.
+
+        Regla de negocio — catálogo de inicio:
+            Si filters.has_useful_filters() == False (el usuario no especificó
+            criterios útiles), se aplica _MAX_ITEMS_NO_FILTERS como tope,
+            independientemente del 'limit' recibido.
+            Esto evita volcar el catálogo completo sin contexto.
         """
+        if not filters.has_useful_filters():
+            effective_limit = min(limit, _MAX_ITEMS_NO_FILTERS)
+            logger.info(
+                "search_no_filters_applied",
+                id_empresa=id_empresa,
+                effective_limit=effective_limit,
+            )
+        else:
+            effective_limit = limit
+
         clauses, params = self._build_where_clauses(filters)
 
         rows = await self._repo.search(
@@ -54,7 +79,7 @@ class SearchEngine:
             id_rubro=id_rubro,
             where_clauses=clauses,
             params=params,
-            limit=limit,
+            limit=effective_limit,
         )
         total = await self._repo.count(
             id_empresa=id_empresa,
@@ -125,8 +150,33 @@ class SearchEngine:
             clauses.append("i.precio >= :precio_min")
             params["precio_min"] = filters.precio_min
 
-        for key, val in filters.atributos.items():
+        # Atributos JSONB: reglas específicas de inmobiliaria
+        atrib_clauses, atrib_params = self._build_atributo_clauses(filters.atributos)
+        clauses.extend(atrib_clauses)
+        params.update(atrib_params)
+
+        return clauses, params
+
+    def _build_atributo_clauses(
+        self, atributos: dict
+    ) -> tuple[list[str], dict]:
+        """
+        Traduce el dict de atributos de inmuebles a cláusulas JSONB.
+
+        Reglas de negocio (documentadas también en query_parser.py):
+          - ambientes:    match EXACTO (=)
+                          "2 ambientes" ≠ "3 ambientes" en inmobiliaria argentina.
+          - dormitorios:  match MÍNIMO (>=)
+                          "2 dormitorios" incluye propiedades con 3 o más.
+          - booleanos:    @> contains sobre el array atributos->'detalles'
+                          Ej: pileta=True → atributos->'detalles' debe contener "pileta".
+        """
+        clauses: list[str] = []
+        params: dict = {}
+
+        for key, val in atributos.items():
             if key == "ambientes" and isinstance(val, int):
+                # Exacto: el usuario pidió N ambientes específicos
                 clauses.append(
                     "(i.atributos->>'ambientes') IS NOT NULL "
                     "AND (i.atributos->>'ambientes')::int = :ambientes"
@@ -134,6 +184,7 @@ class SearchEngine:
                 params["ambientes"] = val
 
             elif key == "dormitorios" and isinstance(val, int):
+                # Mínimo: "2 dormitorios" satisface 2, 3, 4...
                 clauses.append(
                     "(i.atributos->>'dormitorios') IS NOT NULL "
                     "AND (i.atributos->>'dormitorios')::int >= :dormitorios"
@@ -141,7 +192,7 @@ class SearchEngine:
                 params["dormitorios"] = val
 
             elif isinstance(val, bool) and val:
-                # Filtro de detalle: atributos->'detalles' @> '["pileta"]'::jsonb
+                # Detalle booleano: el array JSON debe contener el string
                 pname = f"det_{key}"
                 clauses.append(
                     f"i.atributos->'detalles' @> cast(:{pname} as jsonb)"
