@@ -38,7 +38,10 @@ _REGLAS_BASE = """## REGLAS OPERATIVAS
 - No repitas información que el usuario ya conoce (está en el historial de conversación).
 - Usá los datos exactos que se te proveen. No infirás valores no presentes.
 - Si no tenés información suficiente para responder algo, decilo honestamente.
-- No uses emojis en exceso. Máximo 1-2 si el estilo de la empresa lo permite.""".strip()
+- No uses emojis en exceso. Máximo 1-2 si el estilo de la empresa lo permite.
+- No uses separadores horizontales (---) en ningún momento.
+- Las URLs de fotos deben escribirse como texto plano, una por línea, sin formato markdown (sin corchetes, sin paréntesis, sin [texto](url)). Ejemplo correcto: https://res.cloudinary.com/... Ejemplo incorrecto: [Ver foto](https://...)
+- Solo incluí URLs de fotos si están explícitamente en los datos provistos. No inventes ni construyas URLs.""".strip()
 
 
 class PromptService:
