@@ -63,27 +63,43 @@ logger = get_logger(__name__)
 _RE_TELEFONO = re.compile(r"\+?[\d][\d\s\-\.]{5,14}")
 _RE_EMAIL = re.compile(r"[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}")
 
+# Detecta nombre solo cuando hay frase explícita de presentación.
+# Captura palabras hasta la primera coma, "y", "mi", "tel(éfono)", "mail/email"
+# o fin de cadena — sin consumir el delimitador (lookahead).
+_RE_NOMBRE = re.compile(
+    r"(?:me llamo|mi nombre es|mi nombre:|soy)\s+"
+    r"([A-Za-záéíóúñÁÉÍÓÚÑüÜ]+(?:\s+[A-Za-záéíóúñÁÉÍÓÚÑüÜ]+)*?)"
+    r"(?=\s*[,;]|\s+y\b|\s+mi\b|\s+tel|\s+mail|\s+email|$)",
+    re.IGNORECASE,
+)
+
 
 def _parse_contact_data(text: str) -> tuple[str | None, str | None, str | None]:
     """
     Extracción best-effort de (nombre, telefono, email) de texto libre.
     Nunca lanza excepción; retorna None para los campos que no pudo extraer.
+
+    Nombre: solo se extrae si hay frase explícita ("me llamo X", "soy X",
+    "mi nombre es X"). Si no hay patrón reconocible, nombre = None en lugar
+    de guardar el texto completo del mensaje.
     """
+    # Email
     email_match = _RE_EMAIL.search(text)
     email = email_match.group(0) if email_match else None
 
+    # Teléfono (sin cambios — funciona correctamente)
     phone_match = _RE_TELEFONO.search(text)
     telefono = re.sub(r"[\s\-\.]", "", phone_match.group(0)) if phone_match else None
 
-    # Nombre: lo que queda después de quitar email y teléfono
-    remaining = text
-    if email_match:
-        remaining = remaining.replace(email_match.group(0), "")
-    if phone_match:
-        remaining = remaining.replace(phone_match.group(0), "")
-    nombre = " ".join(remaining.split()).strip() or None
-    if nombre and len(nombre) < 3:
-        nombre = None
+    # Nombre: solo extraer si el usuario se presentó explícitamente
+    nombre: str | None = None
+    nombre_match = _RE_NOMBRE.search(text)
+    if nombre_match:
+        raw = nombre_match.group(1).strip()
+        # Normalizar: eliminar espacios dobles y capitalizar cada inicial
+        nombre = " ".join(w.capitalize() for w in raw.split()) or None
+        if nombre and len(nombre) < 3:
+            nombre = None
 
     return nombre, telefono, email
 
