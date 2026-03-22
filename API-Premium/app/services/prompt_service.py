@@ -211,6 +211,8 @@ class PromptService:
             f"- Numeralas del 1 al {len(items)}\n"
             "- Para cada una destacá lo más relevante: ubicación, dormitorios, precio (si tiene), algún detalle atractivo\n"
             f"- Si el total ({total}) supera las presentadas ({len(items)}), mencionalo brevemente\n"
+            "- Si una propiedad tiene URLs de fotos en sus datos, incluilas en la respuesta "
+            "en una línea separada, una por línea, exactamente como aparecen (sin modificar ni acortar la URL)\n"
             "- Al final invitá al usuario a pedir más detalles de alguna o a refinar la búsqueda"
         )
 
@@ -237,6 +239,16 @@ class PromptService:
         detalles = atrib.get("detalles") or []
         detalles_str = ", ".join(detalles) if detalles else "No especificados"
 
+        # Fotos: extraer desde media.fotos o desde el campo fotos directo
+        media = item_detail.get("media") or {}
+        if isinstance(media, str):
+            media = _json.loads(media)
+        fotos = media.get("fotos") or item_detail.get("fotos") or []
+
+        fotos_str = ""
+        if fotos:
+            fotos_str = f"\nFotos: " + " ".join(fotos[:5])
+
         prop_data = (
             f"Título: {item_detail.get('titulo', '')}\n"
             f"Tipo: {item_detail.get('tipo', '')} | Operación: {item_detail.get('categoria', '')}\n"
@@ -247,6 +259,13 @@ class PromptService:
             f"Amenities/Detalles: {detalles_str}\n"
             f"Estado: {atrib.get('estado_construccion', 'N/D')}\n"
             f"Descripción: {item_detail.get('descripcion') or item_detail.get('descripcion_corta', '')}"
+            f"{fotos_str}"
+        )
+
+        fotos_instruccion = (
+            "- Incluí las URLs de fotos al final de tu respuesta, una por línea, "
+            "exactamente como aparecen en los datos (sin modificarlas)\n"
+            if fotos else ""
         )
 
         return (
@@ -259,6 +278,7 @@ class PromptService:
             "- Destacá los puntos más atractivos para un comprador o inquilino\n"
             "- Mencioná ubicación, características físicas y amenities que sumen valor\n"
             "- Si tiene precio, presentalo claramente\n"
+            f"{fotos_instruccion}"
             "- Cerrá con una invitación concreta: coordinar visita o hablar con un asesor"
         )
 
@@ -416,6 +436,8 @@ class PromptService:
                 linea += f" | {ubicacion}"
             if attrs:
                 linea += " | " + " | ".join(attrs)
+            if it.fotos:
+                linea += "\n   Fotos: " + " ".join(it.fotos[:3])
             lines.append(linea)
 
         return "\n".join(lines)
