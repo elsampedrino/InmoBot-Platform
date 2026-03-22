@@ -1,0 +1,64 @@
+# render.yaml — Configuración declarativa del servicio InmoBot Premium API en Render
+#
+# Uso:
+#   1. Conectar el repositorio en dashboard.render.com → New Web Service
+#   2. En "Root Directory" escribir: API-Premium
+#   3. Render detecta este archivo y precarga la configuración
+#   4. Completar manualmente las variables marcadas como sync: false
+#      (no se almacenan en el repo por seguridad)
+#
+# Alternativa Blueprint:
+#   Si usás Render Blueprints, copiá este archivo al raíz del repo
+#   y ajustá rootDir a "API-Premium".
+
+services:
+  - type: web
+    name: inmobot-premium-api
+    env: python
+    plan: starter           # "free" tiene cold starts de ~50 s; starter los evita
+    rootDir: .              # relativo al root directory configurado en Render (API-Premium/)
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT --workers 1
+    healthCheckPath: /health
+
+    envVars:
+      # ── Python ──────────────────────────────────────────────────────────────
+      - key: PYTHON_VERSION
+        value: 3.12.0
+
+      # ── Base de datos ────────────────────────────────────────────────────────
+      # Usar Internal URL si la DB es un PostgreSQL de Render en el mismo proyecto.
+      # Usar External URL + ?ssl=require si la DB es externa o de otro proyecto.
+      # Ejemplo Internal:  postgresql+asyncpg://user:pass@dpg-xxx/dbname
+      # Ejemplo External:  postgresql+asyncpg://user:pass@host.render.com/dbname?ssl=require
+      - key: DATABASE_URL
+        sync: false         # ← cargar manualmente en el dashboard de Render
+
+      # ── Anthropic ────────────────────────────────────────────────────────────
+      - key: ANTHROPIC_API_KEY
+        sync: false         # ← cargar manualmente en el dashboard de Render
+      - key: HAIKU_MODEL
+        value: claude-haiku-4-5-20251001
+      - key: SONNET_MODEL
+        value: claude-sonnet-4-6
+
+      # ── Seguridad ─────────────────────────────────────────────────────────────
+      - key: API_SECRET_KEY
+        sync: false         # ← cargar manualmente en el dashboard de Render
+
+      # ── CORS ──────────────────────────────────────────────────────────────────
+      # Formato: URLs separadas por coma, sin espacios.
+      # Incluir el dominio exacto del widget (con y sin www).
+      # Ejemplo: https://www.brucellariabienesraices.com.ar,https://brucellariabienesraices.com.ar
+      - key: CORS_ORIGINS
+        value: "https://www.brucellariabienesraices.com.ar,https://brucellariabienesraices.com.ar"
+
+      # ── Logging ───────────────────────────────────────────────────────────────
+      - key: LOG_LEVEL
+        value: INFO
+
+      # ── Pipeline ─────────────────────────────────────────────────────────────
+      - key: MAX_ITEMS_PER_RESPONSE
+        value: "5"
+      - key: CONTEXT_WINDOW_MESSAGES
+        value: "10"

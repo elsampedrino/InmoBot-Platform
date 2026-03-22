@@ -51,6 +51,7 @@ class PromptService:
         search_result: SearchResult | None,
         item_detail: dict | None,
         is_first_turn: bool,
+        kb_chunks: list[dict] | None = None,
     ) -> tuple[str, list[dict]]:
         """
         Entry point principal.
@@ -68,6 +69,7 @@ class PromptService:
             search_result=search_result,
             item_detail=item_detail,
             is_first_turn=is_first_turn,
+            kb_chunks=kb_chunks or [],
         )
         system_prompt = base_system
         if route_block:
@@ -130,6 +132,7 @@ class PromptService:
         search_result: SearchResult | None,
         item_detail: dict | None,
         is_first_turn: bool,
+        kb_chunks: list[dict] | None = None,
     ) -> str | None:
         """Despacha al bloque de tarea correspondiente a la ruta."""
         if route == Route.SALUDO:
@@ -152,7 +155,7 @@ class PromptService:
             return self._block_visita(cfg, turn.conversation_state)
 
         if route == Route.PREGUNTA_KB:
-            return self._block_kb()
+            return self._block_kb(kb_chunks or [])
 
         if route == Route.FALLBACK:
             return self._block_fallback()
@@ -280,13 +283,47 @@ class PromptService:
             "confirme fecha y horario."
         )
 
-    def _block_kb(self) -> str:
+    def _block_kb(self, chunks: list[dict]) -> str:
+        """
+        Bloque de tarea para preguntas institucionales.
+
+        Si hay chunks: inyecta el contenido como fuente de verdad.
+        Si no hay chunks: instrucción explícita de no inventar información.
+
+        Principio: Sonnet solo redacta, la KB es la fuente.
+        """
+        if not chunks:
+            return (
+                "## TAREA\n"
+                "El usuario tiene una pregunta sobre la empresa o el proceso inmobiliario. "
+                "No se encontró información específica en la base de conocimiento. "
+                "Respondé con honestidad que no tenés esa información disponible en este momento "
+                "y sugerí que contacte directamente con la inmobiliaria para obtener una respuesta precisa. "
+                "No inventes ni supongas datos, precios ni condiciones."
+            )
+
+        # Formatear chunks como contexto numerado
+        context_parts = []
+        for i, chunk in enumerate(chunks, 1):
+            doc_titulo = chunk.get("doc_titulo", "Información general")
+            texto = chunk.get("chunk_texto", "").strip()
+            context_parts.append(f"[Fuente {i} — {doc_titulo}]\n{texto}")
+
+        context_str = "\n\n".join(context_parts)
+
         return (
             "## TAREA\n"
-            "El usuario tiene una pregunta general sobre inmobiliaria o sobre la empresa. "
-            "Respondé con la información disponible en el contexto. "
-            "Si no tenés la información específica, indicalo honestamente y sugerí "
-            "que se contacte directamente con la inmobiliaria."
+            "El usuario tiene una pregunta sobre la empresa o el proceso inmobiliario. "
+            "Respondé usando EXCLUSIVAMENTE la información de la base de conocimiento que se provee. "
+            "No agregues información que no esté en estos fragmentos.\n\n"
+            "## BASE DE CONOCIMIENTO\n"
+            f"{context_str}\n\n"
+            "## INSTRUCCIONES\n"
+            "- Basá tu respuesta únicamente en la información provista arriba\n"
+            "- Si la información no cubre completamente la pregunta, indicalo con honestidad\n"
+            "- No inventes datos, precios, porcentajes ni condiciones que no estén en el texto\n"
+            "- Respondé de forma natural y conversacional, no como una lectura literal del texto\n"
+            "- Si hay información de varias fuentes, integrala en una respuesta coherente"
         )
 
     def _block_fallback(self) -> str:

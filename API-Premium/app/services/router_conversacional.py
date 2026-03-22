@@ -370,9 +370,15 @@ class RouterConversacional:
         elif route == Route.CONTACTAR_ASESOR:
             actions.register_conversion_event = True
             actions.conversion_event = ConversionEvent.ASESOR_REQUESTED
+            # Si el mensaje ya incluye datos de contacto → capturar lead de inmediato
+            if _PAT_CONTACTO_DATOS.search(mensaje):
+                actions.create_or_update_lead = True
+                actions.conversion_event = ConversionEvent.LEAD_CREATED
         elif route == Route.AGENDAR_VISITA:
             actions.register_conversion_event = True
             actions.conversion_event = ConversionEvent.VISITA_REQUESTED
+            if _PAT_CONTACTO_DATOS.search(mensaje):
+                actions.create_or_update_lead = True
 
         logger.info(
             "router_decision_by_haiku",
