@@ -101,9 +101,10 @@ class ChatOrchestrator:
 
             is_first_turn = turn.conversation_state.conversation_stage == ConversationStage.INICIO
 
-            # ── 5+6. Parser + Search (si la ruta lo requiere) ──────────────────
+            # ── 5+6. Parser + Search / KB (según la ruta) ─────────────────────
             search_result: SearchResult | None = None
             item_detail: dict | None = None
+            kb_chunks: list[dict] = []
 
             if decision.actions.run_search:
                 is_refinement = decision.route == Route.REFINAR_BUSQUEDA
@@ -128,6 +129,12 @@ class ChatOrchestrator:
                         id_empresa=tenant_config.id_empresa,
                         id_item=item_ref,
                     )
+            elif decision.route == Route.PREGUNTA_KB:
+                kb_chunks = await self.kb_service.search(
+                    id_empresa=tenant_config.id_empresa,
+                    id_rubro=tenant_config.id_rubro,
+                    query=request.mensaje,
+                )
 
             # ── 7. Actualizar estado ───────────────────────────────────────────
             new_state = self._advance_state(
@@ -147,6 +154,7 @@ class ChatOrchestrator:
                 is_first_turn=is_first_turn,
                 search_result=search_result,
                 item_detail=item_detail,
+                kb_chunks=kb_chunks,
             )
 
             # ── 9. Persistir mensaje del bot ───────────────────────────────────
@@ -223,6 +231,7 @@ class ChatOrchestrator:
         is_first_turn: bool,
         search_result,
         item_detail,
+        kb_chunks: list[dict] | None = None,
     ) -> tuple[str, dict]:
         """
         Intenta redactar la respuesta con Sonnet vía PromptService + AIService.
@@ -236,13 +245,17 @@ class ChatOrchestrator:
           - sonnet_tokens_in: int   — tokens consumidos (si éxito)
           - sonnet_tokens_out: int
           - sonnet_ms: int          — latencia Sonnet (si éxito)
+          - kb_chunks_used: int     — chunks KB inyectados al prompt (si ruta KB)
+          - kb_fallback: bool       — True si KB no encontró contenido
         """
+        chunks = kb_chunks or []
+
         # Rama: IA deshabilitada para este tenant
         if not cfg.ia_habilitada:
             respuesta = self._build_response(
                 decision=decision, turn=turn, cfg=cfg, state=state,
                 is_first_turn=is_first_turn, search_result=search_result,
-                item_detail=item_detail,
+                item_detail=item_detail, kb_chunks=chunks,
             )
             return respuesta, {"sonnet_fallback": True, "sonnet_reason": "ia_disabled"}
 
@@ -255,6 +268,7 @@ class ChatOrchestrator:
                 search_result=search_result,
                 item_detail=item_detail,
                 is_first_turn=is_first_turn,
+                kb_chunks=chunks,
             )
             ai_result = await self.ai_service.generate_response(
                 system_prompt=system_prompt,
@@ -273,15 +287,22 @@ class ChatOrchestrator:
             respuesta = self._build_response(
                 decision=decision, turn=turn, cfg=cfg, state=state,
                 is_first_turn=is_first_turn, search_result=search_result,
-                item_detail=item_detail,
+                item_detail=item_detail, kb_chunks=chunks,
             )
-            return respuesta, {"sonnet_fallback": True, "sonnet_reason": "sonnet_error"}
+            return respuesta, {
+                "sonnet_fallback": True,
+                "sonnet_reason": "sonnet_error",
+                "kb_chunks_used": len(chunks),
+                "kb_fallback": len(chunks) == 0,
+            }
 
         return ai_result["text"], {
             "sonnet_fallback": False,
             "sonnet_tokens_in": ai_result["tokens_input"],
             "sonnet_tokens_out": ai_result["tokens_output"],
             "sonnet_ms": ai_result["response_time_ms"],
+            "kb_chunks_used": len(chunks),
+            "kb_fallback": len(chunks) == 0,
         }
 
     # ─── Estado conversacional ────────────────────────────────────────────────
@@ -371,6 +392,7 @@ class ChatOrchestrator:
         is_first_turn: bool,
         search_result: SearchResult | None,
         item_detail: dict | None,
+        kb_chunks: list[dict] | None = None,
     ) -> str:
         route = decision.route
         nombre = cfg.nombre_empresa
@@ -431,10 +453,16 @@ class ChatOrchestrator:
 
         # ── KB ─────────────────────────────────────────────────────────────────
         if route == Route.PREGUNTA_KB:
+            if kb_chunks:
+                # Hay contenido: extraer el primer chunk como respuesta base
+                primer_chunk = kb_chunks[0].get("chunk_texto", "")
+                return (
+                    f"{primer_chunk[:500]}\n\n"
+                    f"¿Necesitás más información? Podés consultarnos directamente en {nombre}."
+                )
             return (
-                "Esa es una muy buena pregunta. "
-                "[Respuesta desde base de conocimiento disponible en Fase 6]. "
-                f"Por ahora te recomiendo consultar directamente con {nombre}."
+                f"No encontré información específica sobre eso en nuestra base de datos. "
+                f"Te recomiendo contactar directamente a {nombre} para que un asesor pueda ayudarte."
             )
 
         # ── Fallback ───────────────────────────────────────────────────────────

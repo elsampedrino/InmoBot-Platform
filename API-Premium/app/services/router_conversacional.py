@@ -136,7 +136,7 @@ _PAT_KB = re.compile(
     r"c[oó]mo\s+funciona|"
     r"expensas?|"
     r"tr[aá]mites?|"
-    r"documentaci[oó]n\s+necesaria|"
+    r"documentaci[oó]n(\s+necesaria|\s+requerida)?|"
     r"cu[aá]nto\s+tarda|"
     r"preguntas?\s+frecuentes?|"
     r"condiciones?\s+(de\s+)?(venta|alquiler)|"
@@ -144,7 +144,20 @@ _PAT_KB = re.compile(
     r"qu[eé]\s+tengo\s+que\s+(hacer|presentar)|"
     r"escritura|"
     r"hipoteca|"
-    r"cr[eé]dito\s+hipotecario"
+    r"cr[eé]dito\s+hipotecario|"
+    r"comisi[oó]n|"
+    r"honorarios?|"
+    r"tasaci[oó]n|"
+    r"valuaci[oó]n|"
+    r"proceso\s+de\s+(compra|venta|alquiler)|"
+    r"formas?\s+de\s+pago|"
+    r"horario|"
+    r"cu[aá]ndo\s+atienden|"
+    r"garantias?|"
+    r"fianza|"
+    r"dep[oó]sito\s+de\s+garantia|"
+    r"seguro\s+de\s+cau[cç]i[oó]n|"
+    r"pasos?\s+para"
     r")\b",
     re.IGNORECASE,
 )
@@ -288,7 +301,22 @@ class RouterConversacional:
                 business_signals={},
             )
 
-        # ── 7. Nueva búsqueda en catálogo ─────────────────────────────────────
+        # ── 7. Pregunta informacional / KB (antes de búsqueda para tomar prioridad) ──
+        if _PAT_KB.search(msg):
+            return RouterDecision(
+                route=Route.PREGUNTA_KB,
+                intent="pregunta_informacional",
+                confidence=0.8,
+                used_ai_fallback=False,
+                entities={},
+                actions=RouterActions(
+                    run_kb_search=True,
+                    run_ai_response=True,
+                ),
+                business_signals={},
+            )
+
+        # ── 8. Nueva búsqueda en catálogo ─────────────────────────────────────
         if _PAT_BUSQUEDA.search(msg):
             return RouterDecision(
                 route=Route.BUSCAR_CATALOGO,
@@ -299,21 +327,6 @@ class RouterConversacional:
                 actions=RouterActions(
                     run_parser=True,
                     run_search=True,
-                    run_ai_response=True,
-                ),
-                business_signals={},
-            )
-
-        # ── 8. Pregunta informacional / KB ────────────────────────────────────
-        if _PAT_KB.search(msg):
-            return RouterDecision(
-                route=Route.PREGUNTA_KB,
-                intent="pregunta_informacional",
-                confidence=0.8,
-                used_ai_fallback=False,
-                entities={},
-                actions=RouterActions(
-                    run_kb_search=True,
                     run_ai_response=True,
                 ),
                 business_signals={},

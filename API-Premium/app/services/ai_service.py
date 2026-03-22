@@ -83,7 +83,14 @@ Respondé ÚNICAMENTE con JSON válido en este formato exacto, sin texto adicion
         )
 
         try:
-            data = json.loads(result["content"])
+            raw = result["content"].strip()
+            # Haiku a veces envuelve el JSON en markdown (```json ... ```)
+            if raw.startswith("```"):
+                raw = raw.split("```", 2)[1]
+                if raw.startswith("json"):
+                    raw = raw[4:]
+                raw = raw.rsplit("```", 1)[0].strip()
+            data = json.loads(raw)
             route_value = data.get("route", Route.FALLBACK.value)
             try:
                 route = Route(route_value)
