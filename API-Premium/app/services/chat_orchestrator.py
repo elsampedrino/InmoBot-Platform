@@ -1,19 +1,19 @@
 """
 ChatOrchestrator — orquestador del pipeline conversacional completo.
 
-Pipeline por turno (Fase 2 — mínimo funcional):
-  1. TenantResolver    → carga empresa + rubro + configuración
-  2. ContextManager    → carga o crea conversación + estado estructurado
+Pipeline Fase 3 (router real + context manager inteligente):
+  1. TenantResolver       → carga empresa + rubro + configuración
+  2. ContextManager       → carga o crea conversación + estado estructurado
   3. Persistir mensaje del usuario
-  4. Generar respuesta (dummy controlado en Fase 2)
-  5. Avanzar estado conversacional básico
-  6. Persistir mensaje del bot
-  7. Actualizar estado_json en contextos_conversacion
-  8. Devolver ChatMessageResponse
+  4. RouterConversacional → decide ruta por reglas determinísticas (Haiku como fallback)
+  5. Actualizar estado conversacional con la decisión del router
+  6. Generar respuesta (template contextualizado — Search Engine en Fase 4)
+  7. Persistir mensaje del bot
+  8. Actualizar estado_json y resumen en contextos_conversacion
+  9. Devolver ChatMessageResponse
 
-Pipeline completo (Fases 3+):
-  → Router Conversacional → Parser → Search Engine / KB / Leads
-  → Prompt Service → AI Service → Response Assembler → Analytics
+Pipeline completo (Fases 4+):
+  → QueryParser → SearchEngine / KB → PromptService → AIService → ResponseAssembler → Analytics
 """
 import time
 from datetime import datetime, timezone
@@ -23,8 +23,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.logging import get_logger
 from app.models.api_models import ChatMessageRequest, ChatMessageResponse
-from app.models.domain_models import ConversationStage, ConversationState, Route, TenantConfig
-from app.services.ai_service import AIService
+from app.models.domain_models import (
+    ConversationStage,
+    ConversationState,
+    Route,
+    RouterDecision,
+    TenantConfig,
+)
 from app.services.analytics_service import AnalyticsService
 from app.services.context_manager import ContextManager
 from app.services.kb_service import KBService
@@ -38,39 +43,18 @@ from app.services.tenant_resolver import TenantResolver
 
 logger = get_logger(__name__)
 
-# ─── Keywords para clasificación dummy ────────────────────────────────────────
-_GREETING_WORDS = {
-    "hola", "buenas", "buenos", "buen", "hi", "hello", "saludos", "hey",
-    "que tal", "qué tal", "como estas", "cómo estás",
-}
-_SEARCH_WORDS = {
-    "busco", "buscar", "quiero", "necesito", "tenés", "tienen", "hay",
-    "mostrame", "muéstrame", "ver", "casas", "departamentos", "lotes",
-    "campos", "propiedad", "propiedades",
-}
-_CONTACT_WORDS = {
-    "contactar", "llamar", "asesor", "teléfono", "telefono", "celular",
-    "whatsapp", "email", "correo", "quiero hablar", "me interesa",
-}
-_VISIT_WORDS = {
-    "visitar", "visita", "conocer", "ver en persona", "coordinar",
-    "cuando puedo", "cuándo puedo", "sacar turno",
-}
-
 
 class ChatOrchestrator:
     def __init__(self, db: AsyncSession) -> None:
         self.db = db
         self.tenant_resolver = TenantResolver(db)
         self.context_manager = ContextManager(db)
-        # Fases 3+: se implementan progresivamente
         self.router = RouterConversacional()
         self.query_parser = QueryParser()
         self.search_engine = SearchEngine(db)
         self.kb_service = KBService(db)
         self.leads_service = LeadsService(db)
         self.prompt_service = PromptService()
-        self.ai_service = AIService()
         self.response_assembler = ResponseAssembler()
         self.analytics_service = AnalyticsService(db)
 
@@ -100,30 +84,27 @@ class ChatOrchestrator:
                 raw_payload=request.metadata,
             )
 
-            # ── Paso 4: Clasificar y generar respuesta (dummy Fase 2) ──────────
-            route, respuesta = self._dummy_pipeline(
-                mensaje=request.mensaje,
-                state=turn.conversation_state,
-                tenant_config=tenant_config,
-            )
+            # ── Paso 4: Router conversacional real ─────────────────────────────
+            decision = await self.router.decide(turn)
 
-            # ── Paso 5: Avanzar estado conversacional básico ───────────────────
-            new_state = self._advance_state(
-                state=turn.conversation_state,
-                route=route,
-            )
+            # ── Paso 5: Actualizar estado con la decisión ──────────────────────
+            new_state = self._advance_state(turn.conversation_state, decision)
 
-            # ── Paso 6: Persistir mensaje del bot ──────────────────────────────
+            # ── Paso 6: Generar respuesta contextualizada ──────────────────────
+            respuesta = self._build_response(decision, turn, tenant_config, new_state)
+
+            # ── Paso 7: Persistir mensaje del bot ──────────────────────────────
             await self.context_manager.save_bot_message(
                 id_conversacion=turn.id_conversacion,
                 mensaje=respuesta,
             )
 
-            # ── Paso 7: Actualizar contexto ────────────────────────────────────
+            # ── Paso 8: Actualizar contexto ────────────────────────────────────
+            resumen = self._build_summary(new_state, request.mensaje, decision)
             await self.context_manager.update_context(
                 id_conversacion=turn.id_conversacion,
                 state=new_state,
-                resumen=self._build_basic_summary(turn.conversation_state, request.mensaje, route),
+                resumen=resumen,
             )
 
             elapsed_ms = int((time.monotonic() - start_ms) * 1000)
@@ -131,7 +112,10 @@ class ChatOrchestrator:
                 "turn_completed",
                 session_id=request.session_id,
                 empresa=request.empresa_slug,
-                route=route.value,
+                route=decision.route.value,
+                intent=decision.intent,
+                confidence=round(decision.confidence, 2),
+                used_ai_fallback=decision.used_ai_fallback,
                 stage=new_state.conversation_stage.value,
                 response_time_ms=elapsed_ms,
             )
@@ -141,10 +125,17 @@ class ChatOrchestrator:
                 conversation_id=turn.id_conversacion,
                 respuesta=respuesta,
                 items=[],
-                route=route.value,
+                route=decision.route.value,
                 stage=new_state.conversation_stage.value,
                 lead_capturado=new_state.lead_capturado,
-                metadata={"response_time_ms": elapsed_ms, "fase": 2},
+                metadata={
+                    "response_time_ms": elapsed_ms,
+                    "fase": 3,
+                    "intent": decision.intent,
+                    "confidence": round(decision.confidence, 2),
+                    "used_ai_fallback": decision.used_ai_fallback,
+                    "business_signals": decision.business_signals,
+                },
             )
 
         except HTTPException:
@@ -159,132 +150,174 @@ class ChatOrchestrator:
             )
             raise HTTPException(status_code=500, detail="Error interno del asistente.") from exc
 
-    # ─── Clasificación dummy (Fase 2) ─────────────────────────────────────────
-
-    def _dummy_pipeline(
-        self,
-        mensaje: str,
-        state: ConversationState,
-        tenant_config: TenantConfig,
-    ) -> tuple[Route, str]:
-        """
-        Clasificación simplificada y respuesta dummy para Fase 2.
-        Detecta la intención con keywords y devuelve un texto controlado.
-        El Router Conversacional real reemplazará esto en Fase 3.
-        """
-        route = self._classify_route_dummy(mensaje, state)
-        respuesta = self._build_dummy_response(route, mensaje, tenant_config)
-        return route, respuesta
-
-    def _classify_route_dummy(
-        self, mensaje: str, state: ConversationState
-    ) -> Route:
-        """
-        Clasificación por keywords. Aplica prioridad igual que el router real:
-        visita > contacto > búsqueda > saludo > fallback.
-        """
-        words = set(mensaje.lower().split())
-
-        # Primer mensaje siempre es saludo si no hay contexto previo
-        if state.conversation_stage == ConversationStage.INICIO:
-            return Route.SALUDO
-
-        if words & _VISIT_WORDS:
-            return Route.AGENDAR_VISITA
-        if words & _CONTACT_WORDS:
-            return Route.CONTACTAR_ASESOR
-        if words & _SEARCH_WORDS:
-            return Route.BUSCAR_CATALOGO
-        if words & _GREETING_WORDS:
-            return Route.SALUDO
-
-        return Route.FALLBACK
-
-    def _build_dummy_response(
-        self, route: Route, mensaje: str, cfg: TenantConfig
-    ) -> str:
-        """
-        Respuestas dummy por ruta. Reemplazado por AIService en Fase 5.
-        """
-        nombre = cfg.nombre_empresa
-
-        responses = {
-            Route.SALUDO: (
-                f"¡Hola! Soy el asistente virtual de {nombre}. "
-                f"Estoy aquí para ayudarte a encontrar la propiedad ideal. "
-                f"¿Qué tipo de propiedad estás buscando y en qué zona?"
-            ),
-            Route.BUSCAR_CATALOGO: (
-                f"Entendido, voy a buscar propiedades que se ajusten a lo que necesitás. "
-                f"[Búsqueda real disponible en Fase 4 — Search Engine]. "
-                f"¿Tenés alguna preferencia de zona o precio?"
-            ),
-            Route.REFINAR_BUSQUEDA: (
-                "Perfecto, voy a ajustar los resultados con ese filtro. "
-                "[Refinamiento disponible en Fase 4]."
-            ),
-            Route.VER_DETALLE_ITEM: (
-                "Te muestro más detalles de esa propiedad. "
-                "[Detalle disponible en Fase 4]."
-            ),
-            Route.CONTACTAR_ASESOR: (
-                f"Claro, con gusto te pongo en contacto con un asesor de {nombre}. "
-                f"¿Podés dejarnos tu nombre y teléfono para que se comuniquen a la brevedad?"
-            ),
-            Route.AGENDAR_VISITA: (
-                "¡Genial! Para coordinar la visita necesito algunos datos. "
-                "¿Cuál es tu nombre y teléfono de contacto?"
-            ),
-            Route.PREGUNTA_KB: (
-                f"Esa es una excelente pregunta. "
-                f"[Respuesta desde Knowledge Base disponible en Fase 6]. "
-                f"Por ahora te recomiendo contactar directamente a {nombre}."
-            ),
-            Route.FALLBACK: (
-                "Entendido. ¿Podés contarme un poco más sobre lo que estás buscando? "
-                "Así puedo ayudarte mejor."
-            ),
-        }
-        return responses.get(route, responses[Route.FALLBACK])
-
     # ─── Estado conversacional ────────────────────────────────────────────────
 
     def _advance_state(
-        self, state: ConversationState, route: Route
+        self, state: ConversationState, decision: RouterDecision
     ) -> ConversationState:
         """
-        Avanza el estado conversacional según la ruta detectada.
-        Lógica básica para Fase 2; el ContextManager completo llega en Fase 3.
+        Avanza el estado conversacional según la decisión del router.
+        Actualiza flags de señales comerciales y esperas operativas.
         """
         now_iso = datetime.now(timezone.utc).isoformat()
         state.last_user_message_at = now_iso
-        state.route_actual = route.value
+        state.intent_previa = state.route_actual  # guardar intención anterior
+        state.route_actual = decision.route.value
 
-        # Transiciones de etapa
+        # Transición de etapa: inicio → exploración en primer turno real
         if state.conversation_stage == ConversationStage.INICIO:
             state.conversation_stage = ConversationStage.EXPLORACION
 
-        if route in (Route.BUSCAR_CATALOGO, Route.REFINAR_BUSQUEDA, Route.VER_DETALLE_ITEM):
-            state.conversation_stage = ConversationStage.EXPLORACION
+        route = decision.route
 
+        # Exploración
+        if route in (Route.BUSCAR_CATALOGO, Route.REFINAR_BUSQUEDA, Route.PREGUNTA_KB):
+            state.conversation_stage = ConversationStage.EXPLORACION
+            # Limpiar esperas operativas si el usuario retoma búsqueda
+            state.esperando_contacto = False
+            state.esperando_visita = False
+
+        # Interés en item específico
         if route == Route.VER_DETALLE_ITEM:
             state.conversation_stage = ConversationStage.INTERES
+            item_ref = decision.entities.get("item_referenciado")
+            if item_ref:
+                state.ultimo_item_referenciado = item_ref
 
-        if route in (Route.CONTACTAR_ASESOR, Route.AGENDAR_VISITA, Route.CAPTURAR_LEAD):
+        # Conversión: contacto
+        if route == Route.CONTACTAR_ASESOR:
             state.conversation_stage = ConversationStage.CONVERSION
-            state.advisor_requested = route == Route.CONTACTAR_ASESOR
-            state.visit_requested = route == Route.AGENDAR_VISITA
+            state.advisor_requested = True
             state.esperando_contacto = True
+
+        # Conversión: visita
+        if route == Route.AGENDAR_VISITA:
+            state.conversation_stage = ConversationStage.CONVERSION
+            state.visit_requested = True
+            state.esperando_visita = True
+
+        # Datos de contacto provistos: cerrar espera + marcar lead
+        if decision.intent == "datos_de_contacto_provistos":
+            state.lead_capturado = True
+            state.esperando_contacto = False
+            state.esperando_visita = False
 
         return state
 
-    def _build_basic_summary(
-        self, state: ConversationState, mensaje: str, route: Route
+    # ─── Respuestas contextualizadas ──────────────────────────────────────────
+
+    def _build_response(
+        self,
+        decision: RouterDecision,
+        turn,
+        cfg: TenantConfig,
+        state: ConversationState,
+    ) -> str:
+        """
+        Genera una respuesta contextualizada basada en la ruta y el estado.
+        Template enriquecido con contexto — AIService (Sonnet) en Fase 5.
+        """
+        route = decision.route
+        nombre = cfg.nombre_empresa
+
+        if route == Route.SALUDO:
+            if decision.intent == "primer_mensaje":
+                return (
+                    f"¡Hola! Soy el asistente virtual de {nombre}. "
+                    f"Estoy acá para ayudarte a encontrar la propiedad ideal. "
+                    f"¿Qué tipo de propiedad estás buscando y en qué zona?"
+                )
+            return (
+                f"¡Hola de nuevo! ¿En qué puedo ayudarte hoy? "
+                f"Podés pedirme propiedades, filtrar por precio o zona, o consultar cualquier duda."
+            )
+
+        if route == Route.BUSCAR_CATALOGO:
+            return (
+                "Entendido, busco propiedades que se ajusten a lo que necesitás. "
+                "[Búsqueda en catálogo disponible en Fase 4]. "
+                "¿Tenés alguna preferencia de zona o rango de precio?"
+            )
+
+        if route == Route.REFINAR_BUSQUEDA:
+            filtros = state.filters_activos
+            detalle = (
+                f" (filtros actuales: {', '.join(f'{k}: {v}' for k, v in filtros.items())})"
+                if filtros
+                else ""
+            )
+            return (
+                f"Perfecto, ajusto los resultados con ese criterio{detalle}. "
+                "[Refinamiento disponible en Fase 4]. "
+                "¿Hay algo más que quieras cambiar?"
+            )
+
+        if route == Route.VER_DETALLE_ITEM:
+            item_ref = decision.entities.get("item_referenciado")
+            # Buscar título en items_recientes_resumen si existe
+            titulo = None
+            if item_ref:
+                for it in state.items_recientes_resumen:
+                    if it.id_item == item_ref:
+                        titulo = it.titulo
+                        break
+            if titulo:
+                return (
+                    f"Te muestro más detalles de \"{titulo}\". "
+                    "[Detalle completo disponible en Fase 4]. "
+                    "¿Querés coordinar una visita o hablar con un asesor?"
+                )
+            return (
+                "Te muestro más detalles de esa propiedad. "
+                "[Detalle completo disponible en Fase 4]. "
+                "¿Querés coordinar una visita o hablar con un asesor?"
+            )
+
+        if route == Route.CONTACTAR_ASESOR:
+            if decision.intent == "datos_de_contacto_provistos":
+                return (
+                    "¡Perfecto! Ya recibimos tus datos. "
+                    f"Un asesor de {nombre} se va a comunicar con vos a la brevedad. "
+                    "¿Hay algo más en lo que pueda ayudarte?"
+                )
+            return (
+                f"Con gusto te conecto con un asesor de {nombre}. "
+                "¿Podés dejarnos tu nombre y número de teléfono para que se comuniquen a la brevedad?"
+            )
+
+        if route == Route.AGENDAR_VISITA:
+            if decision.intent == "datos_de_contacto_provistos":
+                return (
+                    "¡Perfecto! Ya recibimos tus datos. "
+                    f"Un asesor de {nombre} se va a comunicar con vos para confirmar la visita. "
+                    "¿Hay algo más en lo que pueda ayudarte?"
+                )
+            return (
+                "¡Genial que quieras conocer la propiedad en persona! "
+                "Para coordinar la visita necesito tu nombre y número de contacto."
+            )
+
+        if route == Route.PREGUNTA_KB:
+            return (
+                "Esa es una muy buena pregunta. "
+                "[Respuesta desde base de conocimiento disponible en Fase 6]. "
+                f"Por ahora te recomiendo consultar directamente con {nombre} para obtener todos los detalles."
+            )
+
+        # FALLBACK
+        return (
+            "Entendido. ¿Podés contarme un poco más sobre lo que estás buscando? "
+            "Así puedo ayudarte mejor."
+        )
+
+    # ─── Resumen del turno ────────────────────────────────────────────────────
+
+    def _build_summary(
+        self, state: ConversationState, mensaje: str, decision: RouterDecision
     ) -> str | None:
         """
-        Genera un resumen textual básico del turno para resumen_contexto.
-        El ContextManager con IA lo mejorará en Fases siguientes.
-        Devuelve None si la etapa es INICIO (no hay nada relevante aún).
+        Genera un resumen textual del turno para resumen_contexto.
+        Devuelve None en el primer turno (INICIO) donde no hay contexto aún.
         """
         if state.conversation_stage == ConversationStage.INICIO:
             return None
@@ -296,8 +329,21 @@ class ChatOrchestrator:
             ConversationStage.CERRADA: "conversación cerrada",
         }.get(state.conversation_stage, "")
 
+        filtros_str = (
+            f" Filtros activos: {state.filters_activos}."
+            if state.filters_activos
+            else ""
+        )
+        signals_str = ""
+        if state.advisor_requested:
+            signals_str += " Solicitó asesor."
+        if state.visit_requested:
+            signals_str += " Solicitó visita."
+        if state.lead_capturado:
+            signals_str += " Lead capturado."
+
         return (
             f"El usuario está {stage_label}. "
-            f"Última intención: {route.value}. "
-            f"Último mensaje: \"{mensaje[:120]}\""
+            f"Última ruta: {decision.route.value} (intent: {decision.intent}). "
+            f"Último mensaje: \"{mensaje[:120]}\".{filtros_str}{signals_str}"
         )

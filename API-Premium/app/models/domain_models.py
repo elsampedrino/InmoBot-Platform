@@ -184,6 +184,7 @@ class RouterDecision:
     used_ai_fallback: bool
     entities: dict[str, Any]
     actions: RouterActions
+    business_signals: dict[str, Any] = field(default_factory=dict)
 
 
 # ─── CONTEXTO DEL TURNO ───────────────────────────────────────────────────────

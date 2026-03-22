@@ -15,6 +15,7 @@ No debe:
 - Decidir la arquitectura del flujo
 - Acceder a datos sin contexto ya preparado
 """
+import json
 import time
 
 import anthropic
@@ -40,8 +41,67 @@ class AIService:
         Usa Haiku para clasificar la intención cuando las reglas no alcanzan.
         Devuelve: {"route": Route, "intent": str, "confidence": float, "entities": dict}
         """
-        # TODO Fase 5
-        raise NotImplementedError
+        routes_str = ", ".join(r.value for r in candidate_routes)
+        has_active_search = bool(state.filters_activos or state.items_recientes)
+
+        system = f"""Sos un clasificador de intención para un chatbot inmobiliario argentino.
+Analizá el mensaje del usuario y determiná la ruta más apropiada.
+
+Rutas disponibles: {routes_str}
+
+Contexto actual:
+- Etapa: {state.conversation_stage.value}
+- Ruta anterior: {state.route_actual or "ninguna"}
+- Búsqueda activa: {"sí" if has_active_search else "no"}
+- Items mostrados previamente: {len(state.items_recientes)}
+- Esperando contacto: {"sí" if state.esperando_contacto else "no"}
+- Esperando visita: {"sí" if state.esperando_visita else "no"}
+
+Respondé ÚNICAMENTE con JSON válido en este formato exacto, sin texto adicional:
+{{
+  "route": "<ruta elegida de las disponibles>",
+  "intent": "<descripción breve de la intención en español>",
+  "confidence": <número entre 0.0 y 1.0>,
+  "entities": {{}}
+}}"""
+
+        result = await self._call_haiku(
+            system=system,
+            messages=[{"role": "user", "content": mensaje}],
+            max_tokens=200,
+        )
+
+        try:
+            data = json.loads(result["content"])
+            route_value = data.get("route", Route.FALLBACK.value)
+            try:
+                route = Route(route_value)
+            except ValueError:
+                route = Route.FALLBACK
+
+            logger.debug(
+                "haiku_intent_classified",
+                route=route.value,
+                confidence=data.get("confidence"),
+                tokens_input=result["tokens_input"],
+                tokens_output=result["tokens_output"],
+                response_time_ms=result["response_time_ms"],
+            )
+
+            return {
+                "route": route,
+                "intent": data.get("intent", "desconocido"),
+                "confidence": float(data.get("confidence", 0.5)),
+                "entities": data.get("entities", {}),
+            }
+        except (json.JSONDecodeError, KeyError, ValueError) as exc:
+            logger.warning("haiku_intent_parse_error", error=str(exc), raw=result["content"])
+            return {
+                "route": Route.FALLBACK,
+                "intent": "clasificación_fallida",
+                "confidence": 0.0,
+                "entities": {},
+            }
 
     async def generate_response(
         self,
