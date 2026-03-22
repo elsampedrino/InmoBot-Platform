@@ -136,6 +136,7 @@ class Item(Base):
     id_item: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     id_empresa: Mapped[int] = mapped_column(Integer, ForeignKey("empresas.id_empresa", ondelete="CASCADE"), nullable=False)
     id_rubro: Mapped[int] = mapped_column(Integer, ForeignKey("rubros.id_rubro", ondelete="RESTRICT"), nullable=False)
+    external_id: Mapped[str] = mapped_column(Text, nullable=False)   # ID externo (ej: "PROP-001")
     tipo: Mapped[str] = mapped_column(Text, nullable=False)
     categoria: Mapped[str | None] = mapped_column(Text)
     titulo: Mapped[str] = mapped_column(Text, nullable=False)
