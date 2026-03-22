@@ -44,11 +44,12 @@ _PAT_VISITA = re.compile(
     r"\b("
     r"quiero\s+(visitar(la)?|ver\s+en\s+persona|conocer(la)?|verla)|"
     r"puedo\s+(visitar|ver|ir\s+a\s+verla?)|"
-    r"coordinar\s+(la\s+)?visita|"
+    r"coordinar\s+(?:la\s+|una\s+)?visita|"
     r"sacar\s+turno|"
     r"cuando\s+puedo\s+(ir|verla?|visitarla?)|"
     r"me\s+gustar[ií]a\s+(ir|verla?|visitarla?)|"
-    r"posibilidad\s+de\s+(visitar|ver\s+la)"
+    r"posibilidad\s+de\s+(visitar|ver\s+la)|"
+    r"quiero\s+(?:conocer|ver)\s+(?:el|la|un[ao]?)\s+(?:departamento|casa|lote|campo|propiedad|inmueble)"
     r")\b",
     re.IGNORECASE,
 )
@@ -204,19 +205,7 @@ class RouterConversacional:
         """
         msg = mensaje.strip()
 
-        # ── 1. Primer turno: siempre saludo ───────────────────────────────────
-        if state.conversation_stage == ConversationStage.INICIO:
-            return RouterDecision(
-                route=Route.SALUDO,
-                intent="primer_mensaje",
-                confidence=1.0,
-                used_ai_fallback=False,
-                entities={},
-                actions=RouterActions(run_ai_response=True),
-                business_signals={},
-            )
-
-        # ── 2. Bot esperando datos de contacto: capturar si los provee ────────
+        # ── 1. Bot esperando datos de contacto: capturar si los provee ────────
         if (state.esperando_contacto or state.esperando_visita) and _PAT_CONTACTO_DATOS.search(msg):
             route = Route.AGENDAR_VISITA if state.esperando_visita else Route.CONTACTAR_ASESOR
             return RouterDecision(

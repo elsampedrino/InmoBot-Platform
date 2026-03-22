@@ -88,10 +88,11 @@ class ChatOrchestrator:
             decision = await self.router.decide(turn)
 
             # ── Paso 5: Actualizar estado con la decisión ──────────────────────
+            is_first_turn = turn.conversation_state.conversation_stage == ConversationStage.INICIO
             new_state = self._advance_state(turn.conversation_state, decision)
 
             # ── Paso 6: Generar respuesta contextualizada ──────────────────────
-            respuesta = self._build_response(decision, turn, tenant_config, new_state)
+            respuesta = self._build_response(decision, turn, tenant_config, new_state, is_first_turn)
 
             # ── Paso 7: Persistir mensaje del bot ──────────────────────────────
             await self.context_manager.save_bot_message(
@@ -212,6 +213,7 @@ class ChatOrchestrator:
         turn,
         cfg: TenantConfig,
         state: ConversationState,
+        is_first_turn: bool = False,
     ) -> str:
         """
         Genera una respuesta contextualizada basada en la ruta y el estado.
@@ -221,7 +223,7 @@ class ChatOrchestrator:
         nombre = cfg.nombre_empresa
 
         if route == Route.SALUDO:
-            if decision.intent == "primer_mensaje":
+            if is_first_turn:
                 return (
                     f"¡Hola! Soy el asistente virtual de {nombre}. "
                     f"Estoy acá para ayudarte a encontrar la propiedad ideal. "
@@ -233,8 +235,9 @@ class ChatOrchestrator:
             )
 
         if route == Route.BUSCAR_CATALOGO:
+            intro = f"Hola, soy el asistente de {nombre}. " if is_first_turn else ""
             return (
-                "Entendido, busco propiedades que se ajusten a lo que necesitás. "
+                f"{intro}Entendido, busco propiedades que se ajusten a lo que necesitás. "
                 "[Búsqueda en catálogo disponible en Fase 4]. "
                 "¿Tenés alguna preferencia de zona o rango de precio?"
             )
