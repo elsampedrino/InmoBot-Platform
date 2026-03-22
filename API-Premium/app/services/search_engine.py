@@ -223,6 +223,8 @@ class SearchEngine:
             atributos=atributos,
             fotos=fotos,
             destacado=row.get("destacado", False),
+            tipo=row.get("tipo") or "",
+            categoria=row.get("categoria") or "",
         )
 
     # ─── Facetas ──────────────────────────────────────────────────────────────

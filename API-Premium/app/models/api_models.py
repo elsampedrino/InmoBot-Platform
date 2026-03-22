@@ -22,6 +22,8 @@ class ItemBrief(BaseModel):
     """Resumen de un item para incluir en la respuesta conversacional."""
     id_item: str
     titulo: str
+    tipo: str = ""      # 'casa' | 'departamento' | 'local' | etc.
+    categoria: str = "" # 'venta' | 'alquiler' | etc.
     precio: float | None = None
     moneda: str | None = None
     descripcion_corta: str | None = None
@@ -44,11 +46,14 @@ class ChatMessageResponse(BaseModel):
 # ─── WEBHOOKS ─────────────────────────────────────────────────────────────────
 
 class WebhookWidgetPayload(BaseModel):
-    """Payload recibido desde el widget web."""
-    empresa_slug: str
-    session_id: str
-    mensaje: str
-    metadata: dict[str, Any] = {}
+    """
+    Payload recibido desde el widget web (formato legacy).
+    Usado solo por webhook_widget.py; la traducción la hace widget_legacy.py.
+    """
+    message: str = Field(..., min_length=1, max_length=2000)
+    sessionId: str
+    timestamp: str = Field(default="")
+    repo: str = Field(default="")
 
 
 class WebhookWhatsAppPayload(BaseModel):

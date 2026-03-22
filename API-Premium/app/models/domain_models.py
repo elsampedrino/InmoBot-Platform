@@ -90,6 +90,8 @@ class ItemCandidate:
     atributos: dict[str, Any]
     fotos: list[str]
     destacado: bool
+    tipo: str = ""        # columna top-level: 'casa' | 'departamento' | etc.
+    categoria: str = ""   # columna top-level: 'venta' | 'alquiler' | etc.
     score: float = 0.0
 
 

@@ -828,6 +828,8 @@ class ChatOrchestrator:
         return ItemBrief(
             id_item=item.id_item,
             titulo=item.titulo,
+            tipo=item.tipo,
+            categoria=item.categoria,
             precio=item.precio,
             moneda=item.moneda,
             descripcion_corta=item.descripcion_corta,
