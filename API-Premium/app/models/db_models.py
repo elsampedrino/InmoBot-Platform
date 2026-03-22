@@ -363,41 +363,51 @@ class ContextoConversacion(Base):
 
 
 # ─── PREMIUM_CHAT_LOGS ────────────────────────────────────────────────────────
+# Schema existente en DB (no figura en el DDL original).
 
 class PremiumChatLog(Base):
     __tablename__ = "premium_chat_logs"
 
-    id_log: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    created_at: Mapped[Any] = mapped_column(DateTime(timezone=True), server_default=func.now())
     id_empresa: Mapped[int] = mapped_column(Integer, ForeignKey("empresas.id_empresa", ondelete="CASCADE"), nullable=False)
+    id_rubro: Mapped[int] = mapped_column(Integer, ForeignKey("rubros.id_rubro", ondelete="RESTRICT"), nullable=False)
     id_conversacion: Mapped[int | None] = mapped_column(Integer, ForeignKey("conversaciones.id_conversacion", ondelete="SET NULL"))
-    session_id: Mapped[str | None] = mapped_column(Text)
-    canal: Mapped[str | None] = mapped_column(Text)
-    route_elegida: Mapped[str | None] = mapped_column(Text)
-    intent_detectada: Mapped[str | None] = mapped_column(Text)
-    hubo_fallback_ia: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
-    confidence_score: Mapped[float | None] = mapped_column(Float)
-    model_usado: Mapped[str | None] = mapped_column(Text)
+    id_lead: Mapped[int | None] = mapped_column(Integer, ForeignKey("leads.id_lead", ondelete="SET NULL"))
+    canal: Mapped[str] = mapped_column(Text, nullable=False)
+    session_id: Mapped[str | None] = mapped_column(String(255))
+    consulta: Mapped[str] = mapped_column(Text, nullable=False)
+    idioma: Mapped[str | None] = mapped_column(String(10))
+    success: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+    error_type: Mapped[str | None] = mapped_column(String(50))
+    response_time_ms: Mapped[int | None] = mapped_column(Integer)
+    model: Mapped[str | None] = mapped_column(Text)
     tokens_input: Mapped[int | None] = mapped_column(Integer)
     tokens_output: Mapped[int | None] = mapped_column(Integer)
-    response_time_ms: Mapped[int | None] = mapped_column(Integer)
-    items_mostrados_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
-    created_at: Mapped[Any] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    tokens_total: Mapped[int | None] = mapped_column(Integer)
+    items_mostrados: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    repo: Mapped[str | None] = mapped_column(String(200))
 
     __table_args__ = (
         Index("idx_pcl_empresa_fecha", "id_empresa", "created_at"),
     )
 
-    items: Mapped[list["PremiumChatLogItem"]] = relationship("PremiumChatLogItem", back_populates="chat_log", cascade="all, delete-orphan")
+    items: Mapped[list["PremiumChatLogItem"]] = relationship(
+        "PremiumChatLogItem", back_populates="chat_log", cascade="all, delete-orphan"
+    )
 
 
 class PremiumChatLogItem(Base):
     __tablename__ = "premium_chat_log_items"
 
-    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    id_log: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("premium_chat_logs.id_log", ondelete="CASCADE"), nullable=False)
-    id_item: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("items.id_item", ondelete="CASCADE"), nullable=False)
-    posicion: Mapped[int] = mapped_column(Integer, nullable=False)
-    created_at: Mapped[Any] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    id_chat_log: Mapped[int] = mapped_column(
+        Integer, ForeignKey("premium_chat_logs.id", ondelete="CASCADE"), primary_key=True
+    )
+    id_item: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("items.id_item", ondelete="CASCADE"), primary_key=True
+    )
+    rank: Mapped[int | None] = mapped_column(Integer)
+    score: Mapped[float | None] = mapped_column(Numeric)
 
     chat_log: Mapped["PremiumChatLog"] = relationship("PremiumChatLog", back_populates="items")
 
@@ -407,30 +417,38 @@ class PremiumChatLogItem(Base):
 class PremiumConversionLog(Base):
     __tablename__ = "premium_conversion_logs"
 
-    id_conversion: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    created_at: Mapped[Any] = mapped_column(DateTime(timezone=True), server_default=func.now())
     id_empresa: Mapped[int] = mapped_column(Integer, ForeignKey("empresas.id_empresa", ondelete="CASCADE"), nullable=False)
+    id_rubro: Mapped[int] = mapped_column(Integer, ForeignKey("rubros.id_rubro", ondelete="RESTRICT"), nullable=False)
     id_conversacion: Mapped[int | None] = mapped_column(Integer, ForeignKey("conversaciones.id_conversacion", ondelete="SET NULL"))
     id_lead: Mapped[int | None] = mapped_column(Integer, ForeignKey("leads.id_lead", ondelete="SET NULL"))
-    # Ej: 'lead_created', 'asesor_requested', 'visita_requested', 'item_detail_viewed', 'contacto_confirmado'
-    evento: Mapped[str] = mapped_column(Text, nullable=False)
-    route: Mapped[str | None] = mapped_column(Text)
-    metadata_: Mapped[dict] = mapped_column("metadata", JSONB, nullable=False, default=dict)
-    created_at: Mapped[Any] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    canal: Mapped[str] = mapped_column(Text, nullable=False)
+    session_id: Mapped[str | None] = mapped_column(String(255))
+    event_type: Mapped[str] = mapped_column(Text, nullable=False)
+    payload: Mapped[dict] = mapped_column(JSONB, nullable=False, default=dict)
+    repo: Mapped[str | None] = mapped_column(String(200))
 
     __table_args__ = (
         Index("idx_pcvl_empresa_fecha", "id_empresa", "created_at"),
-        Index("idx_pcvl_empresa_evento", "id_empresa", "evento"),
+        Index("idx_pcvl_empresa_evento", "id_empresa", "event_type"),
     )
 
-    items: Mapped[list["PremiumConversionLogItem"]] = relationship("PremiumConversionLogItem", back_populates="conversion_log", cascade="all, delete-orphan")
+    items: Mapped[list["PremiumConversionLogItem"]] = relationship(
+        "PremiumConversionLogItem", back_populates="conversion_log", cascade="all, delete-orphan"
+    )
 
 
 class PremiumConversionLogItem(Base):
     __tablename__ = "premium_conversion_log_items"
 
-    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    id_conversion: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("premium_conversion_logs.id_conversion", ondelete="CASCADE"), nullable=False)
-    id_item: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("items.id_item", ondelete="CASCADE"), nullable=False)
-    created_at: Mapped[Any] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    id_conversion_log: Mapped[int] = mapped_column(
+        Integer, ForeignKey("premium_conversion_logs.id", ondelete="CASCADE"), primary_key=True
+    )
+    id_item: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("items.id_item", ondelete="CASCADE"), primary_key=True
+    )
 
-    conversion_log: Mapped["PremiumConversionLog"] = relationship("PremiumConversionLog", back_populates="items")
+    conversion_log: Mapped["PremiumConversionLog"] = relationship(
+        "PremiumConversionLog", back_populates="items"
+    )

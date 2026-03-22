@@ -129,14 +129,13 @@ class ChatLogResponse(BaseModel):
     id_empresa: int
     session_id: str | None
     canal: str | None
-    route_elegida: str | None
-    intent_detectada: str | None
-    hubo_fallback_ia: bool
-    model_usado: str | None
+    consulta: str | None
+    success: bool
+    model: str | None
     tokens_input: int | None
     tokens_output: int | None
     response_time_ms: int | None
-    items_mostrados_count: int
+    items_mostrados: int
     created_at: str
 
 
@@ -144,9 +143,8 @@ class ConversionLogResponse(BaseModel):
     id_conversion: str
     id_empresa: int
     id_lead: int | None
-    evento: str
-    route: str | None
-    metadata: dict[str, Any]
+    event_type: str
+    payload: dict[str, Any]
     created_at: str
 
 

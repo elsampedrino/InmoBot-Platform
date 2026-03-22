@@ -1,25 +1,29 @@
 """
 ChatOrchestrator — orquestador del pipeline conversacional completo.
 
-Pipeline Fase 5 (Sonnet para redacción final):
+Pipeline Fase 6b (Leads + Analytics):
   1. TenantResolver       → empresa + rubro + config
   2. ContextManager       → conversación + estado estructurado
   3. Persistir mensaje del usuario
   4. RouterConversacional → ruta por reglas (Haiku fallback)
   5. QueryParser          → SearchFilters (si la ruta requiere búsqueda)
-  6. SearchEngine         → resultados reales del catálogo
+  6. SearchEngine / KB    → resultados reales del catálogo o KB
   7. Actualizar estado conversacional
   8a. PromptService       → (system_prompt, messages) para Sonnet
   8b. AIService (Sonnet)  → redacción conversacional final
   8c. Fallback determinístico si Sonnet falla o está deshabilitado
   9. Persistir mensaje del bot
  10. Actualizar contexto (filters_activos, items_recientes, resumen)
- 11. Devolver ChatMessageResponse con items
+ 11. Captura de lead (si router señaló create_or_update_lead)
+ 12. Analytics: log_chat_turn + log_conversion_event (si aplica)
+ 13. Devolver ChatMessageResponse con items
 
 Reglas de fallback:
   - ia_habilitada=False en TenantConfig → siempre usa plantilla
   - Sonnet timeout / error de API     → usa plantilla + log explícito
+  - Fallo en lead capture / analytics → warning en log, pipeline continúa
 """
+import re
 import time
 from datetime import datetime, timezone
 
@@ -30,6 +34,7 @@ from app.core.config import settings
 from app.core.logging import get_logger
 from app.models.api_models import ChatMessageRequest, ChatMessageResponse, ItemBrief
 from app.models.domain_models import (
+    ConversionEvent,
     ConversationStage,
     ConversationState,
     ItemCandidate,
@@ -53,6 +58,34 @@ from app.services.search_engine import SearchEngine
 from app.services.tenant_resolver import TenantResolver
 
 logger = get_logger(__name__)
+
+# ─── Helper: extracción de datos de contacto ─────────────────────────────────
+_RE_TELEFONO = re.compile(r"\+?[\d][\d\s\-\.]{5,14}")
+_RE_EMAIL = re.compile(r"[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}")
+
+
+def _parse_contact_data(text: str) -> tuple[str | None, str | None, str | None]:
+    """
+    Extracción best-effort de (nombre, telefono, email) de texto libre.
+    Nunca lanza excepción; retorna None para los campos que no pudo extraer.
+    """
+    email_match = _RE_EMAIL.search(text)
+    email = email_match.group(0) if email_match else None
+
+    phone_match = _RE_TELEFONO.search(text)
+    telefono = re.sub(r"[\s\-\.]", "", phone_match.group(0)) if phone_match else None
+
+    # Nombre: lo que queda después de quitar email y teléfono
+    remaining = text
+    if email_match:
+        remaining = remaining.replace(email_match.group(0), "")
+    if phone_match:
+        remaining = remaining.replace(phone_match.group(0), "")
+    nombre = " ".join(remaining.split()).strip() or None
+    if nombre and len(nombre) < 3:
+        nombre = None
+
+    return nombre, telefono, email
 
 
 class ChatOrchestrator:
@@ -171,7 +204,32 @@ class ChatOrchestrator:
                 resumen=resumen,
             )
 
+            # Calcular elapsed_ms antes de leads/analytics para que no infle el KPI
             elapsed_ms = int((time.monotonic() - start_ms) * 1000)
+
+            # ── 11. Captura de lead ────────────────────────────────────────────
+            id_lead_capturado: int | None = None
+            if decision.actions.create_or_update_lead:
+                id_lead_capturado = await self._capture_lead(
+                    decision=decision,
+                    request=request,
+                    tenant_config=tenant_config,
+                    id_conversacion=turn.id_conversacion,
+                )
+
+            # ── 12. Analytics (turno + evento de conversión) ───────────────────
+            items_ids = [it.id_item for it in items_para_respuesta]
+            await self._log_analytics(
+                decision=decision,
+                request=request,
+                tenant_config=tenant_config,
+                id_conversacion=turn.id_conversacion,
+                ai_meta=ai_meta,
+                items_ids=items_ids,
+                elapsed_ms=elapsed_ms,
+                id_lead=id_lead_capturado,
+            )
+
             logger.info(
                 "turn_completed",
                 session_id=request.session_id,
@@ -183,6 +241,7 @@ class ChatOrchestrator:
                 sonnet_used=not ai_meta.get("sonnet_fallback", True),
                 stage=new_state.conversation_stage.value,
                 items_devueltos=len(items_para_respuesta),
+                lead_capturado=id_lead_capturado is not None,
                 response_time_ms=elapsed_ms,
             )
 
@@ -196,7 +255,7 @@ class ChatOrchestrator:
                 lead_capturado=new_state.lead_capturado,
                 metadata={
                     "response_time_ms": elapsed_ms,
-                    "fase": 5,
+                    "fase": "6b",
                     "intent": decision.intent,
                     "confidence": round(decision.confidence, 2),
                     "used_ai_fallback": decision.used_ai_fallback,
@@ -204,6 +263,7 @@ class ChatOrchestrator:
                     "total_encontrados": (
                         search_result.total_encontrados if search_result else None
                     ),
+                    "id_lead": id_lead_capturado,
                     **ai_meta,
                 },
             )
@@ -304,6 +364,143 @@ class ChatOrchestrator:
             "kb_chunks_used": len(chunks),
             "kb_fallback": len(chunks) == 0,
         }
+
+    # ─── Captura de lead ──────────────────────────────────────────────────────
+
+    async def _capture_lead(
+        self,
+        decision: RouterDecision,
+        request,
+        tenant_config: TenantConfig,
+        id_conversacion: int | None,
+    ) -> int | None:
+        """
+        Crea un lead a partir de la señal comercial detectada por el router.
+        Extrae nombre, teléfono y email del mensaje cuando sea posible.
+        Vincula la conversación con el lead creado.
+
+        Devuelve id_lead si se creó correctamente, None si hubo error.
+        """
+        try:
+            raw_text = decision.entities.get("datos_contacto", request.mensaje)
+            nombre, telefono, email = _parse_contact_data(raw_text)
+
+            lead_response = await self.leads_service.create_from_conversation(
+                id_empresa=tenant_config.id_empresa,
+                canal=request.canal,
+                nombre=nombre,
+                telefono=telefono,
+                email=email,
+                metadata={
+                    "session_id": request.session_id,
+                    "route": decision.route.value,
+                    "intent": decision.intent,
+                    "mensaje_original": raw_text[:200],
+                },
+            )
+
+            # Vincular conversación ↔ lead
+            if id_conversacion:
+                await self.context_manager.link_lead(
+                    id_conversacion=id_conversacion,
+                    id_lead=lead_response.id_lead,
+                )
+
+            logger.info(
+                "lead_captured",
+                id_lead=lead_response.id_lead,
+                id_conversacion=id_conversacion,
+                tiene_telefono=telefono is not None,
+                tiene_email=email is not None,
+            )
+            return lead_response.id_lead
+
+        except Exception as exc:
+            logger.warning(
+                "lead_capture_failed",
+                error=str(exc),
+                error_type=type(exc).__name__,
+                session_id=request.session_id,
+            )
+            return None
+
+    # ─── Analytics ────────────────────────────────────────────────────────────
+
+    async def _log_analytics(
+        self,
+        decision: RouterDecision,
+        request,
+        tenant_config: TenantConfig,
+        id_conversacion: int | None,
+        ai_meta: dict,
+        items_ids: list[str],
+        elapsed_ms: int,
+        id_lead: int | None,
+    ) -> None:
+        """
+        Registra el turno en premium_chat_logs y, si corresponde, el evento
+        de conversión en premium_conversion_logs.
+
+        Los errores en analytics nunca deben bloquear la respuesta al usuario.
+        """
+        # Determinar modelo y tokens usados
+        if ai_meta.get("sonnet_fallback"):
+            model_usado = "deterministic"
+            tokens_input = 0
+            tokens_output = 0
+        else:
+            model_usado = settings.SONNET_MODEL
+            tokens_input = ai_meta.get("sonnet_tokens_in", 0)
+            tokens_output = ai_meta.get("sonnet_tokens_out", 0)
+
+        try:
+            await self.analytics_service.log_chat_turn(
+                id_empresa=tenant_config.id_empresa,
+                id_rubro=tenant_config.id_rubro,
+                id_conversacion=id_conversacion,
+                id_lead=id_lead,
+                session_id=request.session_id,
+                canal=request.canal,
+                consulta=request.mensaje,
+                decision=decision,
+                model_usado=model_usado,
+                tokens_input=tokens_input,
+                tokens_output=tokens_output,
+                response_time_ms=elapsed_ms,
+                items_ids=items_ids,
+            )
+        except Exception as exc:
+            logger.warning(
+                "analytics_chat_log_failed",
+                error=str(exc),
+                session_id=request.session_id,
+            )
+
+        # Evento de conversión (si el router lo marcó)
+        if decision.actions.register_conversion_event and decision.actions.conversion_event:
+            try:
+                await self.analytics_service.log_conversion_event(
+                    id_empresa=tenant_config.id_empresa,
+                    id_rubro=tenant_config.id_rubro,
+                    canal=request.canal,
+                    evento=decision.actions.conversion_event,
+                    id_conversacion=id_conversacion,
+                    id_lead=id_lead,
+                    session_id=request.session_id,
+                    items_ids=items_ids or None,
+                    metadata={
+                        "intent": decision.intent,
+                        "route": decision.route.value,
+                    },
+                )
+            except Exception as exc:
+                logger.warning(
+                    "analytics_conversion_log_failed",
+                    error=str(exc),
+                    evento=decision.actions.conversion_event.value
+                    if decision.actions.conversion_event
+                    else None,
+                )
 
     # ─── Estado conversacional ────────────────────────────────────────────────
 
