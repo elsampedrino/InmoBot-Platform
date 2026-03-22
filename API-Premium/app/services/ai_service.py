@@ -15,6 +15,7 @@ No debe:
 - Decidir la arquitectura del flujo
 - Acceder a datos sin contexto ya preparado
 """
+import asyncio
 import json
 import time
 
@@ -27,6 +28,16 @@ from app.models.domain_models import ConversationState, Route
 logger = get_logger(__name__)
 
 _client = anthropic.AsyncAnthropic(api_key=settings.ANTHROPIC_API_KEY)
+
+# Resultado de fallback cuando Sonnet falla o hace timeout.
+# text=None indica al orquestador que debe usar la plantilla determinística.
+_SONNET_FALLBACK_RESULT: dict = {
+    "text": None,
+    "tokens_input": 0,
+    "tokens_output": 0,
+    "response_time_ms": 0,
+    "used_fallback": True,
+}
 
 
 class AIService:
@@ -107,13 +118,63 @@ Respondé ÚNICAMENTE con JSON válido en este formato exacto, sin texto adicion
         self,
         system_prompt: str,
         messages: list[dict],
+        max_tokens: int = 800,
+        timeout_seconds: float = 20.0,
     ) -> dict:
         """
         Usa Sonnet para redactar la respuesta conversacional final.
-        Devuelve: {"text": str, "tokens_input": int, "tokens_output": int, "response_time_ms": int}
+
+        Devuelve siempre un dict válido:
+          {"text": str|None, "tokens_input": int, "tokens_output": int,
+           "response_time_ms": int, "used_fallback": bool}
+
+        Fallback seguro:
+          - Timeout (20 s por defecto) → used_fallback=True, text=None
+          - Cualquier excepción de API    → used_fallback=True, text=None
+          - El orquestador usa la plantilla determinística cuando used_fallback=True
         """
-        # TODO Fase 5
-        raise NotImplementedError
+        try:
+            result = await asyncio.wait_for(
+                self._call_sonnet(
+                    system=system_prompt,
+                    messages=messages,
+                    max_tokens=max_tokens,
+                ),
+                timeout=timeout_seconds,
+            )
+            logger.info(
+                "sonnet_response_ok",
+                tokens_input=result["tokens_input"],
+                tokens_output=result["tokens_output"],
+                response_time_ms=result["response_time_ms"],
+            )
+            return {
+                "text": result["content"],
+                "tokens_input": result["tokens_input"],
+                "tokens_output": result["tokens_output"],
+                "response_time_ms": result["response_time_ms"],
+                "used_fallback": False,
+            }
+        except asyncio.TimeoutError:
+            logger.warning(
+                "sonnet_timeout",
+                timeout_seconds=timeout_seconds,
+            )
+            return _SONNET_FALLBACK_RESULT
+        except anthropic.APIError as exc:
+            logger.error(
+                "sonnet_api_error",
+                error=str(exc),
+                status_code=getattr(exc, "status_code", None),
+            )
+            return _SONNET_FALLBACK_RESULT
+        except Exception as exc:
+            logger.error(
+                "sonnet_unexpected_error",
+                error=str(exc),
+                error_type=type(exc).__name__,
+            )
+            return _SONNET_FALLBACK_RESULT
 
     async def _call_haiku(self, system: str, messages: list[dict], max_tokens: int = 512) -> dict:
         """Llamada directa a Haiku. Registra latencia y tokens."""

@@ -1,7 +1,7 @@
 """
 ChatOrchestrator — orquestador del pipeline conversacional completo.
 
-Pipeline Fase 4 (búsqueda real en catálogo):
+Pipeline Fase 5 (Sonnet para redacción final):
   1. TenantResolver       → empresa + rubro + config
   2. ContextManager       → conversación + estado estructurado
   3. Persistir mensaje del usuario
@@ -9,13 +9,16 @@ Pipeline Fase 4 (búsqueda real en catálogo):
   5. QueryParser          → SearchFilters (si la ruta requiere búsqueda)
   6. SearchEngine         → resultados reales del catálogo
   7. Actualizar estado conversacional
-  8. Construir respuesta contextualizada con items reales
+  8a. PromptService       → (system_prompt, messages) para Sonnet
+  8b. AIService (Sonnet)  → redacción conversacional final
+  8c. Fallback determinístico si Sonnet falla o está deshabilitado
   9. Persistir mensaje del bot
  10. Actualizar contexto (filters_activos, items_recientes, resumen)
  11. Devolver ChatMessageResponse con items
 
-Pendiente (Fases 5+):
-  → PromptService → AIService (Sonnet para redacción) → Analytics completo
+Reglas de fallback:
+  - ia_habilitada=False en TenantConfig → siempre usa plantilla
+  - Sonnet timeout / error de API     → usa plantilla + log explícito
 """
 import time
 from datetime import datetime, timezone
@@ -37,6 +40,7 @@ from app.models.domain_models import (
     SearchResult,
     TenantConfig,
 )
+from app.services.ai_service import AIService
 from app.services.analytics_service import AnalyticsService
 from app.services.context_manager import ContextManager
 from app.services.kb_service import KBService
@@ -62,6 +66,7 @@ class ChatOrchestrator:
         self.kb_service = KBService(db)
         self.leads_service = LeadsService(db)
         self.prompt_service = PromptService()
+        self.ai_service = AIService()
         self.response_assembler = ResponseAssembler()
         self.analytics_service = AnalyticsService(db)
 
@@ -132,9 +137,9 @@ class ChatOrchestrator:
                 filters=filters if decision.actions.run_search else None,
             )
 
-            # ── 8. Construir respuesta ─────────────────────────────────────────
+            # ── 8. Construir respuesta (Sonnet → fallback plantilla) ────────────
             items_para_respuesta = search_result.items if search_result else []
-            respuesta = self._build_response(
+            respuesta, ai_meta = await self._build_ai_response(
                 decision=decision,
                 turn=turn,
                 cfg=tenant_config,
@@ -167,6 +172,7 @@ class ChatOrchestrator:
                 intent=decision.intent,
                 confidence=round(decision.confidence, 2),
                 used_ai_fallback=decision.used_ai_fallback,
+                sonnet_used=not ai_meta.get("sonnet_fallback", True),
                 stage=new_state.conversation_stage.value,
                 items_devueltos=len(items_para_respuesta),
                 response_time_ms=elapsed_ms,
@@ -182,7 +188,7 @@ class ChatOrchestrator:
                 lead_capturado=new_state.lead_capturado,
                 metadata={
                     "response_time_ms": elapsed_ms,
-                    "fase": 4,
+                    "fase": 5,
                     "intent": decision.intent,
                     "confidence": round(decision.confidence, 2),
                     "used_ai_fallback": decision.used_ai_fallback,
@@ -190,6 +196,7 @@ class ChatOrchestrator:
                     "total_encontrados": (
                         search_result.total_encontrados if search_result else None
                     ),
+                    **ai_meta,
                 },
             )
 
@@ -204,6 +211,78 @@ class ChatOrchestrator:
                 exc_info=True,
             )
             raise HTTPException(status_code=500, detail="Error interno del asistente.") from exc
+
+    # ─── Construcción de respuesta con IA ────────────────────────────────────
+
+    async def _build_ai_response(
+        self,
+        decision,
+        turn,
+        cfg: TenantConfig,
+        state,
+        is_first_turn: bool,
+        search_result,
+        item_detail,
+    ) -> tuple[str, dict]:
+        """
+        Intenta redactar la respuesta con Sonnet vía PromptService + AIService.
+        Si ia_habilitada=False o Sonnet falla, usa la plantilla determinística.
+
+        Devuelve (texto_respuesta, ai_metadata).
+
+        ai_metadata incluye:
+          - sonnet_fallback: bool   — True si se usó plantilla
+          - sonnet_reason: str      — motivo del fallback (si aplica)
+          - sonnet_tokens_in: int   — tokens consumidos (si éxito)
+          - sonnet_tokens_out: int
+          - sonnet_ms: int          — latencia Sonnet (si éxito)
+        """
+        # Rama: IA deshabilitada para este tenant
+        if not cfg.ia_habilitada:
+            respuesta = self._build_response(
+                decision=decision, turn=turn, cfg=cfg, state=state,
+                is_first_turn=is_first_turn, search_result=search_result,
+                item_detail=item_detail,
+            )
+            return respuesta, {"sonnet_fallback": True, "sonnet_reason": "ia_disabled"}
+
+        # Rama: IA habilitada → intentar Sonnet
+        try:
+            system_prompt, messages = self.prompt_service.build_prompt(
+                route=decision.route,
+                turn=turn,
+                cfg=cfg,
+                search_result=search_result,
+                item_detail=item_detail,
+                is_first_turn=is_first_turn,
+            )
+            ai_result = await self.ai_service.generate_response(
+                system_prompt=system_prompt,
+                messages=messages,
+            )
+        except Exception as exc:
+            logger.error(
+                "ai_response_build_failed",
+                error=str(exc),
+                error_type=type(exc).__name__,
+            )
+            ai_result = {"used_fallback": True}
+
+        if ai_result.get("used_fallback") or not ai_result.get("text"):
+            # Fallback: plantilla determinística
+            respuesta = self._build_response(
+                decision=decision, turn=turn, cfg=cfg, state=state,
+                is_first_turn=is_first_turn, search_result=search_result,
+                item_detail=item_detail,
+            )
+            return respuesta, {"sonnet_fallback": True, "sonnet_reason": "sonnet_error"}
+
+        return ai_result["text"], {
+            "sonnet_fallback": False,
+            "sonnet_tokens_in": ai_result["tokens_input"],
+            "sonnet_tokens_out": ai_result["tokens_output"],
+            "sonnet_ms": ai_result["response_time_ms"],
+        }
 
     # ─── Estado conversacional ────────────────────────────────────────────────
 
