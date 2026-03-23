@@ -197,21 +197,37 @@ class PromptService:
                 "ampliar criterios, cambiar zona, o consultar directamente con un asesor."
             )
 
-        total = search_result.total_encontrados
         items = search_result.items
         items_text = self._format_items_for_prompt(items)
-        accion = "Refinaste la búsqueda y hay" if es_refinamiento else "Se encontraron"
+
+        instrucciones_comunes = (
+            f"- Presentá TODAS las {len(items)} propiedades de la lista. No omitás ninguna.\n"
+            f"- Numeralas del 1 al {len(items)}\n"
+            "- Para cada una destacá lo más relevante: ubicación, dormitorios, precio (si tiene), algún detalle atractivo\n"
+            "- No menciones cuántas propiedades hay en total ni cuántas quedan sin mostrar\n"
+        )
+
+        if es_refinamiento:
+            return (
+                "## TAREA\n"
+                "Se aplicaron los nuevos criterios y estas son las propiedades que coinciden. "
+                "Presentalas de forma natural y conversacional.\n\n"
+                "## PROPIEDADES DISPONIBLES\n"
+                f"{items_text}\n\n"
+                "## INSTRUCCIONES\n"
+                + instrucciones_comunes +
+                "- No compares con las propiedades anteriores ni hagas conteos sobre ellas\n"
+                "- Solo trabajá con los datos de las propiedades que se te proveen arriba\n"
+                "- Al final invitá al usuario a pedir más detalles o a seguir refinando"
+            )
 
         return (
             "## TAREA\n"
-            f"{accion} {total} propiedades en total. "
-            f"Presentale las {len(items)} candidatas de forma natural y conversacional.\n\n"
+            "Estas son las opciones disponibles. Presentalas de forma natural y conversacional.\n\n"
             "## PROPIEDADES DISPONIBLES\n"
             f"{items_text}\n\n"
             "## INSTRUCCIONES\n"
-            f"- Numeralas del 1 al {len(items)}\n"
-            "- Para cada una destacá lo más relevante: ubicación, dormitorios, precio (si tiene), algún detalle atractivo\n"
-            f"- Si el total ({total}) supera las presentadas ({len(items)}), mencionalo brevemente\n"
+            + instrucciones_comunes +
             "- Al final invitá al usuario a pedir más detalles de alguna o a refinar la búsqueda"
         )
 
@@ -256,6 +272,8 @@ class PromptService:
             "## DATOS DE LA PROPIEDAD\n"
             f"{prop_data}\n\n"
             "## INSTRUCCIONES\n"
+            "- Usá ÚNICAMENTE los datos que se te proveen arriba. No uses información del historial de conversación.\n"
+            "- Si el historial menciona otras propiedades o datos distintos, ignoralos por completo.\n"
             "- Organizá la información de forma natural, no como una lista de datos fríos\n"
             "- Destacá los puntos más atractivos para un comprador o inquilino\n"
             "- Mencioná ubicación, características físicas y amenities que sumen valor\n"

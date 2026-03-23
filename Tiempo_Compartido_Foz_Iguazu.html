@@ -415,8 +415,14 @@
 
     <!-- Inicialización del widget -->
     <script>
+    // ─── API Premium (cambiar URL según entorno) ──────────────────────────────
+    // Local:  http://localhost:8001/webhook/cristian-inmob/chat
+    // Render: https://TU-SERVICIO.onrender.com/webhook/cristian-inmob/chat
+    var API_URL = 'http://localhost:8001/webhook/cristian-inmob/chat';
+    // ─────────────────────────────────────────────────────────────────────────
+
     InmoBot.init({
-        apiUrl: 'https://n8n-bot-inmobiliario.onrender.com/webhook/Plan_PRO',
+        apiUrl: API_URL,
         primaryColor: '#8BB31D',
         repo: 'demo',
         botName: 'InmoBot',
@@ -424,8 +430,8 @@
         placeholderText: 'Escribe tu consulta...',
         position: 'bottom-right',
         buttonSize: '60px',
-        chatWidth: '500px',
-        chatHeight: '600px'
+        chatWidth: '600px',
+        chatHeight: '700px'
     });
     </script>
 </body>

@@ -30,9 +30,9 @@ _TIPO_MAP: dict[str, list[str]] = {
     "departamento":  ["departamento", "departamentos", "depto", "deptos", "dpto", "dptos"],
     "casa":          ["casa", "casas", "chalet", "chalets"],
     "ph":            ["ph", "penthouse"],
-    "lote":          ["lote", "lotes", "terreno", "terrenos"],
+    "terreno":       ["lote", "lotes", "terreno", "terrenos"],
     "campo":         ["campo", "campos", "chacra", "chacras", "estancia"],
-    "local_comercial": ["local", "locales", "comercial", "oficina", "oficinas"],
+    "local comercial": ["local", "locales", "comercial", "oficina", "oficinas"],
     "cochera":       ["cochera", "cocheras", "garage", "garaje"],
     "galpon":        ["galpon", "galpón", "galpones"],
 }

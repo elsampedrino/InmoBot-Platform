@@ -836,38 +836,36 @@ class ChatOrchestrator:
         determinística, independientemente de lo que haya incluido el AI.
 
         Estrategia:
-          - Para cada item con fotos, busca "N." al inicio de línea (el número
-            de la propiedad en la lista) y agrega las URLs justo antes del
-            siguiente item o al final si es el último.
-          - Si la primera URL ya está en el texto, omite ese item (el AI ya
-            la incluyó correctamente).
+          - Divide la respuesta en párrafos (split por \\n\\n).
+          - Para cada párrafo que empiece con "N." (con o sin formato markdown),
+            agrega las fotos del item N al final de ese párrafo.
+          - Si la primera URL ya está en el texto, omite ese item.
         """
         if not items or not any(it.fotos for it in items):
             return respuesta
 
-        for idx, item in enumerate(items):
-            if not item.fotos:
-                continue
-            # Si el AI ya incluyó la primera foto, asumir que incluyó todas
-            if item.fotos[0] in respuesta:
-                continue
+        # Mapa: número de item → bloque de URLs a inyectar
+        to_inject = {
+            idx + 1: "\n".join(item.fotos[:3])
+            for idx, item in enumerate(items)
+            if item.fotos and item.fotos[0] not in respuesta
+        }
+        if not to_inject:
+            return respuesta
 
-            num = idx + 1
-            fotos_block = "\n".join(item.fotos[:3])
+        # Dividir conservando los separadores (\n\n) para poder reconstruir
+        parts = re.split(r"(\n{2,})", respuesta)
+        result = []
+        for part in parts:
+            m = re.match(r"^\*{0,2}(\d+)[.)]\*{0,2}", part.lstrip())
+            if m:
+                num = int(m.group(1))
+                if num in to_inject:
+                    # URLs en la misma línea separadas por espacio (igual que N8N)
+                    part = part.rstrip("\n") + "\n" + to_inject[num].replace("\n", " ")
+            result.append(part)
 
-            if idx + 1 < len(items):
-                # Insertar antes del siguiente número de propiedad
-                siguiente = idx + 2
-                pattern = re.compile(rf"(?m)^({siguiente}\.)", re.MULTILINE)
-                if pattern.search(respuesta):
-                    respuesta = pattern.sub(
-                        fotos_block + r"\n\n\1", respuesta, count=1
-                    )
-                    continue
-            # Última propiedad o no encontró el siguiente número: agregar al final
-            respuesta = respuesta.rstrip() + "\n\n" + fotos_block
-
-        return respuesta
+        return "".join(result)
 
     def _item_to_brief(self, item: ItemCandidate) -> ItemBrief:
         atrib = item.atributos or {}

@@ -10,6 +10,11 @@ Uso:
 Requiere httpx:
     pip install httpx
 """
+import io
+import sys
+# Forzar UTF-8 en stdout (necesario en Windows con cp1252)
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
+
 import argparse
 import asyncio
 import json
