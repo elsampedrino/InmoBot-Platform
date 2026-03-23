@@ -39,9 +39,7 @@ _REGLAS_BASE = """## REGLAS OPERATIVAS
 - Usá los datos exactos que se te proveen. No infirás valores no presentes.
 - Si no tenés información suficiente para responder algo, decilo honestamente.
 - No uses emojis en exceso. Máximo 1-2 si el estilo de la empresa lo permite.
-- No uses separadores horizontales (---) en ningún momento.
-- Las URLs de fotos deben escribirse como texto plano, una por línea, sin formato markdown (sin corchetes, sin paréntesis, sin [texto](url)). Ejemplo correcto: https://res.cloudinary.com/... Ejemplo incorrecto: [Ver foto](https://...)
-- Solo incluí URLs de fotos si están explícitamente en los datos provistos. No inventes ni construyas URLs.""".strip()
+- No uses separadores horizontales (---) en ningún momento.""".strip()
 
 
 class PromptService:
@@ -240,16 +238,6 @@ class PromptService:
         detalles = atrib.get("detalles") or []
         detalles_str = ", ".join(detalles) if detalles else "No especificados"
 
-        # Fotos: extraer desde media.fotos o desde el campo fotos directo
-        media = item_detail.get("media") or {}
-        if isinstance(media, str):
-            media = _json.loads(media)
-        fotos = media.get("fotos") or item_detail.get("fotos") or []
-
-        fotos_str = ""
-        if fotos:
-            fotos_str = f"\nFotos: " + " ".join(fotos[:5])
-
         prop_data = (
             f"Título: {item_detail.get('titulo', '')}\n"
             f"Tipo: {item_detail.get('tipo', '')} | Operación: {item_detail.get('categoria', '')}\n"
@@ -260,13 +248,6 @@ class PromptService:
             f"Amenities/Detalles: {detalles_str}\n"
             f"Estado: {atrib.get('estado_construccion', 'N/D')}\n"
             f"Descripción: {item_detail.get('descripcion') or item_detail.get('descripcion_corta', '')}"
-            f"{fotos_str}"
-        )
-
-        fotos_instruccion = (
-            "- Incluí las URLs de fotos al final de tu respuesta, una por línea, "
-            "exactamente como aparecen en los datos (sin modificarlas)\n"
-            if fotos else ""
         )
 
         return (
@@ -279,7 +260,6 @@ class PromptService:
             "- Destacá los puntos más atractivos para un comprador o inquilino\n"
             "- Mencioná ubicación, características físicas y amenities que sumen valor\n"
             "- Si tiene precio, presentalo claramente\n"
-            f"{fotos_instruccion}"
             "- Cerrá con una invitación concreta: coordinar visita o hablar con un asesor"
         )
 
