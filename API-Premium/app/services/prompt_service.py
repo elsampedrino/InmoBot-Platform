@@ -214,8 +214,6 @@ class PromptService:
             f"- Numeralas del 1 al {len(items)}\n"
             "- Para cada una destacá lo más relevante: ubicación, dormitorios, precio (si tiene), algún detalle atractivo\n"
             f"- Si el total ({total}) supera las presentadas ({len(items)}), mencionalo brevemente\n"
-            "- Si una propiedad tiene URLs de fotos en sus datos, incluilas en la respuesta "
-            "en una línea separada, una por línea, exactamente como aparecen (sin modificar ni acortar la URL)\n"
             "- Al final invitá al usuario a pedir más detalles de alguna o a refinar la búsqueda"
         )
 
@@ -439,8 +437,6 @@ class PromptService:
                 linea += f" | {ubicacion}"
             if attrs:
                 linea += " | " + " | ".join(attrs)
-            if it.fotos:
-                linea += "\n   Fotos: " + " ".join(it.fotos[:3])
             lines.append(linea)
 
         return "\n".join(lines)

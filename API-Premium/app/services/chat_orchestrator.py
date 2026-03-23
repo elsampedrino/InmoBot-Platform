@@ -206,6 +206,13 @@ class ChatOrchestrator:
                 kb_chunks=kb_chunks,
             )
 
+            # ── 8b. Inyección determinística de fotos ──────────────────────────
+            # Las fotos se inyectan FUERA del AI para garantizar que siempre
+            # aparezcan todas, sin depender del comportamiento no determinístico
+            # del modelo de lenguaje.
+            if decision.route in (Route.BUSCAR_CATALOGO, Route.REFINAR_BUSQUEDA):
+                respuesta = self._inject_fotos(respuesta, items_para_respuesta)
+
             # ── 9. Persistir mensaje del bot ───────────────────────────────────
             await self.context_manager.save_bot_message(
                 id_conversacion=turn.id_conversacion,
@@ -822,6 +829,45 @@ class ChatOrchestrator:
             m = filters_activos.get("moneda", "USD")
             parts.append(f"hasta {m} {int(filters_activos['precio_max']):,}".replace(",", "."))
         return ", ".join(parts)
+
+    def _inject_fotos(self, respuesta: str, items: list[ItemCandidate]) -> str:
+        """
+        Inyecta las URLs de fotos de cada propiedad en la respuesta de forma
+        determinística, independientemente de lo que haya incluido el AI.
+
+        Estrategia:
+          - Para cada item con fotos, busca "N." al inicio de línea (el número
+            de la propiedad en la lista) y agrega las URLs justo antes del
+            siguiente item o al final si es el último.
+          - Si la primera URL ya está en el texto, omite ese item (el AI ya
+            la incluyó correctamente).
+        """
+        if not items or not any(it.fotos for it in items):
+            return respuesta
+
+        for idx, item in enumerate(items):
+            if not item.fotos:
+                continue
+            # Si el AI ya incluyó la primera foto, asumir que incluyó todas
+            if item.fotos[0] in respuesta:
+                continue
+
+            num = idx + 1
+            fotos_block = "\n".join(item.fotos[:3])
+
+            if idx + 1 < len(items):
+                # Insertar antes del siguiente número de propiedad
+                siguiente = idx + 2
+                pattern = re.compile(rf"(?m)^({siguiente}\.)", re.MULTILINE)
+                if pattern.search(respuesta):
+                    respuesta = pattern.sub(
+                        fotos_block + r"\n\n\1", respuesta, count=1
+                    )
+                    continue
+            # Última propiedad o no encontró el siguiente número: agregar al final
+            respuesta = respuesta.rstrip() + "\n\n" + fotos_block
+
+        return respuesta
 
     def _item_to_brief(self, item: ItemCandidate) -> ItemBrief:
         atrib = item.atributos or {}
