@@ -212,7 +212,13 @@ class SearchEngine:
         if isinstance(media, str):
             media = json.loads(media)
 
-        fotos = media.get("fotos", []) if isinstance(media, dict) else []
+        fotos_raw = media.get("fotos", []) if isinstance(media, dict) else []
+        if isinstance(fotos_raw, list):
+            fotos = fotos_raw
+        elif isinstance(fotos_raw, dict):
+            fotos = fotos_raw.get("urls") or []
+        else:
+            fotos = []
 
         return ItemCandidate(
             id_item=row["id_item"],
