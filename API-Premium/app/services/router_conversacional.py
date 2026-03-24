@@ -359,12 +359,19 @@ class RouterConversacional:
         result = await self.ai_service.classify_intent(mensaje, state, _CANDIDATE_ROUTES)
 
         route = result["route"]
+        entities = result.get("entities", {})
 
         # Actions por ruta
         actions = RouterActions(run_ai_response=True)
         if route in (Route.BUSCAR_CATALOGO, Route.REFINAR_BUSQUEDA):
             actions.run_parser = True
             actions.run_search = True
+        elif route == Route.VER_DETALLE_ITEM:
+            # Haiku no resuelve ordinales — intentar con las reglas determinísticas
+            if not entities.get("item_referenciado"):
+                entities["item_referenciado"] = self._resolve_item_reference(mensaje, state)
+            actions.register_conversion_event = True
+            actions.conversion_event = ConversionEvent.ITEM_DETAIL_VIEWED
         elif route == Route.PREGUNTA_KB:
             actions.run_kb_search = True
         elif route == Route.CONTACTAR_ASESOR:
@@ -392,7 +399,7 @@ class RouterConversacional:
             intent=result["intent"],
             confidence=result["confidence"],
             used_ai_fallback=True,
-            entities=result["entities"],
+            entities=entities,
             actions=actions,
             business_signals={},
         )

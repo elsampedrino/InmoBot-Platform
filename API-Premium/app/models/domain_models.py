@@ -122,6 +122,9 @@ class ConversationState:
     items_recientes: list[str] = field(default_factory=list)
     items_recientes_resumen: list[ItemSummary] = field(default_factory=list)
     ultimo_item_referenciado: str | None = None
+    # True cuando el usuario pidió detalle explícito de un item concreto.
+    # False = solo el default post-búsqueda (primer resultado).
+    item_seleccionado_explicitamente: bool = False
     comparacion_activa: bool = False
 
     # Señales comerciales
@@ -148,6 +151,7 @@ class ConversationState:
                 for i in self.items_recientes_resumen
             ],
             "ultimo_item_referenciado": self.ultimo_item_referenciado,
+            "item_seleccionado_explicitamente": self.item_seleccionado_explicitamente,
             "comparacion_activa": self.comparacion_activa,
             "lead_capturado": self.lead_capturado,
             "advisor_requested": self.advisor_requested,
@@ -172,6 +176,7 @@ class ConversationState:
             items_recientes=data.get("items_recientes", []),
             items_recientes_resumen=items_resumen,
             ultimo_item_referenciado=data.get("ultimo_item_referenciado"),
+            item_seleccionado_explicitamente=data.get("item_seleccionado_explicitamente", False),
             comparacion_activa=data.get("comparacion_activa", False),
             lead_capturado=data.get("lead_capturado", False),
             advisor_requested=data.get("advisor_requested", False),

@@ -7,6 +7,7 @@ from datetime import datetime, timezone
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm.attributes import flag_modified
 
 from app.models.db_models import ContextoConversacion, Conversacion, Mensaje
 
@@ -153,6 +154,7 @@ class ConversationsRepository:
 
         if estado_json is not None:
             ctx.estado_json = estado_json
+            flag_modified(ctx, "estado_json")
         if resumen_contexto is not None:
             ctx.resumen_contexto = resumen_contexto
 

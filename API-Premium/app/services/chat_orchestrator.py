@@ -579,6 +579,7 @@ class ChatOrchestrator:
                 for i, it in enumerate(search_result.items)
             ]
             state.ultimo_item_referenciado = ids[0]  # default: primer resultado
+            state.item_seleccionado_explicitamente = False  # reset en nueva búsqueda
 
         # Ver detalle
         if route == Route.VER_DETALLE_ITEM:
@@ -586,6 +587,7 @@ class ChatOrchestrator:
             item_ref = decision.entities.get("item_referenciado")
             if item_ref:
                 state.ultimo_item_referenciado = item_ref
+                state.item_seleccionado_explicitamente = True
 
         # Conversión: contacto
         if route == Route.CONTACTAR_ASESOR:
@@ -876,16 +878,19 @@ class ChatOrchestrator:
     def _build_propiedades_interes(self, state: ConversationState | None) -> list[dict]:
         """
         Construye la lista de propiedades de interés a guardar en el metadata del lead.
-        Prioriza el último item referenciado; si no hay, incluye todos los recientes.
+
+        - Si el usuario pidió detalle explícito de un item (item_seleccionado_explicitamente),
+          se guarda solo ese item.
+        - Si el contacto surge sin selección previa (ej: el AI ofrece contacto después de
+          mostrar varias propiedades), se guardan todas las propiedades mostradas.
         """
         if not state or not state.items_recientes_resumen:
             return []
-        ultimo = state.ultimo_item_referenciado
-        if ultimo:
+        if state.item_seleccionado_explicitamente and state.ultimo_item_referenciado:
             return [
                 {"id": str(it.id_item), "titulo": it.titulo}
                 for it in state.items_recientes_resumen
-                if it.id_item == ultimo
+                if it.id_item == state.ultimo_item_referenciado
             ]
         return [
             {"id": str(it.id_item), "titulo": it.titulo}
