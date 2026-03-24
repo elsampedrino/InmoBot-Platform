@@ -98,7 +98,9 @@ class AnalyticsService:
         items_ids: list[str] | None = None,
         metadata: dict | None = None,
     ) -> None:
-        """Registra un evento de conversión en premium_conversion_logs."""
+        """Registra un evento de conversión en premium_conversion_logs.
+        Usa savepoint para que un fallo de constraint no corrompa la sesión principal.
+        """
         data = {
             "id_empresa": id_empresa,
             "id_rubro": id_rubro,
@@ -109,10 +111,12 @@ class AnalyticsService:
             "event_type": evento.value,
             "payload": metadata or {},
         }
-        log = await self._repo.create_conversion_log(data)
-
-        if items_ids:
-            await self._repo.create_conversion_log_items(log.id, items_ids)
+        # Savepoint: si el INSERT falla (ej. constraint violation), solo se
+        # deshace esta operación sin dejar la sesión en estado PendingRollback.
+        async with self._repo.db.begin_nested():
+            log = await self._repo.create_conversion_log(data)
+            if items_ids:
+                await self._repo.create_conversion_log_items(log.id, items_ids)
 
         logger.info(
             "conversion_event_logged",

@@ -34,13 +34,13 @@ class ConversationStage(str, Enum):
 
 
 class ConversionEvent(str, Enum):
+    # Valores alineados con el check constraint de premium_conversion_logs:
+    # lead_created, phone_captured, item_interest, visit_request,
+    # whatsapp_handoff, booking_confirmed
     LEAD_CREATED         = "lead_created"
-    LEAD_UPDATED         = "lead_updated"
-    ASESOR_REQUESTED     = "asesor_requested"
-    VISITA_REQUESTED     = "visita_requested"
-    ITEM_DETAIL_VIEWED   = "item_detail_viewed"
-    ITEM_SHARED          = "item_shared"
-    CONTACTO_CONFIRMADO  = "contacto_confirmado"
+    ASESOR_REQUESTED     = "phone_captured"    # usuario deja datos de contacto
+    VISITA_REQUESTED     = "visit_request"     # usuario solicita visita
+    ITEM_DETAIL_VIEWED   = "item_interest"     # usuario pide detalle de un item
 
 
 # ─── FILTROS DE BÚSQUEDA ──────────────────────────────────────────────────────
