@@ -63,13 +63,16 @@ logger = get_logger(__name__)
 _RE_TELEFONO = re.compile(r"\+?[\d][\d\s\-\.]{5,14}")
 _RE_EMAIL = re.compile(r"[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}")
 
-# Detecta nombre solo cuando hay frase explícita de presentación.
-# Captura palabras hasta la primera coma, "y", "mi", "tel(éfono)", "mail/email"
-# o fin de cadena — sin consumir el delimitador (lookahead).
+# Detecta nombre de dos formas:
+# 1. Frase explícita: "me llamo X", "soy X", "mi nombre es X"
+# 2. Nombre al inicio del mensaje seguido de coma (ej: "Damian Gonzalez, tel...")
 _RE_NOMBRE = re.compile(
+    r"(?:"
     r"(?:me llamo|mi nombre es|mi nombre:|soy)\s+"
-    r"([A-Za-záéíóúñÁÉÍÓÚÑüÜ]+(?:\s+[A-Za-záéíóúñÁÉÍÓÚÑüÜ]+)*?)"
-    r"(?=\s*[,;]|\s+y\b|\s+mi\b|\s+tel|\s+mail|\s+email|$)",
+    r"|^"  # o inicio de mensaje
+    r")"
+    r"([A-Za-záéíóúñÁÉÍÓÚÑüÜ]+(?:\s+[A-Za-záéíóúñÁÉÍÓÚÑüÜ]+)+?)"
+    r"(?=\s*[,;]|\s+y\b|\s+mi\b|\s+tel|\s+mail|\s+email)",
     re.IGNORECASE,
 )
 
