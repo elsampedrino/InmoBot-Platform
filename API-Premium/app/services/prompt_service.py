@@ -202,7 +202,7 @@ class PromptService:
 
         instrucciones_comunes = (
             f"- Presentá TODAS las {len(items)} propiedades de la lista. No omitás ninguna.\n"
-            f"- Numeralas del 1 al {len(items)}\n"
+            f"- Numeralas del 1 al {len(items)} en el mismo orden en que aparecen arriba. No las reordenes.\n"
             "- Para cada una destacá lo más relevante: ubicación, dormitorios, precio (si tiene), algún detalle atractivo\n"
             "- No menciones cuántas propiedades hay en total ni cuántas quedan sin mostrar\n"
         )

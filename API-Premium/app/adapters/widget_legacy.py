@@ -161,7 +161,7 @@ def adapt_internal_response(
         sessionId=session_id,
         propiedades_detalladas=propiedades,
         propiedadesMostradas=len(propiedades),
-        leads=len(propiedades) > 0,
+        leads=False,  # Plan Premium: captura de leads solo vía flujo conversacional
         metricas=metricas,
     )
 

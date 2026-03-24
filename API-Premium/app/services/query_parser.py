@@ -165,7 +165,12 @@ class QueryParser:
             texto_libre=mensaje if not tipo and not zona and not atributos else None,
         )
 
-        if is_refinement and state.filters_activos:
+        # Mergear con filtros activos si:
+        # a) es un refinamiento explícito, O
+        # b) el mensaje no aportó ningún filtro nuevo (usuario continúa el contexto)
+        new_has_filters = bool(tipo or zona or atributos)
+        should_merge = state.filters_activos and (is_refinement or not new_has_filters)
+        if should_merge:
             merged = self._merge_with_active_filters(new_filters, state.filters_activos)
             logger.debug(
                 "query_parser_refinement",
@@ -276,7 +281,12 @@ class QueryParser:
 
         m = _PAT_AMBIENTES.search(msg)
         if m:
-            atributos["ambientes"] = int(m.group(1))
+            # "X ambientes" → "X-1 dormitorios" (convención argentina:
+            # ambientes incluye living; el catálogo almacena solo dormitorios)
+            # Solo si no se mencionó dormitorios explícitamente
+            if "dormitorios" not in atributos:
+                dorms = max(1, int(m.group(1)) - 1)
+                atributos["dormitorios"] = dorms
 
         m = _PAT_DORMITORIOS.search(msg)
         if m:

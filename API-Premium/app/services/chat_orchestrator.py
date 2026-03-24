@@ -238,6 +238,7 @@ class ChatOrchestrator:
                     request=request,
                     tenant_config=tenant_config,
                     id_conversacion=turn.id_conversacion,
+                    state=new_state,
                 )
 
             # ── 12. Analytics (turno + evento de conversión) ───────────────────
@@ -396,6 +397,7 @@ class ChatOrchestrator:
         request,
         tenant_config: TenantConfig,
         id_conversacion: int | None,
+        state: ConversationState | None = None,
     ) -> int | None:
         """
         Crea un lead a partir de la señal comercial detectada por el router.
@@ -419,6 +421,7 @@ class ChatOrchestrator:
                     "route": decision.route.value,
                     "intent": decision.intent,
                     "mensaje_original": raw_text[:200],
+                    "propiedades_interes": self._build_propiedades_interes(state),
                 },
             )
 
@@ -866,6 +869,25 @@ class ChatOrchestrator:
             result.append(part)
 
         return "".join(result)
+
+    def _build_propiedades_interes(self, state: ConversationState | None) -> list[dict]:
+        """
+        Construye la lista de propiedades de interés a guardar en el metadata del lead.
+        Prioriza el último item referenciado; si no hay, incluye todos los recientes.
+        """
+        if not state or not state.items_recientes_resumen:
+            return []
+        ultimo = state.ultimo_item_referenciado
+        if ultimo:
+            return [
+                {"id": str(it.id_item), "titulo": it.titulo}
+                for it in state.items_recientes_resumen
+                if it.id_item == ultimo
+            ]
+        return [
+            {"id": str(it.id_item), "titulo": it.titulo}
+            for it in state.items_recientes_resumen
+        ]
 
     def _item_to_brief(self, item: ItemCandidate) -> ItemBrief:
         atrib = item.atributos or {}
