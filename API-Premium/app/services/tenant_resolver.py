@@ -78,6 +78,7 @@ class TenantResolver:
             id_rubro=effective_rubro_id,
             nombre_empresa=empresa.nombre,
             slug=empresa.slug,
+            servicios=dict(empresa.servicios) if empresa.servicios else {"bot": True},
             system_prompt=(
                 rubro_prompt.system_prompt if rubro_prompt else _DEFAULT_SYSTEM_PROMPT
             ),

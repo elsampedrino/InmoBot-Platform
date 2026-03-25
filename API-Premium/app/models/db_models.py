@@ -76,6 +76,7 @@ class Empresa(Base):
     activa: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
     timezone: Mapped[str] = mapped_column(Text, nullable=False, default="America/Argentina/Buenos_Aires")
     slug: Mapped[str | None] = mapped_column(Text, unique=True)
+    servicios: Mapped[dict] = mapped_column(JSONB, nullable=False, server_default='{"bot": true}')
     created_at: Mapped[Any] = mapped_column(DateTime(timezone=True), server_default=func.now())
     updated_at: Mapped[Any] = mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
