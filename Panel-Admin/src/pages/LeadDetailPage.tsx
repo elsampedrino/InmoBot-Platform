@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { api, ApiError } from "../lib/api";
-import { type Lead, ESTADOS_LEAD } from "../types/leads";
+import { type LeadDetalle, type PropiedadDetalle, ESTADOS_LEAD } from "../types/leads";
 
 function Field({ label, value }: { label: string; value: string | null | undefined }) {
   return (
@@ -25,14 +25,14 @@ export default function LeadDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
-  const [lead, setLead]         = useState<Lead | null>(null);
+  const [lead, setLead]         = useState<LeadDetalle | null>(null);
   const [loading, setLoading]   = useState(true);
   const [error, setError]       = useState<string | null>(null);
   const [saving, setSaving]     = useState(false);
   const [estado, setEstado]     = useState("");
 
   useEffect(() => {
-    api.get<Lead>(`/admin/leads/${id}`)
+    api.get<LeadDetalle>(`/admin/leads/${id}`)
       .then(data => { setLead(data); setEstado(data.estado); })
       .catch(err => setError(err instanceof ApiError ? err.message : "Error al cargar el lead"))
       .finally(() => setLoading(false));
@@ -43,7 +43,7 @@ export default function LeadDetailPage() {
     setSaving(true);
     setError(null);
     try {
-      const data = await api.patch<Lead>(`/admin/leads/${id}`, { estado });
+      const data = await api.patch<LeadDetalle>(`/admin/leads/${id}`, { estado });
       setLead(data);
       setEstado(data.estado);
     } catch (err) {
@@ -53,8 +53,7 @@ export default function LeadDetailPage() {
     }
   }
 
-  // Propiedades de interés desde metadata
-  const propiedades = (lead?.metadata?.propiedades_interes as Array<{ id?: string; titulo?: string }> | undefined) ?? [];
+  const propiedades: PropiedadDetalle[] = lead?.propiedades_detalle ?? [];
 
   if (loading) {
     return <div className="p-8 text-gray-400">Cargando...</div>;
@@ -99,26 +98,31 @@ export default function LeadDetailPage() {
         {/* Estado */}
         <div className="bg-white rounded-xl border border-gray-200 p-6">
           <h2 className="text-sm font-semibold text-gray-700 mb-4">Estado del lead</h2>
-          <div className="flex items-center gap-3">
-            <select
-              value={estado}
-              onChange={e => setEstado(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
-            >
-              {ESTADOS_LEAD.map(e => (
-                <option key={e.value} value={e.value}>{e.label}</option>
-              ))}
-            </select>
-            <button
-              onClick={handleGuardarEstado}
-              disabled={saving || estado === lead.estado}
-              className="px-4 py-2 bg-brand-600 text-white text-sm font-medium rounded-lg hover:bg-brand-700 disabled:opacity-40 transition-colors"
-            >
-              {saving ? "Guardando..." : "Guardar"}
-            </button>
-            {estado === lead.estado && (
-              <span className="text-xs text-gray-400">Sin cambios</span>
-            )}
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center gap-3">
+              <select
+                value={estado}
+                onChange={e => setEstado(e.target.value)}
+                className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+              >
+                {ESTADOS_LEAD.map(e => (
+                  <option key={e.value} value={e.value}>{e.label}</option>
+                ))}
+              </select>
+              <button
+                onClick={handleGuardarEstado}
+                disabled={saving || estado === lead.estado}
+                className="px-4 py-2 bg-brand-600 text-white text-sm font-medium rounded-lg hover:bg-brand-700 disabled:opacity-40 transition-colors"
+              >
+                {saving ? "Guardando..." : "Guardar"}
+              </button>
+              {estado === lead.estado && (
+                <span className="text-xs text-green-500">✓ Guardado</span>
+              )}
+            </div>
+            <p className="text-xs text-gray-400">
+              {ESTADOS_LEAD.find(e => e.value === estado)?.tooltip}
+            </p>
           </div>
         </div>
 
@@ -128,16 +132,37 @@ export default function LeadDetailPage() {
           {propiedades.length === 0 ? (
             <p className="text-sm text-gray-400">Sin propiedades registradas.</p>
           ) : (
-            <ul className="space-y-2">
+            <div className="space-y-3">
               {propiedades.map((p, i) => (
-                <li key={i} className="flex items-center gap-2 text-sm text-gray-700">
-                  <span className="w-5 h-5 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center text-xs font-bold">
+                <div key={i} className="flex gap-3 p-3 bg-gray-50 rounded-lg border border-gray-100">
+                  <span className="w-6 h-6 rounded-full bg-brand-600 text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
                     {i + 1}
                   </span>
-                  {p.titulo ?? p.id ?? "—"}
-                </li>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-gray-800">{p.titulo}</p>
+                    {(p.direccion || p.ciudad) && (
+                      <p className="text-xs text-gray-500 mt-0.5">
+                        {[p.direccion, p.barrio, p.ciudad].filter(Boolean).join(", ")}
+                      </p>
+                    )}
+                    <div className="flex flex-wrap gap-x-3 gap-y-0.5 mt-1">
+                      {p.tipo && (
+                        <span className="text-xs text-gray-400 capitalize">{p.tipo} · {p.categoria}</span>
+                      )}
+                      {p.dormitorios != null && (
+                        <span className="text-xs text-gray-400">{p.dormitorios} dorm.</span>
+                      )}
+                      {p.banios != null && (
+                        <span className="text-xs text-gray-400">{p.banios} baño{p.banios !== 1 ? "s" : ""}</span>
+                      )}
+                      {p.superficie_cubierta && (
+                        <span className="text-xs text-gray-400">{p.superficie_cubierta} cub.</span>
+                      )}
+                    </div>
+                  </div>
+                </div>
               ))}
-            </ul>
+            </div>
           )}
         </div>
 

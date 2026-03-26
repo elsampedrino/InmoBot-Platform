@@ -130,6 +130,23 @@ class LeadListResponse(BaseModel):
     page_size: int = 20
 
 
+class PropiedadDetalle(BaseModel):
+    id: str
+    titulo: str
+    tipo: str | None = None
+    categoria: str | None = None
+    direccion: str | None = None
+    ciudad: str | None = None
+    barrio: str | None = None
+    dormitorios: int | None = None
+    banios: int | None = None
+    superficie_cubierta: str | None = None
+
+
+class LeadDetailResponse(LeadResponse):
+    propiedades_detalle: list[PropiedadDetalle] = []
+
+
 # ─── ANALYTICS ────────────────────────────────────────────────────────────────
 
 class ChatLogResponse(BaseModel):
