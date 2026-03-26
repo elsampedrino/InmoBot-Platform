@@ -244,6 +244,24 @@ class EmpresaPromptOverride(Base):
     empresa: Mapped["Empresa"] = relationship("Empresa", back_populates="prompt_override")
 
 
+# ─── USUARIOS_ADMIN ───────────────────────────────────────────────────────────
+
+class UsuarioAdmin(Base):
+    __tablename__ = "usuarios_admin"
+
+    id_usuario: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    id_empresa: Mapped[int] = mapped_column(Integer, ForeignKey("empresas.id_empresa", ondelete="CASCADE"), nullable=False)
+    email: Mapped[str] = mapped_column(Text, nullable=False, unique=True)
+    password_hash: Mapped[str] = mapped_column(Text, nullable=False)
+    nombre: Mapped[str | None] = mapped_column(Text)
+    activo: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+    es_superadmin: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    created_at: Mapped[Any] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    updated_at: Mapped[Any] = mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+
+    empresa: Mapped["Empresa"] = relationship("Empresa")
+
+
 # ─── LEADS ────────────────────────────────────────────────────────────────────
 
 class Lead(Base):

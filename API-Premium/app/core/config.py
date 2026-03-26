@@ -21,6 +21,10 @@ class Settings(BaseSettings):
     API_SECRET_KEY: str
     API_KEY_HEADER: str = "X-API-Key"
 
+    # ─── Admin JWT ────────────────────────────────────────────────────────────
+    ADMIN_JWT_SECRET: str = "cambiar-en-produccion"
+    ADMIN_JWT_EXPIRE_HOURS: int = 24
+
     # ─── CORS ─────────────────────────────────────────────────────────────────
     # Separado por comas: "http://a.com,http://b.com"  o  "*"
     CORS_ORIGINS: str = "*"
