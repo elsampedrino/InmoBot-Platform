@@ -1,0 +1,154 @@
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
+import { api, ApiError } from "../lib/api";
+import { type Lead, ESTADOS_LEAD } from "../types/leads";
+
+function Field({ label, value }: { label: string; value: string | null | undefined }) {
+  return (
+    <div>
+      <p className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-1">{label}</p>
+      <p className="text-sm text-gray-800">{value || "—"}</p>
+    </div>
+  );
+}
+
+function formatFecha(iso: string | null) {
+  if (!iso) return "—";
+  return new Date(iso).toLocaleString("es-AR", {
+    day: "2-digit", month: "2-digit", year: "numeric",
+    hour: "2-digit", minute: "2-digit",
+  });
+}
+
+export default function LeadDetailPage() {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+
+  const [lead, setLead]         = useState<Lead | null>(null);
+  const [loading, setLoading]   = useState(true);
+  const [error, setError]       = useState<string | null>(null);
+  const [saving, setSaving]     = useState(false);
+  const [estado, setEstado]     = useState("");
+
+  useEffect(() => {
+    api.get<Lead>(`/admin/leads/${id}`)
+      .then(data => { setLead(data); setEstado(data.estado); })
+      .catch(err => setError(err instanceof ApiError ? err.message : "Error al cargar el lead"))
+      .finally(() => setLoading(false));
+  }, [id]);
+
+  async function handleGuardarEstado() {
+    if (!lead || estado === lead.estado) return;
+    setSaving(true);
+    setError(null);
+    try {
+      const data = await api.patch<Lead>(`/admin/leads/${id}`, { estado });
+      setLead(data);
+      setEstado(data.estado);
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : "No se pudo actualizar el estado.");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  // Propiedades de interés desde metadata
+  const propiedades = (lead?.metadata?.propiedades_interes as Array<{ id?: string; titulo?: string }> | undefined) ?? [];
+
+  if (loading) {
+    return <div className="p-8 text-gray-400">Cargando...</div>;
+  }
+
+  if (error || !lead) {
+    return (
+      <div className="p-8">
+        <div className="bg-red-50 text-red-700 text-sm rounded-lg p-4">{error ?? "Lead no encontrado"}</div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="p-8 max-w-3xl">
+      {/* Header */}
+      <div className="flex items-center gap-3 mb-6">
+        <button
+          onClick={() => navigate("/leads")}
+          className="text-gray-400 hover:text-gray-700 transition-colors"
+        >
+          <ArrowLeft size={20} />
+        </button>
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">{lead.nombre ?? "Lead sin nombre"}</h1>
+          <p className="text-gray-400 text-xs mt-0.5">ID #{lead.id_lead} · {formatFecha(lead.created_at)}</p>
+        </div>
+      </div>
+
+      <div className="space-y-4">
+        {/* Datos del cliente */}
+        <div className="bg-white rounded-xl border border-gray-200 p-6">
+          <h2 className="text-sm font-semibold text-gray-700 mb-4">Datos del cliente</h2>
+          <div className="grid grid-cols-2 gap-4">
+            <Field label="Nombre"  value={lead.nombre} />
+            <Field label="Teléfono" value={lead.telefono} />
+            <Field label="Email"   value={lead.email} />
+            <Field label="Canal"   value={lead.canal} />
+          </div>
+        </div>
+
+        {/* Estado */}
+        <div className="bg-white rounded-xl border border-gray-200 p-6">
+          <h2 className="text-sm font-semibold text-gray-700 mb-4">Estado del lead</h2>
+          <div className="flex items-center gap-3">
+            <select
+              value={estado}
+              onChange={e => setEstado(e.target.value)}
+              className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+            >
+              {ESTADOS_LEAD.map(e => (
+                <option key={e.value} value={e.value}>{e.label}</option>
+              ))}
+            </select>
+            <button
+              onClick={handleGuardarEstado}
+              disabled={saving || estado === lead.estado}
+              className="px-4 py-2 bg-brand-600 text-white text-sm font-medium rounded-lg hover:bg-brand-700 disabled:opacity-40 transition-colors"
+            >
+              {saving ? "Guardando..." : "Guardar"}
+            </button>
+            {estado === lead.estado && (
+              <span className="text-xs text-gray-400">Sin cambios</span>
+            )}
+          </div>
+        </div>
+
+        {/* Propiedades de interés */}
+        <div className="bg-white rounded-xl border border-gray-200 p-6">
+          <h2 className="text-sm font-semibold text-gray-700 mb-4">Propiedades de interés</h2>
+          {propiedades.length === 0 ? (
+            <p className="text-sm text-gray-400">Sin propiedades registradas.</p>
+          ) : (
+            <ul className="space-y-2">
+              {propiedades.map((p, i) => (
+                <li key={i} className="flex items-center gap-2 text-sm text-gray-700">
+                  <span className="w-5 h-5 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center text-xs font-bold">
+                    {i + 1}
+                  </span>
+                  {p.titulo ?? p.id ?? "—"}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
+        {/* Metadata */}
+        <div className="bg-white rounded-xl border border-gray-200 p-6">
+          <h2 className="text-sm font-semibold text-gray-700 mb-4">Metadata</h2>
+          <pre className="text-xs text-gray-500 bg-gray-50 rounded-lg p-3 overflow-x-auto whitespace-pre-wrap">
+            {JSON.stringify(lead.metadata, null, 2)}
+          </pre>
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -153,7 +153,7 @@ class LeadsService:
 
     async def get_lead(self, id_lead: int, id_empresa: int) -> LeadResponse:
         """Obtiene un lead por ID validando pertenencia a la empresa."""
-        lead = await self._repo.get_by_id(id_lead, id_empresa)
+        lead = await self._repo.get_by_id_empresa(id_lead, id_empresa)
         if not lead:
             raise HTTPException(status_code=404, detail="Lead no encontrado")
         return _lead_to_response(lead)

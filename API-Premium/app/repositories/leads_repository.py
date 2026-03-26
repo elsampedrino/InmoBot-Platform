@@ -98,7 +98,7 @@ class LeadsRepository:
 
         return leads, total
 
-    async def get_by_id(self, id_lead: int, id_empresa: int) -> Lead | None:
+    async def get_by_id_empresa(self, id_lead: int, id_empresa: int) -> Lead | None:
         result = await self.db.execute(
             select(Lead).where(Lead.id_lead == id_lead, Lead.id_empresa == id_empresa)
         )
