@@ -27,7 +27,7 @@ class Settings(BaseSettings):
 
     # ─── CORS ─────────────────────────────────────────────────────────────────
     # Separado por comas: "http://a.com,http://b.com"  o  "*"
-    CORS_ORIGINS: str = "*"
+    CORS_ORIGINS: str = "http://localhost:5173,http://localhost:4173"
 
     @property
     def cors_origins_list(self) -> list[str]:
