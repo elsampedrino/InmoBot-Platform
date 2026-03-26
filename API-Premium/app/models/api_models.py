@@ -120,11 +120,14 @@ class LeadResponse(BaseModel):
     canal: str | None
     estado: str
     metadata: dict[str, Any]
+    created_at: str | None = None
 
 
 class LeadListResponse(BaseModel):
     leads: list[LeadResponse]
     total: int
+    page: int = 1
+    page_size: int = 20
 
 
 # ─── ANALYTICS ────────────────────────────────────────────────────────────────

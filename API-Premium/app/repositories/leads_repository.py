@@ -6,6 +6,8 @@ Estrategia:
   - list_by_empresa: paginación con count separado para evitar subquery costosa.
   - update: actualiza solo las claves presentes en el dict `data`.
 """
+from datetime import datetime
+
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -76,21 +78,28 @@ class LeadsRepository:
         estado: str | None,
         offset: int,
         limit: int,
+        fecha_desde: datetime | None = None,
+        fecha_hasta: datetime | None = None,
     ) -> tuple[list[Lead], int]:
-        # Count total
-        count_stmt = select(func.count()).select_from(Lead).where(
-            Lead.id_empresa == id_empresa
-        )
+        base = select(Lead).where(Lead.id_empresa == id_empresa)
         if estado:
-            count_stmt = count_stmt.where(Lead.estado == estado)
+            base = base.where(Lead.estado == estado)
+        if fecha_desde:
+            base = base.where(Lead.created_at >= fecha_desde)
+        if fecha_hasta:
+            base = base.where(Lead.created_at <= fecha_hasta)
+
+        count_stmt = select(func.count()).select_from(base.subquery())
         total = (await self.db.execute(count_stmt)).scalar_one()
 
-        # Items paginados
-        stmt = select(Lead).where(Lead.id_empresa == id_empresa)
-        if estado:
-            stmt = stmt.where(Lead.estado == estado)
-        stmt = stmt.order_by(Lead.created_at.desc()).offset(offset).limit(limit)
+        stmt = base.order_by(Lead.created_at.desc()).offset(offset).limit(limit)
         result = await self.db.execute(stmt)
         leads = list(result.scalars().all())
 
         return leads, total
+
+    async def get_by_id(self, id_lead: int, id_empresa: int) -> Lead | None:
+        result = await self.db.execute(
+            select(Lead).where(Lead.id_lead == id_lead, Lead.id_empresa == id_empresa)
+        )
+        return result.scalar_one_or_none()

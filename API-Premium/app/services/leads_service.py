@@ -12,6 +12,8 @@ No debe:
 - Gestionar la conversación completa
 - Enviar respuestas conversacionales largas
 """
+from typing import Any
+
 from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -21,6 +23,12 @@ from app.models.db_models import Lead
 from app.repositories.leads_repository import LeadsRepository
 
 logger = get_logger(__name__)
+
+
+def _fmt_dt(dt: Any) -> str | None:
+    if dt is None:
+        return None
+    return dt.isoformat() if hasattr(dt, "isoformat") else str(dt)
 
 
 def _lead_to_response(lead: Lead) -> LeadResponse:
@@ -33,6 +41,7 @@ def _lead_to_response(lead: Lead) -> LeadResponse:
         canal=lead.canal,
         estado=lead.estado,
         metadata=lead.metadata_ or {},
+        created_at=_fmt_dt(lead.created_at),
     )
 
 
@@ -122,6 +131,8 @@ class LeadsService:
         estado: str | None,
         page: int,
         page_size: int,
+        fecha_desde: Any = None,
+        fecha_hasta: Any = None,
     ) -> LeadListResponse:
         """Lista paginada de leads de una empresa."""
         offset = (page - 1) * page_size
@@ -130,11 +141,22 @@ class LeadsService:
             estado=estado,
             offset=offset,
             limit=page_size,
+            fecha_desde=fecha_desde,
+            fecha_hasta=fecha_hasta,
         )
         return LeadListResponse(
             leads=[_lead_to_response(l) for l in leads],
             total=total,
+            page=page,
+            page_size=page_size,
         )
+
+    async def get_lead(self, id_lead: int, id_empresa: int) -> LeadResponse:
+        """Obtiene un lead por ID validando pertenencia a la empresa."""
+        lead = await self._repo.get_by_id(id_lead, id_empresa)
+        if not lead:
+            raise HTTPException(status_code=404, detail="Lead no encontrado")
+        return _lead_to_response(lead)
 
     async def get_by_session(self, id_empresa: int, session_id: str) -> LeadResponse | None:
         """
