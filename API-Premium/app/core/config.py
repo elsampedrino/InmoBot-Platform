@@ -25,6 +25,18 @@ class Settings(BaseSettings):
     ADMIN_JWT_SECRET: str = "cambiar-en-produccion"
     ADMIN_JWT_EXPIRE_HOURS: int = 24
 
+    # ─── Cloudinary ───────────────────────────────────────────────────────────
+    CLOUDINARY_CLOUD_NAME: str = ""
+    CLOUDINARY_API_KEY: str = ""
+    CLOUDINARY_API_SECRET: str = ""
+
+    # ─── GitHub export ────────────────────────────────────────────────────────
+    GITHUB_TOKEN: str = ""
+    GITHUB_REPO_OWNER: str = "elsampedrino"
+    GITHUB_REPO_NAME: str = "bot-inmobiliaria-data"
+    GITHUB_FILE_PATH: str = "propiedades_bbr.json"
+    GITHUB_BRANCH: str = "main"
+
     # ─── CORS ─────────────────────────────────────────────────────────────────
     # Separado por comas: "http://a.com,http://b.com"  o  "*"
     CORS_ORIGINS: str = "http://localhost:5173,http://localhost:4173"

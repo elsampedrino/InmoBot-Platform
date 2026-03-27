@@ -147,6 +147,76 @@ class LeadDetailResponse(LeadResponse):
     propiedades_detalle: list[PropiedadDetalle] = []
 
 
+# ─── ITEMS (ADMIN) ────────────────────────────────────────────────────────────
+
+class ItemAdminResponse(BaseModel):
+    id_item: str
+    external_id: str
+    tipo: str
+    categoria: str | None
+    titulo: str
+    descripcion: str | None
+    descripcion_corta: str | None
+    precio: float | None
+    moneda: str | None
+    activo: bool
+    destacado: bool
+    atributos: dict[str, Any]
+    media: dict[str, Any]
+    created_at: str | None = None
+
+
+class ItemAdminListResponse(BaseModel):
+    items: list[ItemAdminResponse]
+    total: int
+    page: int
+    page_size: int
+
+
+class ItemCreateRequest(BaseModel):
+    external_id: str
+    tipo: str
+    categoria: str | None = None
+    titulo: str
+    descripcion: str | None = None
+    descripcion_corta: str | None = None
+    precio: float | None = None
+    moneda: str | None = None
+    destacado: bool = False
+    atributos: dict[str, Any] = {}
+    fotos: list[str] = []
+
+
+class ItemUpdateRequest(BaseModel):
+    external_id: str | None = None
+    tipo: str | None = None
+    categoria: str | None = None
+    titulo: str | None = None
+    descripcion: str | None = None
+    descripcion_corta: str | None = None
+    precio: float | None = None
+    moneda: str | None = None
+    activo: bool | None = None
+    destacado: bool | None = None
+    atributos: dict[str, Any] | None = None
+    fotos: list[str] | None = None
+
+
+class CloudinarySignResponse(BaseModel):
+    cloud_name: str
+    api_key: str
+    timestamp: int
+    signature: str
+    folder: str
+
+
+class ExportLandingResponse(BaseModel):
+    ok: bool
+    total: int
+    commit_sha: str | None = None
+    message: str
+
+
 # ─── ANALYTICS ────────────────────────────────────────────────────────────────
 
 class ChatLogResponse(BaseModel):

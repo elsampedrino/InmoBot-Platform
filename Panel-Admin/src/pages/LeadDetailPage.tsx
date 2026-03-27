@@ -166,13 +166,6 @@ export default function LeadDetailPage() {
           )}
         </div>
 
-        {/* Metadata */}
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
-          <h2 className="text-sm font-semibold text-gray-700 mb-4">Metadata</h2>
-          <pre className="text-xs text-gray-500 bg-gray-50 rounded-lg p-3 overflow-x-auto whitespace-pre-wrap">
-            {JSON.stringify(lead.metadata, null, 2)}
-          </pre>
-        </div>
       </div>
     </div>
   );
