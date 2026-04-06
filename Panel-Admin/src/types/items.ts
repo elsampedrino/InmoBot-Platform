@@ -64,6 +64,7 @@ export interface CloudinarySignResponse {
   timestamp: number;
   signature: string;
   folder: string;
+  transformation: string;
 }
 
 export const TIPOS_PROPIEDAD = [

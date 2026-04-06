@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Plus, Upload, Pencil, Power, PowerOff } from "lucide-react";
+import { Plus, Upload, Pencil, Power, PowerOff, Star } from "lucide-react";
 import { api, ApiError } from "../lib/api";
 import { getSession } from "../lib/auth";
 import {
@@ -9,29 +9,6 @@ import {
   TIPOS_PROPIEDAD,
   CATEGORIAS_PROPIEDAD,
 } from "../types/items";
-
-function BadgeActivo({ activo }: { activo: boolean }) {
-  return (
-    <span
-      className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
-        activo
-          ? "bg-green-100 text-green-800"
-          : "bg-gray-100 text-gray-500"
-      }`}
-    >
-      {activo ? "Activa" : "Inactiva"}
-    </span>
-  );
-}
-
-function BadgeDestacado({ destacado }: { destacado: boolean }) {
-  if (!destacado) return null;
-  return (
-    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-      Destacada
-    </span>
-  );
-}
 
 export default function PropiedadesPage() {
   const navigate = useNavigate();
@@ -46,7 +23,6 @@ export default function PropiedadesPage() {
   const [exporting, setExporting] = useState(false);
   const [exportMsg, setExportMsg] = useState<string | null>(null);
 
-  // Filtros
   const [filterActivo, setFilterActivo] = useState<"" | "true" | "false">("");
   const [filterTipo, setFilterTipo]     = useState("");
 
@@ -69,19 +45,27 @@ export default function PropiedadesPage() {
     }
   }
 
-  useEffect(() => {
-    fetchItems(page);
-  }, [page, filterActivo, filterTipo]);
+  useEffect(() => { fetchItems(page); }, [page, filterActivo, filterTipo]);
 
   async function handleToggleActivo(item: ItemAdmin) {
     try {
       const updated = await api.patch<ItemAdmin>(
-        `/admin/items/${item.id_item}/activo?activo=${!item.activo}`,
-        {},
+        `/admin/items/${item.id_item}/activo?activo=${!item.activo}`, {},
       );
       setItems(prev => prev.map(i => i.id_item === updated.id_item ? updated : i));
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "No se pudo cambiar el estado.");
+    }
+  }
+
+  async function handleToggleDestacado(item: ItemAdmin) {
+    try {
+      const updated = await api.patch<ItemAdmin>(
+        `/admin/items/${item.id_item}/destacado?destacado=${!item.destacado}`, {},
+      );
+      setItems(prev => prev.map(i => i.id_item === updated.id_item ? updated : i));
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : "No se pudo cambiar destacado.");
     }
   }
 
@@ -90,8 +74,7 @@ export default function PropiedadesPage() {
     setExportMsg(null);
     try {
       const res = await api.post<{ ok: boolean; total: number; message: string; commit_sha: string | null }>(
-        "/admin/items/export-landing",
-        {},
+        "/admin/items/export-landing", {},
       );
       setExportMsg(`✓ ${res.message}${res.commit_sha ? ` (commit ${res.commit_sha})` : ""}`);
     } catch (err) {
@@ -102,11 +85,8 @@ export default function PropiedadesPage() {
   }
 
   const totalPages = Math.ceil(total / PAGE_SIZE);
-
-  const tipoLabel = (tipo: string) =>
-    TIPOS_PROPIEDAD.find(t => t.value === tipo)?.label ?? tipo;
-  const catLabel = (cat: string | null) =>
-    CATEGORIAS_PROPIEDAD.find(c => c.value === cat)?.label ?? cat ?? "—";
+  const tipoLabel = (tipo: string) => TIPOS_PROPIEDAD.find(t => t.value === tipo)?.label ?? tipo;
+  const catLabel  = (cat: string | null) => CATEGORIAS_PROPIEDAD.find(c => c.value === cat)?.label ?? cat ?? "—";
 
   return (
     <div className="p-8">
@@ -138,13 +118,7 @@ export default function PropiedadesPage() {
       </div>
 
       {exportMsg && (
-        <div
-          className={`mb-4 text-sm rounded-lg p-3 ${
-            exportMsg.startsWith("Error")
-              ? "bg-red-50 text-red-700"
-              : "bg-green-50 text-green-700"
-          }`}
-        >
+        <div className={`mb-4 text-sm rounded-lg p-3 ${exportMsg.startsWith("Error") ? "bg-red-50 text-red-700" : "bg-green-50 text-green-700"}`}>
           {exportMsg}
         </div>
       )}
@@ -172,9 +146,7 @@ export default function PropiedadesPage() {
         </select>
       </div>
 
-      {error && (
-        <div className="mb-4 bg-red-50 text-red-700 text-sm rounded-lg p-4">{error}</div>
-      )}
+      {error && <div className="mb-4 bg-red-50 text-red-700 text-sm rounded-lg p-4">{error}</div>}
 
       {/* Tabla */}
       <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
@@ -191,8 +163,9 @@ export default function PropiedadesPage() {
                 <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Tipo</th>
                 <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Operación</th>
                 <th className="text-right px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Precio</th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Estado</th>
-                <th className="text-right px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Acciones</th>
+                <th className="text-center px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Activa</th>
+                <th className="text-center px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Destacada</th>
+                <th className="text-right px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Editar</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
@@ -204,56 +177,63 @@ export default function PropiedadesPage() {
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
                         {fotos[0] ? (
-                          <img
-                            src={fotos[0]}
-                            alt=""
-                            className="w-10 h-10 object-cover rounded-lg shrink-0"
-                          />
+                          <img src={fotos[0]} alt="" className="w-10 h-10 object-cover rounded-lg shrink-0" />
                         ) : (
                           <div className="w-10 h-10 rounded-lg bg-gray-100 shrink-0" />
                         )}
                         <div>
                           <p className="font-medium text-gray-800 leading-tight">{item.titulo}</p>
                           {item.atributos?.ciudad && (
-                            <p className="text-xs text-gray-400 mt-0.5">{item.atributos.ciudad}</p>
+                            <p className="text-xs text-gray-400 mt-0.5">{item.atributos.ciudad as string}</p>
                           )}
                         </div>
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-gray-600 capitalize">{tipoLabel(item.tipo)}</td>
+                    <td className="px-4 py-3 text-gray-600">{tipoLabel(item.tipo)}</td>
                     <td className="px-4 py-3 text-gray-600">{catLabel(item.categoria)}</td>
                     <td className="px-4 py-3 text-right text-gray-800 font-medium">
-                      {item.precio
-                        ? `${item.moneda ?? ""} ${item.precio.toLocaleString("es-AR")}`
-                        : "—"}
+                      {item.precio ? `${item.moneda ?? ""} ${item.precio.toLocaleString("es-AR")}` : "—"}
                     </td>
-                    <td className="px-4 py-3">
-                      <div className="flex flex-col gap-1">
-                        <BadgeActivo activo={item.activo} />
-                        <BadgeDestacado destacado={item.destacado} />
-                      </div>
+
+                    {/* Toggle Activo */}
+                    <td className="px-4 py-3 text-center">
+                      <button
+                        onClick={() => handleToggleActivo(item)}
+                        title={item.activo ? "Desactivar" : "Activar"}
+                        className={`inline-flex items-center justify-center w-8 h-8 rounded-lg transition-colors ${
+                          item.activo
+                            ? "bg-green-100 text-green-700 hover:bg-red-100 hover:text-red-600"
+                            : "bg-gray-100 text-gray-400 hover:bg-green-100 hover:text-green-700"
+                        }`}
+                      >
+                        {item.activo ? <Power size={14} /> : <PowerOff size={14} />}
+                      </button>
                     </td>
+
+                    {/* Toggle Destacado */}
+                    <td className="px-4 py-3 text-center">
+                      <button
+                        onClick={() => handleToggleDestacado(item)}
+                        title={item.destacado ? "Quitar destacado" : "Marcar como destacada"}
+                        className={`inline-flex items-center justify-center w-8 h-8 rounded-lg transition-colors ${
+                          item.destacado
+                            ? "bg-yellow-100 text-yellow-600 hover:bg-gray-100 hover:text-gray-400"
+                            : "bg-gray-100 text-gray-300 hover:bg-yellow-100 hover:text-yellow-600"
+                        }`}
+                      >
+                        <Star size={14} />
+                      </button>
+                    </td>
+
+                    {/* Editar */}
                     <td className="px-4 py-3 text-right">
-                      <div className="flex items-center justify-end gap-2">
-                        <button
-                          onClick={() => navigate(`/propiedades/${item.id_item}/editar`)}
-                          title="Editar"
-                          className="p-1.5 text-gray-400 hover:text-brand-600 hover:bg-brand-50 rounded-lg transition-colors"
-                        >
-                          <Pencil size={15} />
-                        </button>
-                        <button
-                          onClick={() => handleToggleActivo(item)}
-                          title={item.activo ? "Desactivar" : "Activar"}
-                          className={`p-1.5 rounded-lg transition-colors ${
-                            item.activo
-                              ? "text-gray-400 hover:text-red-500 hover:bg-red-50"
-                              : "text-gray-400 hover:text-green-600 hover:bg-green-50"
-                          }`}
-                        >
-                          {item.activo ? <PowerOff size={15} /> : <Power size={15} />}
-                        </button>
-                      </div>
+                      <button
+                        onClick={() => navigate(`/propiedades/${item.id_item}/editar`)}
+                        title="Editar"
+                        className="inline-flex items-center justify-center w-8 h-8 text-gray-400 hover:text-brand-600 hover:bg-brand-50 rounded-lg transition-colors"
+                      >
+                        <Pencil size={15} />
+                      </button>
                     </td>
                   </tr>
                 );
@@ -262,12 +242,9 @@ export default function PropiedadesPage() {
           </table>
         )}
 
-        {/* Paginación */}
         {totalPages > 1 && (
           <div className="px-4 py-3 border-t border-gray-100 flex items-center justify-between">
-            <p className="text-xs text-gray-400">
-              Página {page} de {totalPages} ({total} propiedades)
-            </p>
+            <p className="text-xs text-gray-400">Página {page} de {totalPages} ({total} propiedades)</p>
             <div className="flex gap-2">
               <button
                 onClick={() => setPage(p => Math.max(1, p - 1))}

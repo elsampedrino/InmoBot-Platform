@@ -106,10 +106,12 @@ async def create_item(
     current_user: UsuarioAdmin = Depends(get_current_admin),
 ) -> ItemAdminResponse:
     repo = ItemsRepository(db)
+    data = body.model_dump()
+    data["external_id"] = await repo.next_external_id(current_user.id_empresa)
     row = await repo.admin_create(
         id_empresa=current_user.id_empresa,
         id_rubro=_ID_RUBRO_INMOBILIARIA,
-        data=body.model_dump(),
+        data=data,
     )
     return _row_to_response(row)
 
@@ -154,6 +156,24 @@ async def toggle_activo(
     return _row_to_response(row)
 
 
+@router.patch("/{id_item}/destacado", response_model=ItemAdminResponse)
+async def toggle_destacado(
+    id_item: str,
+    destacado: bool = Query(...),
+    db: AsyncSession = Depends(get_db),
+    current_user: UsuarioAdmin = Depends(get_current_admin),
+) -> ItemAdminResponse:
+    repo = ItemsRepository(db)
+    row = await repo.admin_update(
+        id_empresa=current_user.id_empresa,
+        id_item=id_item,
+        data={"destacado": destacado},
+    )
+    if not row:
+        raise HTTPException(status_code=404, detail="Propiedad no encontrada")
+    return _row_to_response(row)
+
+
 # ── Cloudinary sign ────────────────────────────────────────────────────────────
 
 @router.post("/cloudinary-sign", response_model=CloudinarySignResponse)
@@ -167,11 +187,14 @@ async def cloudinary_sign(
     if not settings.CLOUDINARY_API_SECRET:
         raise HTTPException(status_code=503, detail="Cloudinary no configurado")
 
-    folder = f"bbr/prop"
+    folder = "bbr/prop"
+    transformation = "q_auto:good/f_auto"
     ts = int(time.time())
-    params_to_sign = f"folder={folder}&timestamp={ts}"
+    # Parámetros ordenados alfabéticamente para la firma
+    signed_params = {"folder": folder, "timestamp": ts, "transformation": transformation}
+    params_str = "&".join(f"{k}={v}" for k, v in sorted(signed_params.items()))
     signature = hashlib.sha256(
-        (params_to_sign + settings.CLOUDINARY_API_SECRET).encode()
+        (params_str + settings.CLOUDINARY_API_SECRET).encode()
     ).hexdigest()
 
     return CloudinarySignResponse(
@@ -180,6 +203,7 @@ async def cloudinary_sign(
         timestamp=ts,
         signature=signature,
         folder=folder,
+        transformation=transformation,
     )
 
 

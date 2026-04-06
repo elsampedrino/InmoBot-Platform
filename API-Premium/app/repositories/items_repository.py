@@ -137,6 +137,21 @@ class ItemsRepository:
         total = (await self.db.execute(count_sql, {"id_empresa": id_empresa, "activo": activo})).scalar() or 0
         return [dict(r) for r in rows], total
 
+    async def next_external_id(self, id_empresa: int) -> str:
+        """Genera el próximo external_id secuencial (PROP-001, PROP-002, ...)."""
+        sql = text("""
+            SELECT external_id FROM items
+            WHERE id_empresa = :id_empresa
+              AND external_id ~ '^PROP-[0-9]+$'
+            ORDER BY CAST(substring(external_id FROM 6) AS INTEGER) DESC
+            LIMIT 1
+        """)
+        row = (await self.db.execute(sql, {"id_empresa": id_empresa})).mappings().first()
+        if row:
+            last_num = int(row["external_id"].split("-")[1])
+            return f"PROP-{last_num + 1:03d}"
+        return "PROP-001"
+
     # ── Admin CRUD ────────────────────────────────────────────────────────────
 
     def _item_to_dict(self, item: Item) -> dict:

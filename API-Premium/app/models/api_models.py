@@ -174,7 +174,6 @@ class ItemAdminListResponse(BaseModel):
 
 
 class ItemCreateRequest(BaseModel):
-    external_id: str
     tipo: str
     categoria: str | None = None
     titulo: str
@@ -208,6 +207,7 @@ class CloudinarySignResponse(BaseModel):
     timestamp: int
     signature: str
     folder: str
+    transformation: str = ""
 
 
 class ExportLandingResponse(BaseModel):
