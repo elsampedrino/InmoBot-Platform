@@ -186,7 +186,7 @@ class ItemsRepository:
                 atributos, media, created_at
             FROM items
             WHERE {where}
-            ORDER BY created_at DESC
+            ORDER BY external_id ASC
             LIMIT :limit OFFSET :offset
         """)
         count_sql = text(f"SELECT COUNT(*) FROM items WHERE {where}")
