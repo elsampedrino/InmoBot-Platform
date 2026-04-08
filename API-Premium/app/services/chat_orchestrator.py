@@ -50,6 +50,7 @@ from app.services.analytics_service import AnalyticsService
 from app.services.context_manager import ContextManager
 from app.services.kb_service import KBService
 from app.services.leads_service import LeadsService
+from app.services.notification_service import NotificationService
 from app.services.prompt_service import PromptService
 from app.services.query_parser import QueryParser
 from app.services.response_assembler import ResponseAssembler
@@ -427,6 +428,12 @@ class ChatOrchestrator:
                     "propiedades_interes": self._build_propiedades_interes(state),
                 },
             )
+
+            # Notificaciones — fire-and-forget, no bloquea el flujo
+            NotificationService(
+                notificaciones=tenant_config.notificaciones,
+                nombre_empresa=tenant_config.nombre_empresa,
+            ).notify_new_lead(lead_response)
 
             # Vincular conversación ↔ lead
             if id_conversacion:

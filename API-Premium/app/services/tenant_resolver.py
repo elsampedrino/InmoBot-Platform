@@ -79,6 +79,7 @@ class TenantResolver:
             nombre_empresa=empresa.nombre,
             slug=empresa.slug,
             servicios=dict(empresa.servicios) if empresa.servicios else {"bot": True},
+            notificaciones=dict(empresa.notificaciones) if empresa.notificaciones else {},
             system_prompt=(
                 rubro_prompt.system_prompt if rubro_prompt else _DEFAULT_SYSTEM_PROMPT
             ),

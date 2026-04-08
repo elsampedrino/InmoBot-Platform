@@ -37,6 +37,20 @@ class Settings(BaseSettings):
     GITHUB_FILE_PATH: str = "propiedades_bbr.json"
     GITHUB_BRANCH: str = "main"
 
+    # ─── Telegram Bot ────────────────────────────────────────────────────────
+    TELEGRAM_BOT_TOKEN: str = ""
+
+    # ─── SMTP ─────────────────────────────────────────────────────────────────
+    SMTP_HOST: str = ""
+    SMTP_PORT: int = 465
+    SMTP_SSL: bool = True   # True = SSL directo (465), False = STARTTLS (587)
+    SMTP_USER: str = ""
+    SMTP_PASSWORD: str = ""
+    SMTP_FROM: str = ""
+
+    # ─── Panel Admin ──────────────────────────────────────────────────────────
+    PANEL_BASE_URL: str = "http://localhost:5173"
+
     # ─── CORS ─────────────────────────────────────────────────────────────────
     # Separado por comas: "http://a.com,http://b.com"  o  "*"
     CORS_ORIGINS: str = "http://localhost:5173,http://localhost:4173"

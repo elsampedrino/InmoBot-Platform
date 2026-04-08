@@ -225,7 +225,8 @@ class TenantConfig:
     style_prompt: str | None
     brand_voice: str | None
     prompt_extra: str | None
-    servicios: dict[str, bool]   # {"bot": True, "landing": True, ...}
+    servicios: dict[str, bool]        # {"bot": True, "landing": True, ...}
+    notificaciones: dict              # empresas.notificaciones JSONB
     max_items_per_response: int
     ia_habilitada: bool
     followup_habilitado: bool
