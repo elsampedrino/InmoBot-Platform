@@ -72,7 +72,7 @@ _RE_NOMBRE = re.compile(
     r"(?:me llamo|mi nombre es|mi nombre:|soy)\s+"
     r"|^"  # o inicio de mensaje
     r")"
-    r"([A-Za-záéíóúñÁÉÍÓÚÑüÜ]+(?:\s+[A-Za-záéíóúñÁÉÍÓÚÑüÜ]+)+?)"
+    r"([A-Za-záéíóúñÁÉÍÓÚÑüÜ]+(?:\s+[A-Za-záéíóúñÁÉÍÓÚÑüÜ]+)*?)"
     r"(?=\s*[,;]|\s+y\b|\s+mi\b|\s+tel|\s+mail|\s+email)",
     re.IGNORECASE,
 )
@@ -686,7 +686,7 @@ class ChatOrchestrator:
                 "Para coordinar la visita necesito tu nombre y número de contacto."
             )
 
-        # ── KB ─────────────────────────────────────────────────────────────────
+        # ── KB ────────────────────────────────────��────────────────────────────
         if route == Route.PREGUNTA_KB:
             if kb_chunks:
                 # Hay contenido: extraer el primer chunk como respuesta base
