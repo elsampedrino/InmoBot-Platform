@@ -40,6 +40,11 @@ const menuItems = [
       </ul>
     </nav>
 
+    <!-- Acceso Clientes -->
+    <a href="https://panel.automatizacionia.com.ar/login" class="client-access-btn" target="_blank" rel="noopener">
+      Acceso Clientes
+    </a>
+
     <!-- CTA Button -->
     <a href="#demo" class="cta-button">
       Probar el Asistente en Vivo
@@ -64,6 +69,11 @@ const menuItems = [
             </a>
           </li>
         ))}
+        <li class="mobile-nav-item">
+          <a href="https://panel.automatizacionia.com.ar/login" class="mobile-nav-link" target="_blank" rel="noopener">
+            Acceso Clientes
+          </a>
+        </li>
         <li class="mobile-nav-item">
           <a href="#demo" class="mobile-cta-button">
             Probar el Asistente en Vivo
@@ -184,6 +194,33 @@ const menuItems = [
 
   .nav-link:hover {
     color: #d8b4fe;
+  }
+
+  /* Acceso Clientes Button */
+  .client-access-btn {
+    display: none;
+    padding: 0.5rem 1rem;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.75);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+
+  @media (min-width: 1024px) {
+    .client-access-btn {
+      display: inline-block;
+    }
+  }
+
+  .client-access-btn:hover {
+    color: white;
+    border-color: rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.08);
   }
 
   /* CTA Button with animated gradient */
