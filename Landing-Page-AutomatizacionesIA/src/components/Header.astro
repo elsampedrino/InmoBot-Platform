@@ -6,8 +6,6 @@ const menuItems = [
   { label: 'Beneficios', href: '#beneficios' },
   { label: 'Planes', href: '#precios' },
   { label: 'Bot+Landing', href: '#bot-landing' },
-  { label: 'Tecnología', href: '#tecnologia' },
-  { label: 'El Futuro', href: '#futuro' },
   { label: 'Preguntas Frecuentes', href: '#faq' },
 ];
 ---
@@ -40,15 +38,15 @@ const menuItems = [
       </ul>
     </nav>
 
-    <!-- Acceso Clientes -->
-    <a href="https://panel.automatizacionia.com.ar/login" class="client-access-btn" target="_blank" rel="noopener">
-      Acceso Clientes
-    </a>
-
-    <!-- CTA Button -->
-    <a href="#demo" class="cta-button">
-      Probar el Asistente en Vivo
-    </a>
+    <!-- Botones derecha -->
+    <div class="header-actions">
+      <a href="https://panel.automatizacionia.com.ar/login" class="client-access-btn" target="_blank" rel="noopener">
+        Acceso Clientes
+      </a>
+      <a href="#demo" class="cta-button">
+        Probar el Asistente en Vivo
+      </a>
+    </div>
 
     <!-- Mobile Menu Button -->
     <button class="mobile-menu-btn" aria-label="Abrir menú">
@@ -196,9 +194,22 @@ const menuItems = [
     color: #d8b4fe;
   }
 
+  /* Contenedor botones derecha */
+  .header-actions {
+    display: none;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  @media (min-width: 1024px) {
+    .header-actions {
+      display: flex;
+    }
+  }
+
   /* Acceso Clientes Button */
   .client-access-btn {
-    display: none;
+    display: inline-block;
     padding: 0.5rem 1rem;
     background: transparent;
     color: rgba(255, 255, 255, 0.75);
@@ -211,12 +222,6 @@ const menuItems = [
     white-space: nowrap;
   }
 
-  @media (min-width: 1024px) {
-    .client-access-btn {
-      display: inline-block;
-    }
-  }
-
   .client-access-btn:hover {
     color: white;
     border-color: rgba(255, 255, 255, 0.7);
@@ -225,7 +230,7 @@ const menuItems = [
 
   /* CTA Button with animated gradient */
   .cta-button {
-    display: none;
+    display: inline-block;
     padding: 0.625rem 1.25rem;
     background: linear-gradient(90deg, #8151CF 0%, #a855f7 25%, #06b6d4 50%, #a855f7 75%, #8151CF 100%);
     background-size: 200% 100%;
@@ -250,12 +255,6 @@ const menuItems = [
     }
     100% {
       background-position: 0% 50%;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .cta-button {
-      display: inline-block;
     }
   }
 
