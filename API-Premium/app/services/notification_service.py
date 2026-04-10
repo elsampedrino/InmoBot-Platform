@@ -77,7 +77,6 @@ class NotificationService:
             logger.warning("telegram_notification_error", id_lead=lead.id_lead, error=str(exc))
 
     def _build_telegram_text(self, lead: LeadResponse) -> str:
-        panel_url = f"{settings.PANEL_BASE_URL.rstrip('/')}/leads/{lead.id_lead}"
         propiedades = lead.metadata.get("propiedades_interes", [])
 
         lines = [
@@ -93,12 +92,9 @@ class NotificationService:
             lines.append("")
             lines.append("🔍 <b>Propiedades de interés:</b>")
             for p in propiedades[:5]:
-                lines.append(f"  · {p}")
+                titulo = (p.get("titulo") or str(p)) if isinstance(p, dict) else str(p)
+                lines.append(f"  · {titulo}")
 
-        lines += [
-            "",
-            f"🔗 <a href=\"{panel_url}\">Ver en el panel</a>",
-        ]
         return "\n".join(lines)
 
     # ── Email ─────────────────────────────────────────────────────────────────
@@ -121,7 +117,10 @@ class NotificationService:
 
         props_html = ""
         if propiedades:
-            items_html = "".join(f"<li>{p}</li>" for p in propiedades[:5])
+            items_html = "".join(
+                f"<li>{(p.get('titulo') or str(p)) if isinstance(p, dict) else str(p)}</li>"
+                for p in propiedades[:5]
+            )
             props_html = f"<h3>Propiedades de interés</h3><ul>{items_html}</ul>"
 
         html = f"""
@@ -158,6 +157,8 @@ class NotificationService:
     def _smtp_send(self, msg: MIMEMultipart, to: str) -> None:
         """Envío SMTP bloqueante — ejecutar en executor."""
         context = ssl.create_default_context()
+        context.check_hostname = False
+        context.verify_mode = ssl.CERT_NONE
         if settings.SMTP_SSL:
             # Puerto 465 — SSL directo
             with smtplib.SMTP_SSL(settings.SMTP_HOST, settings.SMTP_PORT, context=context) as server:
