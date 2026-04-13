@@ -253,6 +253,57 @@ class AnalyticsSummaryResponse(BaseModel):
     periodo: str
 
 
+# ─── EMPRESAS (ADMIN) ────────────────────────────────────────────────────────
+
+class EmpresaServiciosSchema(BaseModel):
+    bot: bool = True
+    landing: bool = False
+
+class EmpresaTelegramSchema(BaseModel):
+    enabled: bool = False
+    chat_id: str = ""
+
+class EmpresaEmailSchema(BaseModel):
+    enabled: bool = False
+    to: str = ""
+
+class EmpresaNotificacionesSchema(BaseModel):
+    telegram: EmpresaTelegramSchema = EmpresaTelegramSchema()
+    email: EmpresaEmailSchema = EmpresaEmailSchema()
+
+class EmpresaAdminResponse(BaseModel):
+    id_empresa: int
+    nombre: str
+    slug: str | None
+    id_plan: int | None
+    activa: bool
+    permite_followup: bool
+    timezone: str
+    servicios: EmpresaServiciosSchema
+    notificaciones: EmpresaNotificacionesSchema
+    created_at: str | None = None
+
+class EmpresaListResponse(BaseModel):
+    empresas: list[EmpresaAdminResponse]
+    total: int
+
+class EmpresaCreateRequest(BaseModel):
+    nombre: str = Field(..., min_length=3)
+    slug: str = Field(..., min_length=2, pattern=r'^[a-z0-9]+(?:-[a-z0-9]+)*$')
+    id_plan: int = 1
+    timezone: str = "America/Argentina/Buenos_Aires"
+    activa: bool = True
+
+class EmpresaUpdateRequest(BaseModel):
+    nombre: str | None = Field(None, min_length=3)
+    id_plan: int | None = None
+    activa: bool | None = None
+    permite_followup: bool | None = None
+    timezone: str | None = None
+    servicios: EmpresaServiciosSchema | None = None
+    notificaciones: EmpresaNotificacionesSchema | None = None
+
+
 # ─── HEALTH ───────────────────────────────────────────────────────────────────
 
 class HealthResponse(BaseModel):
