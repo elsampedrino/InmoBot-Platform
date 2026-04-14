@@ -304,6 +304,40 @@ class EmpresaUpdateRequest(BaseModel):
     notificaciones: EmpresaNotificacionesSchema | None = None
 
 
+# ─── USUARIOS (ADMIN) ────────────────────────────────────────────────────────
+
+class UsuarioAdminResponse(BaseModel):
+    id_usuario: int
+    nombre: str | None
+    email: str
+    es_superadmin: bool
+    activo: bool
+    id_empresa: int | None
+    empresa_nombre: str | None
+    created_at: str | None = None
+
+class UsuarioListResponse(BaseModel):
+    usuarios: list[UsuarioAdminResponse]
+    total: int
+
+class UsuarioCreateRequest(BaseModel):
+    nombre: str | None = Field(None, min_length=2)
+    email: str
+    password: str = Field(..., min_length=8)
+    es_superadmin: bool = False
+    id_empresa: int | None = None
+
+class UsuarioUpdateRequest(BaseModel):
+    nombre: str | None = None
+    email: str | None = None
+    es_superadmin: bool | None = None
+    id_empresa: int | None = None
+    activo: bool | None = None
+
+class UsuarioResetPasswordRequest(BaseModel):
+    nueva_password: str = Field(..., min_length=8)
+
+
 # ─── HEALTH ───────────────────────────────────────────────────────────────────
 
 class HealthResponse(BaseModel):

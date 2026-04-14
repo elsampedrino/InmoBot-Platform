@@ -8,7 +8,7 @@ from app.core.config import settings
 from app.core.database import AsyncSessionLocal, engine
 from app.core.logging import get_logger, setup_logging
 from app.models.api_models import HealthResponse
-from app.routers import admin_auth, admin_empresas, admin_items, admin_leads, analytics, catalogo, chat, leads, webhook_widget, webhook_whatsapp
+from app.routers import admin_auth, admin_empresas, admin_items, admin_leads, admin_usuarios, analytics, catalogo, chat, leads, webhook_widget, webhook_whatsapp
 
 setup_logging()
 logger = get_logger(__name__)
@@ -40,6 +40,7 @@ app.add_middleware(
 
 app.include_router(admin_auth.router,        prefix="/admin/auth",      tags=["admin"])
 app.include_router(admin_empresas.router,    prefix="/admin/empresas",  tags=["admin"])
+app.include_router(admin_usuarios.router,    prefix="/admin/usuarios",  tags=["admin"])
 app.include_router(admin_leads.router,       prefix="/admin/leads",     tags=["admin"])
 app.include_router(admin_items.router,       prefix="/admin/items",     tags=["admin"])
 app.include_router(chat.router,              prefix="/chat",      tags=["chat"])
