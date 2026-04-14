@@ -245,6 +245,27 @@ class EmpresaPromptOverride(Base):
     empresa: Mapped["Empresa"] = relationship("Empresa", back_populates="prompt_override")
 
 
+# ─── IMPORTACION_LOGS ────────────────────────────────────────────────────────
+
+class ImportacionLog(Base):
+    __tablename__ = "importacion_logs"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    id_empresa: Mapped[int] = mapped_column(Integer, ForeignKey("empresas.id_empresa", ondelete="CASCADE"), nullable=False)
+    accion: Mapped[str] = mapped_column(Text, nullable=False)        # 'actualizar_db' | 'publicar_github'
+    resultado: Mapped[str] = mapped_column(Text, nullable=False)     # 'ok' | 'error'
+    detalle: Mapped[dict] = mapped_column(JSONB, nullable=False, server_default="{}")
+    id_usuario: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    nombre_usuario: Mapped[str | None] = mapped_column(Text, nullable=True)
+    created_at: Mapped[Any] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+    empresa: Mapped["Empresa"] = relationship("Empresa")
+
+    __table_args__ = (
+        Index("idx_importacion_logs_empresa", "id_empresa", "created_at"),
+    )
+
+
 # ─── USUARIOS_ADMIN ───────────────────────────────────────────────────────────
 
 class UsuarioAdmin(Base):

@@ -5,13 +5,19 @@ import {
   Users,
   LogOut,
   ChevronRight,
+  Briefcase,
+  UserCog,
+  FileInput,
 } from "lucide-react";
 import { clearSession, getSession } from "../lib/auth";
 
 const navItems = [
-  { to: "/dashboard",   label: "Inicio",     icon: LayoutDashboard },
-  { to: "/propiedades", label: "Propiedades", icon: Building2 },
-  { to: "/leads",       label: "Leads",       icon: Users },
+  { to: "/dashboard",   label: "Inicio",     icon: LayoutDashboard, superadmin: false, soloEmpresa: false },
+  { to: "/propiedades", label: "Propiedades", icon: Building2,       superadmin: false, soloEmpresa: true  },
+  { to: "/leads",       label: "Leads",       icon: Users,           superadmin: false, soloEmpresa: true  },
+  { to: "/empresas",    label: "Empresas",    icon: Briefcase,       superadmin: true,  soloEmpresa: false },
+  { to: "/usuarios",       label: "Usuarios",      icon: UserCog,   superadmin: true,  soloEmpresa: false },
+  { to: "/importaciones",  label: "Importaciones", icon: FileInput, superadmin: true,  soloEmpresa: false },
 ];
 
 export default function Shell() {
@@ -37,7 +43,10 @@ export default function Shell() {
 
         {/* Nav */}
         <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
-          {navItems.map(({ to, label, icon: Icon }) => (
+          {navItems.filter(({ superadmin, soloEmpresa }) =>
+            (!superadmin || session?.usuario.es_superadmin) &&
+            (!soloEmpresa || !session?.usuario.es_superadmin)
+          ).map(({ to, label, icon: Icon }) => (
             <NavLink
               key={to}
               to={to}

@@ -338,6 +338,67 @@ class UsuarioResetPasswordRequest(BaseModel):
     nueva_password: str = Field(..., min_length=8)
 
 
+# ─── IMPORTACIONES (ADMIN) ───────────────────────────────────────────────────
+
+class ImportacionPreviewRequest(BaseModel):
+    id_empresa: int
+    catalogo: dict[str, Any]
+
+class ImportacionPreviewItem(BaseModel):
+    external_id: str
+    titulo: str
+    tipo: str
+    categoria: str | None
+
+class ImportacionItemModificado(ImportacionPreviewItem):
+    cambios: list[str]
+
+class ImportacionPreviewResponse(BaseModel):
+    id_empresa: int
+    total_json: int
+    total_db: int
+    nuevos: list[ImportacionPreviewItem]
+    modificados: list[ImportacionItemModificado]
+    sin_cambios: int
+    a_desactivar: list[ImportacionPreviewItem]
+
+class ImportacionAplicarRequest(BaseModel):
+    id_empresa: int
+    catalogo: dict[str, Any]
+
+class ImportacionAplicarResponse(BaseModel):
+    ok: bool
+    insertados: int
+    actualizados: int
+    desactivados: int
+    id_log: int
+    message: str
+
+class ImportacionPublicarRequest(BaseModel):
+    id_empresa: int
+
+class ImportacionPublicarResponse(BaseModel):
+    ok: bool
+    total: int
+    commit_sha: str | None = None
+    id_log: int
+    message: str
+
+class ImportacionLogResponse(BaseModel):
+    id: int
+    id_empresa: int
+    empresa_nombre: str | None
+    accion: str
+    resultado: str
+    detalle: dict[str, Any]
+    nombre_usuario: str | None
+    created_at: str | None
+
+class ImportacionLogListResponse(BaseModel):
+    logs: list[ImportacionLogResponse]
+    total: int
+
+
 # ─── HEALTH ───────────────────────────────────────────────────────────────────
 
 class HealthResponse(BaseModel):

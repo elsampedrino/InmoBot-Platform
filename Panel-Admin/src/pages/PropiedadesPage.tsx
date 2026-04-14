@@ -104,7 +104,7 @@ export default function PropiedadesPage() {
               className="flex items-center gap-2 px-4 py-2 border border-brand-600 text-brand-600 text-sm font-medium rounded-lg hover:bg-brand-50 disabled:opacity-40 transition-colors"
             >
               <Upload size={16} />
-              {exporting ? "Publicando..." : "Publicar en landing"}
+              {exporting ? "Publicando..." : "Publicar en web"}
             </button>
           )}
           <button
