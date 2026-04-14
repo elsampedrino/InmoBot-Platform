@@ -5,7 +5,7 @@ Usado exclusivamente por admin_empresas.py (panel superadmin).
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.db_models import Empresa
+from app.models.db_models import Empresa, UsuarioAdmin
 
 
 async def list_empresas(
@@ -67,3 +67,15 @@ async def toggle_activa(db: AsyncSession, empresa: Empresa, activa: bool) -> Emp
     await db.flush()
     await db.refresh(empresa)
     return empresa
+
+
+async def count_usuarios(db: AsyncSession, id_empresa: int) -> int:
+    result = await db.execute(
+        select(func.count()).where(UsuarioAdmin.id_empresa == id_empresa)
+    )
+    return result.scalar_one()
+
+
+async def delete_empresa(db: AsyncSession, empresa: Empresa) -> None:
+    await db.delete(empresa)
+    await db.flush()

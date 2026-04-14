@@ -143,3 +143,24 @@ async def toggle_activa(
     empresa = await repo.toggle_activa(db, empresa, activa)
     await db.commit()
     return _to_response(empresa)
+
+
+@router.delete("/{id_empresa}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_empresa(
+    id_empresa: int,
+    db: AsyncSession = Depends(get_db),
+    current_user: UsuarioAdmin = Depends(get_current_admin),
+):
+    empresa = await repo.get_empresa(db, id_empresa)
+    if not empresa:
+        raise HTTPException(status_code=404, detail="Empresa no encontrada.")
+    if id_empresa == current_user.id_empresa:
+        raise HTTPException(status_code=400, detail="No podés eliminar tu propia empresa.")
+    usuarios = await repo.count_usuarios(db, id_empresa)
+    if usuarios > 0:
+        raise HTTPException(
+            status_code=409,
+            detail=f"La empresa tiene {usuarios} usuario(s) asociado(s). Eliminá los usuarios primero.",
+        )
+    await repo.delete_empresa(db, empresa)
+    await db.commit()
