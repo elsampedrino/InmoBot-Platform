@@ -185,8 +185,9 @@ async def toggle_activo(
     usuario = await repo.get_usuario(db, id_usuario)
     if not usuario:
         raise HTTPException(status_code=404, detail="Usuario no encontrado.")
-    usuario = await repo.toggle_activo(db, usuario, activo)
+    await repo.toggle_activo(db, usuario, activo)
     await db.commit()
+    usuario = await repo.get_usuario(db, id_usuario)
     return _to_response(usuario)
 
 
