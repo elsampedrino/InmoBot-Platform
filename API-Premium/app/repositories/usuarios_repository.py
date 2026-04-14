@@ -85,3 +85,15 @@ async def reset_password(db: AsyncSession, usuario: UsuarioAdmin, nueva_password
     await db.flush()
     await db.refresh(usuario)
     return usuario
+
+
+async def count_superadmins(db: AsyncSession) -> int:
+    result = await db.execute(
+        select(func.count()).where(UsuarioAdmin.es_superadmin == True)  # noqa: E712
+    )
+    return result.scalar_one()
+
+
+async def delete_usuario(db: AsyncSession, usuario: UsuarioAdmin) -> None:
+    await db.delete(usuario)
+    await db.flush()

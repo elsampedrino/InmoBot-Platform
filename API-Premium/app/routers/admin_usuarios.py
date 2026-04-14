@@ -191,6 +191,29 @@ async def toggle_activo(
     return _to_response(usuario)
 
 
+@router.delete("/{id_usuario}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_usuario(
+    id_usuario: int,
+    db: AsyncSession = Depends(get_db),
+    current_user: UsuarioAdmin = Depends(get_current_admin),
+):
+    _require_superadmin(current_user)
+    if id_usuario == current_user.id_usuario:
+        raise HTTPException(status_code=400, detail="No podés eliminar tu propio usuario.")
+    usuario = await repo.get_usuario(db, id_usuario)
+    if not usuario:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado.")
+    if usuario.es_superadmin:
+        total_superadmins = await repo.count_superadmins(db)
+        if total_superadmins <= 1:
+            raise HTTPException(
+                status_code=409,
+                detail="No podés eliminar el último superadmin del sistema.",
+            )
+    await repo.delete_usuario(db, usuario)
+    await db.commit()
+
+
 @router.post("/{id_usuario}/reset-password", status_code=status.HTTP_204_NO_CONTENT)
 async def reset_password(
     id_usuario: int,
