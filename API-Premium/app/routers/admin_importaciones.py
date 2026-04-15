@@ -237,15 +237,16 @@ async def publicar_github(
 
 @router.get("/logs", response_model=ImportacionLogListResponse)
 async def list_logs(
-    id_empresa: int = Query(...),
+    id_empresa: int | None = Query(None),
     limit: int = Query(20, ge=1, le=100),
     db: AsyncSession = Depends(get_db),
     current_user: UsuarioAdmin = Depends(get_current_admin),
 ) -> ImportacionLogListResponse:
     _require_superadmin(current_user)
-    await _get_empresa_or_404(db, id_empresa)
+    if id_empresa is not None:
+        await _get_empresa_or_404(db, id_empresa)
 
-    logs, total = await repo.list_logs(db, id_empresa, limit=limit)
+    logs, total = await repo.list_logs(db, id_empresa=id_empresa, limit=limit)
 
     return ImportacionLogListResponse(
         logs=[

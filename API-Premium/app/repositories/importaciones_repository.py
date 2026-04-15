@@ -291,20 +291,23 @@ async def create_log(db: AsyncSession, data: dict) -> ImportacionLog:
 
 async def list_logs(
     db: AsyncSession,
-    id_empresa: int,
+    id_empresa: int | None = None,
     limit: int = 20,
 ) -> tuple[list[ImportacionLog], int]:
+    """
+    Lista logs de importación.
+    Si id_empresa es None devuelve todos (vista global para superadmin/dashboard).
+    """
     from sqlalchemy.orm import selectinload
 
-    q = (
-        select(ImportacionLog)
-        .where(ImportacionLog.id_empresa == id_empresa)
-        .options(selectinload(ImportacionLog.empresa))
-        .order_by(ImportacionLog.created_at.desc())
+    base_q = select(ImportacionLog)
+    if id_empresa is not None:
+        base_q = base_q.where(ImportacionLog.id_empresa == id_empresa)
+
+    q = base_q.options(selectinload(ImportacionLog.empresa)).order_by(
+        ImportacionLog.created_at.desc()
     )
-    total_q = select(func.count()).select_from(
-        select(ImportacionLog).where(ImportacionLog.id_empresa == id_empresa).subquery()
-    )
+    total_q = select(func.count()).select_from(base_q.subquery())
     total = (await db.execute(total_q)).scalar_one()
     rows = (await db.execute(q.limit(limit))).scalars().all()
     return list(rows), total
