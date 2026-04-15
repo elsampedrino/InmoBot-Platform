@@ -22,7 +22,8 @@ def _json_to_db_fields(prop: dict) -> dict:
     fotos_obj = prop.get("fotos") or {}
 
     precio_val = precio_obj.get("valor")
-    precio_float = float(precio_val) if precio_val is not None else None
+    # Tratar 0 como None (convención en DB: precio desconocido = NULL)
+    precio_float = float(precio_val) if precio_val else None
 
     atributos: dict[str, Any] = {
         "calle": addr.get("calle") or None,
@@ -63,6 +64,19 @@ _SCALAR_FIELDS = ["tipo", "categoria", "titulo", "descripcion", "descripcion_cor
                    "moneda", "activo", "destacado"]
 _COMPARE_FIELDS = _SCALAR_FIELDS + ["precio"]
 
+# Claves de atributos gestionadas por este módulo.
+# Se filtran claves legacy (ej: "prop_id") para que no generen falsos positivos.
+_ATRIBUTOS_KEYS = frozenset({
+    "calle", "barrio", "ciudad", "lat", "lng", "expensas",
+    "antiguedad", "estado_construccion", "ambientes", "dormitorios",
+    "banios", "superficie_total", "superficie_cubierta", "detalles",
+})
+
+
+def _normalize_atributos(a: dict) -> dict:
+    """Filtra a solo las claves que el módulo gestiona."""
+    return {k: v for k, v in a.items() if k in _ATRIBUTOS_KEYS}
+
 
 def _fields_differ(incoming: dict, db_row: dict) -> list[str]:
     """Devuelve lista de nombres de campo que difieren entre incoming y db_row."""
@@ -77,16 +91,16 @@ def _fields_differ(incoming: dict, db_row: dict) -> list[str]:
         if v_inc != v_db:
             diffs.append(f)
 
-    # precio: comparar como float
+    # precio: comparar como float (None y 0 son equivalentes)
     p_inc = incoming.get("precio")
     p_db = db_row.get("precio")
     if p_db is not None:
-        p_db = float(p_db)
+        p_db = float(p_db) or None
     if p_inc != p_db:
         diffs.append("precio")
 
-    # atributos y media: comparación estructural
-    if incoming.get("atributos") != db_row.get("atributos"):
+    # atributos: comparar solo claves gestionadas (ignora claves legacy en DB)
+    if _normalize_atributos(incoming.get("atributos") or {}) != _normalize_atributos(db_row.get("atributos") or {}):
         diffs.append("atributos")
     if incoming.get("media") != db_row.get("media"):
         diffs.append("media")
