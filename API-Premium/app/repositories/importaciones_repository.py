@@ -117,16 +117,35 @@ def compute_diff(
     """
     Calcula el diff entre el catálogo entrante y el estado actual en DB.
     Returns dict con: nuevos, modificados, sin_cambios, a_desactivar.
+
+    Un item va a a_desactivar si:
+      - Está activo en DB y no aparece en el JSON entrante, O
+      - Aparece en el JSON con activo=false y está activo en DB.
+    En ambos casos se aplica el mismo UPDATE activo=false.
     """
     nuevos = []
     modificados = []
     sin_cambios = 0
+    a_desactivar: list[dict] = []
     incoming_ids: set[str] = set()
 
     for prop in incoming_props:
         fields = _json_to_db_fields(prop)
         ext_id = fields["external_id"]
         incoming_ids.add(ext_id)
+
+        # Propiedad marcada como inactiva en el JSON entrante
+        if not fields["activo"]:
+            if ext_id in db_items and db_items[ext_id]["activo"]:
+                a_desactivar.append({
+                    "external_id": ext_id,
+                    "titulo": fields["titulo"],
+                    "tipo": fields["tipo"],
+                    "categoria": fields["categoria"],
+                })
+            else:
+                sin_cambios += 1
+            continue
 
         if ext_id not in db_items:
             nuevos.append({
@@ -150,8 +169,8 @@ def compute_diff(
             else:
                 sin_cambios += 1
 
-    # Items en DB activos que no están en el JSON
-    a_desactivar = [
+    # Items en DB activos que no están en el JSON (omitidos)
+    a_desactivar += [
         {
             "external_id": ext_id,
             "titulo": row["titulo"],
