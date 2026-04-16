@@ -12,6 +12,8 @@ import httpx
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from sqlalchemy import select
+
 from app.core.admin_auth import get_current_admin
 from app.core.config import settings
 from app.core.database import get_db
@@ -23,7 +25,7 @@ from app.models.api_models import (
     ItemCreateRequest,
     ItemUpdateRequest,
 )
-from app.models.db_models import UsuarioAdmin
+from app.models.db_models import EmpresaRuboCatalogo, UsuarioAdmin
 from app.repositories.items_repository import ItemsRepository
 
 router = APIRouter()
@@ -231,6 +233,20 @@ async def export_landing(
     if not settings.GITHUB_TOKEN:
         raise HTTPException(status_code=503, detail="GITHUB_TOKEN no configurado")
 
+    # Leer config GitHub desde empresa_rubro_catalogos
+    catalogo_cfg = (await db.execute(
+        select(EmpresaRuboCatalogo).where(
+            EmpresaRuboCatalogo.id_empresa == current_user.id_empresa,
+            EmpresaRuboCatalogo.id_rubro == _ID_RUBRO_INMOBILIARIA,
+        )
+    )).scalar_one_or_none()
+    if not catalogo_cfg or not catalogo_cfg.github_repo:
+        raise HTTPException(
+            status_code=422,
+            detail="No hay configuración de GitHub para esta empresa.",
+        )
+    gh_owner, gh_repo_name = catalogo_cfg.github_repo.split("/", 1)
+
     repo = ItemsRepository(db)
     rows = await repo.admin_list_activos_export(current_user.id_empresa)
 
@@ -247,7 +263,14 @@ async def export_landing(
     content = json.dumps(payload, indent=2, ensure_ascii=False)
 
     # Subir a GitHub
-    commit_sha = await _github_push(content, len(propiedades))
+    commit_sha = await _github_push(
+        content,
+        len(propiedades),
+        owner=gh_owner,
+        repo_name=gh_repo_name,
+        path=catalogo_cfg.github_path,
+        branch=catalogo_cfg.github_branch,
+    )
 
     return ExportLandingResponse(
         ok=True,
@@ -301,14 +324,19 @@ def _item_to_landing_format(row: dict) -> dict:
     }
 
 
-async def _github_push(content: str, total: int) -> str | None:
+async def _github_push(
+    content: str,
+    total: int,
+    *,
+    owner: str,
+    repo_name: str,
+    path: str,
+    branch: str,
+) -> str | None:
     """PUT al GitHub API. Devuelve el SHA del commit o None si falla."""
     import base64
     token = settings.GITHUB_TOKEN
-    owner = settings.GITHUB_REPO_OWNER
-    repo = settings.GITHUB_REPO_NAME
-    path = settings.GITHUB_FILE_PATH
-    branch = settings.GITHUB_BRANCH
+    repo = repo_name
 
     url = f"https://api.github.com/repos/{owner}/{repo}/contents/{path}"
     headers = {

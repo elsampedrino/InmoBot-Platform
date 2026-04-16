@@ -15,6 +15,8 @@ import httpx
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from sqlalchemy import select
+
 from app.core.admin_auth import get_current_admin
 from app.core.config import settings
 from app.core.database import get_db
@@ -30,7 +32,7 @@ from app.models.api_models import (
     ImportacionPublicarRequest,
     ImportacionPublicarResponse,
 )
-from app.models.db_models import UsuarioAdmin
+from app.models.db_models import EmpresaRuboCatalogo, UsuarioAdmin
 from app.repositories import empresas_repository as emp_repo
 from app.repositories import importaciones_repository as repo
 from app.repositories.items_repository import ItemsRepository
@@ -194,6 +196,20 @@ async def publicar_github(
     if not settings.GITHUB_TOKEN:
         raise HTTPException(status_code=503, detail="GITHUB_TOKEN no configurado.")
 
+    # Leer config GitHub desde empresa_rubro_catalogos
+    catalogo_cfg = (await db.execute(
+        select(EmpresaRuboCatalogo).where(
+            EmpresaRuboCatalogo.id_empresa == body.id_empresa,
+            EmpresaRuboCatalogo.id_rubro == _ID_RUBRO_INMOBILIARIA,
+        )
+    )).scalar_one_or_none()
+    if not catalogo_cfg or not catalogo_cfg.github_repo:
+        raise HTTPException(
+            status_code=422,
+            detail="No hay configuración de GitHub para esta empresa.",
+        )
+    gh_owner, gh_repo_name = catalogo_cfg.github_repo.split("/", 1)
+
     items_repo = ItemsRepository(db)
     rows = await items_repo.admin_list_activos_export(body.id_empresa)
     propiedades = [_item_to_landing_format(r) for r in rows]
@@ -208,7 +224,14 @@ async def publicar_github(
     }
     content = json.dumps(payload, indent=2, ensure_ascii=False)
 
-    commit_sha = await _github_push(content, len(propiedades))
+    commit_sha = await _github_push(
+        content,
+        len(propiedades),
+        owner=gh_owner,
+        repo_name=gh_repo_name,
+        path=catalogo_cfg.github_path,
+        branch=catalogo_cfg.github_branch,
+    )
 
     log = await repo.create_log(db, {
         "id_empresa": body.id_empresa,
@@ -268,13 +291,17 @@ async def list_logs(
 
 # ─── GitHub helper ────────────────────────────────────────────────────────────
 
-async def _github_push(content: str, total: int) -> str | None:
+async def _github_push(
+    content: str,
+    total: int,
+    *,
+    owner: str,
+    repo_name: str,
+    path: str,
+    branch: str,
+) -> str | None:
     import base64
     token = settings.GITHUB_TOKEN
-    owner = settings.GITHUB_REPO_OWNER
-    repo_name = settings.GITHUB_REPO_NAME
-    path = settings.GITHUB_FILE_PATH
-    branch = settings.GITHUB_BRANCH
 
     url = f"https://api.github.com/repos/{owner}/{repo_name}/contents/{path}"
     headers = {
