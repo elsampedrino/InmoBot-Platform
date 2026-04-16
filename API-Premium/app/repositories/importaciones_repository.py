@@ -266,8 +266,8 @@ async def apply_diff(
                     moneda = :moneda,
                     activo = :activo,
                     destacado = :destacado,
-                    atributos = :atributos::jsonb,
-                    media = :media::jsonb,
+                    atributos = CAST(:atributos AS jsonb),
+                    media = CAST(:media AS jsonb),
                     updated_at = now()
                 WHERE id_empresa = :id_empresa AND external_id = :external_id
             """),
