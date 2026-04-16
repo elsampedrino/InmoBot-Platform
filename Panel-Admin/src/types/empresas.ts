@@ -1,6 +1,29 @@
 export interface EmpresaServicios {
   bot: boolean;
   landing: boolean;
+  catalogo_repo: boolean;
+  panel_cliente: boolean;
+}
+
+export interface CatalogoRepoConfig {
+  id_empresa: number;
+  id_rubro: number;
+  activo: boolean;
+  catalog_source: string | null;
+  export_format: string | null;
+  github_repo: string | null;
+  github_branch: string | null;
+  github_path: string | null;
+  github_raw_url: string | null;
+}
+
+export interface CatalogoRepoUpdateRequest {
+  github_repo?: string;
+  github_branch?: string;
+  github_path?: string;
+  github_raw_url?: string;
+  catalog_source?: string;
+  export_format?: string;
 }
 
 export interface EmpresaTelegram {

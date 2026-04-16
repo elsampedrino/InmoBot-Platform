@@ -3,7 +3,7 @@ import {
   Upload,
   Eye,
   Database,
-  Github,
+  GitBranch,
   CheckCircle2,
   AlertCircle,
   ChevronDown,
@@ -123,7 +123,7 @@ export default function ImportacionesPage() {
   const [empresas, setEmpresas] = useState<Empresa[]>([]);
   const [selectedEmpresaId, setSelectedEmpresaId] = useState<number | null>(null);
   const selectedEmpresa = empresas.find((e) => e.id_empresa === selectedEmpresaId) ?? null;
-  const hasLanding = selectedEmpresa?.servicios?.landing === true;
+  const hasCatalogoRepo = selectedEmpresa?.servicios?.catalogo_repo === true;
 
   // Archivo
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -274,7 +274,7 @@ export default function ImportacionesPage() {
 
   const canPreview = !!selectedEmpresaId && !!catalogoJson && !previewing;
   const canApply = !!preview && !!catalogoJson && !applying;
-  const canPublish = !!selectedEmpresaId && hasLanding && !publishing;
+  const canPublish = !!selectedEmpresaId && hasCatalogoRepo && !publishing;
 
   return (
     <div className="p-6 max-w-4xl">
@@ -282,7 +282,7 @@ export default function ImportacionesPage() {
       <div className="mb-6">
         <h1 className="text-xl font-semibold text-gray-900">Importaciones de Catálogo</h1>
         <p className="text-sm text-gray-500 mt-0.5">
-          Cargá un JSON estándar, previsualizá los cambios y actualizá la base de datos o publicá en la landing.
+          Cargá un JSON estándar, previsualizá los cambios y actualizá la base de datos o publicá el catálogo al repositorio.
         </p>
       </div>
 
@@ -309,7 +309,7 @@ export default function ImportacionesPage() {
             </select>
             {selectedEmpresa && (
               <p className="mt-1 text-xs text-gray-400">
-                Landing: {hasLanding ? "✓ habilitada" : "✗ sin landing"}
+                Catálogo repo: {hasCatalogoRepo ? "✓ habilitado" : "✗ no habilitado"}
               </p>
             )}
           </div>
@@ -447,7 +447,7 @@ export default function ImportacionesPage() {
 
             {/* Publicar GitHub */}
             <div className="flex-1">
-              <div title={!hasLanding ? "Esta empresa no tiene servicio de landing habilitado" : ""}>
+              <div title={!hasCatalogoRepo ? "Esta empresa no tiene habilitada la publicación de catálogo" : ""}>
                 <button
                   onClick={handlePublicarGithub}
                   disabled={!canPublish}
@@ -456,15 +456,15 @@ export default function ImportacionesPage() {
                   {publishing ? (
                     <RefreshCw size={15} className="animate-spin" />
                   ) : (
-                    <Github size={15} />
+                    <GitBranch size={15} />
                   )}
                   {publishing ? "Publicando..." : "Publicar en GitHub"}
                 </button>
               </div>
               <p className="mt-1.5 text-xs text-gray-400 text-center">
-                {hasLanding
+                {hasCatalogoRepo
                   ? "Exporta los items activos de la DB al repositorio GitHub."
-                  : "Requiere que la empresa tenga el servicio de landing activo."}
+                  : "Requiere que la empresa tenga habilitada la publicación de catálogo."}
               </p>
               {publishError && (
                 <p className="mt-2 text-sm text-red-600 flex items-center gap-1">
@@ -492,8 +492,8 @@ export default function ImportacionesPage() {
           </p>
           <div
             title={
-              !hasLanding
-                ? "Esta empresa no tiene servicio de landing habilitado"
+              !hasCatalogoRepo
+                ? "Esta empresa no tiene habilitada la publicación de catálogo"
                 : ""
             }
             className="inline-block"
@@ -506,7 +506,7 @@ export default function ImportacionesPage() {
               {publishing ? (
                 <RefreshCw size={15} className="animate-spin" />
               ) : (
-                <Github size={15} />
+                <GitBranch size={15} />
               )}
               {publishing ? "Publicando..." : "Publicar en GitHub"}
             </button>
@@ -553,6 +553,9 @@ export default function ImportacionesPage() {
                     Acción
                   </th>
                   <th className="text-left px-4 py-2.5 font-medium text-gray-600">
+                    Empresa
+                  </th>
+                  <th className="text-left px-4 py-2.5 font-medium text-gray-600">
                     Detalle
                   </th>
                   <th className="text-left px-4 py-2.5 font-medium text-gray-600">
@@ -567,6 +570,9 @@ export default function ImportacionesPage() {
                 {logs.map((log) => (
                   <tr key={log.id} className="hover:bg-gray-50">
                     <td className="px-4 py-2.5">{badgeAccion(log.accion)}</td>
+                    <td className="px-4 py-2.5 text-sm text-gray-700">
+                      {log.empresa_nombre ?? "—"}
+                    </td>
                     <td className="px-4 py-2.5 text-xs text-gray-500">
                       {log.accion === "aplicar_db" && (
                         <>

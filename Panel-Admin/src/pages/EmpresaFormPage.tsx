@@ -7,6 +7,8 @@ import type {
   EmpresaUpdateRequest,
   EmpresaServicios,
   EmpresaNotificaciones,
+  CatalogoRepoConfig,
+  CatalogoRepoUpdateRequest,
 } from "../types/empresas";
 import { PLANES, TIMEZONES } from "../types/empresas";
 
@@ -61,6 +63,8 @@ export default function EmpresaFormPage() {
 
   const [empresa, setEmpresa] = useState<Empresa | null>(null);
   const [form, setForm] = useState<EmpresaUpdateRequest>({});
+  const [catalogo, setCatalogo] = useState<CatalogoRepoConfig | null>(null);
+  const [catalogoForm, setCatalogoForm] = useState<CatalogoRepoUpdateRequest>({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -69,7 +73,10 @@ export default function EmpresaFormPage() {
   useEffect(() => {
     async function load() {
       try {
-        const data = await api.get<Empresa>(`/admin/empresas/${id}`);
+        const [data, cat] = await Promise.all([
+          api.get<Empresa>(`/admin/empresas/${id}`),
+          api.get<CatalogoRepoConfig | null>(`/admin/empresas/${id}/catalogo`).catch(() => null),
+        ]);
         setEmpresa(data);
         setForm({
           nombre: data.nombre,
@@ -83,6 +90,17 @@ export default function EmpresaFormPage() {
             email: { ...data.notificaciones.email },
           },
         });
+        if (cat) {
+          setCatalogo(cat);
+          setCatalogoForm({
+            github_repo: cat.github_repo ?? "",
+            github_branch: cat.github_branch ?? "main",
+            github_path: cat.github_path ?? "",
+            github_raw_url: cat.github_raw_url ?? "",
+            catalog_source: cat.catalog_source ?? "github",
+            export_format: cat.export_format ?? "inmo_v1",
+          });
+        }
       } catch {
         setError("No se pudo cargar la empresa.");
       } finally {
@@ -127,6 +145,10 @@ export default function EmpresaFormPage() {
     try {
       setSaving(true);
       await api.put<Empresa>(`/admin/empresas/${id}`, form);
+      // Si catalogo_repo está habilitado, guardar config de repo
+      if (form.servicios?.catalogo_repo) {
+        await api.put<CatalogoRepoConfig>(`/admin/empresas/${id}/catalogo`, catalogoForm);
+      }
       navigate("/empresas");
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "Error al guardar.");
@@ -222,13 +244,80 @@ export default function EmpresaFormPage() {
                   onChange={(v) => setServicios({ bot: v })}
                 />
               </FieldRow>
-              <FieldRow label="Landing page">
+              <FieldRow label="Landing page administrada">
                 <Toggle
                   value={form.servicios?.landing ?? false}
                   onChange={(v) => setServicios({ landing: v })}
                 />
               </FieldRow>
+              <FieldRow label="Publicación de catálogo">
+                <Toggle
+                  value={form.servicios?.catalogo_repo ?? false}
+                  onChange={(v) => setServicios({ catalogo_repo: v })}
+                />
+              </FieldRow>
+              <FieldRow label="Panel cliente">
+                <Toggle
+                  value={form.servicios?.panel_cliente ?? false}
+                  onChange={(v) => setServicios({ panel_cliente: v })}
+                />
+              </FieldRow>
             </Card>
+
+            {/* Card: Configuración de repositorio (solo si catalogo_repo habilitado) */}
+            {form.servicios?.catalogo_repo && (
+              <Card title="Repositorio de catálogo">
+                <p className="text-xs text-gray-400 -mt-2">
+                  Destino GitHub donde se publica el catálogo (landing, bot, o ambos).
+                </p>
+                <Field label="Repositorio (owner/repo)">
+                  <input
+                    type="text"
+                    value={catalogoForm.github_repo ?? ""}
+                    onChange={(e) => setCatalogoForm((f) => ({ ...f, github_repo: e.target.value }))}
+                    placeholder="ej: miusuario/mi-repo"
+                    className="border border-gray-300 rounded-lg px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-brand-500"
+                  />
+                </Field>
+                <div className="grid grid-cols-2 gap-3">
+                  <Field label="Branch">
+                    <input
+                      type="text"
+                      value={catalogoForm.github_branch ?? ""}
+                      onChange={(e) => setCatalogoForm((f) => ({ ...f, github_branch: e.target.value }))}
+                      placeholder="main"
+                      className="border border-gray-300 rounded-lg px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-brand-500"
+                    />
+                  </Field>
+                  <Field label="Archivo destino">
+                    <input
+                      type="text"
+                      value={catalogoForm.github_path ?? ""}
+                      onChange={(e) => setCatalogoForm((f) => ({ ...f, github_path: e.target.value }))}
+                      placeholder="propiedades.json"
+                      className="border border-gray-300 rounded-lg px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-brand-500"
+                    />
+                  </Field>
+                </div>
+                <Field label="URL raw (para bot)">
+                  <input
+                    type="text"
+                    value={catalogoForm.github_raw_url ?? ""}
+                    onChange={(e) => setCatalogoForm((f) => ({ ...f, github_raw_url: e.target.value }))}
+                    placeholder="https://raw.githubusercontent.com/..."
+                    className="border border-gray-300 rounded-lg px-3 py-2 text-sm font-mono text-xs focus:outline-none focus:ring-2 focus:ring-brand-500"
+                  />
+                  <p className="text-xs text-gray-400">
+                    Formato: raw.githubusercontent.com/{"{owner}/{repo}/{branch}/{path}"}
+                  </p>
+                </Field>
+                {!catalogo && (
+                  <p className="text-xs text-amber-600">
+                    Esta empresa aún no tiene configuración de repositorio guardada.
+                  </p>
+                )}
+              </Card>
+            )}
 
           </div>
 
