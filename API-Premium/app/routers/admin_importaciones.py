@@ -187,10 +187,10 @@ async def publicar_github(
     empresa = await _get_empresa_or_404(db, body.id_empresa)
 
     servicios: dict = empresa.servicios or {}
-    if not servicios.get("landing"):
+    if not servicios.get("catalogo_repo"):
         raise HTTPException(
             status_code=403,
-            detail="Esta empresa no tiene habilitado el servicio de landing.",
+            detail="Esta empresa no tiene habilitado el servicio de publicación de catálogo.",
         )
 
     if not settings.GITHUB_TOKEN:

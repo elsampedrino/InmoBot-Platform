@@ -258,6 +258,8 @@ class AnalyticsSummaryResponse(BaseModel):
 class EmpresaServiciosSchema(BaseModel):
     bot: bool = True
     landing: bool = False
+    catalogo_repo: bool = False
+    panel_cliente: bool = False
 
 class EmpresaTelegramSchema(BaseModel):
     enabled: bool = False
@@ -302,6 +304,25 @@ class EmpresaUpdateRequest(BaseModel):
     timezone: str | None = None
     servicios: EmpresaServiciosSchema | None = None
     notificaciones: EmpresaNotificacionesSchema | None = None
+
+class CatalogoRepoResponse(BaseModel):
+    id_empresa: int
+    id_rubro: int
+    activo: bool
+    catalog_source: str | None
+    export_format: str | None
+    github_repo: str | None
+    github_branch: str | None
+    github_path: str | None
+    github_raw_url: str | None
+
+class CatalogoRepoUpdateRequest(BaseModel):
+    github_repo: str | None = None
+    github_branch: str | None = None
+    github_path: str | None = None
+    github_raw_url: str | None = None
+    catalog_source: str | None = None
+    export_format: str | None = None
 
 
 # ─── USUARIOS (ADMIN) ────────────────────────────────────────────────────────

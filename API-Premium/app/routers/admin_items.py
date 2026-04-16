@@ -224,10 +224,10 @@ async def export_landing(
     # Verificar que la empresa tiene servicio de landing
     empresa = current_user.empresa
     servicios: dict = empresa.servicios or {}
-    if not servicios.get("landing"):
+    if not servicios.get("catalogo_repo"):
         raise HTTPException(
             status_code=403,
-            detail="Esta empresa no tiene habilitado el servicio de landing.",
+            detail="Esta empresa no tiene habilitado el servicio de publicación de catálogo.",
         )
 
     if not settings.GITHUB_TOKEN:

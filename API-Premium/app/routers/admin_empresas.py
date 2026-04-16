@@ -9,11 +9,14 @@ Rutas:
   PATCH  /admin/empresas/{id}/activa — toggle activa
 """
 from fastapi import APIRouter, Depends, HTTPException, Query, status
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.admin_auth import get_current_admin
 from app.core.database import get_db
 from app.models.api_models import (
+    CatalogoRepoResponse,
+    CatalogoRepoUpdateRequest,
     EmpresaAdminResponse,
     EmpresaCreateRequest,
     EmpresaListResponse,
@@ -21,8 +24,10 @@ from app.models.api_models import (
     EmpresaServiciosSchema,
     EmpresaUpdateRequest,
 )
-from app.models.db_models import UsuarioAdmin
+from app.models.db_models import EmpresaRuboCatalogo, UsuarioAdmin
 from app.repositories import empresas_repository as repo
+
+_ID_RUBRO_INMOBILIARIA = 1
 
 router = APIRouter()
 
@@ -43,6 +48,8 @@ def _to_response(e) -> EmpresaAdminResponse:
         servicios=EmpresaServiciosSchema(
             bot=srv.get("bot", True),
             landing=srv.get("landing", False),
+            catalogo_repo=srv.get("catalogo_repo", False),
+            panel_cliente=srv.get("panel_cliente", False),
         ),
         notificaciones=EmpresaNotificacionesSchema.model_validate({
             "telegram": {"enabled": tg.get("enabled", False), "chat_id": str(tg.get("chat_id", ""))},
@@ -164,3 +171,84 @@ async def delete_empresa(
         )
     await repo.delete_empresa(db, empresa)
     await db.commit()
+
+
+# ─── Catalogo repo config ─────────────────────────────────────────────────────
+
+def _catalogo_to_response(c: EmpresaRuboCatalogo) -> CatalogoRepoResponse:
+    return CatalogoRepoResponse(
+        id_empresa=c.id_empresa,
+        id_rubro=c.id_rubro,
+        activo=c.activo,
+        catalog_source=c.catalog_source,
+        export_format=c.export_format,
+        github_repo=c.github_repo,
+        github_branch=c.github_branch,
+        github_path=c.github_path,
+        github_raw_url=c.github_raw_url,
+    )
+
+
+@router.get("/{id_empresa}/catalogo", response_model=CatalogoRepoResponse | None)
+async def get_catalogo(
+    id_empresa: int,
+    db: AsyncSession = Depends(get_db),
+    _: UsuarioAdmin = Depends(get_current_admin),
+):
+    empresa = await repo.get_empresa(db, id_empresa)
+    if not empresa:
+        raise HTTPException(status_code=404, detail="Empresa no encontrada.")
+    result = await db.execute(
+        select(EmpresaRuboCatalogo).where(
+            EmpresaRuboCatalogo.id_empresa == id_empresa,
+            EmpresaRuboCatalogo.id_rubro == _ID_RUBRO_INMOBILIARIA,
+        )
+    )
+    catalogo = result.scalar_one_or_none()
+    return _catalogo_to_response(catalogo) if catalogo else None
+
+
+@router.put("/{id_empresa}/catalogo", response_model=CatalogoRepoResponse)
+async def upsert_catalogo(
+    id_empresa: int,
+    body: CatalogoRepoUpdateRequest,
+    db: AsyncSession = Depends(get_db),
+    _: UsuarioAdmin = Depends(get_current_admin),
+):
+    empresa = await repo.get_empresa(db, id_empresa)
+    if not empresa:
+        raise HTTPException(status_code=404, detail="Empresa no encontrada.")
+
+    result = await db.execute(
+        select(EmpresaRuboCatalogo).where(
+            EmpresaRuboCatalogo.id_empresa == id_empresa,
+            EmpresaRuboCatalogo.id_rubro == _ID_RUBRO_INMOBILIARIA,
+        )
+    )
+    catalogo = result.scalar_one_or_none()
+
+    if catalogo is None:
+        catalogo = EmpresaRuboCatalogo(
+            id_empresa=id_empresa,
+            id_rubro=_ID_RUBRO_INMOBILIARIA,
+            activo=True,
+        )
+        db.add(catalogo)
+
+    if body.github_repo is not None:
+        catalogo.github_repo = body.github_repo
+    if body.github_branch is not None:
+        catalogo.github_branch = body.github_branch
+    if body.github_path is not None:
+        catalogo.github_path = body.github_path
+    if body.github_raw_url is not None:
+        catalogo.github_raw_url = body.github_raw_url
+    if body.catalog_source is not None:
+        catalogo.catalog_source = body.catalog_source
+    if body.export_format is not None:
+        catalogo.export_format = body.export_format
+
+    await db.flush()
+    await db.refresh(catalogo)
+    await db.commit()
+    return _catalogo_to_response(catalogo)
