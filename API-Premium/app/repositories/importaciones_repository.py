@@ -289,17 +289,16 @@ async def apply_diff(
         )
         actualizados += 1
 
-    # Desactivar
-    if a_desactivar:
-        ids_to_deactivate = [item["external_id"] for item in a_desactivar]
+    # Desactivar (una query por item para evitar problemas con arrays en asyncpg)
+    for item_data in a_desactivar:
         await db.execute(
             text("""
                 UPDATE items SET activo = false, updated_at = now()
-                WHERE id_empresa = :id_empresa AND external_id = ANY(:ids)
+                WHERE id_empresa = :id_empresa AND external_id = :external_id
             """),
-            {"id_empresa": id_empresa, "ids": ids_to_deactivate},
+            {"id_empresa": id_empresa, "external_id": item_data["external_id"]},
         )
-        desactivados = len(ids_to_deactivate)
+        desactivados += 1
 
     return insertados, actualizados, desactivados
 
