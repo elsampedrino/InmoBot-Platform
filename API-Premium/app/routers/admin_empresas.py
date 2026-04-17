@@ -97,6 +97,14 @@ async def create_empresa(
         raise HTTPException(status_code=409, detail="El slug ya está en uso.")
 
     empresa = await repo.create_empresa(db, body.model_dump())
+    await db.flush()
+    # Toda empresa nueva opera en el rubro inmobiliaria por defecto
+    db.add(EmpresaRubro(
+        id_empresa=empresa.id_empresa,
+        id_rubro=_ID_RUBRO_INMOBILIARIA,
+        activo=True,
+        es_default=True,
+    ))
     await db.commit()
     return _to_response(empresa)
 
