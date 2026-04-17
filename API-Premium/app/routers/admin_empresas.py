@@ -232,6 +232,8 @@ async def upsert_catalogo(
             id_empresa=id_empresa,
             id_rubro=_ID_RUBRO_INMOBILIARIA,
             activo=True,
+            catalog_source=body.catalog_source or "github",
+            export_format=body.export_format or "inmo_v1",
         )
         db.add(catalogo)
 
