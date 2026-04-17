@@ -293,6 +293,7 @@ class EmpresaCreateRequest(BaseModel):
     nombre: str = Field(..., min_length=3)
     slug: str = Field(..., min_length=2, pattern=r'^[a-z0-9]+(?:-[a-z0-9]+)*$')
     id_plan: int = 1
+    id_rubro: int = 1
     timezone: str = "America/Argentina/Buenos_Aires"
     activa: bool = True
 
