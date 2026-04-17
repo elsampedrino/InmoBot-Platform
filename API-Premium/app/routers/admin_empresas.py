@@ -24,7 +24,7 @@ from app.models.api_models import (
     EmpresaServiciosSchema,
     EmpresaUpdateRequest,
 )
-from app.models.db_models import EmpresaRuboCatalogo, UsuarioAdmin
+from app.models.db_models import EmpresaRubro, EmpresaRuboCatalogo, UsuarioAdmin
 from app.repositories import empresas_repository as repo
 
 _ID_RUBRO_INMOBILIARIA = 1
@@ -218,6 +218,22 @@ async def upsert_catalogo(
     empresa = await repo.get_empresa(db, id_empresa)
     if not empresa:
         raise HTTPException(status_code=404, detail="Empresa no encontrada.")
+
+    # Garantizar que empresa_rubros tenga el registro (FK requerida por empresa_rubro_catalogos)
+    empresa_rubro = (await db.execute(
+        select(EmpresaRubro).where(
+            EmpresaRubro.id_empresa == id_empresa,
+            EmpresaRubro.id_rubro == _ID_RUBRO_INMOBILIARIA,
+        )
+    )).scalar_one_or_none()
+    if empresa_rubro is None:
+        db.add(EmpresaRubro(
+            id_empresa=id_empresa,
+            id_rubro=_ID_RUBRO_INMOBILIARIA,
+            activo=True,
+            es_default=True,
+        ))
+        await db.flush()
 
     result = await db.execute(
         select(EmpresaRuboCatalogo).where(
