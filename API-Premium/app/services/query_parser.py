@@ -79,8 +79,8 @@ _PAT_ZONA = re.compile(
 
 # Precio máximo explícito
 _PAT_PRECIO_MAX = re.compile(
-    r"\b(?:hasta|menos\s+de|m[aá]x(?:imo)?(?:\s+de)?)\s+"
-    r"(?:usd|u\$s|\$\s*)?(\d[\d.,]*)\s*(k|mil)?\b",
+    r"\b(?:hasta|menos\s+de|m[aá]x(?:imo)?(?:\s+de)?|presupuesto\s+de)\s+"
+    r"(?:(?:usd|u\$s|\$)\s*)?(\d[\d.,]*)\s*(k|mil)?\b",
     re.IGNORECASE,
 )
 # Precio mínimo explícito
