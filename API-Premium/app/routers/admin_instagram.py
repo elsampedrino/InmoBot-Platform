@@ -71,15 +71,20 @@ class InstagramPublishResult(BaseModel):
 
 # ─── Helpers ──────────────────────────────────────────────────────────────────
 
-def _generate_caption(titulo: str, precio: float | None, moneda: str | None, atributos: dict) -> str:
-    lines = [f"🏠 {titulo}"]
+def _generate_caption(titulo: str, tipo: str | None, precio: float | None, moneda: str | None, atributos: dict) -> str:
+    lines = [f"🏠 {titulo}", ""]
 
     if precio and float(precio) > 0:
         precio_fmt = f"{int(precio):,}".replace(",", ".")
         lines.append(f"💰 {moneda or 'USD'} {precio_fmt}")
 
-    if ambientes := atributos.get("ambientes"):
-        lines.append(f"🛏 {ambientes} ambientes")
+    dormitorios = atributos.get("dormitorios") or atributos.get("ambientes")
+    banos = atributos.get("banos") or atributos.get("baños") or atributos.get("cantidad_banos")
+    if dormitorios or banos:
+        hab = []
+        if dormitorios: hab.append(f"🛏 {dormitorios} dorm.")
+        if banos:       hab.append(f"🚿 {banos} baños")
+        lines.append(" · ".join(hab))
 
     superficie = atributos.get("superficie_cubierta") or atributos.get("superficie_total")
     if superficie:
@@ -89,7 +94,14 @@ def _generate_caption(titulo: str, precio: float | None, moneda: str | None, atr
     if partes:
         lines.append(f"📍 {', '.join(partes)}")
 
-    lines += ["", "¡Consultanos para más información!", ""]
+    if atributos.get("pileta") or atributos.get("piscina"):
+        lines.append("🏊 Con pileta")
+    elif atributos.get("cochera"):
+        lines.append("🚗 Con cochera")
+    elif atributos.get("jardin") or atributos.get("jardín"):
+        lines.append("🌿 Con jardín")
+
+    lines += ["", "¡Consultanos sin compromiso!", ""]
 
     hashtags = ["#inmobiliaria", "#propiedades", "#bienesraices"]
     if ciudad := atributos.get("ciudad"):
@@ -97,6 +109,10 @@ def _generate_caption(titulo: str, precio: float | None, moneda: str | None, atr
         for src, dst in [("á","a"),("é","e"),("í","i"),("ó","o"),("ú","u"),(" ","")]:
             slug = slug.replace(src, dst)
         hashtags.insert(1, f"#{slug}")
+    tipo_tags = {"casa": "#casas", "departamento": "#departamentos", "local": "#locales",
+                 "terreno": "#terrenos", "lote": "#lotes", "campo": "#campos"}
+    if tipo and (tag := tipo_tags.get(tipo.lower())):
+        hashtags.append(tag)
 
     lines.append(" ".join(hashtags))
     return "\n".join(lines)
@@ -212,7 +228,7 @@ async def get_instagram_preview(
     emp = current_user.id_empresa
 
     item_row = await db.execute(text("""
-        SELECT id_item::text, external_id, titulo, precio, moneda, activo, atributos, media
+        SELECT id_item::text, external_id, titulo, tipo, precio, moneda, activo, atributos, media
         FROM items
         WHERE id_item = :item_id AND id_empresa = :emp
     """), {"item_id": id_item, "emp": emp})
@@ -230,10 +246,11 @@ async def get_instagram_preview(
 
     image_url = _extract_image_url(media)
     caption   = _generate_caption(
-        titulo   = item["titulo"],
-        precio   = item["precio"],
-        moneda   = item["moneda"],
-        atributos= atributos,
+        titulo    = item["titulo"],
+        tipo      = item["tipo"],
+        precio    = item["precio"],
+        moneda    = item["moneda"],
+        atributos = atributos,
     )
 
     # Última publicación para esta propiedad
