@@ -13,7 +13,7 @@ import {
 export default function PropiedadesPage() {
   const navigate = useNavigate();
   const session = getSession();
-  const hasLanding = session?.empresa.servicios?.landing === true;
+  const hasLanding = session?.empresa.servicios?.catalogo_repo === true;
 
   const [items, setItems]         = useState<ItemAdmin[]>([]);
   const [total, setTotal]         = useState(0);
@@ -104,7 +104,7 @@ export default function PropiedadesPage() {
               className="flex items-center gap-2 px-4 py-2 border border-brand-600 text-brand-600 text-sm font-medium rounded-lg hover:bg-brand-50 disabled:opacity-40 transition-colors"
             >
               <Upload size={16} />
-              {exporting ? "Publicando..." : "Publicar en web"}
+              {exporting ? "Publicando..." : "Publicar Catálogo"}
             </button>
           )}
           <button

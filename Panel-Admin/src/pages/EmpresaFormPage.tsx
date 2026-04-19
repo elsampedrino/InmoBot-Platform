@@ -141,6 +141,20 @@ export default function EmpresaFormPage() {
       setError("El email destino no tiene un formato válido.");
       return;
     }
+    if (form.servicios?.catalogo_repo) {
+      if (!catalogoForm.github_repo?.trim()) {
+        setError("El repositorio GitHub (owner/repo) es requerido cuando la publicación de catálogo está habilitada.");
+        return;
+      }
+      if (!/^[\w.-]+\/[\w.-]+$/.test(catalogoForm.github_repo.trim())) {
+        setError("El repositorio debe tener el formato owner/repo (ej: miusuario/mi-repo).");
+        return;
+      }
+      if (!catalogoForm.github_path?.trim()) {
+        setError("El archivo destino (path) es requerido para publicar el catálogo.");
+        return;
+      }
+    }
 
     try {
       setSaving(true);

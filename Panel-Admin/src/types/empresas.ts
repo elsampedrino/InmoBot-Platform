@@ -63,9 +63,14 @@ export interface EmpresaCreateRequest {
   nombre: string;
   slug: string;
   id_plan: number;
+  id_rubro: number;
   timezone: string;
   activa: boolean;
 }
+
+export const RUBROS: { id: number; label: string }[] = [
+  { id: 1, label: "Inmobiliaria" },
+];
 
 export interface EmpresaUpdateRequest {
   nombre?: string;
