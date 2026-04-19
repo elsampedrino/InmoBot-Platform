@@ -3,6 +3,7 @@ export interface EmpresaServicios {
   landing: boolean;
   catalogo_repo: boolean;
   panel_cliente: boolean;
+  instagram: boolean;
 }
 
 export interface CatalogoRepoConfig {

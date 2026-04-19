@@ -65,6 +65,8 @@ export default function EmpresaFormPage() {
   const [form, setForm] = useState<EmpresaUpdateRequest>({});
   const [catalogo, setCatalogo] = useState<CatalogoRepoConfig | null>(null);
   const [catalogoForm, setCatalogoForm] = useState<CatalogoRepoUpdateRequest>({});
+  const [igConfig, setIgConfig] = useState<{ ig_user_id: string; token_configured: boolean; token_expires_at: string | null } | null>(null);
+  const [igForm, setIgForm] = useState({ ig_user_id: "", access_token: "", token_expires_at: "" });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -73,9 +75,12 @@ export default function EmpresaFormPage() {
   useEffect(() => {
     async function load() {
       try {
-        const [data, cat] = await Promise.all([
+        const [data, cat, ig] = await Promise.all([
           api.get<Empresa>(`/admin/empresas/${id}`),
           api.get<CatalogoRepoConfig | null>(`/admin/empresas/${id}/catalogo`).catch(() => null),
+          api.get<{ ig_user_id: string; token_configured: boolean; token_expires_at: string | null }>(
+            `/admin/instagram/config/${id}`
+          ).catch(() => null),
         ]);
         setEmpresa(data);
         setForm({
@@ -99,6 +104,16 @@ export default function EmpresaFormPage() {
             github_raw_url: cat.github_raw_url ?? "",
             catalog_source: cat.catalog_source ?? "github",
             export_format: cat.export_format ?? "inmo_v1",
+          });
+        }
+        if (ig) {
+          setIgConfig(ig);
+          setIgForm({
+            ig_user_id: ig.ig_user_id,
+            access_token: "",
+            token_expires_at: ig.token_expires_at
+              ? ig.token_expires_at.slice(0, 10)
+              : "",
           });
         }
       } catch {
@@ -159,9 +174,15 @@ export default function EmpresaFormPage() {
     try {
       setSaving(true);
       await api.put<Empresa>(`/admin/empresas/${id}`, form);
-      // Si catalogo_repo está habilitado, guardar config de repo
       if (form.servicios?.catalogo_repo) {
         await api.put<CatalogoRepoConfig>(`/admin/empresas/${id}/catalogo`, catalogoForm);
+      }
+      if (form.servicios?.instagram && igForm.ig_user_id.trim()) {
+        await api.put(`/admin/instagram/config/${id}`, {
+          ig_user_id: igForm.ig_user_id.trim(),
+          access_token: igForm.access_token.trim() || null,
+          token_expires_at: igForm.token_expires_at || null,
+        });
       }
       navigate("/empresas");
     } catch (err) {
@@ -274,6 +295,12 @@ export default function EmpresaFormPage() {
                 <Toggle
                   value={form.servicios?.panel_cliente ?? false}
                   onChange={(v) => setServicios({ panel_cliente: v })}
+                />
+              </FieldRow>
+              <FieldRow label="Publicación en Instagram">
+                <Toggle
+                  value={form.servicios?.instagram ?? false}
+                  onChange={(v) => setServicios({ instagram: v })}
                 />
               </FieldRow>
             </Card>
@@ -408,6 +435,51 @@ export default function EmpresaFormPage() {
                 />
               </FieldRow>
             </Card>
+
+            {/* Card: Instagram (solo si el servicio está habilitado) */}
+            {form.servicios?.instagram && (
+              <Card title="Instagram">
+                <p className="text-xs text-gray-400 -mt-2">
+                  Credenciales para publicar en Instagram Graph API.
+                </p>
+                <Field label="IG User ID">
+                  <input
+                    type="text"
+                    value={igForm.ig_user_id}
+                    onChange={(e) => setIgForm((f) => ({ ...f, ig_user_id: e.target.value }))}
+                    placeholder="ej: 17841400000000000"
+                    className="border border-gray-300 rounded-lg px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-brand-500"
+                  />
+                  <p className="text-xs text-gray-400">ID numérico de la cuenta Business/Creator</p>
+                </Field>
+                <Field label="Access Token">
+                  <input
+                    type="password"
+                    value={igForm.access_token}
+                    onChange={(e) => setIgForm((f) => ({ ...f, access_token: e.target.value }))}
+                    placeholder={igConfig?.token_configured ? "••••••••  (token ya configurado)" : "Pegar token de larga duración"}
+                    autoComplete="new-password"
+                    className="border border-gray-300 rounded-lg px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-brand-500"
+                  />
+                  <p className="text-xs text-gray-400">
+                    Dejar vacío para mantener el token existente
+                  </p>
+                </Field>
+                <Field label="Vencimiento del token (opcional)">
+                  <input
+                    type="date"
+                    value={igForm.token_expires_at}
+                    onChange={(e) => setIgForm((f) => ({ ...f, token_expires_at: e.target.value }))}
+                    className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+                  />
+                </Field>
+                {!igConfig && (
+                  <p className="text-xs text-amber-600">
+                    Esta empresa aún no tiene Instagram configurado.
+                  </p>
+                )}
+              </Card>
+            )}
 
           </div>
         </div>

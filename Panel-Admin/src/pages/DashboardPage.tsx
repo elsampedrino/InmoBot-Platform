@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import {
   Building2, Users, Upload, GitBranch, Zap,
   AlertTriangle, CheckCircle, XCircle, RefreshCw,
@@ -80,7 +80,7 @@ const CONSUMO_STYLES = {
   critico: "bg-red-100 text-red-700",
 };
 
-const ALERTA_ICON: Record<string, JSX.Element> = {
+const ALERTA_ICON: Record<string, ReactNode> = {
   sin_notificaciones: <AlertTriangle size={14} className="text-yellow-500" />,
   sin_repo:           <AlertTriangle size={14} className="text-orange-500" />,
   alto:               <AlertTriangle size={14} className="text-yellow-500" />,
@@ -90,7 +90,7 @@ const ALERTA_ICON: Record<string, JSX.Element> = {
 // ─── Componentes pequeños ─────────────────────────────────────────────────────
 
 function KPICard({ icon, label, value, sub }: {
-  icon: JSX.Element; label: string; value: string | number; sub?: string;
+  icon: ReactNode; label: string; value: string | number; sub?: string;
 }) {
   return (
     <div className="bg-white rounded-xl border border-gray-200 p-5 flex items-start gap-4">
@@ -143,6 +143,7 @@ export default function DashboardPage() {
   }
 
   const { kpis, uso_por_empresa, actividad_reciente, alertas, generado_en } = data;
+  const totalCosto = uso_por_empresa.reduce((s, e) => s + e.costo_usd, 0);
 
   return (
     <div className="p-8 space-y-8">
@@ -169,7 +170,7 @@ export default function DashboardPage() {
         <KPICard icon={<Users      size={18}/>} label="Usuarios activos"    value={kpis.usuarios_activos} />
         <KPICard icon={<Upload     size={18}/>} label="Importaciones mes"   value={kpis.importaciones_mes} />
         <KPICard icon={<GitBranch  size={18}/>} label="Publicaciones mes"   value={kpis.publicaciones_mes} />
-        <KPICard icon={<Zap        size={18}/>} label="Tokens consumidos"   value={fmtTokens(kpis.tokens_mes)} sub="este mes (global)" />
+        <KPICard icon={<Zap        size={18}/>} label="Tokens consumidos"   value={`${fmtTokens(kpis.tokens_mes)} - US$ ${totalCosto.toFixed(3)}`} sub="(Mes actual)" />
       </div>
 
       {/* Alertas */}
@@ -226,7 +227,7 @@ export default function DashboardPage() {
                     <span className="text-gray-400 ml-1">({fmtTokens(emp.tokens_input)}↑ {fmtTokens(emp.tokens_output)}↓)</span>
                   </td>
                   <td className="px-4 py-3 text-right text-gray-700">
-                    {emp.costo_usd > 0 ? `$${emp.costo_usd.toFixed(3)}` : "—"}
+                    {emp.costo_usd > 0 ? `US$ ${emp.costo_usd.toFixed(3)}` : "—"}
                   </td>
                   <td className="px-4 py-3 text-center">
                     <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${CONSUMO_STYLES[emp.estado_consumo]}`}>

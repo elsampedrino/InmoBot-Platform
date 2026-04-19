@@ -9,11 +9,23 @@ import {
   TIPOS_PROPIEDAD,
   CATEGORIAS_PROPIEDAD,
 } from "../types/items";
+import InstagramModal from "../components/InstagramModal";
+
+function IGIcon({ size = 15 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+    </svg>
+  );
+}
 
 export default function PropiedadesPage() {
   const navigate = useNavigate();
   const session = getSession();
-  const hasLanding = session?.empresa.servicios?.catalogo_repo === true;
+  const hasLanding   = session?.empresa.servicios?.catalogo_repo === true;
+  const hasInstagram = session?.empresa.servicios?.instagram === true;
 
   const [items, setItems]         = useState<ItemAdmin[]>([]);
   const [total, setTotal]         = useState(0);
@@ -22,6 +34,7 @@ export default function PropiedadesPage() {
   const [error, setError]         = useState<string | null>(null);
   const [exporting, setExporting] = useState(false);
   const [exportMsg, setExportMsg] = useState<string | null>(null);
+  const [igItemId, setIgItemId]   = useState<string | null>(null);
 
   const [filterActivo, setFilterActivo] = useState<"" | "true" | "false">("");
   const [filterTipo, setFilterTipo]     = useState("");
@@ -165,6 +178,9 @@ export default function PropiedadesPage() {
                 <th className="text-right px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Precio</th>
                 <th className="text-center px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Activa</th>
                 <th className="text-center px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Destacada</th>
+                {hasInstagram && (
+                  <th className="text-center px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Instagram</th>
+                )}
                 <th className="text-right px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Editar</th>
               </tr>
             </thead>
@@ -225,6 +241,19 @@ export default function PropiedadesPage() {
                       </button>
                     </td>
 
+                    {/* Instagram */}
+                    {hasInstagram && (
+                      <td className="px-4 py-3 text-center">
+                        <button
+                          onClick={() => setIgItemId(item.id_item)}
+                          title="Publicar en Instagram"
+                          className="inline-flex items-center justify-center w-8 h-8 text-gray-400 hover:text-pink-600 hover:bg-pink-50 rounded-lg transition-colors"
+                        >
+                          <IGIcon size={15} />
+                        </button>
+                      </td>
+                    )}
+
                     {/* Editar */}
                     <td className="px-4 py-3 text-right">
                       <button
@@ -264,6 +293,10 @@ export default function PropiedadesPage() {
           </div>
         )}
       </div>
+
+      {igItemId && (
+        <InstagramModal idItem={igItemId} onClose={() => setIgItemId(null)} />
+      )}
     </div>
   );
 }

@@ -1,8 +1,10 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Shell from "./components/Shell";
+import { getSession } from "./lib/auth";
 import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";
+import ClienteDashboardPage from "./pages/ClienteDashboardPage";
 import LeadsPage from "./pages/LeadsPage";
 import LeadDetailPage from "./pages/LeadDetailPage";
 import PropiedadesPage from "./pages/PropiedadesPage";
@@ -12,6 +14,12 @@ import EmpresaFormPage from "./pages/EmpresaFormPage";
 import UsuariosPage from "./pages/UsuariosPage";
 import UsuarioFormPage from "./pages/UsuarioFormPage";
 import ImportacionesPage from "./pages/ImportacionesPage";
+
+function DashboardRouter() {
+  const session = getSession();
+  if (session?.usuario.es_superadmin) return <DashboardPage />;
+  return <ClienteDashboardPage />;
+}
 
 export default function App() {
   return (
@@ -28,7 +36,7 @@ export default function App() {
           }
         >
           <Route index element={<Navigate to="/dashboard" replace />} />
-          <Route path="dashboard"                        element={<DashboardPage />} />
+          <Route path="dashboard"                        element={<DashboardRouter />} />
           <Route path="propiedades"                      element={<PropiedadesPage />} />
           <Route path="propiedades/nueva"                element={<PropiedadFormPage />} />
           <Route path="propiedades/:id/editar"           element={<PropiedadFormPage />} />

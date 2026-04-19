@@ -493,3 +493,46 @@ class PremiumConversionLogItem(Base):
     conversion_log: Mapped["PremiumConversionLog"] = relationship(
         "PremiumConversionLog", back_populates="items"
     )
+
+
+# ─── INSTAGRAM ────────────────────────────────────────────────────────────────
+
+class EmpresaInstagramConfig(Base):
+    __tablename__ = "empresa_instagram_config"
+
+    id_empresa: Mapped[int] = mapped_column(
+        Integer, ForeignKey("empresas.id_empresa", ondelete="CASCADE"), primary_key=True
+    )
+    ig_user_id: Mapped[str] = mapped_column(Text, nullable=False)
+    access_token: Mapped[str] = mapped_column(Text, nullable=False)
+    token_expires_at: Mapped[Any] = mapped_column(DateTime(timezone=True), nullable=True)
+    updated_at: Mapped[Any] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
+    )
+
+
+class InstagramPost(Base):
+    __tablename__ = "instagram_posts"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    id_empresa: Mapped[int] = mapped_column(
+        Integer, ForeignKey("empresas.id_empresa", ondelete="CASCADE"), nullable=False
+    )
+    id_item: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("items.id_item", ondelete="CASCADE"), nullable=False
+    )
+    id_usuario: Mapped[int | None] = mapped_column(
+        Integer, ForeignKey("usuarios_admin.id_usuario", ondelete="SET NULL"), nullable=True
+    )
+    caption: Mapped[str] = mapped_column(Text, nullable=False)
+    image_url: Mapped[str] = mapped_column(Text, nullable=False)
+    status: Mapped[str] = mapped_column(Text, nullable=False, default="pending")
+    provider_post_id: Mapped[str | None] = mapped_column(Text, nullable=True)
+    error_message: Mapped[str | None] = mapped_column(Text, nullable=True)
+    created_at: Mapped[Any] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    published_at: Mapped[Any] = mapped_column(DateTime(timezone=True), nullable=True)
+
+    __table_args__ = (
+        Index("idx_ig_posts_empresa", "id_empresa", "created_at"),
+        Index("idx_ig_posts_item",    "id_item"),
+    )

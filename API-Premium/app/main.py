@@ -8,7 +8,7 @@ from app.core.config import settings
 from app.core.database import AsyncSessionLocal, engine
 from app.core.logging import get_logger, setup_logging
 from app.models.api_models import HealthResponse
-from app.routers import admin_auth, admin_dashboard, admin_empresas, admin_importaciones, admin_items, admin_leads, admin_usuarios, analytics, catalogo, chat, cliente_dashboard, leads, webhook_widget, webhook_whatsapp
+from app.routers import admin_auth, admin_dashboard, admin_empresas, admin_importaciones, admin_instagram, admin_items, admin_leads, admin_usuarios, analytics, catalogo, chat, cliente_dashboard, leads, webhook_widget, webhook_whatsapp
 
 setup_logging()
 logger = get_logger(__name__)
@@ -46,6 +46,7 @@ app.include_router(admin_usuarios.router,      prefix="/admin/usuarios",      ta
 app.include_router(admin_importaciones.router, prefix="/admin/importaciones", tags=["admin"])
 app.include_router(admin_leads.router,         prefix="/admin/leads",         tags=["admin"])
 app.include_router(admin_items.router,       prefix="/admin/items",     tags=["admin"])
+app.include_router(admin_instagram.router,   prefix="/admin/instagram",  tags=["instagram"])
 app.include_router(chat.router,              prefix="/chat",      tags=["chat"])
 app.include_router(webhook_widget.router,    prefix="/webhook",   tags=["webhooks"])
 app.include_router(webhook_whatsapp.router,  prefix="/webhook",   tags=["webhooks"])
