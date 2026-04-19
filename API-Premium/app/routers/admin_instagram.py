@@ -79,17 +79,22 @@ def _generate_caption(titulo: str, tipo: str | None, precio: float | None, moned
         lines.append(f"💰 {moneda or 'USD'} {precio_fmt}")
 
     dormitorios = atributos.get("dormitorios") or atributos.get("ambientes")
-    banos = atributos.get("banos") or atributos.get("baños") or atributos.get("cantidad_banos")
+    banos = atributos.get("banios") or atributos.get("banos") or atributos.get("baños")
     if dormitorios or banos:
         hab = []
         if dormitorios: hab.append(f"🛏 {dormitorios} dorm.")
         if banos:       hab.append(f"🚿 {banos} baños")
         lines.append(" · ".join(hab))
 
-    superficie = atributos.get("superficie_cubierta") or atributos.get("superficie_total")
-    if superficie:
-        sup_str = str(superficie).replace("m²", "").replace("m2", "").strip()
-        lines.append(f"📐 {sup_str} m²")
+    def _sup(val) -> str | None:
+        return str(val).replace("m²", "").replace("m2", "").strip() if val else None
+
+    sup_cub  = _sup(atributos.get("superficie_cubierta"))
+    sup_tot  = _sup(atributos.get("superficie_total"))
+    if sup_cub and sup_tot and sup_cub != sup_tot:
+        lines.append(f"📐 {sup_cub} m² cub. / {sup_tot} m² tot.")
+    elif sup_cub or sup_tot:
+        lines.append(f"📐 {sup_cub or sup_tot} m²")
 
     calle  = atributos.get("calle")
     barrio = atributos.get("barrio")
@@ -98,12 +103,22 @@ def _generate_caption(titulo: str, tipo: str | None, precio: float | None, moned
     if ubic_partes:
         lines.append(f"📍 {', '.join(ubic_partes)}")
 
-    if atributos.get("pileta") or atributos.get("piscina"):
-        lines.append("🏊 Con pileta")
-    elif atributos.get("cochera"):
-        lines.append("🚗 Con cochera")
-    elif atributos.get("jardin") or atributos.get("jardín"):
-        lines.append("🌿 Con jardín")
+    # Amenities desde lista 'detalles'
+    _AMENITY_MAP = {
+        "pileta": "🏊 Con pileta", "piscina": "🏊 Con pileta",
+        "quincho": "🔥 Con quincho", "parrilla": "🔥 Con parrilla",
+        "cochera": "🚗 Con cochera", "garage": "🚗 Con garage",
+        "jardin": "🌿 Con jardín", "jardín": "🌿 Con jardín", "patio": "🌿 Con patio",
+    }
+    detalles = atributos.get("detalles") or []
+    if isinstance(detalles, list):
+        shown = 0
+        for d in detalles:
+            if label := _AMENITY_MAP.get(str(d).lower()):
+                lines.append(label)
+                shown += 1
+                if shown >= 2:
+                    break
 
     lines += ["", "¡Consultanos sin compromiso!", ""]
 
