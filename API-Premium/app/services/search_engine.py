@@ -39,6 +39,13 @@ logger = get_logger(__name__)
 _MAX_ITEMS_NO_FILTERS = 5
 # ─────────────────────────────────────────────────────────────────────────────
 
+# Sinónimos de tipo: distintas inmobiliarias pueden usar valores distintos en DB.
+# "terreno" y "lote" son equivalentes según el catálogo de cada empresa.
+_TIPO_SYNONYMS: dict[str, list[str]] = {
+    "terreno": ["terreno", "lote"],
+    "lote":    ["terreno", "lote"],
+}
+
 
 class SearchEngine:
     def __init__(self, db: AsyncSession) -> None:
@@ -126,8 +133,15 @@ class SearchEngine:
         params: dict = {}
 
         if filters.tipo:
-            clauses.append("i.tipo = :tipo")
-            params["tipo"] = filters.tipo
+            aliases = _TIPO_SYNONYMS.get(filters.tipo, [filters.tipo])
+            if len(aliases) == 1:
+                clauses.append("i.tipo = :tipo")
+                params["tipo"] = aliases[0]
+            else:
+                or_parts = " OR ".join(f"i.tipo = :tipo_{i}" for i in range(len(aliases)))
+                clauses.append(f"({or_parts})")
+                for i, t in enumerate(aliases):
+                    params[f"tipo_{i}"] = t
 
         if filters.categoria:
             clauses.append("i.categoria = :categoria")
