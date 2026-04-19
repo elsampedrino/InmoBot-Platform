@@ -88,7 +88,8 @@ def _generate_caption(titulo: str, tipo: str | None, precio: float | None, moned
 
     superficie = atributos.get("superficie_cubierta") or atributos.get("superficie_total")
     if superficie:
-        lines.append(f"📐 {superficie} m²")
+        sup_str = str(superficie).replace("m²", "").replace("m2", "").strip()
+        lines.append(f"📐 {sup_str} m²")
 
     calle  = atributos.get("calle")
     barrio = atributos.get("barrio")
