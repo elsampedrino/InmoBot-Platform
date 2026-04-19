@@ -123,7 +123,7 @@ async def get_dashboard(
         SELECT
             e.id_empresa,
             e.nombre,
-            p.label                                            AS plan,
+            p.nombre                                           AS plan,
             COALESCE(imp.cnt, 0)                               AS importaciones_mes,
             COALESCE(pub.cnt, 0)                               AS publicaciones_mes,
             COALESCE(lds.cnt, 0)                               AS leads_mes,
