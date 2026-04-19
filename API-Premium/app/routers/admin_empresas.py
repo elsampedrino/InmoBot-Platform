@@ -50,6 +50,7 @@ def _to_response(e) -> EmpresaAdminResponse:
             landing=srv.get("landing", False),
             catalogo_repo=srv.get("catalogo_repo", False),
             panel_cliente=srv.get("panel_cliente", False),
+            instagram=srv.get("instagram", False),
         ),
         notificaciones=EmpresaNotificacionesSchema.model_validate({
             "telegram": {"enabled": tg.get("enabled", False), "chat_id": str(tg.get("chat_id", ""))},
