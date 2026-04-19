@@ -7,7 +7,8 @@ Devuelve en una sola llamada:
   - KPIs del mes (leads, conversaciones, propiedades activas, tokens*)
   - Leads recientes (últimos 15, enriquecidos con título de propiedad)
   - Actividad del bot (conversaciones del mes + promedio diario)
-  - Propiedades publicadas (max 30)
+  - Propiedades con más leads del mes (top 10)
+  - Propiedades más consultadas sin lead del mes (top 10)
   - Alertas simples para el cliente
 
 * tokens_mes calculado en backend pero no expuesto en UI cliente por decisión de producto.
@@ -36,7 +37,7 @@ class ClienteKPIs(BaseModel):
     leads_nuevos: int
     conversaciones_mes: int
     propiedades_activas: int
-    tokens_mes: int  # disponible en backend, UI cliente no lo muestra
+    tokens_mes: int  # calculado en backend, no expuesto en UI cliente
 
 
 class LeadResumen(BaseModel):
@@ -52,13 +53,18 @@ class ActividadBot(BaseModel):
     promedio_diario: float
 
 
-class PropiedadResumen(BaseModel):
-    id_item: str
+class PropConLeads(BaseModel):
+    external_id: str        # identificador principal (ej: PROP-001)
     titulo: str
-    tipo: str
-    categoria: str
-    activo: bool
-    destacado: bool
+    ubicacion: str | None
+    leads_mes: int
+
+
+class PropConsultada(BaseModel):
+    external_id: str
+    titulo: str
+    ubicacion: str | None
+    consultas_mes: int
 
 
 class AlertaCliente(BaseModel):
@@ -71,9 +77,21 @@ class ClienteDashboardResponse(BaseModel):
     kpis: ClienteKPIs
     leads_recientes: list[LeadResumen]
     actividad_bot: ActividadBot
-    propiedades: list[PropiedadResumen]
+    props_con_leads: list[PropConLeads]
+    props_consultadas: list[PropConsultada]
     alertas: list[AlertaCliente]
     generado_en: str
+
+
+# ─── Helper ───────────────────────────────────────────────────────────────────
+
+def _ubicacion(atributos: dict | None) -> str | None:
+    if not atributos:
+        return None
+    barrio  = atributos.get("barrio")
+    ciudad  = atributos.get("ciudad")
+    partes  = [p for p in [barrio, ciudad] if p]
+    return ", ".join(partes) if partes else None
 
 
 # ─── Endpoint ─────────────────────────────────────────────────────────────────
@@ -116,10 +134,10 @@ async def get_cliente_dashboard(
     leads_raw = leads_rows.mappings().all()
 
     # Enriquecer con título de propiedad desde metadata['propiedades_interes']
-    # El campo puede ser lista de UUIDs o lista de objetos {"id": "...", "titulo": "..."}
+    # Soporta formato UUID string y formato objeto {"id": "...", "titulo": "..."}
     item_ids: list[str] = []
-    lead_item_map: dict[int, str] = {}       # id_lead → id_item (para lookup)
-    lead_titulo_map: dict[int, str] = {}     # id_lead → título (si ya viene en metadata)
+    lead_item_map: dict[int, str] = {}
+    lead_titulo_map: dict[int, str] = {}
 
     for row in leads_raw:
         meta = row["metadata"] or {}
@@ -139,14 +157,14 @@ async def get_cliente_dashboard(
             item_ids.append(first_id)
             lead_item_map[row["id_lead"]] = first_id
 
-    titulos: dict[str, str] = {}
+    titulos_lookup: dict[str, str] = {}
     if item_ids:
         items_rows = await db.execute(text("""
             SELECT id_item::text, titulo
             FROM items
             WHERE id_item = ANY(:ids) AND id_empresa = :emp
         """), {"ids": item_ids, "emp": emp})
-        titulos = {r["id_item"]: r["titulo"] for r in items_rows.mappings()}
+        titulos_lookup = {r["id_item"]: r["titulo"] for r in items_rows.mappings()}
 
     leads_recientes: list[LeadResumen] = [
         LeadResumen(
@@ -155,7 +173,7 @@ async def get_cliente_dashboard(
             telefono         = r["telefono"],
             propiedad_titulo = (
                 lead_titulo_map.get(r["id_lead"])
-                or titulos.get(lead_item_map.get(r["id_lead"], ""))
+                or titulos_lookup.get(lead_item_map.get(r["id_lead"], ""))
                 or None
             ),
             estado           = r["estado"],
@@ -174,28 +192,97 @@ async def get_cliente_dashboard(
     """), {"emp": emp})
     act = act_row.mappings().one()
 
-    # ── Propiedades ────────────────────────────────────────────────────────────
-    props_rows = await db.execute(text("""
-        SELECT id_item::text, titulo, tipo, categoria, activo, destacado
-        FROM items
-        WHERE id_empresa = :emp AND id_rubro = :rubro
-        ORDER BY destacado DESC, activo DESC, created_at DESC
-        LIMIT 30
-    """), {"emp": emp, "rubro": _ID_RUBRO_INMOBILIARIA})
+    # ── Propiedades con más leads ──────────────────────────────────────────────
+    # Extrae IDs/títulos desde leads.metadata->propiedades_interes (JSONB)
+    # jsonb_array_elements con CASE para tolerar campos NULL o no-array
+    leads_props_rows = await db.execute(text("""
+        SELECT
+            (prop->>'id')      AS id_item_str,
+            prop->>'titulo'    AS titulo_fallback,
+            COUNT(*)           AS leads_mes
+        FROM leads,
+             LATERAL jsonb_array_elements(
+                 CASE WHEN jsonb_typeof(metadata->'propiedades_interes') = 'array'
+                      THEN metadata->'propiedades_interes'
+                      ELSE '[]'::jsonb
+                 END
+             ) AS prop
+        WHERE id_empresa = :emp
+          AND created_at >= date_trunc('month', NOW())
+          AND (prop->>'id') IS NOT NULL
+        GROUP BY (prop->>'id'), prop->>'titulo'
+        ORDER BY leads_mes DESC
+        LIMIT 20
+    """), {"emp": emp})
+    leads_props_raw = leads_props_rows.mappings().all()
 
-    propiedades: list[PropiedadResumen] = [
-        PropiedadResumen(
-            id_item   = r["id_item"],
-            titulo    = r["titulo"],
-            tipo      = r["tipo"] or "",
-            categoria = r["categoria"] or "",
-            activo    = r["activo"],
-            destacado = r["destacado"],
+    # Resolver UUIDs contra items para obtener external_id y atributos
+    leads_prop_ids = [r["id_item_str"] for r in leads_props_raw if r["id_item_str"] and len(r["id_item_str"]) <= 36]
+    items_for_leads: dict[str, dict] = {}
+    if leads_prop_ids:
+        resolved = await db.execute(text("""
+            SELECT id_item::text, external_id, titulo, atributos
+            FROM items
+            WHERE id_item = ANY(:ids) AND id_empresa = :emp
+        """), {"ids": leads_prop_ids, "emp": emp})
+        items_for_leads = {r["id_item"]: dict(r) for r in resolved.mappings()}
+
+    # IDs con leads (para excluirlos de consultadas)
+    ids_con_leads: set[str] = set(leads_prop_ids)
+
+    props_con_leads: list[PropConLeads] = []
+    for r in leads_props_raw:
+        id_str = r["id_item_str"] or ""
+        item   = items_for_leads.get(id_str)
+        if item:
+            external_id = item["external_id"]
+            titulo      = item["titulo"]
+            ubicacion   = _ubicacion(item.get("atributos"))
+        else:
+            # Fallback: sin resolución en items (propiedad eliminada o UUID inválido)
+            external_id = "—"
+            titulo      = r["titulo_fallback"] or "Propiedad sin título"
+            ubicacion   = None
+        props_con_leads.append(PropConLeads(
+            external_id = external_id,
+            titulo      = titulo,
+            ubicacion   = ubicacion,
+            leads_mes   = int(r["leads_mes"]),
+        ))
+    props_con_leads = props_con_leads[:10]
+
+    # ── Propiedades consultadas sin lead ──────────────────────────────────────
+    # Usa premium_chat_log_items (FK directa a items) donde id_lead IS NULL
+    consultadas_rows = await db.execute(text("""
+        SELECT
+            i.id_item::text   AS id_item,
+            i.external_id,
+            i.titulo,
+            i.atributos,
+            COUNT(*)          AS consultas_mes
+        FROM premium_chat_log_items pcli
+        JOIN premium_chat_logs pcl ON pcl.id = pcli.id_chat_log
+        JOIN items i ON i.id_item = pcli.id_item AND i.id_empresa = :emp
+        WHERE pcl.id_empresa  = :emp
+          AND pcl.id_lead      IS NULL
+          AND pcl.created_at  >= date_trunc('month', NOW())
+        GROUP BY i.id_item, i.external_id, i.titulo, i.atributos
+        ORDER BY consultas_mes DESC
+        LIMIT 20
+    """), {"emp": emp})
+
+    props_consultadas: list[PropConsultada] = [
+        PropConsultada(
+            external_id  = r["external_id"],
+            titulo       = r["titulo"],
+            ubicacion    = _ubicacion(r["atributos"]),
+            consultas_mes = int(r["consultas_mes"]),
         )
-        for r in props_rows.mappings()
-    ]
+        for r in consultadas_rows.mappings()
+        if r["id_item"] not in ids_con_leads   # excluir las que ya tienen leads
+    ][:10]
 
-    # ── Empresa nombre + config alertas (una query) ────────────────────────────
+    # ── Empresa nombre + config alertas ───────────────────────────────────────
     config_row = await db.execute(text("""
         SELECT e.nombre, e.notificaciones, erc.github_repo
         FROM empresas e
@@ -231,11 +318,12 @@ async def get_cliente_dashboard(
         ))
 
     return ClienteDashboardResponse(
-        empresa_nombre     = config["nombre"],
-        kpis               = ClienteKPIs(**dict(kpi)),
-        leads_recientes    = leads_recientes,
-        actividad_bot      = ActividadBot(**dict(act)),
-        propiedades        = propiedades,
-        alertas            = alertas,
-        generado_en        = datetime.now(timezone.utc).isoformat(),
+        empresa_nombre    = config["nombre"],
+        kpis              = ClienteKPIs(**dict(kpi)),
+        leads_recientes   = leads_recientes,
+        actividad_bot     = ActividadBot(**dict(act)),
+        props_con_leads   = props_con_leads,
+        props_consultadas = props_consultadas,
+        alertas           = alertas,
+        generado_en       = datetime.now(timezone.utc).isoformat(),
     )
