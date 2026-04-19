@@ -13,7 +13,7 @@ Seguridad:
   - propiedad inactiva bloquea la publicación (no solo advertencia)
 """
 import json
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 
 import httpx
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -151,6 +151,16 @@ async def upsert_instagram_config(
 ):
     existing = await _get_ig_config(db, id_empresa)
 
+    # Parsear fecha si viene como string ISO (ej: "2026-06-19")
+    expires_parsed = None
+    if body.token_expires_at:
+        try:
+            expires_parsed = datetime.fromisoformat(body.token_expires_at).date() \
+                if "T" in body.token_expires_at \
+                else date.fromisoformat(body.token_expires_at)
+        except ValueError:
+            expires_parsed = None
+
     if existing:
         # UPDATE — solo actualiza access_token si se provee uno nuevo
         token_to_save = body.access_token.strip() if body.access_token and body.access_token.strip() else existing["access_token"]
@@ -164,7 +174,7 @@ async def upsert_instagram_config(
         """), {
             "uid":     body.ig_user_id.strip(),
             "token":   token_to_save,
-            "expires": body.token_expires_at,
+            "expires": expires_parsed,
             "emp":     id_empresa,
         })
     else:
@@ -178,7 +188,7 @@ async def upsert_instagram_config(
             "emp":     id_empresa,
             "uid":     body.ig_user_id.strip(),
             "token":   body.access_token.strip(),
-            "expires": body.token_expires_at,
+            "expires": expires_parsed,
         })
 
     await db.commit()
