@@ -90,9 +90,12 @@ def _generate_caption(titulo: str, tipo: str | None, precio: float | None, moned
     if superficie:
         lines.append(f"📐 {superficie} m²")
 
-    partes = [p for p in [atributos.get("barrio"), atributos.get("ciudad")] if p]
-    if partes:
-        lines.append(f"📍 {', '.join(partes)}")
+    calle  = atributos.get("calle")
+    barrio = atributos.get("barrio")
+    ciudad = atributos.get("ciudad")
+    ubic_partes = [p for p in [calle, barrio if barrio != ciudad else None, ciudad] if p]
+    if ubic_partes:
+        lines.append(f"📍 {', '.join(ubic_partes)}")
 
     if atributos.get("pileta") or atributos.get("piscina"):
         lines.append("🏊 Con pileta")
