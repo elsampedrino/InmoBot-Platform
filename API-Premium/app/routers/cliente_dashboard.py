@@ -116,13 +116,26 @@ async def get_cliente_dashboard(
     leads_raw = leads_rows.mappings().all()
 
     # Enriquecer con título de propiedad desde metadata['propiedades_interes']
+    # El campo puede ser lista de UUIDs o lista de objetos {"id": "...", "titulo": "..."}
     item_ids: list[str] = []
-    lead_item_map: dict[int, str] = {}
+    lead_item_map: dict[int, str] = {}       # id_lead → id_item (para lookup)
+    lead_titulo_map: dict[int, str] = {}     # id_lead → título (si ya viene en metadata)
+
     for row in leads_raw:
         meta = row["metadata"] or {}
         props = meta.get("propiedades_interes", [])
-        if props:
-            first_id = str(props[0])
+        if not props:
+            continue
+        first = props[0]
+        if isinstance(first, dict):
+            titulo_inline = first.get("titulo")
+            if titulo_inline:
+                lead_titulo_map[row["id_lead"]] = titulo_inline
+                continue
+            first_id = str(first.get("id") or first.get("id_item") or "")
+        else:
+            first_id = str(first)
+        if first_id:
             item_ids.append(first_id)
             lead_item_map[row["id_lead"]] = first_id
 
@@ -140,7 +153,11 @@ async def get_cliente_dashboard(
             fecha            = r["created_at"].isoformat(),
             nombre           = r["nombre"],
             telefono         = r["telefono"],
-            propiedad_titulo = titulos.get(lead_item_map.get(r["id_lead"], "")) or None,
+            propiedad_titulo = (
+                lead_titulo_map.get(r["id_lead"])
+                or titulos.get(lead_item_map.get(r["id_lead"], ""))
+                or None
+            ),
             estado           = r["estado"],
         )
         for r in leads_raw
