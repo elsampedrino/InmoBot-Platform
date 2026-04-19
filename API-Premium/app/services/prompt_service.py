@@ -409,6 +409,7 @@ class PromptService:
             dorms = atrib.get("dormitorios")
             banios = atrib.get("banios")
             sup_cub = atrib.get("superficie_cubierta")
+            sup_total = atrib.get("superficie_total")
             detalles = atrib.get("detalles") or []
 
             precio_str = ""
@@ -423,6 +424,8 @@ class PromptService:
                 attrs.append(f"{banios} baños")
             if sup_cub:
                 attrs.append(str(sup_cub))
+            elif sup_total:
+                attrs.append(str(sup_total))
             if precio_str:
                 attrs.append(precio_str)
             elif it.descripcion_corta:
