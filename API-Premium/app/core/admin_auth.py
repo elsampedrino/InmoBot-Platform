@@ -65,3 +65,14 @@ async def get_current_admin(
             headers={"WWW-Authenticate": "Bearer"},
         )
     return user
+
+
+async def require_superadmin(
+    current_user: UsuarioAdmin = Depends(get_current_admin),
+) -> UsuarioAdmin:
+    if not current_user.es_superadmin:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Se requiere acceso de superadmin.",
+        )
+    return current_user
