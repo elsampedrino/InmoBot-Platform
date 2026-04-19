@@ -72,7 +72,7 @@ class InstagramPublishResult(BaseModel):
 # ─── Helpers ──────────────────────────────────────────────────────────────────
 
 def _generate_caption(titulo: str, tipo: str | None, precio: float | None, moneda: str | None, atributos: dict) -> str:
-    lines = [f"🏠 {titulo}", ""]
+    lines = []
 
     if precio and float(precio) > 0:
         precio_fmt = f"{int(precio):,}".replace(",", ".")
@@ -120,7 +120,7 @@ def _generate_caption(titulo: str, tipo: str | None, precio: float | None, moned
                 if shown >= 2:
                     break
 
-    lines += ["", "¡Consultanos sin compromiso!", ""]
+    lines += ["", "Contactanos para más info", ""]
 
     hashtags = ["#inmobiliaria", "#propiedades", "#bienesraices"]
     if ciudad := atributos.get("ciudad"):
