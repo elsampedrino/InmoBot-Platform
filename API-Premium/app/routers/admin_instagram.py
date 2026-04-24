@@ -36,12 +36,15 @@ _CAPTION_MAX_LEN = 2200
 class InstagramConfigStatus(BaseModel):
     id_empresa: int
     ig_user_id: str
+    page_id: str | None
     token_configured: bool
+    facebook_configurado: bool
     token_expires_at: str | None
 
 
 class InstagramConfigUpdate(BaseModel):
     ig_user_id: str
+    page_id: str | None = None
     access_token: str | None = None      # None = mantener el existente
     token_expires_at: str | None = None  # ISO string o None
 
@@ -54,7 +57,20 @@ class InstagramPreviewResponse(BaseModel):
     caption: str
     item_activo: bool
     instagram_configurado: bool
+    facebook_configurado: bool
     ultima_publicacion: dict | None      # status, published_at, provider_post_id
+
+
+class FacebookPublishRequest(BaseModel):
+    id_item: str
+    caption: str
+
+
+class FacebookPublishResult(BaseModel):
+    status: str
+    provider_post_id: str | None
+    published_at: str | None
+    error_message: str | None
 
 
 class InstagramPublishRequest(BaseModel):
@@ -151,7 +167,7 @@ def _extract_image_url(media: dict | None) -> str | None:
 
 async def _get_ig_config(db: AsyncSession, id_empresa: int) -> dict | None:
     row = await db.execute(
-        text("SELECT ig_user_id, access_token, token_expires_at FROM empresa_instagram_config WHERE id_empresa = :emp"),
+        text("SELECT ig_user_id, page_id, access_token, token_expires_at FROM empresa_instagram_config WHERE id_empresa = :emp"),
         {"emp": id_empresa},
     )
     r = row.mappings().first()
@@ -170,10 +186,12 @@ async def get_instagram_config(
     if not cfg:
         raise HTTPException(status_code=404, detail="Instagram no configurado para esta empresa")
     return InstagramConfigStatus(
-        id_empresa        = id_empresa,
-        ig_user_id        = cfg["ig_user_id"],
-        token_configured  = bool(cfg["access_token"]),
-        token_expires_at  = cfg["token_expires_at"].isoformat() if cfg["token_expires_at"] else None,
+        id_empresa           = id_empresa,
+        ig_user_id           = cfg["ig_user_id"],
+        page_id              = cfg["page_id"],
+        token_configured     = bool(cfg["access_token"]),
+        facebook_configurado = bool(cfg["page_id"]),
+        token_expires_at     = cfg["token_expires_at"].isoformat() if cfg["token_expires_at"] else None,
     )
 
 
@@ -202,12 +220,14 @@ async def upsert_instagram_config(
         await db.execute(text("""
             UPDATE empresa_instagram_config
                SET ig_user_id        = :uid,
+                   page_id           = :page_id,
                    access_token      = :token,
                    token_expires_at  = :expires,
                    updated_at        = NOW()
              WHERE id_empresa = :emp
         """), {
             "uid":     body.ig_user_id.strip(),
+            "page_id": body.page_id.strip() if body.page_id else None,
             "token":   token_to_save,
             "expires": expires_parsed,
             "emp":     id_empresa,
@@ -215,13 +235,14 @@ async def upsert_instagram_config(
     else:
         # INSERT — token obligatorio en alta
         if not body.access_token or not body.access_token.strip():
-            raise HTTPException(status_code=422, detail="El access_token es obligatorio al configurar Instagram por primera vez")
+            raise HTTPException(status_code=422, detail="El access_token es obligatorio al configurar por primera vez")
         await db.execute(text("""
-            INSERT INTO empresa_instagram_config (id_empresa, ig_user_id, access_token, token_expires_at)
-            VALUES (:emp, :uid, :token, :expires)
+            INSERT INTO empresa_instagram_config (id_empresa, ig_user_id, page_id, access_token, token_expires_at)
+            VALUES (:emp, :uid, :page_id, :token, :expires)
         """), {
             "emp":     id_empresa,
             "uid":     body.ig_user_id.strip(),
+            "page_id": body.page_id.strip() if body.page_id else None,
             "token":   body.access_token.strip(),
             "expires": expires_parsed,
         })
@@ -229,10 +250,12 @@ async def upsert_instagram_config(
     await db.commit()
     cfg = await _get_ig_config(db, id_empresa)
     return InstagramConfigStatus(
-        id_empresa       = id_empresa,
-        ig_user_id       = cfg["ig_user_id"],
-        token_configured = True,
-        token_expires_at = cfg["token_expires_at"].isoformat() if cfg["token_expires_at"] else None,
+        id_empresa           = id_empresa,
+        ig_user_id           = cfg["ig_user_id"],
+        page_id              = cfg["page_id"],
+        token_configured     = True,
+        facebook_configurado = bool(cfg["page_id"]),
+        token_expires_at     = cfg["token_expires_at"].isoformat() if cfg["token_expires_at"] else None,
     )
 
 
@@ -296,7 +319,8 @@ async def get_instagram_preview(
         image_url              = image_url,
         caption                = caption,
         item_activo            = item["activo"],
-        instagram_configurado  = cfg is not None,
+        instagram_configurado  = cfg is not None and bool(cfg.get("ig_user_id")),
+        facebook_configurado   = cfg is not None and bool(cfg.get("page_id")),
         ultima_publicacion     = ultima,
     )
 
@@ -431,6 +455,104 @@ async def publish_to_instagram(
     await db.commit()
 
     return InstagramPublishResult(
+        status           = "published",
+        provider_post_id = provider_post_id,
+        published_at     = now_utc.isoformat(),
+        error_message    = None,
+    )
+
+
+# ─── Facebook Publish ─────────────────────────────────────────────────────────
+
+@router.post("/fb/publish", response_model=FacebookPublishResult)
+async def publish_to_facebook(
+    body: FacebookPublishRequest,
+    db: AsyncSession = Depends(get_db),
+    current_user: UsuarioAdmin = Depends(get_current_admin),
+):
+    emp = current_user.id_empresa
+
+    item_row = await db.execute(text("""
+        SELECT id_item::text, titulo, activo, media
+        FROM items
+        WHERE id_item = :item_id AND id_empresa = :emp
+    """), {"item_id": body.id_item, "emp": emp})
+    item = item_row.mappings().first()
+    if not item:
+        raise HTTPException(status_code=404, detail="Propiedad no encontrada")
+
+    if not item["activo"]:
+        raise HTTPException(
+            status_code=400,
+            detail="Esta propiedad está inactiva. Activala antes de publicar en Facebook.",
+        )
+
+    media = item["media"] or {}
+    if isinstance(media, str):
+        media = json.loads(media)
+    image_url = _extract_image_url(media)
+    if not image_url:
+        raise HTTPException(
+            status_code=400,
+            detail="Esta propiedad no tiene imágenes. Agregá al menos una foto antes de publicar.",
+        )
+
+    caption = body.caption.strip()
+    if not caption:
+        raise HTTPException(status_code=422, detail="El caption no puede estar vacío")
+
+    cfg = await _get_ig_config(db, emp)
+    if not cfg or not cfg.get("page_id"):
+        raise HTTPException(
+            status_code=400,
+            detail="Esta empresa no tiene Facebook configurado. Configuralo en la sección Empresas.",
+        )
+
+    post_row = await db.execute(text("""
+        INSERT INTO facebook_posts
+            (id_empresa, id_item, id_usuario, caption, image_url, status)
+        VALUES (:emp, :item_id, :user_id, :caption, :image_url, 'pending')
+        RETURNING id
+    """), {
+        "emp":       emp,
+        "item_id":   body.id_item,
+        "user_id":   current_user.id_usuario,
+        "caption":   caption,
+        "image_url": image_url,
+    })
+    post_id = post_row.scalar_one()
+    await db.commit()
+
+    page_id      = cfg["page_id"]
+    access_token = cfg["access_token"]
+
+    try:
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            r = await client.post(
+                f"{_IG_API_BASE}/{page_id}/photos",
+                params={"url": image_url, "caption": caption, "access_token": access_token},
+            )
+            r_data = r.json()
+            if "error" in r_data:
+                raise RuntimeError(r_data["error"].get("message", "Error al publicar en Facebook"))
+            provider_post_id = r_data.get("post_id") or r_data.get("id")
+
+    except Exception as exc:
+        await db.execute(text("""
+            UPDATE facebook_posts SET status = 'error', error_message = :msg WHERE id = :post_id
+        """), {"msg": str(exc), "post_id": post_id})
+        await db.commit()
+        raise HTTPException(status_code=502, detail=f"Error de Facebook: {exc}")
+
+    now_utc = datetime.now(timezone.utc)
+    await db.execute(text("""
+        UPDATE facebook_posts
+           SET status = 'published', provider_post_id = :post_id_fb, published_at = :now
+         WHERE id = :post_id
+    """), {"post_id_fb": provider_post_id, "now": now_utc, "post_id": post_id})
+    await db.commit()
+
+    return FacebookPublishResult(
         status           = "published",
         provider_post_id = provider_post_id,
         published_at     = now_utc.isoformat(),
