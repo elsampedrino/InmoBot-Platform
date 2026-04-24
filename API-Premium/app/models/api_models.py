@@ -261,6 +261,7 @@ class EmpresaServiciosSchema(BaseModel):
     catalogo_repo: bool = False
     panel_cliente: bool = False
     instagram: bool = False
+    facebook: bool = False
 
 class EmpresaTelegramSchema(BaseModel):
     enabled: bool = False
