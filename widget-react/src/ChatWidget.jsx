@@ -15,6 +15,8 @@ const ChatWidget = ({ config }) => {
     telefono: '',
     disponibilidad: ''
   });
+  const [botEnabled, setBotEnabled] = useState(true);
+  const [botDisabledMessage, setBotDisabledMessage] = useState('El asistente virtual no está disponible en este momento.');
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -32,6 +34,22 @@ const ChatWidget = ({ config }) => {
     chatHeight = '600px',
     repo = 'demo' // 'demo' o 'bbr'
   } = config || {};
+
+  // Verificar estado del bot al inicializar (antes de abrir el widget)
+  useEffect(() => {
+    const statusUrl = config.statusUrl || apiUrl.replace(/\/chat$/, '/status');
+    fetch(statusUrl)
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (data && data.bot_enabled === false) {
+          setBotEnabled(false);
+          if (data.message) setBotDisabledMessage(data.message);
+        }
+      })
+      .catch(() => {
+        // Fail-open: si el status check falla, el widget funciona normal
+      });
+  }, []);
 
   // Scroll automático al último mensaje
   const scrollToBottom = () => {
@@ -58,19 +76,19 @@ const ChatWidget = ({ config }) => {
     }
   }, [isOpen]);
 
-  // Mensaje de bienvenida al abrir por primera vez
+  // Mensaje de bienvenida (o aviso de bot deshabilitado) al abrir por primera vez
   useEffect(() => {
     if (isOpen && messages.length === 0) {
       setMessages([
         {
           id: 'welcome',
-          text: welcomeMessage,
+          text: botEnabled ? welcomeMessage : botDisabledMessage,
           sender: 'bot',
           timestamp: new Date().toISOString()
         }
       ]);
     }
-  }, [isOpen, messages.length, welcomeMessage]);
+  }, [isOpen, messages.length, welcomeMessage, botEnabled, botDisabledMessage]);
 
   // Toggle widget
   const toggleWidget = (e) => {
@@ -454,8 +472,8 @@ const ChatWidget = ({ config }) => {
               <div className="bot-info">
                 <h3 className="bot-name">{botName}</h3>
                 <span className="bot-status">
-                  <span className="status-dot"></span>
-                  En línea
+                  <span className={`status-dot${botEnabled ? '' : ' disabled'}`}></span>
+                  {botEnabled ? 'En línea' : 'No disponible'}
                 </span>
               </div>
             </div>
@@ -575,17 +593,17 @@ const ChatWidget = ({ config }) => {
               <textarea
                 ref={inputRef}
                 className="chat-input"
-                placeholder={placeholderText}
+                placeholder={botEnabled ? placeholderText : 'El servicio no está disponible'}
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyPress={handleKeyPress}
                 rows="1"
-                disabled={isTyping}
+                disabled={isTyping || !botEnabled}
               />
               <button
                 className="send-button"
                 onClick={sendMessage}
-                disabled={!inputValue.trim() || isTyping}
+                disabled={!inputValue.trim() || isTyping || !botEnabled}
                 aria-label="Enviar mensaje"
               >
                 <svg viewBox="0 0 24 24" fill="currentColor">
