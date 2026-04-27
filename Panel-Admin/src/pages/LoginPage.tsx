@@ -34,8 +34,8 @@ export default function LoginPage() {
       <div className="w-full max-w-sm">
         {/* Logo/título */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-white/20 backdrop-blur mb-4">
-            <span className="text-white text-2xl font-bold">IB</span>
+          <div className="mb-4">
+            <img src="/inmobot-logo.jpg" alt="InmoBot" className="w-20 h-20 rounded-2xl mx-auto object-cover" />
           </div>
           <h1 className="text-2xl font-bold text-white">InmoBot Panel</h1>
           <p className="text-brand-100 text-sm mt-1">Panel Administrativo</p>

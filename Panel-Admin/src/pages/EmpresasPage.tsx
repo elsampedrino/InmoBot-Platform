@@ -296,12 +296,12 @@ export default function EmpresasPage() {
         ) : (
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-200 bg-gray-50">
-                <th className="text-left px-4 py-3 font-medium text-gray-600">Empresa</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-600">Plan</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-600">Servicios</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-600">Notificaciones</th>
-                <th className="text-center px-4 py-3 font-medium text-gray-600">Activa</th>
+              <tr className="border-b border-brand-900 bg-brand-700">
+                <th className="text-left px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Empresa</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Plan</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Servicios</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Notificaciones</th>
+                <th className="text-center px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Activa</th>
                 <th className="px-4 py-3" />
               </tr>
             </thead>
@@ -342,6 +342,24 @@ export default function EmpresasPage() {
                       {empresa.servicios.panel_cliente && (
                         <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-700">
                           <LayoutDashboard size={11} /> Panel
+                        </span>
+                      )}
+                      {empresa.servicios.instagram && (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-pink-100 text-pink-700">
+                          <svg width={11} height={11} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                          </svg>
+                          Instagram
+                        </span>
+                      )}
+                      {empresa.servicios.facebook && (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-700">
+                          <svg width={11} height={11} viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.235 2.686.235v2.97h-1.513c-1.491 0-1.956.93-1.956 1.883v2.254h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/>
+                          </svg>
+                          Facebook
                         </span>
                       )}
                     </div>

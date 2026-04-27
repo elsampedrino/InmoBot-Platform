@@ -548,20 +548,20 @@ export default function ImportacionesPage() {
           ) : (
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-gray-50 border-b border-gray-200">
-                  <th className="text-left px-4 py-2.5 font-medium text-gray-600">
+                <tr className="bg-brand-700 border-b border-brand-900">
+                  <th className="text-left px-4 py-2.5 text-xs font-semibold text-white uppercase tracking-wide">
                     Acción
                   </th>
-                  <th className="text-left px-4 py-2.5 font-medium text-gray-600">
+                  <th className="text-left px-4 py-2.5 text-xs font-semibold text-white uppercase tracking-wide">
                     Empresa
                   </th>
-                  <th className="text-left px-4 py-2.5 font-medium text-gray-600">
+                  <th className="text-left px-4 py-2.5 text-xs font-semibold text-white uppercase tracking-wide">
                     Detalle
                   </th>
-                  <th className="text-left px-4 py-2.5 font-medium text-gray-600">
+                  <th className="text-left px-4 py-2.5 text-xs font-semibold text-white uppercase tracking-wide">
                     Usuario
                   </th>
-                  <th className="text-left px-4 py-2.5 font-medium text-gray-600">
+                  <th className="text-left px-4 py-2.5 text-xs font-semibold text-white uppercase tracking-wide">
                     Fecha
                   </th>
                 </tr>

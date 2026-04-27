@@ -4,6 +4,7 @@ export interface EmpresaServicios {
   catalogo_repo: boolean;
   panel_cliente: boolean;
   instagram: boolean;
+  facebook: boolean;
 }
 
 export interface CatalogoRepoConfig {

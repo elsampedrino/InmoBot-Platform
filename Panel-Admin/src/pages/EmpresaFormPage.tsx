@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Copy, Check } from "lucide-react";
 import { api, ApiError } from "../lib/api";
+import { getSession, updateSessionEmpresa } from "../lib/auth";
 import type {
   Empresa,
   EmpresaUpdateRequest,
@@ -65,10 +66,11 @@ export default function EmpresaFormPage() {
   const [form, setForm] = useState<EmpresaUpdateRequest>({});
   const [catalogo, setCatalogo] = useState<CatalogoRepoConfig | null>(null);
   const [catalogoForm, setCatalogoForm] = useState<CatalogoRepoUpdateRequest>({});
-  const [igConfig, setIgConfig] = useState<{ ig_user_id: string; token_configured: boolean; token_expires_at: string | null } | null>(null);
-  const [igForm, setIgForm] = useState({ ig_user_id: "", access_token: "", token_expires_at: "" });
+  const [igConfig, setIgConfig] = useState<{ ig_user_id: string; page_id: string | null; token_configured: boolean; facebook_configurado: boolean; token_expires_at: string | null } | null>(null);
+  const [igForm, setIgForm] = useState({ ig_user_id: "", page_id: "", access_token: "", token_expires_at: "" });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
@@ -78,7 +80,7 @@ export default function EmpresaFormPage() {
         const [data, cat, ig] = await Promise.all([
           api.get<Empresa>(`/admin/empresas/${id}`),
           api.get<CatalogoRepoConfig | null>(`/admin/empresas/${id}/catalogo`).catch(() => null),
-          api.get<{ ig_user_id: string; token_configured: boolean; token_expires_at: string | null }>(
+          api.get<{ ig_user_id: string; page_id: string | null; token_configured: boolean; facebook_configurado: boolean; token_expires_at: string | null }>(
             `/admin/instagram/config/${id}`
           ).catch(() => null),
         ]);
@@ -110,6 +112,7 @@ export default function EmpresaFormPage() {
           setIgConfig(ig);
           setIgForm({
             ig_user_id: ig.ig_user_id,
+            page_id: ig.page_id ?? "",
             access_token: "",
             token_expires_at: ig.token_expires_at
               ? ig.token_expires_at.slice(0, 10)
@@ -173,18 +176,29 @@ export default function EmpresaFormPage() {
 
     try {
       setSaving(true);
-      await api.put<Empresa>(`/admin/empresas/${id}`, form);
+      const updated = await api.put<Empresa>(`/admin/empresas/${id}`, form);
+      const session = getSession();
+      if (session && Number(id) === session.empresa.id_empresa) {
+        updateSessionEmpresa({
+          id_empresa: updated.id_empresa,
+          nombre: updated.nombre,
+          slug: updated.slug ?? null,
+          servicios: updated.servicios as unknown as Record<string, boolean>,
+        });
+      }
       if (form.servicios?.catalogo_repo) {
         await api.put<CatalogoRepoConfig>(`/admin/empresas/${id}/catalogo`, catalogoForm);
       }
-      if (form.servicios?.instagram && igForm.ig_user_id.trim()) {
+      if ((form.servicios?.instagram || form.servicios?.facebook) && (igForm.ig_user_id.trim() || igForm.page_id.trim())) {
         await api.put(`/admin/instagram/config/${id}`, {
           ig_user_id: igForm.ig_user_id.trim(),
+          page_id: igForm.page_id.trim() || null,
           access_token: igForm.access_token.trim() || null,
           token_expires_at: igForm.token_expires_at || null,
         });
       }
-      navigate("/empresas");
+      setSaved(true);
+      setTimeout(() => navigate("/empresas"), 1200);
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "Error al guardar.");
     } finally {
@@ -301,6 +315,12 @@ export default function EmpresaFormPage() {
                 <Toggle
                   value={form.servicios?.instagram ?? false}
                   onChange={(v) => setServicios({ instagram: v })}
+                />
+              </FieldRow>
+              <FieldRow label="Publicación en Facebook">
+                <Toggle
+                  value={form.servicios?.facebook ?? false}
+                  onChange={(v) => setServicios({ facebook: v })}
                 />
               </FieldRow>
             </Card>
@@ -436,46 +456,101 @@ export default function EmpresaFormPage() {
               </FieldRow>
             </Card>
 
-            {/* Card: Instagram (solo si el servicio está habilitado) */}
-            {form.servicios?.instagram && (
-              <Card title="Instagram">
+            {/* Card: Instagram / Facebook (se muestra si alguno está habilitado) */}
+            {(form.servicios?.instagram || form.servicios?.facebook) && (
+              <Card title="Instagram / Facebook">
                 <p className="text-xs text-gray-400 -mt-2">
-                  Credenciales para publicar en Instagram Graph API.
+                  Credenciales para publicar en redes sociales vía Meta Graph API.
                 </p>
-                <Field label="IG User ID">
-                  <input
-                    type="text"
-                    value={igForm.ig_user_id}
-                    onChange={(e) => setIgForm((f) => ({ ...f, ig_user_id: e.target.value }))}
-                    placeholder="ej: 17841400000000000"
-                    className="border border-gray-300 rounded-lg px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-brand-500"
-                  />
-                  <p className="text-xs text-gray-400">ID numérico de la cuenta Business/Creator</p>
-                </Field>
-                <Field label="Access Token">
-                  <input
-                    type="password"
-                    value={igForm.access_token}
-                    onChange={(e) => setIgForm((f) => ({ ...f, access_token: e.target.value }))}
-                    placeholder={igConfig?.token_configured ? "••••••••  (token ya configurado)" : "Pegar token de larga duración"}
-                    autoComplete="new-password"
-                    className="border border-gray-300 rounded-lg px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-brand-500"
-                  />
-                  <p className="text-xs text-gray-400">
-                    Dejar vacío para mantener el token existente
-                  </p>
-                </Field>
-                <Field label="Vencimiento del token (opcional)">
-                  <input
-                    type="date"
-                    value={igForm.token_expires_at}
-                    onChange={(e) => setIgForm((f) => ({ ...f, token_expires_at: e.target.value }))}
-                    className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
-                  />
-                </Field>
+
+                {/* ── Sección Instagram ── */}
+                {form.servicios?.instagram && (
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-semibold text-gray-700 flex items-center gap-1.5">
+                        <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-pink-500">
+                          <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                        </svg>
+                        Instagram
+                      </span>
+                      {igConfig?.ig_user_id ? (
+                        <span className="text-xs font-medium px-2 py-0.5 bg-green-100 text-green-700 rounded-full">✓ Configurado</span>
+                      ) : (
+                        <span className="text-xs font-medium px-2 py-0.5 bg-amber-100 text-amber-700 rounded-full">No configurado</span>
+                      )}
+                    </div>
+                    <Field label="IG User ID">
+                      <input
+                        type="text"
+                        value={igForm.ig_user_id}
+                        onChange={(e) => setIgForm((f) => ({ ...f, ig_user_id: e.target.value }))}
+                        placeholder="ej: 17841400000000000"
+                        className="border border-gray-300 rounded-lg px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-brand-500"
+                      />
+                      <p className="text-xs text-gray-400">ID numérico de la cuenta Business/Creator</p>
+                    </Field>
+                  </div>
+                )}
+
+                {/* ── Sección Facebook ── */}
+                {form.servicios?.facebook && (
+                  <div className={`space-y-3 ${form.servicios?.instagram ? "border-t border-gray-100 pt-3 mt-1" : ""}`}>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-semibold text-gray-700 flex items-center gap-1.5">
+                        <svg width={14} height={14} viewBox="0 0 24 24" fill="currentColor" className="text-blue-600">
+                          <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.235 2.686.235v2.97h-1.513c-1.491 0-1.956.93-1.956 1.883v2.254h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/>
+                        </svg>
+                        Facebook
+                      </span>
+                      {igConfig?.facebook_configurado ? (
+                        <span className="text-xs font-medium px-2 py-0.5 bg-green-100 text-green-700 rounded-full">✓ Configurado</span>
+                      ) : (
+                        <span className="text-xs font-medium px-2 py-0.5 bg-amber-100 text-amber-700 rounded-full">No configurado</span>
+                      )}
+                    </div>
+                    <Field label="Page ID">
+                      <input
+                        type="text"
+                        value={igForm.page_id}
+                        onChange={(e) => setIgForm((f) => ({ ...f, page_id: e.target.value }))}
+                        placeholder="ej: 1115827611611540"
+                        className="border border-gray-300 rounded-lg px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-brand-500"
+                      />
+                      <p className="text-xs text-gray-400">ID numérico de la Página de Facebook</p>
+                    </Field>
+                  </div>
+                )}
+
+                {/* ── Token compartido ── */}
+                <div className="border-t border-gray-100 pt-3 mt-1 space-y-3">
+                  <Field label="Access Token">
+                    <input
+                      type="password"
+                      value={igForm.access_token}
+                      onChange={(e) => setIgForm((f) => ({ ...f, access_token: e.target.value }))}
+                      placeholder={igConfig?.token_configured ? "••••••••  (token ya configurado)" : "Pegar Page Access Token de larga duración"}
+                      autoComplete="new-password"
+                      className="border border-gray-300 rounded-lg px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-brand-500"
+                    />
+                    <p className="text-xs text-gray-400">
+                      Page Access Token — funciona para Instagram y Facebook. Dejar vacío para mantener el existente.
+                    </p>
+                  </Field>
+                  <Field label="Vencimiento del token (opcional)">
+                    <input
+                      type="date"
+                      value={igForm.token_expires_at}
+                      onChange={(e) => setIgForm((f) => ({ ...f, token_expires_at: e.target.value }))}
+                      className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+                    />
+                  </Field>
+                </div>
+
                 {!igConfig && (
                   <p className="text-xs text-amber-600">
-                    Esta empresa aún no tiene Instagram configurado.
+                    Esta empresa aún no tiene redes sociales configuradas.
                   </p>
                 )}
               </Card>
@@ -501,7 +576,7 @@ export default function EmpresaFormPage() {
             disabled={saving}
             className="px-5 py-2 bg-brand-600 text-white text-sm font-medium rounded-lg hover:bg-brand-700 disabled:opacity-50 transition-colors"
           >
-            {saving ? "Guardando..." : "Guardar cambios"}
+            {saving ? "Guardando..." : saved ? "✓ Guardado" : "Guardar cambios"}
           </button>
         </div>
       </form>

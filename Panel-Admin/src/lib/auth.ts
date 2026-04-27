@@ -40,6 +40,12 @@ export function getSession(): { usuario: AdminUser; empresa: AdminEmpresa } | nu
   }
 }
 
+export function updateSessionEmpresa(empresa: AdminEmpresa): void {
+  const session = getSession();
+  if (!session) return;
+  localStorage.setItem(USER_KEY, JSON.stringify({ ...session, empresa }));
+}
+
 export function clearSession(): void {
   localStorage.removeItem(TOKEN_KEY);
   localStorage.removeItem(USER_KEY);

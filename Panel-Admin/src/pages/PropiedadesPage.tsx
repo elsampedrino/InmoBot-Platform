@@ -26,6 +26,7 @@ export default function PropiedadesPage() {
   const session = getSession();
   const hasLanding   = session?.empresa.servicios?.catalogo_repo === true;
   const hasInstagram = session?.empresa.servicios?.instagram === true;
+  const hasSocialPublish = hasInstagram || session?.empresa.servicios?.facebook === true;
 
   const [items, setItems]         = useState<ItemAdmin[]>([]);
   const [total, setTotal]         = useState(0);
@@ -169,19 +170,19 @@ export default function PropiedadesPage() {
           <div className="p-8 text-center text-gray-400 text-sm">No hay propiedades.</div>
         ) : (
           <table className="w-full text-sm">
-            <thead className="bg-gray-50 border-b border-gray-200">
+            <thead className="bg-brand-700 border-b border-brand-900">
               <tr>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">ID</th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Propiedad</th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Tipo</th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Operación</th>
-                <th className="text-right px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Precio</th>
-                <th className="text-center px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Activa</th>
-                <th className="text-center px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Destacada</th>
-                {hasInstagram && (
-                  <th className="text-center px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Instagram</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">ID</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Propiedad</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Tipo</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Operación</th>
+                <th className="text-right px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Precio</th>
+                <th className="text-center px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Activa</th>
+                <th className="text-center px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Destacada</th>
+                {hasSocialPublish && (
+                  <th className="text-center px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Redes</th>
                 )}
-                <th className="text-right px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Editar</th>
+                <th className="text-right px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Editar</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
@@ -199,8 +200,10 @@ export default function PropiedadesPage() {
                         )}
                         <div>
                           <p className="font-medium text-gray-800 leading-tight">{item.titulo}</p>
-                          {item.atributos?.ciudad && (
-                            <p className="text-xs text-gray-400 mt-0.5">{item.atributos.ciudad as string}</p>
+                          {(item.atributos?.calle || item.atributos?.ciudad) && (
+                            <p className="text-xs text-gray-400 mt-0.5">
+                              {[item.atributos?.calle, item.atributos?.ciudad].filter(Boolean).join(", ")}
+                            </p>
                           )}
                         </div>
                       </div>
@@ -241,12 +244,12 @@ export default function PropiedadesPage() {
                       </button>
                     </td>
 
-                    {/* Instagram */}
-                    {hasInstagram && (
+                    {/* Redes sociales */}
+                    {hasSocialPublish && (
                       <td className="px-4 py-3 text-center">
                         <button
                           onClick={() => setIgItemId(item.id_item)}
-                          title="Publicar en Instagram"
+                          title="Publicar en redes sociales"
                           className="inline-flex items-center justify-center w-8 h-8 text-gray-400 hover:text-pink-600 hover:bg-pink-50 rounded-lg transition-colors"
                         >
                           <IGIcon size={15} />
@@ -295,7 +298,12 @@ export default function PropiedadesPage() {
       </div>
 
       {igItemId && (
-        <InstagramModal idItem={igItemId} onClose={() => setIgItemId(null)} />
+        <InstagramModal
+          idItem={igItemId}
+          onClose={() => setIgItemId(null)}
+          igEnabled={hasInstagram}
+          fbEnabled={session?.empresa.servicios?.facebook === true}
+        />
       )}
     </div>
   );

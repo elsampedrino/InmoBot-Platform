@@ -84,8 +84,8 @@ function KPICard({ icon, label, value, sub }: {
   icon: ReactNode; label: string; value: string | number; sub?: string;
 }) {
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-5 flex items-start gap-4">
-      <div className="p-2.5 rounded-lg bg-brand-50 text-brand-600 shrink-0">{icon}</div>
+    <div className="bg-gradient-to-br from-violet-50 to-cyan-50 rounded-xl border border-violet-100 p-5 flex items-start gap-4 hover:border-violet-300 hover:shadow-xl hover:scale-105 transition-all duration-300">
+      <div className="p-2.5 rounded-lg bg-gray-900 text-white shrink-0">{icon}</div>
       <div>
         <p className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-1">{label}</p>
         <p className="text-2xl font-bold text-gray-900">{value}</p>
@@ -96,7 +96,7 @@ function KPICard({ icon, label, value, sub }: {
 }
 
 function PropRankItem({
-  rank, externalId, titulo, ubicacion, count, countLabel, accent,
+  rank, externalId, titulo, ubicacion, count, countLabel, accent, dark = false,
 }: {
   rank: number;
   externalId: string;
@@ -105,27 +105,30 @@ function PropRankItem({
   count: number;
   countLabel: string;
   accent: "green" | "blue";
+  dark?: boolean;
 }) {
-  const badgeClass = accent === "green"
-    ? "text-green-700 bg-green-50"
-    : "text-brand-600 bg-brand-50";
+  const badgeClass = dark
+    ? "text-white bg-white/20"
+    : accent === "green"
+      ? "text-green-700 bg-green-50"
+      : "text-brand-600 bg-brand-50";
   return (
-    <div className="flex items-start gap-3 py-3 border-b border-gray-100 last:border-0">
-      <span className="text-xs font-bold text-gray-300 w-4 shrink-0 pt-0.5">{rank}</span>
+    <div className={`flex items-start gap-3 py-3 border-b ${dark ? "border-white/20" : "border-gray-100"} last:border-0`}>
+      <span className={`text-xs font-bold ${dark ? "text-white/50" : "text-gray-300"} w-4 shrink-0 pt-0.5`}>{rank}</span>
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 flex-wrap">
           <span className={`text-xs font-mono font-semibold px-1.5 py-0.5 rounded ${badgeClass}`}>
             {externalId}
           </span>
-          <span className="text-sm font-medium text-gray-800 truncate">{titulo}</span>
+          <span className={`text-sm font-medium ${dark ? "text-white" : "text-gray-800"} truncate`}>{titulo}</span>
         </div>
         {ubicacion && (
-          <p className="text-xs text-gray-400 mt-0.5">{ubicacion}</p>
+          <p className={`text-xs ${dark ? "text-white/70" : "text-gray-400"} mt-0.5`}>{ubicacion}</p>
         )}
       </div>
       <div className="shrink-0 text-right">
-        <span className="text-lg font-bold text-gray-900">{count}</span>
-        <p className="text-xs text-gray-400">{countLabel}</p>
+        <span className={`text-lg font-bold ${dark ? "text-white" : "text-gray-900"}`}>{count}</span>
+        <p className={`text-xs ${dark ? "text-white/70" : "text-gray-400"}`}>{countLabel}</p>
       </div>
     </div>
   );
@@ -187,7 +190,7 @@ export default function ClienteDashboardPage() {
         </div>
         <button
           onClick={load}
-          className="flex items-center gap-2 px-3 py-2 text-sm text-gray-500 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-brand-600 text-white text-sm font-medium rounded-lg hover:bg-brand-700 transition-colors"
         >
           <RefreshCw size={14} /> Actualizar
         </button>
@@ -226,13 +229,13 @@ export default function ClienteDashboardPage() {
           <h2 className="text-sm font-semibold text-gray-700 mb-3">Leads recientes</h2>
           <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
             <table className="w-full text-sm">
-              <thead className="bg-gray-50 border-b border-gray-200">
+              <thead className="bg-brand-700 border-b border-brand-900">
                 <tr>
-                  <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Fecha</th>
-                  <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Nombre</th>
-                  <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Teléfono</th>
-                  <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Propiedad</th>
-                  <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Estado</th>
+                  <th className="text-left px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Fecha</th>
+                  <th className="text-left px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Nombre</th>
+                  <th className="text-left px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Teléfono</th>
+                  <th className="text-left px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Propiedad</th>
+                  <th className="text-left px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Estado</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
@@ -290,7 +293,7 @@ export default function ClienteDashboardPage() {
             <h2 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">Propiedades vinculadas a leads</h2>
           </div>
           <p className="text-xs text-gray-400 mb-3">Propiedades asociadas a conversaciones que terminaron en contacto</p>
-          <div className="bg-white rounded-xl border border-gray-200 px-4 py-2">
+          <div className="bg-violet-600 rounded-xl px-4 py-2">
             {props_con_leads.length > 0 ? (
               props_con_leads.map((p, i) => (
                 <PropRankItem
@@ -302,10 +305,11 @@ export default function ClienteDashboardPage() {
                   count={p.leads_mes}
                   countLabel="leads"
                   accent="green"
+                  dark={true}
                 />
               ))
             ) : (
-              <p className="text-sm text-gray-400 py-6 text-center">
+              <p className="text-sm text-white/70 py-6 text-center">
                 Todavía no hay propiedades vinculadas a leads este mes.
               </p>
             )}
@@ -319,7 +323,7 @@ export default function ClienteDashboardPage() {
             <h2 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">Propiedades sin conversión</h2>
           </div>
           <p className="text-xs text-gray-400 mb-3">Propiedades vistas en el Bot sin generar lead</p>
-          <div className="bg-white rounded-xl border border-gray-200 px-4 py-2">
+          <div className="bg-cyan-600 rounded-xl px-4 py-2">
             {props_consultadas.length > 0 ? (
               props_consultadas.map((p, i) => (
                 <PropRankItem
@@ -331,10 +335,11 @@ export default function ClienteDashboardPage() {
                   count={p.consultas_mes}
                   countLabel="consultas"
                   accent="blue"
+                  dark={true}
                 />
               ))
             ) : (
-              <p className="text-sm text-gray-400 py-6 text-center">
+              <p className="text-sm text-white/70 py-6 text-center">
                 Todavía no hay consultas sobre propiedades este mes.
               </p>
             )}
