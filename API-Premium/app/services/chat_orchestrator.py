@@ -132,6 +132,18 @@ class ChatOrchestrator:
             # ── 1. Tenant ──────────────────────────────────────────────────────
             tenant_config = await self.tenant_resolver.resolve(request.empresa_slug)
 
+            # ── 1b. Bot gate ────────────────────────────────────────────────────
+            if not tenant_config.servicios.get("bot", True):
+                return ChatMessageResponse(
+                    session_id=request.session_id,
+                    respuesta="El asistente virtual no está disponible en este momento.",
+                    items=[],
+                    route="bot_disabled",
+                    stage="bot_disabled",
+                    lead_capturado=False,
+                    metadata={"error": "BOT_DISABLED"},
+                )
+
             # ── 2. Contexto del turno ──────────────────────────────────────────
             turn = await self.context_manager.load_turn_context(
                 id_empresa=tenant_config.id_empresa,
