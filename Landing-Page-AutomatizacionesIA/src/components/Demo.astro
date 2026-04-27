@@ -65,7 +65,7 @@
             />
             <button
               type="submit"
-              class="w-12 h-12 bg-gradient-to-r from-violet-600 to-violet-700 text-white rounded-full hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center justify-center"
+              class="w-12 h-12 bg-gradient-to-r from-violet-600 to-violet-700 text-white rounded-full hover:shadow-lg active:shadow-lg hover:scale-105 active:scale-105 transition-all duration-300 flex items-center justify-center"
             >
               <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
@@ -201,7 +201,7 @@
           ${images.length > 0 ? `
             <div class="grid grid-cols-3 gap-2 mt-3">
               ${images.map(url => `
-                <a href="${url}" target="_blank" rel="noopener noreferrer" class="block rounded-lg overflow-hidden border-2 border-transparent hover:border-violet-500 hover:shadow-lg transition-all duration-200">
+                <a href="${url}" target="_blank" rel="noopener noreferrer" class="block rounded-lg overflow-hidden border-2 border-transparent hover:border-violet-500 hover:shadow-lg active:shadow-lg transition-all duration-200">
                   <img
                     src="${url}"
                     alt="Propiedad"

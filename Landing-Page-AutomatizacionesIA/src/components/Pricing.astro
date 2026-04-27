@@ -35,11 +35,10 @@ const plans = [
   },
   {
     name: "Pro",
-    price: "$270.000",
+    price: "$250.000",
     period: "/ mes",
-    badge: "Recomendado",
     description: "Para inmobiliarias que quieren vender más",
-    recommended: true,
+    recommended: false,
     icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z" /></svg>`,
     features: [
       "Incluye todo el Plan Básico +",
@@ -61,7 +60,7 @@ const plans = [
     cta: "Consultar disponibilidad",
     ctaLink: "#contacto",
     gradient: "from-violet-600 to-violet-700",
-    bgClass: "bg-gradient-to-br from-cyan-50 to-cyan-100",
+    bgClass: "bg-white",
     showCta: true,
     iconBg: "bg-violet-600",
     checkColor: "text-violet-600",
@@ -69,35 +68,54 @@ const plans = [
   },
   {
     name: "Premium",
-    price: "Próximamente",
+    badge: "Nuevo 🚀",
+    price: "1 mes gratis",
     period: "",
-    description: "Para inmobiliarias que quieren escalar en serio",
+    priceSub: "Luego $300.000 / mes",
+    priceNote: "Sin compromiso — podés cancelar cuando quieras",
+    description: "Automatización completa de tu inmobiliaria",
     recommended: false,
+    isPremium: true,
     icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="w-12 h-12"><path d="M2.5 7.5l4.5 2.5 5-5 5 5 4.5-2.5-1.5 9H4l-1.5-9zM4 18h16v2H4v-2z"/></svg>`,
-    features: [
-      "Incluye todo el Plan PRO +",
-      "Seguimiento conversacional por sesión",
-      "Catálogo en base de datos",
-      "Actualización en tiempo real",
-      "Dashboard propio con métricas avanzadas",
-      "Gestión de leads (ABM)",
-      "Integraciones: WhatsApp/CRM",
-      "Personalización avanzada del bot"
+    featureGroups: [
+      {
+        label: "🚀 Captación y ventas",
+        items: [
+          "Publicá propiedades en Instagram en un click",
+          "Generación automática de leads desde el chatbot",
+          "Seguimiento de consultas en tiempo real"
+        ]
+      },
+      {
+        label: "📊 Control del negocio",
+        items: [
+          "Dashboard con métricas de consultas y leads",
+          "Análisis de propiedades más consultadas",
+          "Estadísticas de rendimiento"
+        ]
+      },
+      {
+        label: "⚙️ Gestión centralizada",
+        items: [
+          "Panel para administrar propiedades",
+          "Actualización en tiempo real",
+          "Base de datos propia"
+        ]
+      },
+      {
+        label: "🧠 Inteligencia avanzada",
+        items: [
+          "Seguimiento conversacional por sesión",
+          "Comprensión de consultas complejas",
+          "Priorización inteligente de propiedades"
+        ]
+      }
     ],
-    motor: [
-      "Interpretación avanzada de consultas",
-      "Seguimiento conversacional por sesión (contexto activo)",
-      "Comprensión de repreguntas y ajustes progresivos",
-      "Refinamiento dinámico de resultados",
-      "Priorización inteligente según intención",
-      "Mayor precisión en filtros complejos",
-      "Optimización para relevancia y menor ruido"
-    ],
-    cta: "",
+    cta: "Probar gratis 30 días",
     ctaLink: "#contacto",
     gradient: "from-cyan-600 to-blue-700",
-    bgClass: "bg-white",
-    showCta: false,
+    bgClass: "bg-gradient-to-br from-cyan-50 to-cyan-100",
+    showCta: true,
     iconBg: "bg-cyan-600",
     checkColor: "text-cyan-600",
     bulletColor: "text-cyan-500"
@@ -110,12 +128,12 @@ const comparisonFeatures = [
   { feature: "Estadísticas semanales", basico: false, pro: true, premium: true },
   { feature: "Interpretación de lenguaje natural", basico: true, pro: true, premium: true },
   { feature: "Respuestas optimizadas para conversión", basico: true, pro: true, premium: true },
+  { feature: "Publicación en Instagram desde el panel", basico: false, pro: false, premium: true },
+  { feature: "Dashboard con métricas avanzadas", basico: false, pro: false, premium: true },
   { feature: "Contexto conversacional por sesión", basico: false, pro: false, premium: true },
   { feature: "Refinamiento progresivo de búsqueda", basico: false, pro: false, premium: true },
-  { feature: "Personalización avanzada de BOT", basico: false, pro: false, premium: true },
   { feature: "Actualización de Catálogo On Line", basico: false, pro: false, premium: true },
-  { feature: "Integraciones WhatsApp/CRM", basico: false, pro: false, premium: true },
-  { feature: "Dashboard propio", basico: false, pro: false, premium: true }
+  { feature: "Base de datos propia", basico: false, pro: false, premium: true }
 ];
 ---
 
@@ -137,21 +155,23 @@ const comparisonFeatures = [
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
         {plans.map((plan) => (
           <div class={`relative ${plan.recommended ? 'md:-mt-4 md:mb-0' : ''}`}>
-            <!-- Badge de recomendado -->
+            <!-- Badge de recomendado / nuevo -->
             {plan.badge && (
               <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 z-20">
-                <span class="bg-gradient-to-r from-violet-600 to-cyan-500 text-white px-4 py-1 rounded-full text-sm font-semibold shadow-lg">
-                  ⭐ {plan.badge}
+                <span class={`px-4 py-1 rounded-full text-sm font-semibold shadow-lg text-white ${plan.isPremium ? 'bg-gradient-to-r from-cyan-600 to-blue-700' : 'bg-gradient-to-r from-violet-600 to-cyan-500'}`}>
+                  {plan.isPremium ? plan.badge : `⭐ ${plan.badge}`}
                 </span>
               </div>
             )}
 
             <!-- Card -->
             <div class={`card-pricing h-full ${plan.bgClass} rounded-3xl shadow-xl border-2 ${
-              plan.recommended ? 'border-cyan-300 shadow-2xl shadow-cyan-200/50 pro-card' : 'border-gray-200'
+              plan.recommended ? 'border-cyan-300 shadow-2xl shadow-cyan-200/50 pro-card' :
+              plan.isPremium   ? 'border-cyan-200 shadow-xl shadow-cyan-100/40' :
+              'border-gray-200'
             } overflow-hidden relative flex flex-col`}>
-              {/* Efecto de brillo animado para Pro */}
-              {plan.recommended && (
+              {/* Efecto de brillo animado para Pro y Premium */}
+              {(plan.recommended || plan.isPremium) && (
                 <div class="shine-effect absolute inset-0 pointer-events-none"></div>
               )}
 
@@ -180,29 +200,54 @@ const comparisonFeatures = [
                       <span class="text-gray-500 text-lg">{plan.period}</span>
                     )}
                   </div>
+                  {plan.priceSub && (
+                    <p class="text-gray-500 text-sm mt-1">{plan.priceSub}</p>
+                  )}
+                  {plan.priceNote && (
+                    <p class="inline-block mt-2 text-xs font-medium text-cyan-700 bg-cyan-100 px-3 py-1 rounded-full">{plan.priceNote}</p>
+                  )}
                 </div>
 
                 {/* Features */}
                 <div class="flex-grow">
-                  <h4 class="font-semibold text-gray-900 mb-3 text-base uppercase tracking-wide">Características:</h4>
-                  <ul class="space-y-2 mb-6">
-                    {plan.features.map((feature) => (
-                      <li class="flex items-start gap-2 text-base text-gray-700">
-                        <span class={`${plan.checkColor} text-lg font-bold`}>✓</span>
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  <h4 class="font-semibold text-gray-900 mb-3 text-base uppercase tracking-wide">Motor IA:</h4>
-                  <ul class="space-y-2">
-                    {plan.motor.map((item) => (
-                      <li class="flex items-start gap-2 text-base text-gray-600">
-                        <span class={`${plan.bulletColor} text-xl font-bold`}>•</span>
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  {plan.featureGroups ? (
+                    <div class="space-y-4">
+                      {plan.featureGroups.map((group) => (
+                        <div>
+                          <h4 class="font-semibold text-gray-900 mb-3 text-base uppercase tracking-wide">{group.label}</h4>
+                          <ul class="space-y-2 pl-1">
+                            {group.items.map((item) => (
+                              <li class="flex items-start gap-2 text-base text-gray-700">
+                                <span class={`${plan.checkColor} text-lg font-bold shrink-0`}>✓</span>
+                                <span>{item}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <>
+                      <h4 class="font-semibold text-gray-900 mb-3 text-base uppercase tracking-wide">Características:</h4>
+                      <ul class="space-y-2 mb-6">
+                        {plan.features.map((feature) => (
+                          <li class="flex items-start gap-2 text-base text-gray-700">
+                            <span class={`${plan.checkColor} text-lg font-bold`}>✓</span>
+                            <span>{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+                      <h4 class="font-semibold text-gray-900 mb-3 text-base uppercase tracking-wide">Motor IA:</h4>
+                      <ul class="space-y-2">
+                        {plan.motor.map((item) => (
+                          <li class="flex items-start gap-2 text-base text-gray-600">
+                            <span class={`${plan.bulletColor} text-xl font-bold`}>•</span>
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </>
+                  )}
                 </div>
 
                 {/* CTA - alineado abajo */}
@@ -211,8 +256,8 @@ const comparisonFeatures = [
                     <a
                       href={plan.ctaLink}
                       class={`block w-full text-center px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
-                        plan.recommended
-                          ? `bg-gradient-to-r ${plan.gradient} text-white hover:shadow-xl hover:scale-105`
+                        plan.recommended || plan.isPremium
+                          ? `bg-gradient-to-r ${plan.gradient} text-white hover:shadow-xl active:shadow-xl hover:scale-105 active:scale-105`
                           : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
                       }`}
                     >
@@ -263,7 +308,7 @@ const comparisonFeatures = [
                   <th class="text-left py-4 px-4 font-semibold text-gray-900 uppercase tracking-wide text-base">Característica</th>
                   <th class="text-center py-4 px-4 font-semibold text-gray-900 uppercase tracking-wide text-base">Básico</th>
                   <th class="text-center py-4 px-4 font-semibold text-violet-700 uppercase tracking-wide text-base">Pro ⭐</th>
-                  <th class="text-center py-4 px-4 font-semibold text-gray-900 uppercase tracking-wide text-base">Premium</th>
+                  <th class="text-center py-4 px-4 font-semibold text-cyan-700 uppercase tracking-wide text-base">Premium 🚀</th>
                 </tr>
               </thead>
               <tbody>

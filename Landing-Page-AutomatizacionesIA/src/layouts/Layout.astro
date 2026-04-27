@@ -7,7 +7,7 @@ interface Props {
 const { title, description = "El asistente inmobiliario con IA que atiende y vende por vos, 24/7. Respondé consultas, mostrá propiedades y capturá leads sin esfuerzo." } = Astro.props;
 
 const siteUrl = 'https://www.automatizacionia.com.ar';
-const ogImage = `${siteUrl}/Logo_AutomatizacionesIA.png`;
+const ogImage = `${siteUrl}/inmobot-logo.jpg`;
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -37,6 +37,7 @@ const jsonLd = {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
+    <meta name="google-site-verification" content="aYw2MrsZQgl3hCzWbyCbH-ibtIUPTfbqKItjWL2CgHw" />
     <link rel="icon" type="image/jpeg" href="/inmobot-logo.jpg" />
     <link rel="canonical" href={siteUrl} />
 
@@ -74,6 +75,7 @@ const jsonLd = {
   @import '../styles/global.css';
 
   html {
+    font-size: 13px;
     font-family: 'Inter', system-ui, sans-serif;
     scroll-behavior: smooth;
   }

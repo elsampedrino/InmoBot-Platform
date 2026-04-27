@@ -56,14 +56,14 @@ const benefits = [
       {benefits.map((benefit) => (
         <div class="group relative">
           <!-- Card con fondo cyan -->
-          <div class="card-benefit h-full bg-gradient-to-br from-white to-cyan-100 rounded-2xl p-8 border border-cyan-200 hover:border-violet-300 hover:shadow-2xl transition-all duration-300 relative overflow-hidden">
+          <div class="card-benefit h-full bg-gradient-to-br from-white to-cyan-100 rounded-2xl p-8 border border-cyan-200 hover:border-violet-300 hover:shadow-2xl active:shadow-2xl transition-all duration-300 relative overflow-hidden">
             <!-- Gradiente de fondo en hover -->
             <div class="absolute inset-0 bg-gradient-to-br from-violet-500 to-cyan-500 opacity-0 group-hover:opacity-5 transition-opacity duration-300"></div>
 
             <!-- Contenido -->
             <div class="relative z-10">
               <!-- Ícono -->
-              <div class="w-16 h-16 bg-gray-900 rounded-2xl flex items-center justify-center mb-4 transform group-hover:scale-110 transition-transform duration-300 text-white">
+              <div class="w-16 h-16 bg-gray-900 rounded-2xl flex items-center justify-center mb-4 transform group-hover:scale-110 group-active:scale-110 transition-transform duration-300 text-white">
                 <Fragment set:html={benefit.icon} />
               </div>
 

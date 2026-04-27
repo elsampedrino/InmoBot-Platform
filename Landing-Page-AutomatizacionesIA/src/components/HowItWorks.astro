@@ -55,14 +55,14 @@ const steps = [
           )}
 
           <!-- Card -->
-          <div class="card-step bg-gradient-to-br from-violet-50 to-cyan-50 rounded-2xl p-6 h-full border border-violet-100 hover:border-violet-300 hover:shadow-xl hover:scale-105 transition-all duration-300">
+          <div class="card-step bg-gradient-to-br from-violet-50 to-cyan-50 rounded-2xl p-6 h-full border border-violet-100 hover:border-violet-300 hover:shadow-xl active:shadow-xl hover:scale-105 active:scale-105 transition-all duration-300">
             <!-- Número -->
             <div class="text-violet-300 text-6xl font-bold mb-2 opacity-50 text-right">
               {step.number}
             </div>
 
             <!-- Ícono -->
-            <div class="w-16 h-16 bg-gray-900 rounded-2xl flex items-center justify-center mb-4 transform group-hover:scale-110 transition-transform duration-300 text-white">
+            <div class="w-16 h-16 bg-gray-900 rounded-2xl flex items-center justify-center mb-4 transform group-hover:scale-110 group-active:scale-110 transition-transform duration-300 text-white">
               <Fragment set:html={step.icon} />
             </div>
 

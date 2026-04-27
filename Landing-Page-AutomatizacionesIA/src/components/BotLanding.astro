@@ -112,9 +112,9 @@ const features = [
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {features.map((feature) => (
           <div class="group relative">
-            <div class="card-feature h-full bg-white rounded-2xl p-8 border border-cyan-200 hover:border-cyan-300 hover:shadow-xl hover:scale-105 transition-all duration-300">
+            <div class="card-feature h-full bg-white rounded-2xl p-8 border border-cyan-200 hover:border-cyan-300 hover:shadow-xl active:shadow-xl hover:scale-105 active:scale-105 transition-all duration-300">
               <!-- Ícono -->
-              <div class={`w-16 h-16 ${feature.iconBg} rounded-2xl flex items-center justify-center mb-4 text-white transform group-hover:scale-110 transition-transform duration-300`}>
+              <div class={`w-16 h-16 ${feature.iconBg} rounded-2xl flex items-center justify-center mb-4 text-white transform group-hover:scale-110 group-active:scale-110 transition-transform duration-300`}>
                 <Fragment set:html={feature.icon} />
               </div>
 
@@ -170,8 +170,8 @@ const features = [
 
             <!-- Autor -->
             <div class="flex items-center justify-center gap-4">
-              <div class="w-12 h-12 bg-gradient-to-br from-violet-600 to-cyan-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
-                C
+              <div class="w-12 h-12 rounded-full overflow-hidden bg-white border border-gray-200 flex items-center justify-center">
+                <img src="https://www.brucellariabienesraices.com.ar/images/logo-bbr.png" alt="BBR - Brucellaria Bienes Raíces" class="w-full h-full object-contain" />
               </div>
               <div class="text-left">
                 <p class="font-semibold text-gray-900">Cristian Brucellaria</p>
