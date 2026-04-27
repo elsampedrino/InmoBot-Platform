@@ -7,6 +7,8 @@ export interface Direccion {
   calle: string;
   barrio: string;
   ciudad: string;
+  lat?: number;
+  lng?: number;
 }
 
 export interface Precio {
@@ -26,11 +28,13 @@ export interface Propiedad {
   id: string;
   tipo: string;
   operacion: string;
-  estado_construccion?: string;
   titulo: string;
+  destacado: boolean;
+  activo: boolean;
   direccion: Direccion;
   precio: Precio;
   descripcion: string;
+  descripcion_corta?: string;
   fotos: string[]; // Transformado de {urls: string[]} a string[]
   caracteristicas: Caracteristicas;
   detalles?: string[];
@@ -40,11 +44,13 @@ interface PropiedadRaw {
   id: string;
   tipo: string;
   operacion: string;
-  estado_construccion?: string;
   titulo: string;
+  destacado: boolean;
+  activo: boolean;
   direccion: Direccion;
   precio: Precio;
   descripcion: string;
+  descripcion_corta?: string;
   fotos: { carpeta: string; urls: string[] };
   caracteristicas: Caracteristicas;
   detalles?: string[];
@@ -74,6 +80,20 @@ export async function getPropiedades(): Promise<Propiedad[]> {
     return cachedPropiedades;
   }
 
+  // En dev: leer desde archivo local para probar features sin pushear (ej: mapa con lat/lng)
+  if (import.meta.env.DEV) {
+    try {
+      const { readFileSync } = await import('node:fs');
+      const { join } = await import('node:path');
+      const jsonPath = join(process.cwd(), '..', 'BBR Grupo Inmobiliario', 'propiedades_bbr.json');
+      const data: JSONResponse = JSON.parse(readFileSync(jsonPath, 'utf-8'));
+      cachedPropiedades = data.propiedades.map(transformarPropiedad);
+      return cachedPropiedades;
+    } catch (e) {
+      console.warn('[DEV] No se pudo leer JSON local, usando GitHub como fallback');
+    }
+  }
+
   try {
     const response = await fetch(GITHUB_JSON_URL);
     if (!response.ok) {
@@ -88,41 +108,39 @@ export async function getPropiedades(): Promise<Propiedad[]> {
   }
 }
 
-// Helpers para filtrar por tipo y operación
+// Solo propiedades activas
+function soloActivas(propiedades: Propiedad[]): Propiedad[] {
+  return propiedades.filter(p => p.activo !== false);
+}
+
+// Helpers para filtrar por tipo y operación (solo activas)
 export async function getCasasVenta(): Promise<Propiedad[]> {
   const propiedades = await getPropiedades();
-  return propiedades.filter(p => p.tipo === 'casa' && p.operacion === 'venta');
+  return soloActivas(propiedades).filter(p => p.tipo === 'casa' && p.operacion === 'venta');
 }
 
 export async function getDepartamentosVenta(): Promise<Propiedad[]> {
   const propiedades = await getPropiedades();
-  return propiedades.filter(p => p.tipo === 'departamento' && p.operacion === 'venta');
+  return soloActivas(propiedades).filter(p => p.tipo === 'departamento' && p.operacion === 'venta');
 }
 
 export async function getLotesVenta(): Promise<Propiedad[]> {
   const propiedades = await getPropiedades();
-  return propiedades.filter(p => p.tipo === 'terreno' && p.operacion === 'venta');
+  return soloActivas(propiedades).filter(p => p.tipo === 'terreno' && p.operacion === 'venta');
 }
 
 export async function getCamposVenta(): Promise<Propiedad[]> {
   const propiedades = await getPropiedades();
-  return propiedades.filter(p => p.tipo === 'campo' && p.operacion === 'venta');
+  return soloActivas(propiedades).filter(p => p.tipo === 'campo' && p.operacion === 'venta');
 }
 
 export async function getAlquileres(): Promise<Propiedad[]> {
   const propiedades = await getPropiedades();
-  return propiedades.filter(p => p.operacion === 'alquiler');
+  return soloActivas(propiedades).filter(p => p.operacion === 'alquiler');
 }
 
-// Propiedades destacadas (las primeras 3 de cada tipo para la sección principal)
+// Propiedades destacadas: usa el campo destacado=true del JSON (máx 6)
 export async function getPropiedadesDestacadas(): Promise<Propiedad[]> {
   const propiedades = await getPropiedades();
-  // Seleccionar algunas propiedades variadas para mostrar
-  const casas = propiedades.filter(p => p.tipo === 'casa' && p.operacion === 'venta').slice(0, 2);
-  const deptos = propiedades.filter(p => p.tipo === 'departamento').slice(0, 1);
-  const lotes = propiedades.filter(p => p.tipo === 'terreno').slice(0, 1);
-  const campos = propiedades.filter(p => p.tipo === 'campo').slice(0, 1);
-  const alquileres = propiedades.filter(p => p.operacion === 'alquiler').slice(0, 1);
-
-  return [...casas, ...deptos, ...lotes, ...campos, ...alquileres].slice(0, 6);
+  return soloActivas(propiedades).filter(p => p.destacado === true).slice(0, 6);
 }

@@ -64,6 +64,7 @@ const jsonLd = {
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content={description} />
+  <meta name="google-site-verification" content="sb_SR-tqGeqDmqUz-QTooYU0pHF3-Px6gUfBT1Spk2E" />
   <link rel="icon" type="image/png" href={empresa.favicon} />
   <link rel="canonical" href={siteUrl} />
 
@@ -91,6 +92,10 @@ const jsonLd = {
   <link href={tema.fuentes.google_fonts_url} rel="stylesheet">
 
   <title>{pageTitle}</title>
+
+  <!-- Leaflet (mapa de ubicación en modal de propiedades) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <!-- Variables CSS dinámicas desde configuración -->
   <style define:vars={{

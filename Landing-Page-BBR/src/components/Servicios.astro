@@ -49,7 +49,7 @@ const iconos: Record<string, string> = {
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       {serviciosConfig.lista.map((servicio, index) => (
         <div
-          class="service-card bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group"
+          class="service-card bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl active:shadow-xl transition-all duration-300 hover:-translate-y-2 active:-translate-y-2 group"
           style={`animation-delay: ${index * 0.1}s;`}
         >
           <div class="service-icon mb-6">
