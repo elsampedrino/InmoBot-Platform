@@ -32,7 +32,7 @@ const iconos: Record<string, string> = {
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
     <div class="mb-16">
-      <span class="font-light text-lg uppercase tracking-wider" style="color: #FFCC33;">
+      <span class="section-label-yellow font-light text-lg uppercase tracking-wider">
         {serviciosConfig.titulo_seccion}
       </span>
       <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-white mt-4 mb-6">
@@ -77,6 +77,24 @@ const iconos: Record<string, string> = {
 </script>
 
 <style is:global>
+  .section-label-yellow {
+    display: inline-block;
+    position: relative;
+    padding-bottom: 10px;
+    color: #FFCC33;
+  }
+
+  .section-label-yellow::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: -100vw;
+    right: 0;
+    height: 2px;
+    background-color: #FFCC33;
+    box-shadow: 0 0 8px rgba(255, 204, 51, 0.7), 0 0 18px rgba(255, 204, 51, 0.35);
+  }
+
   .svc-card {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
