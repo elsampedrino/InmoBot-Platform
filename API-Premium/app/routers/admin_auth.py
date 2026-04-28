@@ -46,6 +46,20 @@ class LoginResponse(BaseModel):
     empresa: EmpresaInfo
 
 
+# ─── Helpers ──────────────────────────────────────────────────────────────────
+
+def _check_panel_cliente(user: UsuarioAdmin) -> None:
+    """Raise 403 PANEL_DISABLED for non-superadmin when panel_cliente service is off."""
+    if user.es_superadmin:
+        return
+    servicios = user.empresa.servicios or {}
+    if not servicios.get("panel_cliente", False):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail={"code": "PANEL_DISABLED", "message": "El panel de cliente no está habilitado para esta empresa."},
+        )
+
+
 # ─── Endpoints ────────────────────────────────────────────────────────────────
 
 @router.post("/login", response_model=LoginResponse)
@@ -62,6 +76,8 @@ async def login(body: LoginRequest, db: AsyncSession = Depends(get_db)):
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Email o contraseña incorrectos.",
         )
+
+    _check_panel_cliente(user)
 
     empresa = user.empresa
     token = create_access_token(user.id_usuario, empresa.slug or "")
@@ -85,6 +101,8 @@ async def login(body: LoginRequest, db: AsyncSession = Depends(get_db)):
 
 @router.get("/me", response_model=LoginResponse)
 async def me(current_user: UsuarioAdmin = Depends(get_current_admin)):
+    _check_panel_cliente(current_user)
+
     empresa = current_user.empresa
     token = create_access_token(current_user.id_usuario, empresa.slug or "")
 
