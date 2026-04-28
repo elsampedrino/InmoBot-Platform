@@ -460,7 +460,7 @@ const ChatWidget = ({ config }) => {
           aria-label="Abrir chat"
           style={{ backgroundColor: primaryColor }}
         >
-          <img src="https://inmobot-widget.vercel.app/inmobot-logo.jpg" alt="InmoBot" className="chat-icon-logo" />
+          <img src="https://inmobot-widget.vercel.app/inmobot-logo.png" alt="InmoBot" className="chat-icon-logo" />
           {unreadCount > 0 && (
             <span className="unread-badge">{unreadCount}</span>
           )}
@@ -474,7 +474,7 @@ const ChatWidget = ({ config }) => {
           <div className="chat-header">
             <div className="chat-header-info">
               <div className="bot-avatar">
-                <img src="https://inmobot-widget.vercel.app/inmobot-logo.jpg" alt="InmoBot" />
+                <img src="https://inmobot-widget.vercel.app/inmobot-logo.png" alt="InmoBot" />
               </div>
               <div className="bot-info">
                 <h3 className="bot-name">{botName}</h3>
@@ -527,7 +527,7 @@ const ChatWidget = ({ config }) => {
               <div className="message bot typing">
                 <div className="typing-container">
                   <img
-                    src="https://inmobot-widget.vercel.app/inmobot-logo.jpg"
+                    src="https://inmobot-widget.vercel.app/inmobot-logo.png"
                     alt="InmoBot"
                     className="typing-avatar"
                   />
