@@ -22,7 +22,7 @@ const empresa = getEmpresa();
   <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-24">
     <h1 class="hero-title text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight animate-fadeIn">
       {hero.titulo_linea1}
-      <span class="block" style="color: #E8A000;">{hero.titulo_linea2}</span>
+      <span class="block" style="color: #FFCC33;">{hero.titulo_linea2}</span>
     </h1>
 
     <p class="text-lg sm:text-xl md:text-2xl text-white/90 max-w-3xl mx-auto mb-10 animate-fadeIn" style="animation-delay: 0.2s;">
@@ -58,7 +58,7 @@ const empresa = getEmpresa();
     <div class="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8 animate-fadeIn" style="animation-delay: 0.6s;">
       {stats.map((stat) => (
         <div class="text-center">
-          <div class="text-4xl md:text-5xl font-bold" style="color: #E8A000;">{stat.valor}</div>
+          <div class="text-4xl md:text-5xl font-bold" style="color: #FFCC33;">{stat.valor}</div>
           <div class="text-white/80 mt-2">{stat.label}</div>
         </div>
       ))}
@@ -111,11 +111,11 @@ const empresa = getEmpresa();
 
   .inmobot-highlight .inmobot-icon,
   .inmobot-highlight .inmobot-value {
-    color: #E8A000 !important;
+    color: #FFCC33 !important;
   }
 
   .inmobot-highlight .inmobot-cta {
-    color: #E8A000;
+    color: #FFCC33;
     transition: color 0.2s;
   }
 
