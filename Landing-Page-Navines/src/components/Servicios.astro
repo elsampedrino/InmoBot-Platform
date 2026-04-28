@@ -28,50 +28,96 @@ const iconos: Record<string, string> = {
 };
 ---
 
-<section id="servicios" class="py-20 bg-nav-gray-light">
+<section id="servicios" class="py-20" style="background-color: #1a1a2e;">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
     <div class="mb-16">
-      <span class="section-label text-nav-red font-light text-lg uppercase tracking-wider">
+      <span class="font-light text-lg uppercase tracking-wider" style="color: #FFCC33;">
         {serviciosConfig.titulo_seccion}
       </span>
-      <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-nav-dark mt-4 mb-6">
+      <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-white mt-4 mb-6">
         {serviciosConfig.subtitulo}
       </h2>
-      <p class="text-lg text-nav-gray max-w-2xl">
+      <p class="text-lg max-w-2xl" style="color: rgba(255,255,255,0.55);">
         {serviciosConfig.descripcion}
       </p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {serviciosConfig.lista.map((servicio, index) => (
-        <div
-          class="service-card-nav bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl active:shadow-xl transition-all duration-300 hover:-translate-y-2 active:-translate-y-2 group"
-          style={`animation-delay: ${index * 0.1}s;`}
-        >
-          <div class="service-icon-nav mb-6">
+    <div id="servicios-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {serviciosConfig.lista.map((servicio) => (
+        <div class="svc-card group">
+          <div class="svc-icon mb-6">
             <Fragment set:html={iconos[servicio.icono] || iconos.key} />
           </div>
-          <h3 class="text-xl font-bold text-nav-dark mb-4">{servicio.titulo}</h3>
-          <p class="text-nav-gray leading-relaxed">{servicio.descripcion}</p>
+          <h3 class="text-xl font-bold text-white mb-4">{servicio.titulo}</h3>
+          <p class="leading-relaxed" style="color: rgba(255,255,255,0.55);">{servicio.descripcion}</p>
         </div>
       ))}
     </div>
+
   </div>
 </section>
 
+<script>
+  const grid = document.getElementById('servicios-grid');
+  if (grid) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const cards = grid.querySelectorAll<HTMLElement>('.svc-card');
+          cards.forEach((card, i) => {
+            setTimeout(() => card.classList.add('svc-visible'), i * 110);
+          });
+          observer.unobserve(grid);
+        }
+      });
+    }, { threshold: 0.1 });
+    observer.observe(grid);
+  }
+</script>
+
 <style is:global>
-  .service-card-nav {
-    border-left: 4px solid var(--color-nav-red);
-    border-bottom: 4px solid var(--color-nav-red);
+  .svc-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    padding: 2rem;
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+      opacity 0.45s ease,
+      transform 0.35s ease,
+      box-shadow 0.25s ease,
+      border-color 0.25s ease,
+      background 0.25s ease;
   }
 
-  .service-icon-nav {
-    color: var(--color-nav-red);
-    transition: all 0.3s ease;
+  .svc-card.svc-visible {
+    opacity: 1;
+    transform: translateY(0);
   }
 
-  .service-card-nav:hover .service-icon-nav {
-    color: var(--color-nav-dark);
-    transform: scale(1.15);
+  .svc-card.svc-visible:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.09);
+    border-color: rgba(255, 204, 51, 0.35);
+    box-shadow: 0 8px 32px rgba(255, 204, 51, 0.12);
+  }
+
+  .svc-icon {
+    color: #FFCC33;
+    display: inline-block;
+    transition: transform 0.3s ease;
+  }
+
+  .svc-card.svc-visible:hover .svc-icon {
+    animation: svc-bounce 0.45s ease;
+  }
+
+  @keyframes svc-bounce {
+    0%   { transform: scale(1)    translateY(0); }
+    40%  { transform: scale(1.2)  translateY(-5px); }
+    70%  { transform: scale(1.05) translateY(-2px); }
+    100% { transform: scale(1)    translateY(0); }
   }
 </style>
