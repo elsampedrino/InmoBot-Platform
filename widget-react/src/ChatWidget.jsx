@@ -458,6 +458,7 @@ const ChatWidget = ({ config }) => {
           onMouseDown={(e) => e.preventDefault()}
           tabIndex="-1"
           aria-label="Abrir chat"
+          style={{ backgroundColor: primaryColor }}
         >
           <img src="https://inmobot-widget.vercel.app/inmobot-logo.jpg" alt="InmoBot" className="chat-icon-logo" />
           {unreadCount > 0 && (
