@@ -1,0 +1,201 @@
+---
+import '../styles/global.css';
+import { getEmpresa, getContacto, getRedesSociales, getWidgetBot, getTema, getColores } from '../lib/config';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const empresa = getEmpresa();
+const contacto = getContacto();
+const redes = getRedesSociales();
+const widgetBot = getWidgetBot();
+const tema = getTema();
+const colores = getColores();
+
+const { title, description = empresa.descripcion_meta } = Astro.props;
+const pageTitle = `${title} | ${empresa.nombre}`;
+const siteUrl = 'https://navines-landing-page.vercel.app';
+const ogImage = empresa.logo;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "RealEstateAgent",
+  "name": empresa.nombre,
+  "description": description,
+  "url": siteUrl,
+  "logo": ogImage,
+  "image": ogImage,
+  "telephone": contacto.telefono.link,
+  "email": contacto.email,
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Av. 3 de Febrero 329",
+    "addressLocality": "San Pedro",
+    "addressRegion": "Buenos Aires",
+    "addressCountry": "AR"
+  },
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      "opens": "09:00",
+      "closes": "18:00"
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": "Saturday",
+      "opens": "09:00",
+      "closes": "13:00"
+    }
+  ]
+};
+---
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content={description} />
+  <link rel="icon" type="image/png" href={empresa.favicon} />
+  <link rel="canonical" href={siteUrl} />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content={pageTitle} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={ogImage} />
+  <meta property="og:url" content={siteUrl} />
+  <meta property="og:locale" content="es_AR" />
+  <meta property="og:site_name" content={empresa.nombre} />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={pageTitle} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImage} />
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href={tema.fuentes.google_fonts_url} rel="stylesheet">
+
+  <title>{pageTitle}</title>
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- CSS variables from config -->
+  <style define:vars={{
+    colorPrimario: colores.primario,
+    colorPrimarioOscuro: colores.primario_oscuro,
+    colorPrimarioClaro: colores.primario_claro,
+    colorSecundario: colores.secundario,
+    colorSecundarioClaro: colores.secundario_claro,
+    colorAmarillo: colores.amarillo,
+    colorAmarilloOscuro: colores.amarillo_oscuro,
+    colorGrisOscuro: colores.gris_oscuro,
+    colorGris: colores.gris,
+    colorGrisClaro: colores.gris_claro,
+    colorBlanco: colores.blanco,
+    colorOffWhite: colores.off_white,
+    fuentePrincipal: `'${tema.fuentes.principal}', ${tema.fuentes.fallback}`,
+    fontSizeDesktop: tema.fuentes.tamaño_base.desktop,
+    fontSizeTablet: tema.fuentes.tamaño_base.tablet,
+    fontSizeMobile: tema.fuentes.tamaño_base.mobile
+  }}>
+    :root {
+      --color-nav-red: var(--colorPrimario);
+      --color-nav-red-dark: var(--colorPrimarioOscuro);
+      --color-nav-red-light: var(--colorPrimarioClaro);
+      --color-nav-dark: var(--colorSecundario);
+      --color-nav-dark-light: var(--colorSecundarioClaro);
+      --color-nav-yellow: var(--colorAmarillo);
+      --color-nav-yellow-dark: var(--colorAmarilloOscuro);
+      --color-nav-gray-dark: var(--colorGrisOscuro);
+      --color-nav-gray: var(--colorGris);
+      --color-nav-gray-light: var(--colorGrisClaro);
+      --color-nav-white: var(--colorBlanco);
+      --color-nav-off-white: var(--colorOffWhite);
+      --font-sans: var(--fuentePrincipal);
+    }
+
+    html { font-size: var(--fontSizeDesktop); }
+    @media (max-width: 1024px) { html { font-size: var(--fontSizeTablet); } }
+    @media (max-width: 768px) { html { font-size: var(--fontSizeMobile); } }
+  </style>
+</head>
+<body class="bg-white">
+  <slot />
+
+  <!-- InmoBot Widget -->
+  {widgetBot.habilitado && (
+    <>
+      <script src="https://inmobot-widget.vercel.app/inmobot-widget.iife.js"></script>
+      <link rel="stylesheet" href="https://inmobot-widget.vercel.app/inmobot-widget.css" />
+    </>
+  )}
+
+  <script define:vars={{ widgetBot, colores }}>
+    document.addEventListener('DOMContentLoaded', function() {
+      if (widgetBot.habilitado && window.InmoBot) {
+        window.InmoBot.init({
+          apiUrl: widgetBot.apiUrl,
+          contactUrl: widgetBot.contactUrl,
+          repo: widgetBot.repo,
+          primaryColor: colores.primario,
+          botName: widgetBot.nombre,
+          welcomeMessage: widgetBot.mensaje_bienvenida,
+          placeholderText: widgetBot.placeholder,
+          position: widgetBot.posicion,
+          buttonSize: widgetBot.tamaño_boton,
+          chatWidth: widgetBot.ancho_chat,
+          chatHeight: widgetBot.alto_chat
+        });
+      }
+    });
+  </script>
+
+  <!-- Scroll fix when navigating anchors with modal active -->
+  <script>
+    document.addEventListener('click', function(e) {
+      const target = e.target.closest('a[href^="#"]');
+      if (target) {
+        const modal = document.getElementById('property-modal');
+        if (!modal || !modal.classList.contains('active')) {
+          document.body.style.overflow = '';
+        }
+      }
+    });
+
+    document.addEventListener('wheel', function() {
+      const modal = document.getElementById('property-modal');
+      if (!modal || !modal.classList.contains('active')) {
+        if (document.body.style.overflow === 'hidden') document.body.style.overflow = '';
+      }
+    }, { passive: true });
+
+    document.addEventListener('touchmove', function() {
+      const modal = document.getElementById('property-modal');
+      if (!modal || !modal.classList.contains('active')) {
+        if (document.body.style.overflow === 'hidden') document.body.style.overflow = '';
+      }
+    }, { passive: true });
+  </script>
+
+  <style>
+    .chat-widget-container.bottom-right { bottom: 140px !important; }
+    .chat-widget-button {
+      width: 80px !important;
+      height: 80px !important;
+      box-shadow: 0 6px 25px rgba(204, 16, 16, 0.5) !important;
+    }
+  </style>
+</body>
+</html>

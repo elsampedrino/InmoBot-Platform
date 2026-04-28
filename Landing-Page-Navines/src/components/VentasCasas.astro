@@ -1,0 +1,462 @@
+---
+import { getCasasVenta } from '../lib/propiedades';
+
+const casasVenta = await getCasasVenta();
+
+const formatPrecio = (precio: {valor: number, moneda: string}) => {
+  if (!precio.valor) return 'Consultar';
+  return `${precio.moneda} ${precio.valor.toLocaleString('es-AR')}`;
+};
+---
+
+<section id="ventas-casas" class="py-20 bg-nav-off-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="mb-16">
+      <span class="section-label text-nav-red font-light text-lg uppercase tracking-wider">
+        Ventas
+      </span>
+      <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-nav-dark mt-4 mb-6">
+        Casas en Venta
+      </h2>
+      <p class="text-lg text-nav-gray max-w-2xl">
+        Descubrí nuestra selección de casas en las mejores zonas de San Pedro y alrededores.
+      </p>
+    </div>
+
+    {casasVenta.length === 0 ? (
+      <div class="text-center py-12">
+        <p class="text-nav-gray text-lg">No hay casas en venta disponibles en este momento.</p>
+      </div>
+    ) : (
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {casasVenta.map((propiedad) => (
+          <article class="property-card group" data-property-id={propiedad.id}>
+            <div class="relative aspect-[4/3] overflow-hidden">
+              <img
+                src={propiedad.fotos[0]}
+                alt={propiedad.titulo}
+                class="w-full h-full object-cover group-hover:scale-110 group-active:scale-110 transition-transform duration-500"
+                loading="lazy"
+              />
+              <span class="property-badge badge-venta-nav">Venta</span>
+              <div class="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm px-4 py-2 rounded-lg">
+                <span class="text-lg font-bold text-nav-dark">{formatPrecio(propiedad.precio)}</span>
+              </div>
+            </div>
+            <div class="p-6">
+              <h3 class="property-title-nav">{propiedad.titulo}</h3>
+              <p class="text-nav-gray flex items-center gap-2 mb-4">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+                {propiedad.direccion.calle ? `${propiedad.direccion.calle}, ` : ''}{propiedad.direccion.ciudad}
+              </p>
+              {propiedad.descripcion_corta && (
+                <p class="text-nav-gray text-sm mb-4 line-clamp-2">{propiedad.descripcion_corta}</p>
+              )}
+              <div class="flex items-center gap-4 pt-4 border-t border-gray-100">
+                {propiedad.caracteristicas.dormitorios && (
+                  <div class="flex items-center gap-1 text-sm text-nav-gray">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v11a1 1 0 001 1h16a1 1 0 001-1V7M3 7l9-4 9 4M12 22V11"/>
+                    </svg>
+                    <span>{propiedad.caracteristicas.dormitorios} dorm.</span>
+                  </div>
+                )}
+                {propiedad.caracteristicas.banios && (
+                  <div class="flex items-center gap-1 text-sm text-nav-gray">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"/>
+                    </svg>
+                    <span>{propiedad.caracteristicas.banios} baño{propiedad.caracteristicas.banios > 1 ? 's' : ''}</span>
+                  </div>
+                )}
+                {propiedad.caracteristicas.superficie_total && (
+                  <div class="flex items-center gap-1 text-sm text-nav-gray">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
+                    </svg>
+                    <span>{propiedad.caracteristicas.superficie_total}</span>
+                  </div>
+                )}
+                <button
+                  class="property-link-nav ver-detalle-btn"
+                  data-property={JSON.stringify(propiedad)}
+                >
+                  <span>Ver más</span>
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    )}
+  </div>
+</section>
+
+<!-- Modal de detalle de propiedad -->
+<div id="property-modal" class="property-modal">
+  <div class="property-modal-overlay"></div>
+  <div class="property-modal-content">
+    <button class="property-modal-close">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+    </button>
+
+    <div class="property-modal-body">
+      <div class="property-modal-gallery">
+        <div class="property-modal-main-image">
+          <img id="modal-main-image" src="" alt="Propiedad" />
+        </div>
+        <div id="modal-thumbnails" class="property-modal-thumbnails"></div>
+      </div>
+
+      <div class="property-modal-info">
+        <div class="property-modal-badge-nav">Venta</div>
+        <h2 id="modal-titulo" class="text-2xl font-bold text-nav-dark mb-2"></h2>
+        <p id="modal-direccion" class="text-nav-gray flex items-center gap-2 mb-4">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+          </svg>
+          <span></span>
+        </p>
+
+        <div id="modal-precio" class="text-3xl font-bold text-nav-red mb-6"></div>
+
+        <p id="modal-descripcion" class="text-nav-gray mb-6"></p>
+
+        <div class="mb-6">
+          <h3 class="font-semibold text-nav-dark mb-3">Características</h3>
+          <div id="modal-caracteristicas" class="grid grid-cols-2 gap-3"></div>
+        </div>
+
+        <div id="modal-detalles-container" class="mb-6">
+          <h3 class="font-semibold text-nav-dark mb-3">Detalles</h3>
+          <div id="modal-detalles" class="flex flex-wrap gap-2"></div>
+        </div>
+
+        <div id="modal-mapa-container" class="mb-6" style="display:none">
+          <h3 class="font-semibold text-nav-dark mb-3">Ubicación</h3>
+          <div id="modal-mapa" style="height:200px; border-radius:0.5rem; overflow:hidden; z-index:1;"></div>
+        </div>
+
+        <a href="#contacto" class="btn-consultar-nav" onclick="document.getElementById('property-modal').classList.remove('active')">
+          Consultar por esta propiedad
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .property-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .property-modal.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .property-modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(4px);
+  }
+
+  .property-modal-content {
+    position: relative;
+    background: white;
+    border-radius: 1rem;
+    max-width: 1000px;
+    width: calc(100% - 2rem);
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+    transform: scale(0.9) translateY(20px);
+    transition: transform 0.3s ease;
+  }
+
+  .property-modal.active .property-modal-content {
+    transform: scale(1) translateY(0);
+  }
+
+  .property-modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 10;
+    background: white;
+    border-radius: 50%;
+    padding: 0.5rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    transition: all 0.2s;
+  }
+
+  .property-modal-close:hover {
+    background: #f3f4f6;
+    transform: scale(1.1);
+  }
+
+  .property-modal-body {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 768px) {
+    .property-modal-body { grid-template-columns: 1fr 1fr; }
+  }
+
+  .property-modal-gallery {
+    background: #f3f4f6;
+    padding: 1rem;
+  }
+
+  .property-modal-main-image {
+    aspect-ratio: 4/3;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    margin-bottom: 0.75rem;
+  }
+
+  .property-modal-main-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .property-modal-thumbnails {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+  }
+
+  .property-modal-thumbnail {
+    aspect-ratio: 4/3;
+    border-radius: 0.375rem;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.2s;
+  }
+
+  .property-modal-thumbnail:hover,
+  .property-modal-thumbnail.active {
+    border-color: #CC1010;
+  }
+
+  .property-modal-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .property-modal-info { padding: 1.5rem; }
+
+  .property-modal-badge-nav {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: white;
+    background-color: #CC1010;
+    margin-bottom: 0.75rem;
+  }
+
+  .caracteristica-item-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    background: #f9fafb;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    color: #4b5563;
+  }
+
+  .caracteristica-item-nav svg {
+    width: 20px !important;
+    height: 20px !important;
+    min-width: 20px;
+    flex-shrink: 0;
+    color: #CC1010;
+  }
+
+  .detalle-tag-nav {
+    display: inline-block;
+    padding: 0.375rem 0.75rem;
+    background: #fde8e8;
+    color: #a80d0d;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  .btn-consultar-nav {
+    display: block;
+    width: 100%;
+    text-align: center;
+    background-color: #CC1010;
+    color: white;
+    padding: 0.875rem 1.5rem;
+    border-radius: 9999px;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+  }
+
+  .btn-consultar-nav:hover {
+    background-color: #a80d0d;
+    box-shadow: 0 8px 20px rgba(204,16,16,0.4);
+    transform: translateY(-2px);
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('property-modal');
+    const overlay = modal?.querySelector('.property-modal-overlay');
+    const closeBtn = modal?.querySelector('.property-modal-close');
+    const verDetalleBtns = document.querySelectorAll('.ver-detalle-btn');
+    let mapaInstance: any = null;
+
+    verDetalleBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const propertyData = JSON.parse((btn as HTMLElement).dataset.property || '{}');
+        openModal(propertyData);
+      });
+    });
+
+    closeBtn?.addEventListener('click', () => closeModal());
+    overlay?.addEventListener('click', () => closeModal());
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal?.classList.contains('active')) closeModal();
+    });
+
+    function openModal(property: any) {
+      if (!modal) return;
+
+      const tituloEl = document.getElementById('modal-titulo');
+      const direccionEl = document.getElementById('modal-direccion')?.querySelector('span');
+      if (tituloEl) tituloEl.textContent = property.titulo;
+      if (direccionEl) {
+        const calle = property.direccion.calle ? `${property.direccion.calle}, ` : '';
+        direccionEl.textContent = `${calle}${property.direccion.ciudad}`;
+      }
+
+      const precioEl = document.getElementById('modal-precio');
+      if (precioEl) precioEl.textContent = property.precio.valor
+        ? `${property.precio.moneda} ${property.precio.valor.toLocaleString('es-AR')}`
+        : 'Consultar';
+
+      const descEl = document.getElementById('modal-descripcion');
+      if (descEl) descEl.textContent = property.descripcion || property.descripcion_corta || '';
+
+      const mainImage = document.getElementById('modal-main-image') as HTMLImageElement;
+      if (mainImage && property.fotos?.[0]) mainImage.src = property.fotos[0];
+
+      const thumbsContainer = document.getElementById('modal-thumbnails');
+      if (thumbsContainer && property.fotos?.length) {
+        thumbsContainer.innerHTML = property.fotos.map((foto: string, index: number) => `
+          <div class="property-modal-thumbnail ${index === 0 ? 'active' : ''}" data-src="${foto}">
+            <img src="${foto}" alt="Foto ${index + 1}" />
+          </div>
+        `).join('');
+
+        thumbsContainer.querySelectorAll('.property-modal-thumbnail').forEach(thumb => {
+          thumb.addEventListener('click', () => {
+            const src = (thumb as HTMLElement).dataset.src;
+            if (mainImage && src) mainImage.src = src;
+            thumbsContainer.querySelectorAll('.property-modal-thumbnail').forEach(t => t.classList.remove('active'));
+            thumb.classList.add('active');
+          });
+        });
+      }
+
+      const caracContainer = document.getElementById('modal-caracteristicas');
+      if (caracContainer) {
+        const carac = property.caracteristicas;
+        let html = '';
+        if (carac.ambientes) html += `<div class="caracteristica-item-nav"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg><span>${carac.ambientes} ambientes</span></div>`;
+        if (carac.dormitorios) html += `<div class="caracteristica-item-nav"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v11a1 1 0 001 1h16a1 1 0 001-1V7M3 7l9-4 9 4M12 22V11"/></svg><span>${carac.dormitorios} dormitorio${carac.dormitorios > 1 ? 's' : ''}</span></div>`;
+        if (carac.banios) html += `<div class="caracteristica-item-nav"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"/></svg><span>${carac.banios} baño${carac.banios > 1 ? 's' : ''}</span></div>`;
+        if (carac.superficie_total) html += `<div class="caracteristica-item-nav"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg><span>${carac.superficie_total} totales</span></div>`;
+        if (carac.superficie_cubierta) html += `<div class="caracteristica-item-nav"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg><span>${carac.superficie_cubierta} cubiertos</span></div>`;
+        caracContainer.innerHTML = html;
+      }
+
+      const detallesContainer = document.getElementById('modal-detalles');
+      const detallesWrapper = document.getElementById('modal-detalles-container');
+      if (detallesContainer && detallesWrapper) {
+        if (property.detalles && property.detalles.length > 0) {
+          detallesWrapper.style.display = 'block';
+          detallesContainer.innerHTML = property.detalles.map((d: string) =>
+            `<span class="detalle-tag-nav">${d.charAt(0).toUpperCase() + d.slice(1)}</span>`
+          ).join('');
+        } else {
+          detallesWrapper.style.display = 'none';
+        }
+      }
+
+      const mapaContainer = document.getElementById('modal-mapa-container');
+      const mapaDiv = document.getElementById('modal-mapa');
+      const lat = property.direccion?.lat;
+      const lng = property.direccion?.lng;
+
+      if (lat && lng && mapaContainer && mapaDiv) {
+        mapaContainer.style.display = 'block';
+        setTimeout(() => {
+          if (mapaInstance) {
+            mapaInstance.remove();
+            mapaInstance = null;
+            mapaDiv.innerHTML = '';
+          }
+          const map = (window as any).L.map(mapaDiv, { zoomControl: true }).setView([lat, lng], 16);
+          mapaInstance = map;
+          (window as any).L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+            maxZoom: 19
+          }).addTo(map);
+          const icon = (window as any).L.icon({
+            iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+            iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+            shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+            iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34]
+          });
+          (window as any).L.marker([lat, lng], { icon })
+            .addTo(map)
+            .bindPopup(`<b>${property.titulo}</b><br>${property.direccion.calle || property.direccion.ciudad}`)
+            .openPopup();
+          map.invalidateSize();
+        }, 300);
+      } else if (mapaContainer) {
+        mapaContainer.style.display = 'none';
+      }
+
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      modal?.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  });
+</script>

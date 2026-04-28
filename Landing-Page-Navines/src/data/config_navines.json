@@ -1,0 +1,213 @@
+{
+  "empresa": {
+    "nombre": "Navines Inmobiliaria",
+    "nombre_corto": "Navines",
+    "slogan": "Encontrá tu lugar ideal",
+    "logo": "https://navinesinmob.com.ar/imagenes/logon1.png",
+    "favicon": "https://navinesinmob.com.ar/imagenes/logon1.png",
+    "descripcion_meta": "Navines Inmobiliaria - Encontrá tu lugar ideal. Compra y venta de casas y terrenos en San Pedro, Buenos Aires."
+  },
+
+  "hero": {
+    "titulo_linea1": "Tu lugar ideal",
+    "titulo_linea2": "te está esperando",
+    "subtitulo": "En Navines Inmobiliaria te acompañamos en cada paso para encontrar la propiedad perfecta en San Pedro y la zona.",
+    "imagen_fondo": "https://images.unsplash.com/photo-1570129477492-45c003edd2be?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80",
+    "cta_principal": {
+      "texto": "Ver Propiedades",
+      "link": "#propiedades"
+    },
+    "cta_secundario": {
+      "texto": "Contactanos",
+      "link": "#contacto"
+    }
+  },
+
+  "stats": [
+    {
+      "valor": "+200",
+      "label": "Propiedades publicadas"
+    },
+    {
+      "valor": "+10",
+      "label": "Años de trayectoria"
+    },
+    {
+      "valor": "+150",
+      "label": "Familias asesoradas"
+    }
+  ],
+
+  "quienes_somos": {
+    "titulo_seccion": "Quiénes Somos",
+    "subtitulo": "Navines Inmobiliaria San Pedro",
+    "parrafos": [
+      "Somos una inmobiliaria con amplia trayectoria en San Pedro y la zona norte de la provincia de Buenos Aires, especializada en la compra y venta de casas y terrenos. Nuestro equipo está comprometido a brindar un servicio personalizado y de confianza.",
+      "Creemos que cada operación inmobiliaria es única y merece atención especial. Por eso acompañamos a nuestros clientes en cada etapa del proceso, desde la búsqueda hasta la escrituración, con dedicación y profesionalismo."
+    ],
+    "imagen": "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+    "años_experiencia": "+10",
+    "valores": [
+      {
+        "titulo": "Confianza",
+        "descripcion": "Transparencia en cada operación",
+        "icono": "check"
+      },
+      {
+        "titulo": "Dedicación",
+        "descripcion": "Atención personalizada 100%",
+        "icono": "heart"
+      },
+      {
+        "titulo": "Conocimiento",
+        "descripcion": "Especialistas en San Pedro y zona",
+        "icono": "flask"
+      },
+      {
+        "titulo": "Resultados",
+        "descripcion": "Tu satisfacción es nuestra meta",
+        "icono": "lightning"
+      }
+    ]
+  },
+
+  "servicios": {
+    "titulo_seccion": "Nuestros Servicios",
+    "subtitulo": "¿Qué podemos hacer por vos?",
+    "descripcion": "Ofrecemos una amplia gama de servicios inmobiliarios para acompañarte en cada etapa de tu proyecto.",
+    "lista": [
+      {
+        "titulo": "Compra de Casas",
+        "descripcion": "Te ayudamos a encontrar la casa ideal según tus necesidades y presupuesto. Acompañamiento integral en todo el proceso de compra.",
+        "icono": "home"
+      },
+      {
+        "titulo": "Venta de Propiedades",
+        "descripcion": "Maximizamos el valor de tu propiedad con estrategias de marketing efectivas y una amplia red de contactos en la zona.",
+        "icono": "money"
+      },
+      {
+        "titulo": "Lotes y Terrenos",
+        "descripcion": "Amplio catálogo de terrenos en San Pedro y alrededores. Ideales para construir tu casa o invertir en proyectos.",
+        "icono": "building"
+      },
+      {
+        "titulo": "Tasaciones",
+        "descripcion": "Realizamos tasaciones profesionales y precisas para que conozcas el valor real de tu propiedad en el mercado actual.",
+        "icono": "calculator"
+      },
+      {
+        "titulo": "Asesoramiento Integral",
+        "descripcion": "Brindamos asesoramiento legal, financiero e impositivo para que tomes las mejores decisiones inmobiliarias.",
+        "icono": "users"
+      },
+      {
+        "titulo": "Financiación",
+        "descripcion": "Contamos con opciones de financiación directa en propiedades seleccionadas para que tu operación sea más accesible.",
+        "icono": "document"
+      }
+    ]
+  },
+
+  "contacto": {
+    "titulo_seccion": "Contacto",
+    "subtitulo": "¿Tenés alguna consulta?",
+    "descripcion": "Estamos para ayudarte. Contactanos por cualquiera de estos medios o completá el formulario y te responderemos a la brevedad.",
+    "telefono": {
+      "display": "03329-424196",
+      "link": "+543329424196"
+    },
+    "whatsapp": {
+      "numero": "543329470007",
+      "mensaje_inicial": "Hola! Me gustaría consultar sobre propiedades"
+    },
+    "email": "info@navinesinmob.com.ar",
+    "direccion": "Av. 3 de Febrero 329, San Pedro (Bs. As.)",
+    "horarios": {
+      "semana": "Lunes a Viernes: 9:00 - 18:00",
+      "sabado": "Sábados: 9:00 - 13:00"
+    },
+    "formulario": {
+      "titulo": "Envianos tu consulta",
+      "asunto_email": "Nueva consulta desde la web Navines",
+      "webhook_url": "https://n8n-bot-inmobiliario.onrender.com/webhook/formulario-contacto",
+      "origen": "Navines"
+    }
+  },
+
+  "redes_sociales": {
+    "web_comercial": "https://navinesinmob.com.ar"
+  },
+
+  "footer": {
+    "descripcion": "Encontrá tu lugar ideal con nosotros. Más de 10 años acompañando a familias en San Pedro y la zona norte bonaerense.",
+    "desarrollado_por": {
+      "nombre": "AutomatizacionIA",
+      "link": "https://www.automatizacionia.com.ar"
+    }
+  },
+
+  "widget_bot": {
+    "habilitado": true,
+    "apiUrl": "https://api-premium-hyha.onrender.com/webhook/navines-inmob/chat",
+    "contactUrl": "https://n8n-bot-inmobiliario.onrender.com/webhook/contact",
+    "repo": "navines",
+    "nombre": "Navines Asistente",
+    "mensaje_bienvenida": "¡Hola! Soy el asistente virtual de Navines Inmobiliaria. ¿En qué puedo ayudarte?",
+    "placeholder": "Busco una casa o terreno...",
+    "posicion": "bottom-right",
+    "tamaño_boton": "80px",
+    "ancho_chat": "500px",
+    "alto_chat": "600px",
+    "mostrar_badge_innovacion": true,
+    "texto_badge": "INNOVACIÓN",
+    "texto_destacado": "24/7",
+    "subtexto_destacado": "Asistente Virtual Inteligente",
+    "descripcion_destacado": "Consultá propiedades en cualquier momento"
+  },
+
+  "tema": {
+    "colores": {
+      "primario": "#CC1010",
+      "primario_oscuro": "#a80d0d",
+      "primario_claro": "#e03535",
+      "secundario": "#1a1a2e",
+      "secundario_claro": "#2d2d45",
+      "amarillo": "#E8A000",
+      "amarillo_oscuro": "#c98b00",
+      "gris_oscuro": "#2d3748",
+      "gris": "#4a5568",
+      "gris_claro": "#718096",
+      "fondo_gris": "#f0f0f0",
+      "fondo_gris_logo": "#1a1a2e",
+      "blanco": "#ffffff",
+      "off_white": "#f9f7f7"
+    },
+    "fuentes": {
+      "principal": "Space Grotesk",
+      "fallback": "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+      "tamaño_base": {
+        "desktop": "13px",
+        "tablet": "13px",
+        "mobile": "14px"
+      },
+      "google_fonts_url": "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+    }
+  },
+
+  "navegacion": {
+    "items": [
+      { "label": "Inicio", "href": "#inicio" },
+      { "label": "Servicios", "href": "#servicios" },
+      {
+        "label": "Ventas",
+        "submenu": [
+          { "label": "Casas", "href": "#ventas-casas" },
+          { "label": "Lotes y Terrenos", "href": "#ventas-lotes" }
+        ]
+      },
+      { "label": "Quiénes Somos", "href": "#nosotros" },
+      { "label": "Contacto", "href": "#contacto" }
+    ]
+  }
+}

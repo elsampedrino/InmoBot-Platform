@@ -1,0 +1,28 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import Servicios from '../components/Servicios.astro';
+import QuienesSomos from '../components/QuienesSomos.astro';
+import Propiedades from '../components/Propiedades.astro';
+import VentasCasas from '../components/VentasCasas.astro';
+import VentasLotes from '../components/VentasLotes.astro';
+import Contacto from '../components/Contacto.astro';
+import Footer from '../components/Footer.astro';
+import FloatingButtons from '../components/FloatingButtons.astro';
+---
+
+<Layout title="Inicio" description="Navines Inmobiliaria - Encontrá tu lugar ideal. Compra y venta de casas y terrenos en San Pedro, Buenos Aires.">
+  <Header />
+  <main>
+    <Hero />
+    <Servicios />
+    <Propiedades />
+    <VentasCasas />
+    <VentasLotes />
+    <QuienesSomos />
+    <Contacto />
+  </main>
+  <Footer />
+  <FloatingButtons />
+</Layout>
