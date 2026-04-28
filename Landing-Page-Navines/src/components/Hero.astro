@@ -117,10 +117,17 @@ const empresa = getEmpresa();
   .inmobot-highlight .inmobot-cta {
     color: #FFCC33;
     transition: color 0.2s;
+    animation: pulse-cta 2s ease-in-out infinite;
   }
 
   .inmobot-highlight .inmobot-cta:hover {
     color: white;
+    animation: none;
+  }
+
+  @keyframes pulse-cta {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.75; transform: scale(1.06); }
   }
 
   .innovation-badge {
