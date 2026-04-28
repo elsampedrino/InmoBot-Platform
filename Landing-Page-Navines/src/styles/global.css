@@ -89,6 +89,7 @@ body {
   right: 0;
   height: 2px;
   background-color: #CC1010;
+  box-shadow: 0 0 8px rgba(204, 16, 16, 0.7), 0 0 18px rgba(204, 16, 16, 0.35);
 }
 
 .focus-nav:focus {
