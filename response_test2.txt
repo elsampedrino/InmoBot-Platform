@@ -1,8 +1,0 @@
-¡Hola! ¿Qué tipo de propiedad buscás?
-
-🏢 Departamento
-🏠 Casa
-🏪 Local comercial
-🏞️ Terreno
-
-¿Para alquilar o comprar?
