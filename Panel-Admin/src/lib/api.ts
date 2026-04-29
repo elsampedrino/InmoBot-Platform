@@ -32,9 +32,27 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
     throw new ApiError(401, body.detail ?? "Credenciales inválidas");
   }
 
+  if (res.status === 403) {
+    const body = await res.json().catch(() => ({}));
+    const detail = body.detail ?? {};
+    const code = typeof detail === "object" ? detail.code : null;
+    const message = typeof detail === "object"
+      ? (detail.message ?? "Acceso denegado")
+      : (detail ?? "Acceso denegado");
+    if (code === "PANEL_DISABLED" && getToken()) {
+      clearSession();
+      window.location.href = "/login?razon=panel_deshabilitado";
+    }
+    throw new ApiError(403, message);
+  }
+
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
-    throw new ApiError(res.status, body.detail ?? "Error inesperado");
+    const detail = body.detail;
+    const message = typeof detail === "object" && detail !== null
+      ? (detail.message ?? "Error inesperado")
+      : (detail ?? "Error inesperado");
+    throw new ApiError(res.status, message);
   }
 
   if (res.status === 204 || res.headers.get("content-length") === "0") {

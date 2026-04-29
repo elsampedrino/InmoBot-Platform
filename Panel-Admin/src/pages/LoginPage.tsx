@@ -1,18 +1,28 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { api, ApiError } from "../lib/api";
 import { saveSession, type AuthSession } from "../lib/auth";
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const [email, setEmail]       = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError]       = useState<string | null>(null);
-  const [loading, setLoading]   = useState(false);
+  const [searchParams] = useSearchParams();
+  const [email, setEmail]         = useState("");
+  const [password, setPassword]   = useState("");
+  const [error, setError]         = useState<string | null>(null);
+  const [errorType, setErrorType] = useState<"error" | "info">("error");
+  const [loading, setLoading]     = useState(false);
+
+  useEffect(() => {
+    if (searchParams.get("razon") === "panel_deshabilitado") {
+      setError("El panel de cliente no está habilitado para esta empresa.");
+      setErrorType("info");
+    }
+  }, []);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError(null);
+    setErrorType("error");
     setLoading(true);
     try {
       const session = await api.post<AuthSession>("/admin/auth/login", { email, password });
@@ -21,8 +31,10 @@ export default function LoginPage() {
     } catch (err) {
       if (err instanceof ApiError) {
         setError(err.message);
+        setErrorType(err.status === 403 ? "info" : "error");
       } else {
         setError("No se pudo conectar con el servidor.");
+        setErrorType("error");
       }
     } finally {
       setLoading(false);
@@ -75,7 +87,10 @@ export default function LoginPage() {
             </div>
 
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg px-3 py-2">
+              <div className={errorType === "info"
+                ? "bg-amber-50 border border-amber-200 text-amber-800 text-sm rounded-lg px-3 py-2"
+                : "bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg px-3 py-2"
+              }>
                 {error}
               </div>
             )}

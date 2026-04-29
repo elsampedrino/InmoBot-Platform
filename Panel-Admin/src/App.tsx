@@ -1,7 +1,9 @@
+import { useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Shell from "./components/Shell";
-import { getSession } from "./lib/auth";
+import { getSession, getToken } from "./lib/auth";
+import { api } from "./lib/api";
 import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";
 import ClienteDashboardPage from "./pages/ClienteDashboardPage";
@@ -22,6 +24,12 @@ function DashboardRouter() {
 }
 
 export default function App() {
+  useEffect(() => {
+    if (getToken()) {
+      api.get("/admin/auth/me").catch(() => {});
+    }
+  }, []);
+
   return (
     <BrowserRouter>
       <Routes>
