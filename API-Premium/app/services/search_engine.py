@@ -149,7 +149,9 @@ class SearchEngine:
 
         if filters.zona:
             clauses.append(
-                "(i.atributos->>'barrio' ILIKE :zona OR i.atributos->>'ciudad' ILIKE :zona)"
+                "(i.atributos->>'barrio' ILIKE :zona "
+                "OR i.atributos->>'ciudad' ILIKE :zona "
+                "OR i.descripcion_corta ILIKE :zona)"
             )
             params["zona"] = f"%{filters.zona}%"
 
@@ -206,12 +208,15 @@ class SearchEngine:
                 params["dormitorios"] = val
 
             elif isinstance(val, bool) and val:
-                # Detalle booleano: el array JSON debe contener el string
+                # Detalle booleano: array JSON o mención en descripción libre
                 pname = f"det_{key}"
+                pname_desc = f"det_{key}_desc"
                 clauses.append(
-                    f"i.atributos->'detalles' @> cast(:{pname} as jsonb)"
+                    f"(i.atributos->'detalles' @> cast(:{pname} as jsonb) "
+                    f"OR i.descripcion_corta ILIKE :{pname_desc})"
                 )
                 params[pname] = json.dumps([key])
+                params[pname_desc] = f"%{key}%"
 
         return clauses, params
 
