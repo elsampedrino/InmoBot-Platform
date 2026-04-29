@@ -148,12 +148,17 @@ class SearchEngine:
             params["categoria"] = filters.categoria
 
         if filters.zona:
+            # barrio/ciudad: ILIKE para match parcial de zona (ej: "%San Pedro%")
+            # descripcion_corta: regex con word-boundary (\y) para evitar que
+            # palabras cortas como "rio" matcheen dentro de "barrio", "lavanderia", etc.
+            zona_re = filters.zona.replace("\\", "\\\\")
             clauses.append(
                 "(i.atributos->>'barrio' ILIKE :zona "
                 "OR i.atributos->>'ciudad' ILIKE :zona "
-                "OR i.descripcion_corta ILIKE :zona)"
+                "OR i.descripcion_corta ~* :zona_re)"
             )
             params["zona"] = f"%{filters.zona}%"
+            params["zona_re"] = f"\\y{zona_re}\\y"
 
         if filters.precio_max is not None:
             # Incluir propiedades sin precio (precio 0 o NULL → consultar igual)
