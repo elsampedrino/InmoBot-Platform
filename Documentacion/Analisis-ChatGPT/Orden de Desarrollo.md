@@ -15,4 +15,14 @@
 #     Response: { success, response, sessionId, propiedades_detalladas[],
 #                 propiedadesMostradas, leads, timestamp, metricas }
 #   - Sin tocar el widget; sin duplicar inteligencia en N8N
-# Fase 7b — Webhooks (WhatsApp)
+# Fase 7b — Validación E2E Widget ✅
+#   - 9 escenarios, 78/78 checks pasados (100%)
+#   - N8N queda fuera del loop conversacional principal
+# Fase 7c — Integración Operativa Final + Deploy en Render ✅
+#   - Arquitectura final: Widget → API Premium directa (sin N8N en el loop)
+#   - render.yaml + runtime.txt: configuración declarativa para Render
+#   - config_bbr.json: apiUrl actualizado a /webhook/cristian-inmob/chat
+#   - .env.example corregido (CORS_ORIGINS formato string, no JSON)
+#   - scripts/smoke_test_render.py: validación post-deploy (5 pruebas)
+#   - Checklist de salida a piloto web documentado en el entregable
+# Fase 8 — Webhooks WhatsApp (pendiente)
