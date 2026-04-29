@@ -1,304 +1,363 @@
 """
-Script para procesar el Excel de BBR Grupo Inmobiliario
-y generar JSON de propiedades en el formato del bot
+Genera propiedades_bbr.json a partir del Template_Propiedades_InmoBot_AAAAMMDD.xlsx
+Estructura de salida compatible con propiedades_bbr.json (formato InmoBot v2)
 
-Autor: Claude Code
-Fecha: 2025-01-13
+Uso:
+    python generar_json_propiedades.py
+    python generar_json_propiedades.py Template_Propiedades_InmoBot_20260303.xlsx
 """
 
-import openpyxl
+import sys
+import io
 import json
-import os
 import re
+import glob
+import os
 from pathlib import Path
+from datetime import date
 
-# ============================================
-# CONFIGURACIÓN
-# ============================================
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
 
-EXCEL_PATH = "BASE DE DATOS PROPIEDADES BOOT.xlsx"
-OUTPUT_JSON = "propiedades_bbr.json"
-FOTOS_BASE_DIR = "PROPIEDADES"
+try:
+    import openpyxl
+except ImportError:
+    print("ERROR: instalar openpyxl ->  pip install openpyxl")
+    sys.exit(1)
 
-# Mapeo de hojas del Excel a tipo de propiedad
-HOJA_TO_TIPO = {
-    "Casas": "Casa",
-    "Deptos": "Departamento",
-    "Lotes-Terrenos": "Terreno",
-    "Campos": "Campo",
-    "Alquiler": None  # Se determina por la columna "Tipo"
+# ─── CONFIGURACIÓN ───────────────────────────────────────────────────────────
+MAX_DESTACADAS = 6
+OUTPUT_JSON    = "propiedades_bbr.json"
+
+# Columnas del template (índice 0-based dentro de cada fila)
+COL = {
+    "id":                   0,
+    "tipo":                 1,
+    "operacion":            2,
+    "titulo":               3,
+    "destacado":            4,
+    "activo":               5,
+    "calle":                6,
+    "barrio":               7,
+    "ciudad":               8,
+    "lat":                  9,
+    "lng":                 10,
+    "precio":              11,
+    "moneda":              12,
+    "expensas":            13,
+    "antiguedad":          14,
+    "estado_construccion": 15,
+    "ambientes":           16,
+    "dormitorios":         17,
+    "banios":              18,
+    "superficie_total":    19,
+    "superficie_cubierta": 20,
+    "detalles":            21,
+    "descripcion":         22,
+    "descripcion_corta":   23,
 }
 
-# ============================================
-# FUNCIONES AUXILIARES
-# ============================================
+# ─── HELPERS ─────────────────────────────────────────────────────────────────
 
-def normalizar_nombre_carpeta(direccion):
-    """
-    Normaliza el nombre de dirección para buscar carpeta de fotos
-    Ej: "Colón al 1100" -> "Colon al 1100" o "Colon 1100"
-    """
-    if not direccion:
+def get(row, campo):
+    """Lee un valor del row por nombre de campo, retorna None si está fuera de rango."""
+    idx = COL[campo]
+    return row[idx] if idx < len(row) else None
+
+def limpio(valor):
+    """Convierte a string limpio, retorna None si vacío."""
+    if valor is None:
         return None
+    s = str(valor).strip()
+    return s if s else None
 
-    # Quitar tildes y caracteres especiales
-    reemplazos = {
-        'á': 'a', 'é': 'e', 'í': 'i', 'ó': 'o', 'ú': 'u',
-        'Á': 'A', 'É': 'E', 'Í': 'I', 'Ó': 'O', 'Ú': 'U',
-        'ñ': 'n', 'Ñ': 'N'
-    }
+def a_bool(valor, default=False):
+    """Convierte Sí/Si/si/YES/True → True, resto → False."""
+    if valor is None:
+        return default
+    s = str(valor).strip().lower()
+    return s in ("sí", "si", "yes", "true", "1", "verdadero")
 
-    direccion_normalizada = direccion
-    for viejo, nuevo in reemplazos.items():
-        direccion_normalizada = direccion_normalizada.replace(viejo, nuevo)
-
-    return direccion_normalizada.strip()
-
-def buscar_carpeta_fotos(direccion, tipo_propiedad):
-    """
-    Busca la carpeta de fotos correspondiente a una propiedad
-    """
-    if not direccion:
+def a_numero(valor):
+    """Convierte a int si es posible, sino None."""
+    if valor is None:
         return None
-
-    # Determinar carpeta base según tipo
-    carpeta_tipo_map = {
-        "Casa": "Casas",
-        "Departamento": "Alquiler",  # Los deptos están en Alquiler
-        "Terreno": "Lotes",
-        "Campo": "Campos",
-        "Local": "Alquiler"
-    }
-
-    carpeta_tipo = carpeta_tipo_map.get(tipo_propiedad, "Casas")
-    base_path = Path(FOTOS_BASE_DIR) / carpeta_tipo
-
-    if not base_path.exists():
-        return None
-
-    # Normalizar dirección
-    direccion_norm = normalizar_nombre_carpeta(direccion)
-
-    # Buscar carpeta que coincida
-    for carpeta in base_path.iterdir():
-        if carpeta.is_dir():
-            carpeta_norm = normalizar_nombre_carpeta(carpeta.name)
-
-            # Comparación flexible
-            if (direccion_norm.lower() in carpeta_norm.lower() or
-                carpeta_norm.lower() in direccion_norm.lower()):
-                return carpeta
-
-    return None
-
-def obtener_fotos_de_carpeta(carpeta_path):
-    """
-    Obtiene lista de archivos de fotos en una carpeta
-    """
-    if not carpeta_path or not carpeta_path.exists():
-        return []
-
-    extensiones_validas = {'.jpg', '.jpeg', '.png', '.webp'}
-    fotos = []
-
-    for archivo in sorted(carpeta_path.iterdir()):
-        if archivo.suffix.lower() in extensiones_validas:
-            # Ruta relativa desde PROPIEDADES
-            ruta_relativa = archivo.relative_to(Path(FOTOS_BASE_DIR))
-            fotos.append(str(ruta_relativa).replace('\\', '/'))
-
-    return fotos
-
-def limpiar_valor_precio(valor_str):
-    """
-    Limpia y extrae el valor numérico del precio
-    Ej: "u$S 139.000" -> 139000
-    Ej: "u$S 140.000 - 11 x 42" -> 140000
-    """
-    if not valor_str or valor_str == "":
-        return None
-
-    # Convertir a string si es número
-    valor_str = str(valor_str)
-
-    # Si tiene guión o "x" (dimensiones), tomar solo la parte antes del guión
-    if '-' in valor_str:
-        valor_str = valor_str.split('-')[0].strip()
-
-    # Buscar patrón de precio (números con puntos o comas como separadores)
-    # Ej: "139.000", "139,000", "139000"
-    match = re.search(r'(\d{1,3}(?:[.,]\d{3})*(?:[.,]\d{1,2})?)', valor_str)
-
-    if match:
-        # Extraer el número y quitar puntos/comas
-        precio = match.group(1)
-        precio = precio.replace('.', '').replace(',', '')
-        return int(precio)
-
-    return None
-
-def extraer_superficie(valor):
-    """
-    Extrae superficie en m2
-    """
-    if not valor or valor == "":
-        return None
-
     try:
-        return int(float(valor))
+        return int(float(str(valor).replace(",", ".")))
     except:
-        # Intentar extraer números
-        numeros = re.findall(r'\d+', str(valor))
-        if numeros:
-            return int(numeros[0])
         return None
 
-def generar_id_propiedad(index, tipo):
-    """
-    Genera ID único para propiedad
-    Ej: BBR-CASA-001, BBR-DEPTO-015
-    """
-    tipo_codigo = tipo[:4].upper() if tipo else "PROP"
-    return f"BBR-{tipo_codigo}-{str(index + 1).zfill(3)}"
+def a_float(valor):
+    """Convierte a float si es posible, sino None."""
+    if valor is None:
+        return None
+    try:
+        return float(str(valor).replace(",", "."))
+    except:
+        return None
 
-# ============================================
-# PROCESAMIENTO PRINCIPAL
-# ============================================
+def normalizar_tipo(valor):
+    """Casa → casa, Departamento → departamento, etc."""
+    if not valor:
+        return None
+    mapa = {
+        "casa":            "casa",
+        "departamento":    "departamento",
+        "depto":           "departamento",
+        "lote":            "lote",
+        "terreno":         "terreno",
+        "campo":           "campo",
+        "local comercial": "local_comercial",
+        "oficina":         "oficina",
+        "cochera":         "cochera",
+        "galpon":          "galpon",
+        "galpón":          "galpon",
+    }
+    return mapa.get(str(valor).strip().lower(), str(valor).strip().lower())
 
-def procesar_excel():
-    """
-    Lee el Excel y genera JSON de propiedades
-    """
-    print("📄 Leyendo Excel...")
-    wb = openpyxl.load_workbook(EXCEL_PATH, data_only=True)
+def normalizar_operacion(valor):
+    """Venta → venta, Alquiler → alquiler, Alquiler Temporario → alquiler_temporario."""
+    if not valor:
+        return None
+    mapa = {
+        "venta":               "venta",
+        "alquiler":            "alquiler",
+        "alquiler temporario": "alquiler_temporario",
+    }
+    return mapa.get(str(valor).strip().lower(), str(valor).strip().lower())
 
+def normalizar_estado(valor):
+    """Usado → usado, A estrenar → a_estrenar, etc."""
+    if not valor:
+        return None
+    mapa = {
+        "usado":           "usado",
+        "a estrenar":      "a_estrenar",
+        "en pozo":         "en_pozo",
+        "en construccion": "en_construccion",
+        "en construcción": "en_construccion",
+        "semi construida": "semi_construida",
+        "a reciclar":      "a_reciclar",
+    }
+    return mapa.get(str(valor).strip().lower(), str(valor).strip().lower())
+
+def normalizar_superficie(valor):
+    """
+    Acepta número (ej: 180) o string (ej: '180 m²', '5.5 Ha').
+    Retorna string con unidad o None.
+    """
+    if valor is None:
+        return None
+    s = str(valor).strip()
+    if not s:
+        return None
+    # Si ya tiene unidad, devolver limpio
+    if "m²" in s or "m2" in s.lower() or "ha" in s.lower():
+        return s.replace("m2", "m²").replace("M2", "m²")
+    # Si es puro número, asumir m²
+    try:
+        n = int(float(s.replace(",", ".")))
+        return f"{n} m²"
+    except:
+        return s
+
+def generar_titulo(tipo, operacion, ciudad, ambientes=None):
+    """Genera título automático si no se proveyó."""
+    tipo_str = str(tipo).capitalize() if tipo else "Propiedad"
+    op_str   = str(operacion).capitalize() if operacion else ""
+    amb_str  = f" {ambientes} amb" if ambientes else ""
+    ciudad_str = str(ciudad).strip() if ciudad else ""
+    return f"{tipo_str}{amb_str} {op_str} - {ciudad_str}".strip(" -")
+
+def parsear_detalles(valor):
+    """'patio, pileta, quincho' → ['patio', 'pileta', 'quincho']"""
+    if not valor:
+        return []
+    items = re.split(r"[,;|]", str(valor))
+    return [i.strip().lower() for i in items if i.strip()]
+
+def buscar_excel():
+    """Busca el template más reciente en el directorio actual."""
+    archivos = sorted(glob.glob("Template_Propiedades_InmoBot_*.xlsx"), reverse=True)
+    if archivos:
+        return archivos[0]
+    archivos = sorted(glob.glob("*.xlsx"), reverse=True)
+    return archivos[0] if archivos else None
+
+# ─── PROCESAMIENTO PRINCIPAL ─────────────────────────────────────────────────
+
+def procesar(excel_path):
+    print(f"Leyendo: {excel_path}")
+    wb = openpyxl.load_workbook(excel_path, data_only=True)
+
+    if "Propiedades" not in wb.sheetnames:
+        print(f"ERROR: No se encontró la hoja 'Propiedades'. Hojas disponibles: {wb.sheetnames}")
+        sys.exit(1)
+
+    ws = wb["Propiedades"]
     propiedades = []
-    index_global = 0
+    prop_index  = 1  # para auto-asignar carpeta de fotos
 
-    # Procesar cada hoja
-    for nombre_hoja in wb.sheetnames:
-        if nombre_hoja not in HOJA_TO_TIPO:
-            print(f"⏭️  Saltando hoja: {nombre_hoja}")
+    for row_idx, row in enumerate(ws.iter_rows(min_row=2, values_only=True), start=2):
+        # Saltar filas completamente vacías
+        if not any(v is not None for v in row):
             continue
 
-        print(f"\n📋 Procesando hoja: {nombre_hoja}")
-        sheet = wb[nombre_hoja]
+        # ── Identificación ──────────────────────────────────────────────────
+        prop_id   = limpio(get(row, "id")) or f"PROP-{str(prop_index).zfill(3)}"
+        tipo      = normalizar_tipo(get(row, "tipo"))
+        operacion = normalizar_operacion(get(row, "operacion"))
+        activo    = a_bool(get(row, "activo"), default=True)
+        destacado = a_bool(get(row, "destacado"), default=False)
 
-        # Leer filas (saltar header en fila 1)
-        for row_idx, row in enumerate(sheet.iter_rows(min_row=2, values_only=True), start=2):
-            # Extraer valores de columnas CORREGIDAS
-            num = row[0] if len(row) > 0 else None
-            operacion = row[1] if len(row) > 1 else None
-            tipo = row[2] if len(row) > 2 else HOJA_TO_TIPO.get(nombre_hoja)
-            # Columna 3 tiene imagen, la saltamos
-            direccion = row[4] if len(row) > 4 else None
-            localidad = row[5] if len(row) > 5 else None
-            superficie_construida = row[6] if len(row) > 6 else None  # Construida m2
-            lote_terreno = row[7] if len(row) > 7 else None  # Lote/Terreno m2 (ej: "11 x 42")
-            descripcion = row[8] if len(row) > 8 else None  # Descripción
-            valor_str = row[9] if len(row) > 9 else None  # Valor (precio)
-            dueno = row[10] if len(row) > 10 else None
+        if not tipo or not operacion:
+            print(f"  FILA {row_idx}: sin tipo/operación, se omite.")
+            continue
 
-            # Validar que tenga datos mínimos
-            if not direccion or not operacion:
-                continue
+        if not activo:
+            print(f"  FILA {row_idx} ({prop_id}): activo=No, se omite del JSON.")
+            prop_index += 1
+            continue
 
-            # Generar ID
-            prop_id = generar_id_propiedad(index_global, tipo)
-            index_global += 1
+        # ── Ubicación ────────────────────────────────────────────────────────
+        calle  = limpio(get(row, "calle"))  or ""
+        barrio = limpio(get(row, "barrio")) or ""
+        ciudad = limpio(get(row, "ciudad")) or ""
+        lat    = a_float(get(row, "lat"))
+        lng    = a_float(get(row, "lng"))
 
-            # Buscar carpeta de fotos
-            carpeta_fotos = buscar_carpeta_fotos(direccion, tipo)
-            fotos_paths = obtener_fotos_de_carpeta(carpeta_fotos) if carpeta_fotos else []
+        # ── Título ───────────────────────────────────────────────────────────
+        titulo_raw = limpio(get(row, "titulo"))
+        ambientes  = a_numero(get(row, "ambientes"))
+        titulo = titulo_raw or generar_titulo(tipo, operacion, ciudad, ambientes)
 
-            # Limpiar precio
-            valor_limpio = limpiar_valor_precio(valor_str)
+        # ── Precio ───────────────────────────────────────────────────────────
+        precio_val = a_numero(get(row, "precio")) or 0
+        moneda     = limpio(get(row, "moneda")) or "USD"
+        expensas   = a_numero(get(row, "expensas"))
 
-            # Extraer superficie construida
-            superficie = extraer_superficie(superficie_construida)
+        # ── Características ──────────────────────────────────────────────────
+        antiguedad        = a_numero(get(row, "antiguedad"))   # años como número o None
+        estado            = normalizar_estado(get(row, "estado_construccion"))
+        dormitorios       = a_numero(get(row, "dormitorios"))
+        banios            = a_numero(get(row, "banios"))
+        sup_total         = normalizar_superficie(get(row, "superficie_total"))
+        sup_cubierta      = normalizar_superficie(get(row, "superficie_cubierta"))
 
-            # Construir objeto propiedad
-            propiedad = {
-                "id": prop_id,
-                "tipo": tipo,
-                "operacion": operacion,
-                "titulo": f"{tipo} en {direccion}" if direccion else f"{tipo}",
-                "direccion": {
-                    "calle": direccion,
-                    "localidad": localidad if localidad else "Ramallo",
-                    "provincia": "Buenos Aires",
-                    "pais": "Argentina"
-                },
-                "precio": {
-                    "valor": valor_limpio,
-                    "moneda": "USD"
-                },
-                "caracteristicas": {
-                    "superficie_total": superficie
-                },
-                "descripcion": descripcion if descripcion else f"{tipo} en {direccion}",
-                "disponibilidad": "Disponible",
-                "fotos": {
-                    "cantidad": len(fotos_paths),
-                    "paths": fotos_paths  # Rutas locales, se convertirán a URLs de Cloudinary
-                }
-            }
+        # ── Descripciones ─────────────────────────────────────────────────────
+        descripcion       = limpio(get(row, "descripcion"))       or titulo
+        descripcion_corta = limpio(get(row, "descripcion_corta")) or ""
 
-            propiedades.append(propiedad)
-            print(f"  ✅ {prop_id}: {direccion} ({len(fotos_paths)} fotos)")
+        # ── Detalles ──────────────────────────────────────────────────────────
+        detalles = parsear_detalles(get(row, "detalles"))
+
+        # ── Construir objeto ──────────────────────────────────────────────────
+        direccion = {"calle": calle, "barrio": barrio, "ciudad": ciudad}
+        if lat is not None:
+            direccion["lat"] = lat
+        if lng is not None:
+            direccion["lng"] = lng
+
+        precio = {"valor": precio_val, "moneda": moneda, "expensas": expensas}
+
+        caracteristicas = {
+            "antigüedad":         antiguedad,
+            "estado_construccion": estado,
+            "ambientes":          ambientes,
+            "dormitorios":        dormitorios,
+            "banios":             banios,
+            "superficie_total":   sup_total,
+            "superficie_cubierta": sup_cubierta,
+        }
+
+        propiedad = {
+            "id":               prop_id,
+            "tipo":             tipo,
+            "operacion":        operacion,
+            "titulo":           titulo,
+            "destacado":        destacado,
+            "activo":           activo,
+            "direccion":        direccion,
+            "precio":           precio,
+            "descripcion":      descripcion,
+            "descripcion_corta": descripcion_corta,
+            "fotos": {
+                "carpeta": str(prop_index),
+                "urls":    []
+            },
+            "caracteristicas":  caracteristicas,
+            "detalles":         detalles,
+        }
+
+        propiedades.append(propiedad)
+        estado_str = "DESTACADA" if destacado else ("ACTIVA" if activo else "INACTIVA")
+        print(f"  PROP {prop_id}: {tipo} {operacion} | {calle}, {ciudad} [{estado_str}]")
+        prop_index += 1
 
     wb.close()
 
-    # Generar JSON final
+    # ── Validación destacadas ─────────────────────────────────────────────────
+    destacadas = [p for p in propiedades if p["destacado"]]
+    if len(destacadas) > MAX_DESTACADAS:
+        print(f"\nADVERTENCIA: {len(destacadas)} propiedades con destacado=true "
+              f"(máximo permitido: {MAX_DESTACADAS}).")
+        print("  Se conservan las primeras 6 como destacadas, el resto pasa a false.")
+        ids_destacadas = {p["id"] for p in destacadas[:MAX_DESTACADAS]}
+        for p in propiedades:
+            if p["destacado"] and p["id"] not in ids_destacadas:
+                p["destacado"] = False
+                print(f"  -> {p['id']} cambió a destacado=false")
+
+    # ── Generar JSON ──────────────────────────────────────────────────────────
     output = {
+        "metadata": {
+            "total":            len(propiedades),
+            "fecha_generacion": date.today().isoformat(),
+            "fuente":           Path(excel_path).name,
+        },
         "propiedades": propiedades,
-        "total": len(propiedades),
-        "ultima_actualizacion": "2025-01-13"
     }
 
-    # Guardar JSON
-    with open(OUTPUT_JSON, 'w', encoding='utf-8') as f:
+    with open(OUTPUT_JSON, "w", encoding="utf-8") as f:
         json.dump(output, f, ensure_ascii=False, indent=2)
 
-    print(f"\n✅ JSON generado: {OUTPUT_JSON}")
-    print(f"📊 Total de propiedades: {len(propiedades)}")
+    print(f"\nJSON generado: {OUTPUT_JSON}")
+    print(f"Total propiedades: {len(propiedades)}")
 
-    # Estadísticas
-    print("\n📈 Estadísticas:")
-    tipos = {}
-    for prop in propiedades:
-        tipo = prop['tipo']
-        tipos[tipo] = tipos.get(tipo, 0) + 1
+    # Resumen por tipo
+    from collections import Counter
+    resumen = Counter(f"{p['tipo']} / {p['operacion']}" for p in propiedades)
+    for k, v in sorted(resumen.items()):
+        print(f"  {v:>3}x  {k}")
 
-    for tipo, cantidad in tipos.items():
-        print(f"  - {tipo}: {cantidad}")
+    activas    = sum(1 for p in propiedades if p["activo"])
+    destacadas = sum(1 for p in propiedades if p["destacado"])
+    print(f"\n  Activas:    {activas}")
+    print(f"  Destacadas: {destacadas}")
 
-# ============================================
-# EJECUCIÓN
-# ============================================
 
+# ─── EJECUCIÓN ────────────────────────────────────────────────────────────────
 if __name__ == "__main__":
-    import sys
-    import io
+    if len(sys.argv) > 1:
+        excel_path = sys.argv[1]
+    else:
+        excel_path = buscar_excel()
+        if not excel_path:
+            print("ERROR: No se encontró ningún archivo .xlsx en el directorio actual.")
+            print("Uso: python generar_json_propiedades.py Template_Propiedades_InmoBot_AAAAMMDD.xlsx")
+            sys.exit(1)
+        print(f"Usando template: {excel_path}")
 
-    # Fix encoding for Windows
-    if sys.platform == 'win32':
-        sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+    if not os.path.exists(excel_path):
+        print(f"ERROR: No existe el archivo '{excel_path}'")
+        sys.exit(1)
 
-    print("🏠 BBR Grupo Inmobiliario - Generador de JSON\n")
     print("=" * 60)
-
-    try:
-        procesar_excel()
-        print("\n" + "=" * 60)
-        print("✅ Proceso completado exitosamente!")
-        print("\n📝 Próximos pasos:")
-        print("  1. Revisar propiedades_bbr.json")
-        print("  2. Ejecutar script de optimización de imágenes")
-        print("  3. Subir imágenes a Cloudinary")
-        print("  4. Actualizar URLs en JSON con las de Cloudinary")
-
-    except Exception as e:
-        print(f"\n❌ Error: {e}")
-        import traceback
-        traceback.print_exc()
+    print("  InmoBot - Generador de JSON de Propiedades")
+    print("=" * 60)
+    procesar(excel_path)
+    print("=" * 60)
+    print("Proceso completado.")
+    print("\nProximos pasos:")
+    print("  1. Completar fotos.urls en el JSON (URLs de Cloudinary)")
+    print("  2. Agregar lat/lng a propiedades con mapa")
+    print(f"  3. Subir {OUTPUT_JSON} al repositorio GitHub de datos")
