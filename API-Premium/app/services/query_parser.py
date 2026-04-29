@@ -55,7 +55,9 @@ _DETALLE_MAP: dict[str, list[str]] = {
     "gimnasio":  ["gimnasio", "gym"],
     "seguridad": ["seguridad", "vigilancia", "portero"],
     "ascensor":  ["ascensor", "elevador"],
-    "laundry":   ["laundry", "lavadero"],
+    "laundry":       ["laundry", "lavadero"],
+    "financiacion":  ["financiación", "financiacion", "financiar", "facilidades de pago", "facilidades", "cuotas"],
+    "barrio_privado": ["barrio privado", "country", "countries", "barrio cerrado"],
 }
 
 # Palabras que "en [X]" NO debe capturar como zona
@@ -72,9 +74,15 @@ _PAT_DORMITORIOS = re.compile(
     r"(\d+)\s*(?:dormitorios?|cuartos?|habitaciones?|rooms?)", re.IGNORECASE
 )
 
-# Zona: "en [Palabra/s]" — captura 1-3 palabras después de "en"
+# Zona: "en / sobre / cerca de / frente al / junto al [Lugar]"
+# El grupo capturado es la keyword geográfica, sin artículo.
+# El lookahead (?!...) evita capturar conjunciones (o, y, ni, pero, que, con, sin, por)
+# como parte del nombre de zona. Ej: "sobre el río o cerca" → captura solo "río".
 _PAT_ZONA = re.compile(
-    r"\ben\s+([A-ZÁÉÍÓÚa-záéíóú][a-záéíóúü]{1,}(?:\s+[A-ZÁÉÍÓÚa-záéíóú][a-záéíóúü]{1,}){0,2})\b"
+    r"\b(?:en|sobre|cerca\s+de|frente\s+al?|junto\s+al?)\s+"
+    r"(?:el?\s+|la?\s+|los?\s+|las?\s+)?"
+    r"([A-ZÁÉÍÓÚa-záéíóú][a-záéíóúü]{2,}"
+    r"(?:\s+(?!(?:o|y|ni|pero|que|con|sin|por)\b)[A-ZÁÉÍÓÚa-záéíóú][a-záéíóúü]{1,}){0,2})\b"
 )
 
 # Precio máximo explícito

@@ -216,7 +216,7 @@ class SearchEngine:
                     f"OR i.descripcion_corta ILIKE :{pname_desc})"
                 )
                 params[pname] = json.dumps([key])
-                params[pname_desc] = f"%{key}%"
+                params[pname_desc] = f"%{key.replace('_', ' ')}%"
 
         return clauses, params
 
