@@ -171,6 +171,20 @@ class SearchEngine:
             clauses.append("i.precio >= :precio_min")
             params["precio_min"] = filters.precio_min
 
+        if filters.superficie_min is not None:
+            clauses.append(
+                "((i.atributos->>'superficie_total') IS NOT NULL "
+                "AND (i.atributos->>'superficie_total')::float >= :superficie_min)"
+            )
+            params["superficie_min"] = filters.superficie_min
+
+        if filters.superficie_max is not None:
+            clauses.append(
+                "((i.atributos->>'superficie_total') IS NOT NULL "
+                "AND (i.atributos->>'superficie_total')::float <= :superficie_max)"
+            )
+            params["superficie_max"] = filters.superficie_max
+
         # Atributos JSONB: reglas específicas de inmobiliaria
         atrib_clauses, atrib_params = self._build_atributo_clauses(filters.atributos)
         clauses.extend(atrib_clauses)

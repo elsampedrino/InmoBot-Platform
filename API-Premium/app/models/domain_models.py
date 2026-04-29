@@ -54,6 +54,8 @@ class SearchFilters:
     precio_min: float | None = None
     precio_max: float | None = None
     moneda: str | None = None
+    superficie_min: float | None = None
+    superficie_max: float | None = None
     atributos: dict[str, Any] = field(default_factory=dict)
     # Texto libre para full-text search como fallback
     texto_libre: str | None = None
@@ -72,6 +74,8 @@ class SearchFilters:
             or self.zona
             or self.precio_min is not None
             or self.precio_max is not None
+            or self.superficie_min is not None
+            or self.superficie_max is not None
             or self.atributos
             or self.texto_libre
         )

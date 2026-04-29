@@ -101,6 +101,19 @@ _PAT_PRECIO_MIN = re.compile(
 _PAT_MONEDA = re.compile(
     r"\b(usd|u\$s|dolar(?:es)?|peso(?:s)?|\$)\b", re.IGNORECASE
 )
+# Superficie mínima: "más de 200 m²", "mínimo 150 metros", "al menos 300m2", "desde 100 m²"
+_PAT_SUP_MIN = re.compile(
+    r"\b(?:m[aá]s\s+de|m[ií]nimo?(?:\s+de)?|al\s+menos|desde|sobre\s+los?)\s+"
+    r"(\d[\d.,]*)\s*(?:m(?:etros?)?(?:\s*(?:cuadrados?|2|²))?)",
+    re.IGNORECASE,
+)
+# Superficie máxima: "hasta 200 m²", "menos de 150 metros", "máximo 300m2"
+_PAT_SUP_MAX = re.compile(
+    r"\b(?:hasta|menos\s+de|m[aá]x(?:imo)?(?:\s+de)?)\s+"
+    r"(\d[\d.,]*)\s*(?:m(?:etros?)?(?:\s*(?:cuadrados?|2|²))?)",
+    re.IGNORECASE,
+)
+
 # Ajustes relativos de precio
 _PAT_BARATO = re.compile(
     r"\bm[aá]s\s+(?:barato|econ[oó]mico|accesible|bajo|barata)|"
@@ -161,6 +174,7 @@ class QueryParser:
         precio_min, precio_max, moneda = self._extract_precio(
             msg_lower, state, is_refinement
         )
+        superficie_min, superficie_max = self._extract_superficie(msg_lower)
 
         new_filters = SearchFilters(
             tipo=tipo,
@@ -169,6 +183,8 @@ class QueryParser:
             precio_min=precio_min,
             precio_max=precio_max,
             moneda=moneda,
+            superficie_min=superficie_min,
+            superficie_max=superficie_max,
             atributos=atributos,
             texto_libre=mensaje if not tipo and not zona and not atributos else None,
         )
@@ -308,6 +324,12 @@ class QueryParser:
 
         return atributos
 
+    def _extract_superficie(self, msg: str) -> tuple[float | None, float | None]:
+        """Devuelve (superficie_min, superficie_max) en m²."""
+        sup_min = self._parse_sup_value(_PAT_SUP_MIN.search(msg))
+        sup_max = self._parse_sup_value(_PAT_SUP_MAX.search(msg))
+        return sup_min, sup_max
+
     def _merge_with_active_filters(
         self, new_filters: SearchFilters, active: dict
     ) -> SearchFilters:
@@ -333,6 +355,16 @@ class QueryParser:
                 else active.get("precio_max")
             ),
             moneda=new_filters.moneda or active.get("moneda"),
+            superficie_min=(
+                new_filters.superficie_min
+                if new_filters.superficie_min is not None
+                else active.get("superficie_min")
+            ),
+            superficie_max=(
+                new_filters.superficie_max
+                if new_filters.superficie_max is not None
+                else active.get("superficie_max")
+            ),
             atributos=merged_atributos,
             texto_libre=new_filters.texto_libre,
         )
@@ -350,5 +382,15 @@ class QueryParser:
             if mult and mult.lower() in ("k", "mil"):
                 val *= 1000
             return val
+        except ValueError:
+            return None
+
+    @staticmethod
+    def _parse_sup_value(match) -> float | None:
+        if not match:
+            return None
+        val_str = match.group(1).replace(",", "").replace(".", "")
+        try:
+            return float(val_str)
         except ValueError:
             return None
