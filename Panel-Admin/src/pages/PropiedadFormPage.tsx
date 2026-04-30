@@ -73,7 +73,7 @@ function blankForm(): Omit<ItemCreateRequest, "external_id"> {
       calle: "", barrio: "", ciudad: "",
       lat: null, lng: null,
       dormitorios: null, banios: null, ambientes: null,
-      superficie_total: "", superficie_cubierta: "",
+      superficie_total: "", superficie_cubierta: "", superficie_unidad: "m²",
       antiguedad: "", estado_construccion: "",
       detalles: [],
     },
@@ -124,6 +124,7 @@ export default function PropiedadFormPage() {
             ambientes: item.atributos?.ambientes ?? null,
             superficie_total: item.atributos?.superficie_total ?? "",
             superficie_cubierta: item.atributos?.superficie_cubierta ?? "",
+            superficie_unidad: item.atributos?.superficie_unidad ?? "m²",
             antiguedad: item.atributos?.antiguedad ?? "",
             estado_construccion: item.atributos?.estado_construccion ?? "",
             detalles: item.atributos?.detalles ?? [],
@@ -357,8 +358,14 @@ export default function PropiedadFormPage() {
                 <Field label="Sup. cubierta (m²)">
                   <input type="number" className={inp} value={(form.atributos.superficie_cubierta as number) ?? ""} onChange={e => setAttr("superficie_cubierta", e.target.value ? parseFloat(e.target.value) : undefined)} placeholder="120" min={0} step={0.01} />
                 </Field>
-                <Field label="Sup. total (m²)">
-                  <input type="number" className={inp} value={(form.atributos.superficie_total as number) ?? ""} onChange={e => setAttr("superficie_total", e.target.value ? parseFloat(e.target.value) : undefined)} placeholder="300" min={0} step={0.01} />
+                <Field label="Sup. total">
+                  <div className="flex gap-1">
+                    <input type="number" className={inp} value={(form.atributos.superficie_total as number) ?? ""} onChange={e => setAttr("superficie_total", e.target.value ? parseFloat(e.target.value) : undefined)} placeholder="300" min={0} step={0.01} />
+                    <select className="px-2 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 bg-white" value={(form.atributos.superficie_unidad as string) ?? "m²"} onChange={e => setAttr("superficie_unidad", e.target.value)}>
+                      <option value="m²">m²</option>
+                      <option value="ha">ha</option>
+                    </select>
+                  </div>
                 </Field>
                 <Field label="Antigüedad">
                   <input className={inp} value={(form.atributos.antiguedad as string) ?? ""} onChange={e => setAttr("antiguedad", e.target.value || undefined)} placeholder="10 años" />
