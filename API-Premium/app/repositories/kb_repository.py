@@ -2,11 +2,14 @@
 KBRepository — acceso a kb_documents y kb_chunks.
 
 Estrategia de búsqueda (simple, sin embeddings):
-  1. Full-text search PostgreSQL con plainto_tsquery('spanish', :query)
+  1. Full-text search PostgreSQL con websearch_to_tsquery OR-semantics
+     (extrae palabras ≥4 chars y las une con OR, evitando el AND estricto
+     de plainto_tsquery que devuelve 0 resultados para queries largas)
   2. Si FTS devuelve 0 resultados → fallback ILIKE por keyword
 
 La separación en dos queries hace que el fallback sea explícito y logueable.
 """
+import re
 import uuid
 
 from sqlalchemy import text
@@ -40,8 +43,13 @@ class KBRepository:
         doc_titulo, id_documento, search_method.
         """
         # ── Paso 1: Full-text search ────────────────────────────────────────
-        # Incluye el título del documento + unaccent para manejar queries sin tilde.
-        # unaccent('documentacion') = unaccent('documentación') → mismo stem.
+        # Usa websearch_to_tsquery con semántica OR para evitar que queries
+        # largas (con muchos términos) devuelvan 0 resultados por AND estricto.
+        # Se extraen palabras de ≥4 chars (omite artículos/preposiciones cortas)
+        # y se unen con " OR " → websearch_to_tsquery aplica OR entre ellas.
+        words = re.findall(r'[a-záéíóúñüA-ZÁÉÍÓÚÑÜ]{4,}', query)
+        fts_query_str = " OR ".join(words[:6]) if words else query
+
         fts_sql = text("""
             SELECT
                 kc.id_chunk::text,
@@ -51,7 +59,7 @@ class KBRepository:
                 kd.id_documento::text,
                 ts_rank(
                     to_tsvector('spanish', unaccent(kd.titulo || ' ' || kc.chunk_texto)),
-                    plainto_tsquery('spanish', unaccent(:query))
+                    websearch_to_tsquery('spanish', unaccent(:fts_query))
                 )                AS rank
             FROM kb_chunks kc
             JOIN kb_documents kd ON kd.id_documento = kc.id_documento
@@ -59,7 +67,7 @@ class KBRepository:
               AND kd.id_rubro   = :id_rubro
               AND kd.activo     = TRUE
               AND to_tsvector('spanish', unaccent(kd.titulo || ' ' || kc.chunk_texto))
-                  @@ plainto_tsquery('spanish', unaccent(:query))
+                  @@ websearch_to_tsquery('spanish', unaccent(:fts_query))
             ORDER BY rank DESC, kc.orden ASC
             LIMIT :limit
         """)
@@ -68,7 +76,7 @@ class KBRepository:
             result = await self.db.execute(
                 fts_sql,
                 {"id_empresa": id_empresa, "id_rubro": id_rubro,
-                 "query": query, "limit": limit},
+                 "fts_query": fts_query_str, "limit": limit},
             )
             rows = [dict(r) for r in result.mappings()]
         except Exception as exc:
@@ -83,8 +91,11 @@ class KBRepository:
             return rows
 
         # ── Paso 2: Fallback ILIKE ──────────────────────────────────────────
-        # Toma el término más largo del query como keyword principal
-        keyword = max(query.split(), key=len) if query.strip() else query
+        # Toma el término más largo del query como keyword principal.
+        # Se limpia la puntuación antes de elegir la palabra más larga para
+        # evitar que "propiedad?" sea el keyword (el ? rompería el ILIKE).
+        clean_query = re.sub(r'[^\w\s]', '', query, flags=re.UNICODE)
+        keyword = max(clean_query.split(), key=len) if clean_query.strip() else query
 
         ilike_sql = text("""
             SELECT
