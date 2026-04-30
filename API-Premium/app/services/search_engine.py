@@ -172,16 +172,25 @@ class SearchEngine:
             params["precio_min"] = filters.precio_min
 
         if filters.superficie_min is not None:
+            # regexp_replace extrae solo dígitos y punto antes de castear.
+            # Cubre valores guardados como "300 m²" además de números limpios.
+            # Busca en superficie_total Y superficie_cubierta (OR): la propiedad
+            # aparece si cualquiera de las dos supera el mínimo pedido.
+            _tot = "i.atributos->>'superficie_total'"
+            _cub = "i.atributos->>'superficie_cubierta'"
+            _num_tot = "regexp_replace(i.atributos->>'superficie_total', '[^0-9.]', '', 'g')"
+            _num_cub = "regexp_replace(i.atributos->>'superficie_cubierta', '[^0-9.]', '', 'g')"
             clauses.append(
-                "((i.atributos->>'superficie_total') IS NOT NULL "
-                "AND (i.atributos->>'superficie_total')::float >= :superficie_min)"
+                f"(({_tot} IS NOT NULL AND {_num_tot} != '' AND {_num_tot}::float >= :superficie_min)"
+                f" OR ({_cub} IS NOT NULL AND {_num_cub} != '' AND {_num_cub}::float >= :superficie_min))"
             )
             params["superficie_min"] = filters.superficie_min
 
         if filters.superficie_max is not None:
+            _tot = "i.atributos->>'superficie_total'"
+            _num_tot = "regexp_replace(i.atributos->>'superficie_total', '[^0-9.]', '', 'g')"
             clauses.append(
-                "((i.atributos->>'superficie_total') IS NOT NULL "
-                "AND (i.atributos->>'superficie_total')::float <= :superficie_max)"
+                f"({_tot} IS NOT NULL AND {_num_tot} != '' AND {_num_tot}::float <= :superficie_max)"
             )
             params["superficie_max"] = filters.superficie_max
 

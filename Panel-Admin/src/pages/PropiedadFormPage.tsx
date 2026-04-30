@@ -354,11 +354,11 @@ export default function PropiedadFormPage() {
                 <Field label="Ambientes">
                   <input type="number" className={inp} value={(form.atributos.ambientes as number) ?? ""} onChange={e => setAttr("ambientes", e.target.value ? parseInt(e.target.value) : null)} placeholder="5" min={0} />
                 </Field>
-                <Field label="Sup. cubierta">
-                  <input className={inp} value={(form.atributos.superficie_cubierta as string) ?? ""} onChange={e => setAttr("superficie_cubierta", e.target.value || undefined)} placeholder="120 m²" />
+                <Field label="Sup. cubierta (m²)">
+                  <input type="number" className={inp} value={(form.atributos.superficie_cubierta as number) ?? ""} onChange={e => setAttr("superficie_cubierta", e.target.value ? parseFloat(e.target.value) : undefined)} placeholder="120" min={0} step={0.01} />
                 </Field>
-                <Field label="Sup. total">
-                  <input className={inp} value={(form.atributos.superficie_total as string) ?? ""} onChange={e => setAttr("superficie_total", e.target.value || undefined)} placeholder="300 m²" />
+                <Field label="Sup. total (m²)">
+                  <input type="number" className={inp} value={(form.atributos.superficie_total as number) ?? ""} onChange={e => setAttr("superficie_total", e.target.value ? parseFloat(e.target.value) : undefined)} placeholder="300" min={0} step={0.01} />
                 </Field>
                 <Field label="Antigüedad">
                   <input className={inp} value={(form.atributos.antiguedad as string) ?? ""} onChange={e => setAttr("antiguedad", e.target.value || undefined)} placeholder="10 años" />
