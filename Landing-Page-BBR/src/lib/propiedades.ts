@@ -20,8 +20,22 @@ export interface Caracteristicas {
   ambientes?: number;
   dormitorios?: number;
   banios?: number;
-  superficie_total?: string;
-  superficie_cubierta?: string;
+  superficie_total?: string | number | null;
+  superficie_cubierta?: string | number | null;
+  superficie_unidad?: string;
+}
+
+/**
+ * Formatea la superficie para mostrar.
+ * Soporta el formato viejo ("300 m²" como string) y el nuevo (número + unidad separada).
+ */
+export function formatSuperficie(
+  val?: string | number | null,
+  unidad?: string,
+): string | undefined {
+  if (val === undefined || val === null || val === '') return undefined;
+  if (typeof val === 'string' && /[a-zA-Zα-ωΑ-Ω²]/.test(val)) return val;
+  return `${val} ${unidad ?? 'm²'}`;
 }
 
 export interface Propiedad {
