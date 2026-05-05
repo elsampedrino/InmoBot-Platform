@@ -159,7 +159,7 @@
         const precio = prop.precio && prop.precio > 0
           ? `${prop.moneda || 'USD'} ${parseInt(prop.precio).toLocaleString('es-AR')}`
           : '';
-        const foto = prop.fotos?.[0] || '';
+        const foto = prop.imagenes?.[0] || '';
 
         html += `
           <div class="bg-gradient-to-br from-violet-50 to-cyan-50 rounded-xl p-4 mt-3 border border-violet-200">
