@@ -132,49 +132,47 @@
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
   }
 
-  // Función para renderizar respuesta del bot (API Premium)
-  function renderBotResponse(text: string, propiedades: any[] = []) {
+  // Función para agregar burbuja de texto del bot
+  function addBotBubble(html: string) {
     const messageDiv = document.createElement('div');
     messageDiv.className = 'flex justify-start animate-fade-in';
-
     const bubble = document.createElement('div');
     bubble.className = 'rounded-2xl px-4 py-3 max-w-sm shadow-sm bg-white border border-gray-100 rounded-tl-sm';
+    bubble.innerHTML = html;
+    messageDiv.appendChild(bubble);
+    messagesContainer.appendChild(messageDiv);
+  }
 
-    // Texto limpio con markdown básico
+  // Función para renderizar respuesta del bot (API Premium)
+  function renderBotResponse(text: string, propiedades: any[] = []) {
+    // Burbuja 1: texto del bot
     const cleanText = text
       .replace(/https?:\/\/res\.cloudinary\.com\/[^\s]+/g, '')
       .replace(/https?:\/\/[^\s]+\.(jpg|jpeg|png|webp)/gi, '')
       .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
       .replace(/\n/g, '<br>')
       .trim();
+    addBotBubble(`<p class="text-sm text-gray-800">${cleanText}</p>`);
 
-    let html = `<p class="text-sm text-gray-800">${cleanText}</p>`;
+    // Burbuja 2+: una card por propiedad, igual que el widget real
+    propiedades.forEach((prop: any) => {
+      const precio = prop.precio && prop.precio > 0
+        ? `${prop.moneda || 'USD'} ${parseInt(prop.precio).toLocaleString('es-AR')}`
+        : '';
+      const imagenes: string[] = (prop.imagenes || []).slice(0, 3);
+      const thumbs = imagenes.map((url: string) =>
+        `<img src="${url}" alt="" style="width:100%;height:80px;object-fit:cover;border-radius:8px;cursor:pointer;" onerror="this.style.display='none'" onclick="window.open('${url}','_blank')" />`
+      ).join('');
 
-    // Cards de propiedades — igual que el widget real
-    if (propiedades.length > 0) {
-      propiedades.forEach((prop: any) => {
-        const precio = prop.precio && prop.precio > 0
-          ? `${prop.moneda || 'USD'} ${parseInt(prop.precio).toLocaleString('es-AR')}`
-          : '';
-        const imagenes: string[] = (prop.imagenes || []).slice(0, 3);
-        const thumbs = imagenes.map((url: string) =>
-          `<img src="${url}" alt="" style="width:100%;height:80px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid transparent;transition:all 0.2s;" onerror="this.style.display='none'" onclick="window.open('${url}','_blank')" />`
-        ).join('');
+      const cardHtml = `
+        <p style="font-size:13px;font-weight:600;color:#111827;margin:0 0 2px 0;">${prop.titulo}</p>
+        ${prop.descripcion_corta ? `<p style="font-size:11px;color:#6b7280;margin:0 0 4px 0;">${prop.descripcion_corta}</p>` : ''}
+        ${precio ? `<p style="font-size:13px;font-weight:700;color:#7c3aed;margin:0 0 8px 0;">${precio}</p>` : ''}
+        ${imagenes.length > 0 ? `<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;">${thumbs}</div>` : ''}
+      `;
+      addBotBubble(cardHtml);
+    });
 
-        html += `
-          <div style="margin-top:10px;padding:12px;background:#f3f4f6;border-radius:12px;border:1px solid #e5e7eb;">
-            <p style="font-size:13px;font-weight:600;color:#111827;margin:0 0 2px 0;">${prop.titulo}</p>
-            ${prop.descripcion_corta ? `<p style="font-size:11px;color:#6b7280;margin:0 0 4px 0;">${prop.descripcion_corta}</p>` : ''}
-            ${precio ? `<p style="font-size:13px;font-weight:700;color:#7c3aed;margin:0 0 8px 0;">${precio}</p>` : ''}
-            ${imagenes.length > 0 ? `<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;">${thumbs}</div>` : ''}
-          </div>
-        `;
-      });
-    }
-
-    bubble.innerHTML = html;
-    messageDiv.appendChild(bubble);
-    messagesContainer.appendChild(messageDiv);
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
   }
 
