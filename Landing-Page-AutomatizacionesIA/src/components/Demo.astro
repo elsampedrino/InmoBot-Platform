@@ -154,25 +154,14 @@
       .trim();
     addBotBubble(`<p class="text-sm text-gray-800">${cleanText}</p>`);
 
-    // Burbuja 2+: una card por propiedad, igual que el widget real
+    // Burbuja 2+: una por propiedad — solo grid de imágenes (el texto ya describe la propiedad)
     propiedades.forEach((prop: any) => {
-      const precioValor = prop.precio?.valor;
-      const precioMoneda = prop.precio?.moneda || 'USD';
-      const precio = precioValor && precioValor > 0
-        ? `${precioMoneda} ${parseInt(precioValor).toLocaleString('es-AR')}`
-        : '';
       const imagenes: string[] = (prop.imagenes || []).slice(0, 3);
+      if (imagenes.length === 0) return;
       const thumbs = imagenes.map((url: string) =>
         `<img src="${url}" alt="" style="width:100%;height:80px;object-fit:cover;border-radius:8px;cursor:pointer;" onerror="this.style.display='none'" onclick="window.open('${url}','_blank')" />`
       ).join('');
-
-      const cardHtml = `
-        <p style="font-size:13px;font-weight:600;color:#111827;margin:0 0 2px 0;">${prop.titulo}</p>
-        ${prop.descripcion ? `<p style="font-size:11px;color:#6b7280;margin:0 0 4px 0;">${prop.descripcion}</p>` : ''}
-        ${precio ? `<p style="font-size:13px;font-weight:700;color:#7c3aed;margin:0 0 8px 0;">${precio}</p>` : ''}
-        ${imagenes.length > 0 ? `<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;">${thumbs}</div>` : ''}
-      `;
-      addBotBubble(cardHtml);
+      addBotBubble(`<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;">${thumbs}</div>`);
     });
 
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
