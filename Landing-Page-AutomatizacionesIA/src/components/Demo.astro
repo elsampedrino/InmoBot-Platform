@@ -156,8 +156,10 @@
 
     // Burbuja 2+: una card por propiedad, igual que el widget real
     propiedades.forEach((prop: any) => {
-      const precio = prop.precio && prop.precio > 0
-        ? `${prop.moneda || 'USD'} ${parseInt(prop.precio).toLocaleString('es-AR')}`
+      const precioValor = prop.precio?.valor;
+      const precioMoneda = prop.precio?.moneda || 'USD';
+      const precio = precioValor && precioValor > 0
+        ? `${precioMoneda} ${parseInt(precioValor).toLocaleString('es-AR')}`
         : '';
       const imagenes: string[] = (prop.imagenes || []).slice(0, 3);
       const thumbs = imagenes.map((url: string) =>
@@ -166,7 +168,7 @@
 
       const cardHtml = `
         <p style="font-size:13px;font-weight:600;color:#111827;margin:0 0 2px 0;">${prop.titulo}</p>
-        ${prop.descripcion_corta ? `<p style="font-size:11px;color:#6b7280;margin:0 0 4px 0;">${prop.descripcion_corta}</p>` : ''}
+        ${prop.descripcion ? `<p style="font-size:11px;color:#6b7280;margin:0 0 4px 0;">${prop.descripcion}</p>` : ''}
         ${precio ? `<p style="font-size:13px;font-weight:700;color:#7c3aed;margin:0 0 8px 0;">${precio}</p>` : ''}
         ${imagenes.length > 0 ? `<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;">${thumbs}</div>` : ''}
       `;
