@@ -143,36 +143,57 @@
     messagesContainer.appendChild(messageDiv);
   }
 
-  // Función para renderizar respuesta del bot (API Premium)
-  function renderBotResponse(text: string, propiedades: any[] = []) {
-    // Burbujas 1+: una card por propiedad (título + descripción + precio + imágenes)
-    propiedades.forEach((prop: any) => {
-      const precioValor = prop.precio?.valor;
-      const precioMoneda = prop.precio?.moneda || 'USD';
-      const precio = precioValor && precioValor > 0
-        ? `${precioMoneda} ${parseInt(precioValor).toLocaleString('es-AR')}`
-        : '';
-      const imagenes: string[] = (prop.imagenes || []).slice(0, 3);
-      const thumbs = imagenes.map((url: string) =>
-        `<img src="${url}" alt="" style="width:100%;height:80px;object-fit:cover;border-radius:8px;cursor:pointer;" onerror="this.style.display='none'" onclick="window.open('${url}','_blank')" />`
-      ).join('');
-
-      addBotBubble(`
-        <p style="font-size:13px;font-weight:600;color:#111827;margin:0 0 2px 0;">${prop.titulo}</p>
-        ${prop.descripcion ? `<p style="font-size:11px;color:#6b7280;margin:0 0 4px 0;">${prop.descripcion}</p>` : ''}
-        ${precio ? `<p style="font-size:13px;font-weight:700;color:#7c3aed;margin:0 0 8px 0;">${precio}</p>` : ''}
-        ${imagenes.length > 0 ? `<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;">${thumbs}</div>` : ''}
-      `);
-    });
-
-    // Última burbuja: texto del bot
-    const cleanText = text
-      .replace(/https?:\/\/res\.cloudinary\.com\/[^\s]+/g, '')
-      .replace(/https?:\/\/[^\s]+\.(jpg|jpeg|png|webp)/gi, '')
+  function cleanAndFormat(raw: string): string {
+    return raw
+      .replace(/https?:\/\/[^\s]+\.(jpg|jpeg|png|webp|gif)/gi, '')
       .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
       .replace(/\n/g, '<br>')
       .trim();
-    addBotBubble(`<p class="text-sm text-gray-800">${cleanText}</p>`);
+  }
+
+  // Función para renderizar respuesta del bot (API Premium)
+  function renderBotResponse(text: string, propiedades: any[] = []) {
+    // Dividir texto en párrafos, igual que el widget real
+    const parrafos = text
+      .replace(/https?:\/\/[^\s]+\.(jpg|jpeg|png|webp|gif)/gi, '')
+      .split(/\n\n+/)
+      .map(p => p.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>').trim())
+      .filter(p => p.length > 0);
+
+    if (propiedades.length > 0) {
+      // Primer párrafo: intro del bot
+      if (parrafos[0]) {
+        addBotBubble(`<p class="text-sm text-gray-800">${parrafos[0]}</p>`);
+      }
+
+      // Una card por propiedad: título + descripción + precio + imágenes
+      propiedades.forEach((prop: any) => {
+        const precioValor = prop.precio?.valor;
+        const precioMoneda = prop.precio?.moneda || 'USD';
+        const precio = precioValor && precioValor > 0
+          ? `${precioMoneda} ${parseInt(precioValor).toLocaleString('es-AR')}`
+          : '';
+        const imagenes: string[] = (prop.imagenes || []).slice(0, 3);
+        const thumbs = imagenes.map((url: string) =>
+          `<img src="${url}" alt="" style="width:100%;height:80px;object-fit:cover;border-radius:8px;cursor:pointer;" onerror="this.style.display='none'" onclick="window.open('${url}','_blank')" />`
+        ).join('');
+
+        addBotBubble(`
+          <p style="font-size:13px;font-weight:600;color:#111827;margin:0 0 2px 0;">${prop.titulo}</p>
+          ${prop.descripcion ? `<p style="font-size:11px;color:#6b7280;margin:0 0 4px 0;">${prop.descripcion}</p>` : ''}
+          ${precio ? `<p style="font-size:13px;font-weight:700;color:#7c3aed;margin:0 0 8px 0;">${precio}</p>` : ''}
+          ${imagenes.length > 0 ? `<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;">${thumbs}</div>` : ''}
+        `);
+      });
+
+      // Último párrafo: pregunta de cierre del bot
+      if (parrafos.length > 1) {
+        addBotBubble(`<p class="text-sm text-gray-800">${parrafos[parrafos.length - 1]}</p>`);
+      }
+    } else {
+      // Sin propiedades: mostrar todo el texto
+      addBotBubble(`<p class="text-sm text-gray-800">${parrafos.join('<br><br>')}</p>`);
+    }
 
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
   }
