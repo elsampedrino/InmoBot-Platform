@@ -89,11 +89,11 @@
 
 <script>
   // ============================================
-  // DEMO WIDGET - CONEXIÓN REAL A N8N
+  // DEMO WIDGET - API PREMIUM
   // ============================================
 
   // Configuración
-  const WEBHOOK_URL = 'https://n8n-bot-inmobiliario.onrender.com/webhook/Plan_PRO';
+  const WEBHOOK_URL = 'https://api-premium-hyha.onrender.com/webhook/cristian-inmob/chat';
   const MAX_QUERIES = 3;
 
   // Estado de la sesión (almacenado en sessionStorage)
@@ -132,105 +132,49 @@
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
   }
 
-  // Función para parsear y renderizar respuesta del bot
-  function renderBotResponse(response: string) {
+  // Función para renderizar respuesta del bot (API Premium)
+  function renderBotResponse(text: string, propiedades: any[] = []) {
     const messageDiv = document.createElement('div');
     messageDiv.className = 'flex justify-start animate-fade-in';
 
     const bubble = document.createElement('div');
     bubble.className = 'rounded-2xl px-4 py-3 max-w-3xl shadow-sm bg-white border border-gray-100 rounded-tl-sm';
 
-    // Parsear la respuesta para extraer propiedades y texto
-    const parts = response.split('🏠 **');
-    const introText = parts[0].trim();
-    const properties = parts.slice(1);
+    // Limpiar URLs de fotos inyectadas en el texto (las mostramos desde propiedades_detalladas)
+    const cleanText = text
+      .replace(/https?:\/\/res\.cloudinary\.com\/[^\s]+/g, '')
+      .replace(/https?:\/\/[^\s]+\.(jpg|jpeg|png|webp)/gi, '')
+      .trim();
 
-    let html = '';
-
-    // Texto introductorio (si existe)
-    if (introText) {
-      let introHtml = introText
+    // Texto con markdown básico
+    let html = `<div class="text-sm text-gray-800 mb-2">${
+      cleanText
         .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-        .replace(/\n/g, '<br>');
-      html += `<div class="text-sm text-gray-800 mb-3">${introHtml}</div>`;
-    }
+        .replace(/\n/g, '<br>')
+    }</div>`;
 
-    // Renderizar cada propiedad como card
-    properties.forEach(prop => {
-      // Extraer componentes de la propiedad
-      const lines = prop.split('\n').filter(l => l.trim());
+    // Cards de propiedades desde datos estructurados
+    if (propiedades.length > 0) {
+      propiedades.forEach((prop: any) => {
+        const precio = prop.precio && prop.precio > 0
+          ? `${prop.moneda || 'USD'} ${parseInt(prop.precio).toLocaleString('es-AR')}`
+          : '';
+        const foto = prop.fotos?.[0] || '';
 
-      if (lines.length === 0) return;
-
-      // Primera línea: Título (ya viene sin 🏠 ni **)
-      const title = lines[0].replace(/\*\*/g, '').trim();
-
-      // Buscar descripción (texto antes del precio)
-      let description = '';
-      let price = '';
-      let images: string[] = [];
-
-      for (let i = 1; i < lines.length; i++) {
-        const line = lines[i].trim();
-
-        // Detectar precio (líneas que empiezan con ** y contienen $ o USD)
-        if (line.startsWith('**') && (line.includes('$') || line.includes('USD'))) {
-          price = line.replace(/\*\*/g, '').trim();
-        }
-        // Detectar imágenes (líneas que empiezan con 📸)
-        else if (line.startsWith('📸')) {
-          // Extraer URLs de la línea
-          const urlMatches = line.match(/https?:\/\/[^\s]+/g);
-          if (urlMatches) {
-            images = urlMatches;
-          }
-        }
-        // Si no es precio ni imagen, es parte de la descripción
-        else if (!price) {
-          description += (description ? ' ' : '') + line;
-        }
-      }
-
-      // Construir card de propiedad
-      html += `
-        <div class="bg-gradient-to-br from-violet-50 to-cyan-50 rounded-xl p-4 mt-3 border border-violet-200">
-          <h4 class="text-sm font-bold text-violet-700 mb-2">${title}</h4>
-          ${description ? `<p class="text-xs text-gray-700 mb-2">${description}</p>` : ''}
-          ${price ? `<p class="text-sm font-semibold text-gray-900 mb-2">${price}</p>` : ''}
-
-          ${images.length > 0 ? `
-            <div class="grid grid-cols-3 gap-2 mt-3">
-              ${images.map(url => `
-                <a href="${url}" target="_blank" rel="noopener noreferrer" class="block rounded-lg overflow-hidden border-2 border-transparent hover:border-violet-500 hover:shadow-lg active:shadow-lg transition-all duration-200">
-                  <img
-                    src="${url}"
-                    alt="Propiedad"
-                    class="w-full h-20 object-cover hover:brightness-110 transition-all cursor-pointer"
-                    onerror="this.style.display='none'"
-                  />
-                </a>
-              `).join('')}
-            </div>
-          ` : ''}
-        </div>
-      `;
-    });
-
-    // Texto final (después de las propiedades, como el CTA de contacto)
-    // Lo filtramos para NO mostrar el mensaje de "dejar datos"
-    const finalText = parts.length > 1 ? response.split('📸').pop()?.trim() : '';
-    if (finalText && !finalText.includes('Dejar tus datos') && !finalText.includes('contact')) {
-      let finalHtml = finalText
-        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-        .replace(/\n/g, '<br>');
-      html += `<div class="text-sm text-gray-700 mt-3 pt-3 border-t border-gray-200">${finalHtml}</div>`;
+        html += `
+          <div class="bg-gradient-to-br from-violet-50 to-cyan-50 rounded-xl p-4 mt-3 border border-violet-200">
+            ${foto ? `<img src="${foto}" alt="${prop.titulo}" class="w-full h-36 object-cover rounded-lg mb-3" onerror="this.style.display='none'" />` : ''}
+            <h4 class="text-sm font-bold text-violet-700 mb-1">${prop.titulo}</h4>
+            ${prop.descripcion_corta ? `<p class="text-xs text-gray-600 mb-2">${prop.descripcion_corta}</p>` : ''}
+            ${precio ? `<p class="text-sm font-semibold text-gray-900">${precio}</p>` : ''}
+          </div>
+        `;
+      });
     }
 
     bubble.innerHTML = html;
-
     messageDiv.appendChild(bubble);
     messagesContainer.appendChild(messageDiv);
-
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
   }
 
@@ -262,31 +206,29 @@
     }
   }
 
-  // Función para llamar al webhook real
-  async function sendToN8N(message: string): Promise<string> {
+  // Función para llamar al API Premium
+  async function sendToBot(message: string): Promise<{ text: string; propiedades: any[] }> {
     try {
       const response = await fetch(WEBHOOK_URL, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          message: message,
-          sessionId: sessionId,
-          repo: 'demo' // Repo demo para testing
-        })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message, sessionId })
       });
 
-      if (!response.ok) {
-        throw new Error('Error en la respuesta del servidor');
-      }
+      if (!response.ok) throw new Error('Error en la respuesta del servidor');
 
       const data = await response.json();
-      return data.response || 'Lo siento, hubo un error al procesar tu consulta.';
+      return {
+        text: data.response || 'Lo siento, hubo un error al procesar tu consulta.',
+        propiedades: data.propiedades_detalladas || []
+      };
 
     } catch (error) {
-      console.error('Error al conectar con N8N:', error);
-      return 'Lo siento, estamos experimentando problemas técnicos. Por favor, intentá nuevamente en unos momentos.';
+      console.error('Error al conectar con el bot:', error);
+      return {
+        text: 'Lo siento, estamos experimentando problemas técnicos. Por favor, intentá nuevamente en unos momentos.',
+        propiedades: []
+      };
     }
   }
 
@@ -327,12 +269,12 @@
     // Mostrar indicador de escritura
     showTypingIndicator();
 
-    // Llamar al webhook real
-    const botResponse = await sendToN8N(userMessage);
+    // Llamar al API Premium
+    const { text, propiedades } = await sendToBot(userMessage);
 
     // Ocultar indicador y mostrar respuesta
     hideTypingIndicator();
-    renderBotResponse(botResponse);
+    renderBotResponse(text, propiedades);
 
     // Re-habilitar input
     input.disabled = false;
