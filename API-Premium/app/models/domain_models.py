@@ -141,6 +141,7 @@ class ConversationState:
     esperando_contacto: bool = False
     esperando_visita: bool = False
     esperando_confirmacion: bool = False
+    esperando_nombre_whatsapp: bool = False  # pedir nombre antes del handoff WA
 
     last_user_message_at: str | None = None
 
@@ -164,6 +165,7 @@ class ConversationState:
             "esperando_contacto": self.esperando_contacto,
             "esperando_visita": self.esperando_visita,
             "esperando_confirmacion": self.esperando_confirmacion,
+            "esperando_nombre_whatsapp": self.esperando_nombre_whatsapp,
             "last_user_message_at": self.last_user_message_at,
         }
 
@@ -189,6 +191,7 @@ class ConversationState:
             esperando_contacto=data.get("esperando_contacto", False),
             esperando_visita=data.get("esperando_visita", False),
             esperando_confirmacion=data.get("esperando_confirmacion", False),
+            esperando_nombre_whatsapp=data.get("esperando_nombre_whatsapp", False),
             last_user_message_at=data.get("last_user_message_at"),
         )
 

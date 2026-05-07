@@ -99,6 +99,7 @@ class WhatsAppHandoffPayload(BaseModel):
     phone: str
     agent_name: str
     message: str
+    id_lead: int | None = None
 
 
 class WidgetLegacyResponse(BaseModel):

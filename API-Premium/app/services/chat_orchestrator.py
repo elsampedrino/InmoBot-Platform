@@ -209,18 +209,54 @@ class ChatOrchestrator:
                 filters=filters if decision.actions.run_search else None,
             )
 
+            # ── 7b. WhatsApp lead capture override ────────────────────────────
+            # Si la empresa tiene WhatsApp y el usuario mostró intención comercial,
+            # pedimos nombre antes del handoff (sin teléfono, para no agregar fricción).
+            wa_cfg = tenant_config.notificaciones.get("whatsapp", {})
+            wa_disponible = bool(wa_cfg.get("enabled") and wa_cfg.get("phone"))
+
+            whatsapp_nombre_solicitado = False
+            if (
+                wa_disponible
+                and decision.route in (Route.CONTACTAR_ASESOR, Route.AGENDAR_VISITA)
+                and decision.intent in ("quiere_visitar", "quiere_asesor")
+            ):
+                new_state.esperando_nombre_whatsapp = True
+                new_state.esperando_contacto = False
+                new_state.esperando_visita = False
+                whatsapp_nombre_solicitado = True
+
             # ── 8. Construir respuesta (Sonnet → fallback plantilla) ────────────
             items_para_respuesta = search_result.items if search_result else []
-            respuesta, ai_meta = await self._build_ai_response(
-                decision=decision,
-                turn=turn,
-                cfg=tenant_config,
-                state=new_state,
-                is_first_turn=is_first_turn,
-                search_result=search_result,
-                item_detail=item_detail,
-                kb_chunks=kb_chunks,
-            )
+            nombre_lead_capturado: str | None = None
+
+            if decision.intent == "nombre_para_whatsapp_provistos":
+                # El mensaje completo es el nombre del usuario
+                nombre_raw = decision.entities.get("nombre_whatsapp", request.mensaje).strip()
+                nombre_lead_capturado = (
+                    " ".join(w.capitalize() for w in nombre_raw.split()) or None
+                )
+                saludo = f", {nombre_lead_capturado}" if nombre_lead_capturado else ""
+                respuesta = (
+                    f"¡Perfecto{saludo}! Ya registré tu consulta con "
+                    f"{tenant_config.nombre_empresa}. "
+                    "Un asesor va a estar disponible para ayudarte directamente por WhatsApp."
+                )
+                ai_meta = {"sonnet_fallback": True, "sonnet_reason": "whatsapp_handoff_confirmed"}
+            elif whatsapp_nombre_solicitado:
+                respuesta = "¿Cuál es tu nombre para que el asesor sepa con quién está hablando?"
+                ai_meta = {"sonnet_fallback": True, "sonnet_reason": "whatsapp_name_request"}
+            else:
+                respuesta, ai_meta = await self._build_ai_response(
+                    decision=decision,
+                    turn=turn,
+                    cfg=tenant_config,
+                    state=new_state,
+                    is_first_turn=is_first_turn,
+                    search_result=search_result,
+                    item_detail=item_detail,
+                    kb_chunks=kb_chunks,
+                )
 
             # ── 8b. Inyección determinística de fotos ──────────────────────────
             # Las fotos se inyectan FUERA del AI para garantizar que siempre
@@ -304,6 +340,7 @@ class ChatOrchestrator:
                         search_result.total_encontrados if search_result else None
                     ),
                     "id_lead": id_lead_capturado,
+                    "nombre_lead": nombre_lead_capturado,
                     **ai_meta,
                 },
             )
@@ -423,8 +460,19 @@ class ChatOrchestrator:
         Devuelve id_lead si se creó correctamente, None si hubo error.
         """
         try:
-            raw_text = decision.entities.get("datos_contacto", request.mensaje)
-            nombre, telefono, email = _parse_contact_data(raw_text)
+            if decision.intent == "nombre_para_whatsapp_provistos":
+                # El usuario respondió con su nombre tras la solicitud de WhatsApp handoff.
+                # Usamos el mensaje completo como nombre (sin filtro de regex).
+                nombre_raw = decision.entities.get("nombre_whatsapp", request.mensaje).strip()
+                nombre = " ".join(w.capitalize() for w in nombre_raw.split()) or None
+                if nombre and len(nombre) < 2:
+                    nombre = None
+                telefono, email = None, None
+                extra_meta = {"handoff_type": "whatsapp"}
+            else:
+                raw_text = decision.entities.get("datos_contacto", request.mensaje)
+                nombre, telefono, email = _parse_contact_data(raw_text)
+                extra_meta = {}
 
             lead_response = await self.leads_service.create_from_conversation(
                 id_empresa=tenant_config.id_empresa,
@@ -436,8 +484,9 @@ class ChatOrchestrator:
                     "session_id": request.session_id,
                     "route": decision.route.value,
                     "intent": decision.intent,
-                    "mensaje_original": raw_text[:200],
+                    "mensaje_original": request.mensaje[:200],
                     "propiedades_interes": self._build_propiedades_interes(state),
+                    **extra_meta,
                 },
             )
 
@@ -584,6 +633,7 @@ class ChatOrchestrator:
             }
             state.esperando_contacto = False
             state.esperando_visita = False
+            state.esperando_nombre_whatsapp = False
 
         # Actualizar items_recientes con los resultados
         if search_result and search_result.items:
@@ -620,11 +670,12 @@ class ChatOrchestrator:
             state.visit_requested = True
             state.esperando_visita = True
 
-        # Lead capturado
-        if decision.intent == "datos_de_contacto_provistos":
+        # Lead capturado (flujo clásico o flujo WhatsApp)
+        if decision.intent in ("datos_de_contacto_provistos", "nombre_para_whatsapp_provistos"):
             state.lead_capturado = True
             state.esperando_contacto = False
             state.esperando_visita = False
+            state.esperando_nombre_whatsapp = False
 
         return state
 

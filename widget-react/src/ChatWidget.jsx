@@ -207,7 +207,8 @@ const ChatWidget = ({ config }) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         session_id: sessionId,
-        item_id: message.propiedades?.[0]?.id || null
+        item_id: message.propiedades?.[0]?.id || null,
+        id_lead: message.whatsapp?.id_lead || null
       })
     }).catch(() => {});
     window.open(message.whatsapp.url, '_blank', 'noopener,noreferrer');

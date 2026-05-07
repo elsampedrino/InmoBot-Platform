@@ -218,6 +218,24 @@ class RouterConversacional:
         """
         msg = mensaje.strip()
 
+        # ── 0. Bot esperando nombre para handoff WhatsApp ─────────────────────
+        # Cualquier mensaje en este estado se trata como nombre del usuario.
+        if state.esperando_nombre_whatsapp:
+            return RouterDecision(
+                route=Route.CONTACTAR_ASESOR,
+                intent="nombre_para_whatsapp_provistos",
+                confidence=0.95,
+                used_ai_fallback=False,
+                entities={"nombre_whatsapp": msg},
+                actions=RouterActions(
+                    run_ai_response=True,
+                    create_or_update_lead=True,
+                    register_conversion_event=True,
+                    conversion_event=ConversionEvent.LEAD_CREATED,
+                ),
+                business_signals={"lead_signal": True, "whatsapp_handoff": True},
+            )
+
         # ── 1. Bot esperando datos de contacto: capturar si los provee ────────
         if (state.esperando_contacto or state.esperando_visita) and _PAT_CONTACTO_DATOS.search(msg):
             route = Route.AGENDAR_VISITA if state.esperando_visita else Route.CONTACTAR_ASESOR

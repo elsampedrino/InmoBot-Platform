@@ -71,8 +71,8 @@ async def webhook_widget_chat(
     internal_response = await orchestrator.handle_message(internal_request)
     response = adapt_internal_response(internal_response, payload.sessionId)
 
-    # Inyectar WhatsApp handoff si la empresa lo tiene configurado y hay propiedades
-    if internal_response.items:
+    # Inyectar WhatsApp handoff tras captura de lead (nombre confirmado)
+    if internal_response.lead_capturado:
         empresa_result = await db.execute(
             select(Empresa.notificaciones, Empresa.id_empresa).where(Empresa.slug == empresa_slug)
         )
@@ -80,12 +80,18 @@ async def webhook_widget_chat(
         if row:
             wa = (row.notificaciones or {}).get("whatsapp", {})
             if wa.get("enabled") and wa.get("phone"):
+                nombre_lead = internal_response.metadata.get("nombre_lead")
                 payload_dict = build_whatsapp_handoff(
                     phone=wa["phone"],
                     agent_name=wa.get("agent_name", "Asesor"),
                     items=internal_response.items,
+                    lead_nombre=nombre_lead,
                 )
-                response.whatsapp_handoff = WhatsAppHandoffPayload(**payload_dict)
+                id_lead = internal_response.metadata.get("id_lead")
+                response.whatsapp_handoff = WhatsAppHandoffPayload(
+                    **payload_dict,
+                    id_lead=id_lead,
+                )
 
     return response
 
@@ -95,6 +101,7 @@ async def webhook_widget_chat(
 class WhatsAppClickRequest(BaseModel):
     session_id: str
     item_id: str | None = None
+    id_lead: int | None = None
 
 
 @router.post("/{empresa_slug}/whatsapp-click")
@@ -117,6 +124,7 @@ async def whatsapp_handoff_click(
         id_rubro=1,
         canal="web",
         evento=ConversionEvent.WHATSAPP_HANDOFF,
+        id_lead=payload.id_lead,
         session_id=payload.session_id,
         metadata={"item_id": payload.item_id},
     )
