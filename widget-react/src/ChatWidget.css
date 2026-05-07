@@ -790,6 +790,36 @@
   transform: translateY(0);
 }
 
+/* WhatsApp Handoff CTA */
+.whatsapp-handoff {
+  margin-top: 12px;
+}
+
+.whatsapp-handoff-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 11px 16px;
+  background: #25D366;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.whatsapp-handoff-button:hover {
+  background: #1ebe5d;
+  transform: translateY(-1px);
+}
+
+.whatsapp-handoff-button:active {
+  transform: translateY(0);
+}
+
 /* Contact Form */
 .contact-form-container {
   background: white;

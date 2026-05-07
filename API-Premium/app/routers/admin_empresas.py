@@ -56,6 +56,11 @@ def _to_response(e) -> EmpresaAdminResponse:
         notificaciones=EmpresaNotificacionesSchema.model_validate({
             "telegram": {"enabled": tg.get("enabled", False), "chat_id": str(tg.get("chat_id", ""))},
             "email": {"enabled": em.get("enabled", False), "to": em.get("to", "")},
+            "whatsapp": {
+                "enabled": notif.get("whatsapp", {}).get("enabled", False),
+                "phone": str(notif.get("whatsapp", {}).get("phone", "")),
+                "agent_name": str(notif.get("whatsapp", {}).get("agent_name", "")),
+            },
         }),
         created_at=e.created_at.isoformat() if e.created_at else None,
     )
@@ -139,6 +144,11 @@ async def update_empresa(
         updates["notificaciones"] = {
             "telegram": {"enabled": notif.telegram.enabled, "chat_id": notif.telegram.chat_id},
             "email": {"enabled": notif.email.enabled, "to": notif.email.to},
+            "whatsapp": {
+                "enabled": notif.whatsapp.enabled,
+                "phone": notif.whatsapp.phone,
+                "agent_name": notif.whatsapp.agent_name,
+            },
         }
 
     empresa = await repo.update_empresa(db, empresa, updates)

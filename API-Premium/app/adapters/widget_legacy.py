@@ -92,15 +92,25 @@ class LegacyPropertyResponse(BaseModel):
     descripcion: str = ""
 
 
+class WhatsAppHandoffPayload(BaseModel):
+    """Payload de handoff a WhatsApp — consumido por el widget para mostrar el CTA."""
+    enabled: bool
+    url: str
+    phone: str
+    agent_name: str
+    message: str
+
+
 class WidgetLegacyResponse(BaseModel):
     """
     Contrato de salida que el widget embebido espera recibir.
 
     El widget lee (con fallbacks):
-      data.response || data.respuesta_bot       → texto del bot
+      data.response || data.respuesta_bot         → texto del bot
       data.propiedades_detalladas || data.propiedades → listado de propiedades
-      data.leads === true                        → muestra botones de acción
-      data.metricas || data.costos              → métricas opcionales (ignorado si null)
+      data.leads === true                          → muestra botones de acción (N8N)
+      data.whatsapp_handoff                        → CTA WhatsApp a humano
+      data.metricas || data.costos                → métricas opcionales (ignorado si null)
     """
     success: bool = True
     response: str
@@ -108,8 +118,8 @@ class WidgetLegacyResponse(BaseModel):
     propiedades_detalladas: list[LegacyPropertyResponse] = []
     propiedadesMostradas: int = 0
     leads: bool = False
+    whatsapp_handoff: WhatsAppHandoffPayload | None = None
     timestamp: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
-    # Campo opcional de métricas — el widget lo ignora si es null
     metricas: dict[str, Any] | None = None
 
 

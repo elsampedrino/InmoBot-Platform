@@ -356,11 +356,11 @@ export default function PropiedadFormPage() {
                   <input type="number" className={inp} value={(form.atributos.ambientes as number) ?? ""} onChange={e => setAttr("ambientes", e.target.value ? parseInt(e.target.value) : null)} placeholder="5" min={0} />
                 </Field>
                 <Field label="Sup. cubierta (m²)">
-                  <input type="number" className={inp} value={(form.atributos.superficie_cubierta as number) ?? ""} onChange={e => setAttr("superficie_cubierta", e.target.value ? parseFloat(e.target.value) : undefined)} placeholder="120" min={0} step={0.01} />
+                  <input type="number" className={inp} value={(form.atributos.superficie_cubierta as unknown as number) ?? ""} onChange={e => setAttr("superficie_cubierta", e.target.value ? parseFloat(e.target.value) : undefined)} placeholder="120" min={0} step={0.01} />
                 </Field>
                 <Field label="Sup. total">
                   <div className="flex gap-1">
-                    <input type="number" className={inp} value={(form.atributos.superficie_total as number) ?? ""} onChange={e => setAttr("superficie_total", e.target.value ? parseFloat(e.target.value) : undefined)} placeholder="300" min={0} step={0.01} />
+                    <input type="number" className={inp} value={(form.atributos.superficie_total as unknown as number) ?? ""} onChange={e => setAttr("superficie_total", e.target.value ? parseFloat(e.target.value) : undefined)} placeholder="300" min={0} step={0.01} />
                     <select className="px-2 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 bg-white" value={(form.atributos.superficie_unidad as string) ?? "m²"} onChange={e => setAttr("superficie_unidad", e.target.value)}>
                       <option value="m²">m²</option>
                       <option value="ha">ha</option>

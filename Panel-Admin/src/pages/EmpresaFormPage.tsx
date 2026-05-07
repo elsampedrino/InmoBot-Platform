@@ -157,6 +157,14 @@ export default function EmpresaFormPage() {
     }
     if (em?.enabled && em.to && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em.to)) {
       setError("El email destino no tiene un formato válido.");
+    }
+    const wa = form.notificaciones?.whatsapp;
+    if (wa?.enabled && !wa.phone.trim()) {
+      setError("El número de WhatsApp es requerido cuando está habilitado.");
+      return;
+    }
+    if (wa?.enabled && wa.phone && !/^\d{10,15}$/.test(wa.phone.trim())) {
+      setError("El número de WhatsApp debe contener solo dígitos (ej: 5493329123456).");
       return;
     }
     if (form.servicios?.catalogo_repo) {
@@ -219,6 +227,7 @@ export default function EmpresaFormPage() {
 
   const tgEnabled = form.notificaciones?.telegram.enabled ?? false;
   const emailEnabled = form.notificaciones?.email.enabled ?? false;
+  const waEnabled = form.notificaciones?.whatsapp?.enabled ?? false;
 
   return (
     <div className="p-6 max-w-5xl mx-auto">
@@ -430,6 +439,43 @@ export default function EmpresaFormPage() {
                       className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
                     />
                   </Field>
+                )}
+              </div>
+
+              <div className="border-t border-gray-100 pt-3 space-y-3">
+                {/* WhatsApp */}
+                <FieldRow label="WhatsApp">
+                  <Toggle
+                    value={waEnabled}
+                    onChange={(v) => setNotif({ whatsapp: { ...form.notificaciones!.whatsapp, enabled: v } })}
+                  />
+                </FieldRow>
+                {waEnabled && (
+                  <>
+                    <Field label="Número destino">
+                      <input
+                        type="tel"
+                        value={form.notificaciones?.whatsapp?.phone ?? ""}
+                        onChange={(e) =>
+                          setNotif({ whatsapp: { ...form.notificaciones!.whatsapp, phone: e.target.value } })
+                        }
+                        placeholder="5493329123456"
+                        className="border border-gray-300 rounded-lg px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-brand-500"
+                      />
+                      <p className="text-xs text-gray-400 mt-1">Número que recibirá consultas derivadas desde el Bot. Sin espacios ni símbolos.</p>
+                    </Field>
+                    <Field label="Nombre del asesor">
+                      <input
+                        type="text"
+                        value={form.notificaciones?.whatsapp?.agent_name ?? ""}
+                        onChange={(e) =>
+                          setNotif({ whatsapp: { ...form.notificaciones!.whatsapp, agent_name: e.target.value } })
+                        }
+                        placeholder="Cristian"
+                        className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+                      />
+                    </Field>
+                  </>
                 )}
               </div>
             </Card>

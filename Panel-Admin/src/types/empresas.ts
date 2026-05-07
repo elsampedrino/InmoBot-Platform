@@ -38,9 +38,16 @@ export interface EmpresaEmail {
   to: string;
 }
 
+export interface EmpresaWhatsApp {
+  enabled: boolean;
+  phone: string;
+  agent_name: string;
+}
+
 export interface EmpresaNotificaciones {
   telegram: EmpresaTelegram;
   email: EmpresaEmail;
+  whatsapp: EmpresaWhatsApp;
 }
 
 export interface Empresa {

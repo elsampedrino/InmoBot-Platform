@@ -41,6 +41,7 @@ class ConversionEvent(str, Enum):
     ASESOR_REQUESTED     = "phone_captured"    # usuario deja datos de contacto
     VISITA_REQUESTED     = "visit_request"     # usuario solicita visita
     ITEM_DETAIL_VIEWED   = "item_interest"     # usuario pide detalle de un item
+    WHATSAPP_HANDOFF     = "whatsapp_handoff"  # usuario hace click en CTA WhatsApp
 
 
 # ─── FILTROS DE BÚSQUEDA ──────────────────────────────────────────────────────

@@ -11,7 +11,6 @@ import {
   RefreshCw,
 } from "lucide-react";
 import { api, ApiError } from "../lib/api";
-import { getSession } from "../lib/auth";
 import type { Empresa, EmpresaListResponse } from "../types/empresas";
 import type {
   ImportacionPreviewResponse,
@@ -117,8 +116,6 @@ function CollapsibleList({
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function ImportacionesPage() {
-  const ownEmpresaId = getSession()?.empresa.id_empresa;
-
   // Selector de empresa
   const [empresas, setEmpresas] = useState<Empresa[]>([]);
   const [selectedEmpresaId, setSelectedEmpresaId] = useState<number | null>(null);
@@ -155,9 +152,7 @@ export default function ImportacionesPage() {
   useEffect(() => {
     api
       .get<EmpresaListResponse>("/admin/empresas?activa=true")
-      .then((d) =>
-        setEmpresas(d.empresas.filter((e) => e.id_empresa !== ownEmpresaId))
-      );
+      .then((d) => setEmpresas(d.empresas));
   }, []);
 
   // Cargar logs cuando cambia empresa

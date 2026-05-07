@@ -2,14 +2,9 @@
 webhook_widget.py — Endpoints públicos para el widget web embebido.
 
 Rutas:
-  GET  /webhook/{empresa_slug}/status  — estado del bot (bot_enabled, message)
-  POST /webhook/{empresa_slug}/chat    — procesar mensaje conversacional
-
-El empresa_slug viene en la URL porque el widget no lo incluye en el body;
-solo envía { message, sessionId, timestamp, repo }.
-
-La adaptación de contratos (widget ↔ interno) está completamente aislada
-en app/adapters/widget_legacy.py.
+  GET  /webhook/{empresa_slug}/status           — estado del bot
+  POST /webhook/{empresa_slug}/chat             — procesar mensaje conversacional
+  POST /webhook/{empresa_slug}/whatsapp-click   — registrar click en CTA WhatsApp
 """
 from fastapi import APIRouter, Depends, Path
 from pydantic import BaseModel
@@ -17,6 +12,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.adapters.widget_legacy import (
+    WhatsAppHandoffPayload,
     WidgetIncomingRequest,
     WidgetLegacyResponse,
     adapt_internal_response,
@@ -24,7 +20,10 @@ from app.adapters.widget_legacy import (
 )
 from app.core.database import get_db
 from app.models.db_models import Empresa
+from app.models.domain_models import ConversionEvent
+from app.services.analytics_service import AnalyticsService
 from app.services.chat_orchestrator import ChatOrchestrator
+from app.services.whatsapp_handoff import build_whatsapp_handoff
 
 router = APIRouter()
 
@@ -43,11 +42,6 @@ async def widget_status(
     empresa_slug: str = Path(..., description="Slug de la empresa"),
     db: AsyncSession = Depends(get_db),
 ) -> WidgetStatusResponse:
-    """
-    Consulta pública que el widget llama al inicializar para saber si el bot
-    está habilitado. No requiere autenticación.
-    Si la empresa no existe, está inactiva o servicios.bot=false → bot_enabled=false.
-    """
     result = await db.execute(
         select(Empresa.servicios, Empresa.activa).where(Empresa.slug == empresa_slug)
     )
@@ -72,19 +66,58 @@ async def webhook_widget_chat(
     payload: WidgetIncomingRequest = ...,
     db: AsyncSession = Depends(get_db),
 ) -> WidgetLegacyResponse:
-    """
-    Recibe mensajes del widget web y devuelve la respuesta en el contrato
-    legacy que el widget espera (compatible con el formato N8N existente).
-
-    El widget apunta a: POST /webhook/{empresa_slug}/chat
-    (configurado vía window.InmoBotConfig.apiUrl)
-
-    Flujo:
-      1. adapt_widget_request  → traduce { message, sessionId } → ChatMessageRequest
-      2. ChatOrchestrator      → pipeline conversacional completo (incluye gate BOT_DISABLED)
-      3. adapt_internal_response → traduce ChatMessageResponse → WidgetLegacyResponse
-    """
     internal_request = adapt_widget_request(payload, empresa_slug)
     orchestrator = ChatOrchestrator(db)
     internal_response = await orchestrator.handle_message(internal_request)
-    return adapt_internal_response(internal_response, payload.sessionId)
+    response = adapt_internal_response(internal_response, payload.sessionId)
+
+    # Inyectar WhatsApp handoff si la empresa lo tiene configurado y hay propiedades
+    if internal_response.items:
+        empresa_result = await db.execute(
+            select(Empresa.notificaciones, Empresa.id_empresa).where(Empresa.slug == empresa_slug)
+        )
+        row = empresa_result.one_or_none()
+        if row:
+            wa = (row.notificaciones or {}).get("whatsapp", {})
+            if wa.get("enabled") and wa.get("phone"):
+                payload_dict = build_whatsapp_handoff(
+                    phone=wa["phone"],
+                    agent_name=wa.get("agent_name", "Asesor"),
+                    items=internal_response.items,
+                )
+                response.whatsapp_handoff = WhatsAppHandoffPayload(**payload_dict)
+
+    return response
+
+
+# ── Analytics: click WhatsApp ──────────────────────────────────────────────────
+
+class WhatsAppClickRequest(BaseModel):
+    session_id: str
+    item_id: str | None = None
+
+
+@router.post("/{empresa_slug}/whatsapp-click")
+async def whatsapp_handoff_click(
+    empresa_slug: str = Path(...),
+    payload: WhatsAppClickRequest = ...,
+    db: AsyncSession = Depends(get_db),
+) -> dict:
+    """Registra el evento analytics cuando el usuario hace click en el CTA de WhatsApp."""
+    empresa_result = await db.execute(
+        select(Empresa.id_empresa).where(Empresa.slug == empresa_slug)
+    )
+    row = empresa_result.one_or_none()
+    if not row:
+        return {"ok": False}
+
+    analytics = AnalyticsService(db)
+    await analytics.log_conversion_event(
+        id_empresa=row.id_empresa,
+        id_rubro=1,
+        canal="web",
+        evento=ConversionEvent.WHATSAPP_HANDOFF,
+        session_id=payload.session_id,
+        metadata={"item_id": payload.item_id},
+    )
+    return {"ok": True}

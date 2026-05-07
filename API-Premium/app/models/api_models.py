@@ -271,9 +271,15 @@ class EmpresaEmailSchema(BaseModel):
     enabled: bool = False
     to: str = ""
 
+class EmpresaWhatsAppSchema(BaseModel):
+    enabled: bool = False
+    phone: str = ""
+    agent_name: str = ""
+
 class EmpresaNotificacionesSchema(BaseModel):
     telegram: EmpresaTelegramSchema = EmpresaTelegramSchema()
     email: EmpresaEmailSchema = EmpresaEmailSchema()
+    whatsapp: EmpresaWhatsAppSchema = EmpresaWhatsAppSchema()
 
 class EmpresaAdminResponse(BaseModel):
     id_empresa: int
