@@ -7,7 +7,7 @@ Diseñado para ser reutilizable en el futuro:
 """
 import urllib.parse
 
-from app.models.domain_models import ItemBrief
+from app.models.api_models import ItemBrief
 
 
 def _build_message(items: list[ItemBrief], lead_nombre: str | None = None) -> str:
