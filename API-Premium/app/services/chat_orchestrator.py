@@ -677,6 +677,10 @@ class ChatOrchestrator:
             state.esperando_visita = False
             state.esperando_nombre_whatsapp = False
 
+        # Si el usuario abandonó el flujo de nombre (eligió otra intención), limpiar el estado
+        if state.esperando_nombre_whatsapp and decision.intent != "nombre_para_whatsapp_provistos":
+            state.esperando_nombre_whatsapp = False
+
         return state
 
     # ─── Respuestas ───────────────────────────────────────────────────────────

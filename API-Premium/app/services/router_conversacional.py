@@ -219,22 +219,35 @@ class RouterConversacional:
         msg = mensaje.strip()
 
         # ── 0. Bot esperando nombre para handoff WhatsApp ─────────────────────
-        # Cualquier mensaje en este estado se trata como nombre del usuario.
+        # Solo capturar como nombre si el mensaje no parece otra intención real.
+        # Si el usuario busca, saluda o consulta, dejamos que las reglas normales actúen.
         if state.esperando_nombre_whatsapp:
-            return RouterDecision(
-                route=Route.CONTACTAR_ASESOR,
-                intent="nombre_para_whatsapp_provistos",
-                confidence=0.95,
-                used_ai_fallback=False,
-                entities={"nombre_whatsapp": msg},
-                actions=RouterActions(
-                    run_ai_response=True,
-                    create_or_update_lead=True,
-                    register_conversion_event=True,
-                    conversion_event=ConversionEvent.LEAD_CREATED,
-                ),
-                business_signals={"lead_signal": True, "whatsapp_handoff": True},
+            _parece_otra_intencion = (
+                _PAT_BUSQUEDA.search(msg)
+                or _PAT_SALUDO.search(msg)
+                or _PAT_KB.search(msg)
+                or _PAT_REFINAMIENTO.search(msg)
+                or _PAT_DETALLE.search(msg)
+                or _PAT_VISITA.search(msg)
+                or _PAT_ASESOR.search(msg)
             )
+            if not _parece_otra_intencion:
+                return RouterDecision(
+                    route=Route.CONTACTAR_ASESOR,
+                    intent="nombre_para_whatsapp_provistos",
+                    confidence=0.95,
+                    used_ai_fallback=False,
+                    entities={"nombre_whatsapp": msg},
+                    actions=RouterActions(
+                        run_ai_response=True,
+                        create_or_update_lead=True,
+                        register_conversion_event=True,
+                        conversion_event=ConversionEvent.LEAD_CREATED,
+                    ),
+                    business_signals={"lead_signal": True, "whatsapp_handoff": True},
+                )
+            # Si parece otra intención, caer en las reglas normales
+            # (_advance_state limpiará esperando_nombre_whatsapp)
 
         # ── 1. Bot esperando datos de contacto: capturar si los provee ────────
         if (state.esperando_contacto or state.esperando_visita) and _PAT_CONTACTO_DATOS.search(msg):
