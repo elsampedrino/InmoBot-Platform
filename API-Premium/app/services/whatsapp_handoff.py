@@ -47,6 +47,7 @@ def _build_message(
         categoria = prop.get("categoria", "")
         precio = prop.get("precio")
         moneda = prop.get("moneda", "USD")
+        calle = prop.get("calle", "")
         barrio = prop.get("barrio") or prop.get("ciudad", "")
 
         lines.append(titulo)
