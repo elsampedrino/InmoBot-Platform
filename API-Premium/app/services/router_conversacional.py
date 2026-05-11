@@ -455,7 +455,11 @@ class RouterConversacional:
 
     def _resolve_item_reference(self, mensaje: str, state: ConversationState) -> str | None:
         """
-        Resuelve referencias a items previos ("el primero", "ese", "la opción 2").
+        Resuelve referencias a items previos.
+        Estrategias en orden:
+          1. Ordinales explícitos ("el primero", "la opción 2")
+          2. Demostrativos ("ese", "esa", "eso") → último mostrado
+          3. Keyword match contra título/barrio/ciudad del item
         Devuelve el id_item referenciado o None.
         """
         resumen = state.items_recientes_resumen
@@ -475,5 +479,34 @@ class RouterConversacional:
             return state.ultimo_item_referenciado or (
                 resumen[-1].id_item if resumen else None
             )
+
+        # Keyword match: buscar palabras significativas del mensaje en título/ubicación
+        _STOPWORDS = {
+            "de", "la", "el", "los", "las", "un", "una", "que", "en", "y", "a",
+            "me", "da", "das", "di", "dame", "dime", "mas", "más", "info", "ver",
+            "quiero", "sobre", "esta", "este", "esa", "ese", "propiedad", "casa",
+            "depto", "departamento", "lote", "campo", "inmueble", "detalle",
+            "detalles", "información", "informacion", "contame", "cuéntame",
+            "saber", "más", "esa", "eso",
+        }
+        palabras = [
+            w for w in re.findall(r"[a-záéíóúñü]{4,}", msg, re.IGNORECASE)
+            if w.lower() not in _STOPWORDS
+        ]
+        if palabras:
+            best_id = None
+            best_score = 0
+            for item in resumen:
+                texto = item.titulo.lower()
+                if item.barrio:
+                    texto += " " + item.barrio.lower()
+                if item.ciudad:
+                    texto += " " + item.ciudad.lower()
+                score = sum(1 for p in palabras if p.lower() in texto)
+                if score > best_score:
+                    best_score = score
+                    best_id = item.id_item
+            if best_score > 0:
+                return best_id
 
         return None
