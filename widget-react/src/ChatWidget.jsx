@@ -403,7 +403,7 @@ const ChatWidget = ({ config }) => {
         })}
 
         {/* CTA WhatsApp handoff */}
-        {message.whatsapp?.enabled && message.propiedades?.length > 0 && (
+        {message.whatsapp?.enabled && (
           <div className="whatsapp-handoff">
             <button
               className="whatsapp-handoff-button"
