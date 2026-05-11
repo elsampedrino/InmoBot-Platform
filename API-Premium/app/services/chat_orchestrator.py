@@ -654,6 +654,7 @@ class ChatOrchestrator:
                     moneda=it.moneda,
                     barrio=(it.atributos or {}).get("barrio", ""),
                     ciudad=(it.atributos or {}).get("ciudad", ""),
+                    calle=(it.atributos or {}).get("calle", ""),
                 )
                 for i, it in enumerate(search_result.items)
             ]

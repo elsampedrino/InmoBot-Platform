@@ -498,6 +498,8 @@ class RouterConversacional:
             best_score = 0
             for item in resumen:
                 texto = item.titulo.lower()
+                if item.calle:
+                    texto += " " + item.calle.lower()
                 if item.barrio:
                     texto += " " + item.barrio.lower()
                 if item.ciudad:

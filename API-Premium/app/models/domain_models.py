@@ -112,6 +112,7 @@ class ItemSummary:
     moneda: str | None = None
     barrio: str = ""
     ciudad: str = ""
+    calle: str = ""
 
 
 # ─── ESTADO CONVERSACIONAL ────────────────────────────────────────────────────
@@ -169,6 +170,7 @@ class ConversationState:
                     "moneda": i.moneda,
                     "barrio": i.barrio,
                     "ciudad": i.ciudad,
+                    "calle": i.calle,
                 }
                 for i in self.items_recientes_resumen
             ],
@@ -198,6 +200,7 @@ class ConversationState:
                 moneda=i.get("moneda"),
                 barrio=i.get("barrio", ""),
                 ciudad=i.get("ciudad", ""),
+                calle=i.get("calle", ""),
             )
             for i in data.get("items_recientes_resumen", [])
         ]
