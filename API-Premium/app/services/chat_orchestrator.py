@@ -231,10 +231,11 @@ class ChatOrchestrator:
             nombre_lead_capturado: str | None = None
 
             if decision.intent == "nombre_para_whatsapp_provistos":
-                # El mensaje completo es el nombre del usuario
+                # Extraer solo la parte de nombre (palabras sin dígitos) para el saludo
                 nombre_raw = decision.entities.get("nombre_whatsapp", request.mensaje).strip()
+                palabras_nombre_resp = [w for w in nombre_raw.split() if not re.search(r"\d", w)]
                 nombre_lead_capturado = (
-                    " ".join(w.capitalize() for w in nombre_raw.split()) or None
+                    " ".join(w.capitalize() for w in palabras_nombre_resp) or None
                 )
                 saludo = f", {nombre_lead_capturado}" if nombre_lead_capturado else ""
                 respuesta = (
@@ -461,13 +462,15 @@ class ChatOrchestrator:
         """
         try:
             if decision.intent == "nombre_para_whatsapp_provistos":
-                # El usuario respondió con su nombre tras la solicitud de WhatsApp handoff.
-                # Usamos el mensaje completo como nombre (sin filtro de regex).
+                # El usuario respondió con su nombre (y opcionalmente teléfono).
+                # Separamos palabras sin dígitos (nombre) de las que tienen dígitos (teléfono).
                 nombre_raw = decision.entities.get("nombre_whatsapp", request.mensaje).strip()
-                nombre = " ".join(w.capitalize() for w in nombre_raw.split()) or None
+                palabras_nombre = [w for w in nombre_raw.split() if not re.search(r"\d", w)]
+                nombre = " ".join(w.capitalize() for w in palabras_nombre) or None
                 if nombre and len(nombre) < 2:
                     nombre = None
-                telefono, email = None, None
+                # Capturar teléfono si el usuario lo incluyó junto al nombre
+                _, telefono, email = _parse_contact_data(nombre_raw)
                 extra_meta = {"handoff_type": "whatsapp"}
             else:
                 raw_text = decision.entities.get("datos_contacto", request.mensaje)
