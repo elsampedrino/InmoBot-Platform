@@ -342,6 +342,7 @@ class ChatOrchestrator:
                     ),
                     "id_lead": id_lead_capturado,
                     "nombre_lead": nombre_lead_capturado,
+                    "propiedades_interes": self._build_propiedades_interes(new_state),
                     **ai_meta,
                 },
             )
@@ -647,6 +648,12 @@ class ChatOrchestrator:
                     id_item=it.id_item,
                     label=f"opcion_{i + 1}",
                     titulo=it.titulo,
+                    tipo=it.tipo,
+                    categoria=it.categoria,
+                    precio=it.precio,
+                    moneda=it.moneda,
+                    barrio=(it.atributos or {}).get("barrio", ""),
+                    ciudad=(it.atributos or {}).get("ciudad", ""),
                 )
                 for i, it in enumerate(search_result.items)
             ]
@@ -954,25 +961,37 @@ class ChatOrchestrator:
 
     def _build_propiedades_interes(self, state: ConversationState | None) -> list[dict]:
         """
-        Construye la lista de propiedades de interés a guardar en el metadata del lead.
+        Construye la lista de propiedades de interés a guardar en el metadata del lead
+        y a incluir en el mensaje de WhatsApp.
 
-        - Si el usuario pidió detalle explícito de un item (item_seleccionado_explicitamente),
-          se guarda solo ese item.
-        - Si el contacto surge sin selección previa (ej: el AI ofrece contacto después de
-          mostrar varias propiedades), se guardan todas las propiedades mostradas.
+        - Si el usuario pidió detalle explícito de un item, se guarda solo ese item.
+        - Si el contacto surge sin selección, se guardan todas las propiedades mostradas.
         """
         if not state or not state.items_recientes_resumen:
             return []
+
+        def _to_dict(it: ItemSummary) -> dict:
+            d: dict = {"id": str(it.id_item), "titulo": it.titulo}
+            if it.tipo:
+                d["tipo"] = it.tipo
+            if it.categoria:
+                d["categoria"] = it.categoria
+            if it.precio is not None:
+                d["precio"] = it.precio
+                d["moneda"] = it.moneda or "USD"
+            if it.barrio:
+                d["barrio"] = it.barrio
+            elif it.ciudad:
+                d["ciudad"] = it.ciudad
+            return d
+
         if state.item_seleccionado_explicitamente and state.ultimo_item_referenciado:
             return [
-                {"id": str(it.id_item), "titulo": it.titulo}
+                _to_dict(it)
                 for it in state.items_recientes_resumen
                 if it.id_item == state.ultimo_item_referenciado
             ]
-        return [
-            {"id": str(it.id_item), "titulo": it.titulo}
-            for it in state.items_recientes_resumen
-        ]
+        return [_to_dict(it) for it in state.items_recientes_resumen]
 
     def _item_to_brief(self, item: ItemCandidate) -> ItemBrief:
         atrib = item.atributos or {}

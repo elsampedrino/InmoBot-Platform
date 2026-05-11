@@ -10,7 +10,11 @@ import urllib.parse
 from app.models.api_models import ItemBrief
 
 
-def _build_message(items: list[ItemBrief], lead_nombre: str | None = None) -> str:
+def _build_message(
+    items: list[ItemBrief],
+    lead_nombre: str | None = None,
+    propiedades_interes: list[dict] | None = None,
+) -> str:
     lines: list[str] = []
 
     if lead_nombre:
@@ -22,6 +26,7 @@ def _build_message(items: list[ItemBrief], lead_nombre: str | None = None) -> st
     lines.append("")
 
     if items:
+        # Datos frescos del turno actual (rara vez — solo si la búsqueda ocurrió en este turno)
         prop = items[0]
         lines.append(f"{prop.id_item} - {prop.titulo}")
         atrib = prop.atributos or {}
@@ -34,6 +39,32 @@ def _build_message(items: list[ItemBrief], lead_nombre: str | None = None) -> st
             partes.append(str(atrib["ciudad"]))
         if partes:
             lines.append(", ".join(partes))
+    elif propiedades_interes:
+        # Datos enriquecidos del estado conversacional (caso habitual en el handoff de WA)
+        prop = propiedades_interes[0]
+        titulo = prop.get("titulo", "")
+        tipo = prop.get("tipo", "")
+        categoria = prop.get("categoria", "")
+        precio = prop.get("precio")
+        moneda = prop.get("moneda", "USD")
+        barrio = prop.get("barrio") or prop.get("ciudad", "")
+
+        lines.append(titulo)
+
+        tipo_cat_parts = []
+        if tipo:
+            tipo_cat_parts.append(tipo.capitalize())
+        if categoria:
+            tipo_cat_parts.append(f"en {categoria}")
+        if tipo_cat_parts:
+            lines.append(" ".join(tipo_cat_parts))
+
+        if barrio:
+            lines.append(f"Ubicación: {barrio}")
+
+        if precio and precio > 0:
+            precio_fmt = f"{int(precio):,}".replace(",", ".")
+            lines.append(f"Precio: {moneda} {precio_fmt}")
     else:
         lines.append("propiedades disponibles")
 
@@ -48,6 +79,7 @@ def build_whatsapp_handoff(
     agent_name: str,
     items: list[ItemBrief],
     lead_nombre: str | None = None,
+    propiedades_interes: list[dict] | None = None,
 ) -> dict:
     """
     Genera el payload de handoff a WhatsApp.
@@ -58,7 +90,7 @@ def build_whatsapp_handoff(
     Desacoplado del widget y del canal de origen — reutilizable para
     Meta API, WhatsApp conversacional y automatizaciones.
     """
-    message = _build_message(items, lead_nombre)
+    message = _build_message(items, lead_nombre, propiedades_interes)
     url = f"https://wa.me/{phone}?text={urllib.parse.quote(message)}"
 
     return {

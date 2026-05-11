@@ -102,10 +102,16 @@ class ItemCandidate:
 
 @dataclass
 class ItemSummary:
-    """Referencia mínima a un item para el estado conversacional."""
+    """Referencia a un item para el estado conversacional y mensajes de handoff."""
     id_item: str
     label: str        # "opcion_1", "opcion_2", etc.
     titulo: str
+    tipo: str = ""
+    categoria: str = ""
+    precio: float | None = None
+    moneda: str | None = None
+    barrio: str = ""
+    ciudad: str = ""
 
 
 # ─── ESTADO CONVERSACIONAL ────────────────────────────────────────────────────
@@ -153,7 +159,17 @@ class ConversationState:
             "filters_activos": self.filters_activos,
             "items_recientes": self.items_recientes,
             "items_recientes_resumen": [
-                {"id_item": i.id_item, "label": i.label, "titulo": i.titulo}
+                {
+                    "id_item": i.id_item,
+                    "label": i.label,
+                    "titulo": i.titulo,
+                    "tipo": i.tipo,
+                    "categoria": i.categoria,
+                    "precio": i.precio,
+                    "moneda": i.moneda,
+                    "barrio": i.barrio,
+                    "ciudad": i.ciudad,
+                }
                 for i in self.items_recientes_resumen
             ],
             "ultimo_item_referenciado": self.ultimo_item_referenciado,
@@ -172,7 +188,17 @@ class ConversationState:
     @classmethod
     def from_dict(cls, data: dict) -> "ConversationState":
         items_resumen = [
-            ItemSummary(id_item=i["id_item"], label=i["label"], titulo=i["titulo"])
+            ItemSummary(
+                id_item=i["id_item"],
+                label=i["label"],
+                titulo=i["titulo"],
+                tipo=i.get("tipo", ""),
+                categoria=i.get("categoria", ""),
+                precio=i.get("precio"),
+                moneda=i.get("moneda"),
+                barrio=i.get("barrio", ""),
+                ciudad=i.get("ciudad", ""),
+            )
             for i in data.get("items_recientes_resumen", [])
         ]
         return cls(

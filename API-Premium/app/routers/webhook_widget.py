@@ -81,11 +81,13 @@ async def webhook_widget_chat(
             wa = (row.notificaciones or {}).get("whatsapp", {})
             if wa.get("enabled") and wa.get("phone"):
                 nombre_lead = internal_response.metadata.get("nombre_lead")
+                propiedades_interes = internal_response.metadata.get("propiedades_interes", [])
                 payload_dict = build_whatsapp_handoff(
                     phone=wa["phone"],
                     agent_name=wa.get("agent_name", "Asesor"),
                     items=internal_response.items,
                     lead_nombre=nombre_lead,
+                    propiedades_interes=propiedades_interes,
                 )
                 id_lead = internal_response.metadata.get("id_lead")
                 response.whatsapp_handoff = WhatsAppHandoffPayload(
