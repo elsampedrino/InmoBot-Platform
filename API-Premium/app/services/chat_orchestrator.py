@@ -663,10 +663,10 @@ class ChatOrchestrator:
         # Ver detalle
         if route == Route.VER_DETALLE_ITEM:
             state.conversation_stage = ConversationStage.INTERES
-            item_ref = decision.entities.get("item_referenciado")
+            item_ref = decision.entities.get("item_referenciado") or state.ultimo_item_referenciado
             if item_ref:
                 state.ultimo_item_referenciado = item_ref
-                state.item_seleccionado_explicitamente = True
+            state.item_seleccionado_explicitamente = True
 
         # Conversión: contacto
         if route == Route.CONTACTAR_ASESOR:
