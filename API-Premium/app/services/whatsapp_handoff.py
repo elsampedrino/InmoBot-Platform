@@ -59,8 +59,9 @@ def _build_message(
         if tipo_cat_parts:
             lines.append(" ".join(tipo_cat_parts))
 
-        if barrio:
-            lines.append(f"Ubicación: {barrio}")
+        ubicacion = ", ".join(p for p in [calle, barrio] if p)
+        if ubicacion:
+            lines.append(f"Ubicación: {ubicacion}")
 
         if precio and precio > 0:
             precio_fmt = f"{int(precio):,}".replace(",", ".")

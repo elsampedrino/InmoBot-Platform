@@ -219,7 +219,10 @@ class ChatOrchestrator:
             if (
                 wa_disponible
                 and decision.route in (Route.CONTACTAR_ASESOR, Route.AGENDAR_VISITA)
-                and decision.intent in ("quiere_visitar", "quiere_asesor")
+                and decision.intent not in (
+                    "datos_de_contacto_provistos",
+                    "nombre_para_whatsapp_provistos",
+                )
             ):
                 new_state.esperando_nombre_whatsapp = True
                 new_state.esperando_contacto = False
@@ -980,6 +983,8 @@ class ChatOrchestrator:
             if it.precio is not None:
                 d["precio"] = it.precio
                 d["moneda"] = it.moneda or "USD"
+            if it.calle:
+                d["calle"] = it.calle
             if it.barrio:
                 d["barrio"] = it.barrio
             elif it.ciudad:
