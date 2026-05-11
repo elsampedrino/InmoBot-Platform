@@ -172,6 +172,8 @@ _ORDINALES = [
     [r"\bprimero?\b", r"\bprimera?\b", r"\bopci[oó]n\s+1\b", r"\b1[°º]\b"],
     [r"\bsegundo?\b", r"\bsegunda?\b", r"\bopci[oó]n\s+2\b", r"\b2[°º]\b"],
     [r"\btercero?\b", r"\btercera?\b", r"\bopci[oó]n\s+3\b", r"\b3[°º]\b"],
+    [r"\bcuarto?\b",  r"\bcuarta?\b",  r"\bopci[oó]n\s+4\b", r"\b4[°º]\b"],
+    [r"\bquinto?\b",  r"\bquinta?\b",  r"\bopci[oó]n\s+5\b", r"\b5[°º]\b"],
 ]
 
 _CANDIDATE_ROUTES = [
