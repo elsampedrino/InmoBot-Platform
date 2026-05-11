@@ -964,8 +964,8 @@ class ChatOrchestrator:
         Construye la lista de propiedades de interés a guardar en el metadata del lead
         y a incluir en el mensaje de WhatsApp.
 
-        - Si el usuario pidió detalle explícito de un item, se guarda solo ese item.
-        - Si el contacto surge sin selección, se guardan todas las propiedades mostradas.
+        Prioridad: si hay un item referenciado (visto en detalle o último de la lista),
+        se incluye solo ese. Si no hay match, se devuelven todos los items recientes.
         """
         if not state or not state.items_recientes_resumen:
             return []
@@ -985,12 +985,16 @@ class ChatOrchestrator:
                 d["ciudad"] = it.ciudad
             return d
 
-        if state.item_seleccionado_explicitamente and state.ultimo_item_referenciado:
-            return [
+        # Siempre preferir el item más recientemente referenciado
+        if state.ultimo_item_referenciado:
+            matching = [
                 _to_dict(it)
                 for it in state.items_recientes_resumen
                 if it.id_item == state.ultimo_item_referenciado
             ]
+            if matching:
+                return matching
+
         return [_to_dict(it) for it in state.items_recientes_resumen]
 
     def _item_to_brief(self, item: ItemCandidate) -> ItemBrief:
