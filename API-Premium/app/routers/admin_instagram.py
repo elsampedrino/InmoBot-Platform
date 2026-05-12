@@ -12,6 +12,7 @@ Seguridad:
   - publicaciones filtradas por id_empresa del usuario logueado
   - propiedad inactiva bloquea la publicación (no solo advertencia)
 """
+import asyncio
 import json
 from datetime import date, datetime, timezone
 
@@ -421,6 +422,20 @@ async def publish_to_instagram(
                 raise RuntimeError(r1_data["error"].get("message", "Error al crear contenedor de media"))
 
             creation_id = r1_data["id"]
+
+            # Paso 1b: esperar a que Instagram procese el contenedor (hasta 15 seg)
+            for attempt in range(5):
+                await asyncio.sleep(3)
+                status_r = await client.get(
+                    f"{_IG_API_BASE}/{creation_id}",
+                    params={"fields": "status_code", "access_token": access_token},
+                )
+                status_data = status_r.json()
+                if status_data.get("status_code") == "FINISHED":
+                    break
+                if status_data.get("status_code") == "ERROR":
+                    raise RuntimeError("Instagram rechazó el contenedor de media")
+            # Si no llegó a FINISHED igual intentamos publicar
 
             # Paso 2: publicar el contenedor
             r2 = await client.post(
