@@ -528,9 +528,23 @@ async def publish_to_facebook(
 
     try:
         async with httpx.AsyncClient(timeout=30.0) as client:
+            # Intentar obtener el Page Access Token desde el token almacenado (que puede ser User Token).
+            # Si ya es un Page Token, este paso devuelve error y usamos el token original.
+            page_token = access_token
+            try:
+                tok_r = await client.get(
+                    f"{_IG_API_BASE}/{page_id}",
+                    params={"fields": "access_token", "access_token": access_token},
+                )
+                tok_data = tok_r.json()
+                if "access_token" in tok_data:
+                    page_token = tok_data["access_token"]
+            except Exception:
+                pass  # usar el token almacenado tal cual
+
             r = await client.post(
                 f"{_IG_API_BASE}/{page_id}/photos",
-                params={"url": image_url, "caption": caption, "access_token": access_token},
+                params={"url": image_url, "caption": caption, "access_token": page_token},
             )
             r_data = r.json()
             if "error" in r_data:
