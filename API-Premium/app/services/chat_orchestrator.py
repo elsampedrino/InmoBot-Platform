@@ -73,7 +73,7 @@ _RE_NOMBRE = re.compile(
     r"|^"  # o inicio de mensaje
     r")"
     r"([A-Za-záéíóúñÁÉÍÓÚÑüÜ]+(?:\s+[A-Za-záéíóúñÁÉÍÓÚÑüÜ]+)*?)"
-    r"(?=\s*[,;]|\s+y\b|\s+mi\b|\s+tel|\s+mail|\s+email)",
+    r"(?=\s*[,;]|\s+y\b|\s+mi\b|\s+tel|\s+mail|\s+email|\s+\d)",
     re.IGNORECASE,
 )
 
