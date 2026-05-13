@@ -81,33 +81,34 @@ const plans = [
       {
         label: "🚀 Captación y ventas",
         items: [
-          "Publicá propiedades en Instagram en un click",
-          "Generación automática de leads desde el chatbot",
-          "Seguimiento de consultas en tiempo real"
+          { text: "Derivación automática de consultas a WhatsApp" },
+          { text: "Generación automática de leads desde el chatbot" },
+          { text: "Seguimiento de consultas en tiempo real" },
+          { text: "Publicación automática en Instagram/Facebook", badge: "próximamente" },
         ]
       },
       {
         label: "📊 Control del negocio",
         items: [
-          "Dashboard con métricas de consultas y leads",
-          "Análisis de propiedades más consultadas",
-          "Estadísticas de rendimiento"
+          { text: "Dashboard con métricas de consultas y leads" },
+          { text: "Análisis de propiedades más consultadas" },
+          { text: "Estadísticas de rendimiento" },
         ]
       },
       {
         label: "⚙️ Gestión centralizada",
         items: [
-          "Panel para administrar propiedades",
-          "Actualización en tiempo real",
-          "Base de datos propia"
+          { text: "Panel para administrar propiedades" },
+          { text: "Actualización en tiempo real" },
+          { text: "Base de datos propia" },
         ]
       },
       {
         label: "🧠 Inteligencia avanzada",
         items: [
-          "Seguimiento conversacional por sesión",
-          "Comprensión de consultas complejas",
-          "Priorización inteligente de propiedades"
+          { text: "Seguimiento conversacional por sesión" },
+          { text: "Comprensión de consultas complejas" },
+          { text: "Priorización inteligente de propiedades" },
         ]
       }
     ],
@@ -219,7 +220,12 @@ const comparisonFeatures = [
                             {group.items.map((item) => (
                               <li class="flex items-start gap-2 text-base text-gray-700">
                                 <span class={`${plan.checkColor} text-lg font-bold shrink-0`}>✓</span>
-                                <span>{item}</span>
+                                <span class="flex items-center gap-2 flex-wrap">
+                                  {item.text}
+                                  {item.badge && (
+                                    <span class="text-xs font-medium px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-700 leading-none">{item.badge}</span>
+                                  )}
+                                </span>
                               </li>
                             ))}
                           </ul>
