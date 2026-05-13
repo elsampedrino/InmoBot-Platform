@@ -37,6 +37,7 @@ class Rubro(Base):
 
     id_rubro: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     nombre: Mapped[str] = mapped_column(Text, nullable=False, unique=True)
+    slug: Mapped[str | None] = mapped_column(Text, unique=True, nullable=True)
     descripcion: Mapped[str | None] = mapped_column(Text)
     activo: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
     created_at: Mapped[Any] = mapped_column(DateTime(timezone=True), server_default=func.now())

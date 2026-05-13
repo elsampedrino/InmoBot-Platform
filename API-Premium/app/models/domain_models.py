@@ -144,6 +144,12 @@ class ConversationState:
     advisor_requested: bool = False
     visit_requested: bool = False
 
+    # Señales comerciales SaaS (acumuladas durante la conversación)
+    plan_mencionado: str | None = None
+    features_mencionadas: list[str] = field(default_factory=list)
+    rubro_negocio: str | None = None
+    quiere_demo: bool = False
+
     # Esperas operativas (el bot hizo una pregunta y espera un dato)
     esperando_contacto: bool = False
     esperando_visita: bool = False
@@ -180,6 +186,10 @@ class ConversationState:
             "lead_capturado": self.lead_capturado,
             "advisor_requested": self.advisor_requested,
             "visit_requested": self.visit_requested,
+            "plan_mencionado": self.plan_mencionado,
+            "features_mencionadas": self.features_mencionadas,
+            "rubro_negocio": self.rubro_negocio,
+            "quiere_demo": self.quiere_demo,
             "esperando_contacto": self.esperando_contacto,
             "esperando_visita": self.esperando_visita,
             "esperando_confirmacion": self.esperando_confirmacion,
@@ -217,6 +227,10 @@ class ConversationState:
             lead_capturado=data.get("lead_capturado", False),
             advisor_requested=data.get("advisor_requested", False),
             visit_requested=data.get("visit_requested", False),
+            plan_mencionado=data.get("plan_mencionado"),
+            features_mencionadas=data.get("features_mencionadas", []),
+            rubro_negocio=data.get("rubro_negocio"),
+            quiere_demo=data.get("quiere_demo", False),
             esperando_contacto=data.get("esperando_contacto", False),
             esperando_visita=data.get("esperando_visita", False),
             esperando_confirmacion=data.get("esperando_confirmacion", False),
@@ -256,6 +270,7 @@ class TenantConfig:
     """Configuración resuelta de empresa + rubro para el turno."""
     id_empresa: int
     id_rubro: int
+    rubro_slug: str | None
     nombre_empresa: str
     slug: str | None
     system_prompt: str

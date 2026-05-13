@@ -24,6 +24,7 @@ from app.models.db_models import (
     EmpresaPromptOverride,
     EmpresaRubro,
     Plan,
+    Rubro,
     RubroPrompt,
     RubroSchema,
 )
@@ -60,7 +61,7 @@ class TenantResolver:
         empresa = await self._get_empresa(empresa_slug)
         effective_rubro_id = id_rubro or await self._get_default_rubro_id(empresa.id_empresa)
 
-        rubro_prompt, rubro_schema, override, plan = await self._load_config(
+        rubro_prompt, rubro_schema, override, plan, rubro_slug = await self._load_config(
             empresa.id_empresa, effective_rubro_id, empresa.id_plan
         )
 
@@ -69,6 +70,7 @@ class TenantResolver:
             slug=empresa_slug,
             id_empresa=empresa.id_empresa,
             id_rubro=effective_rubro_id,
+            rubro_slug=rubro_slug,
             has_prompt=rubro_prompt is not None,
             has_override=override is not None,
         )
@@ -76,6 +78,7 @@ class TenantResolver:
         return TenantConfig(
             id_empresa=empresa.id_empresa,
             id_rubro=effective_rubro_id,
+            rubro_slug=rubro_slug,
             nombre_empresa=empresa.nombre,
             slug=empresa.slug,
             servicios=dict(empresa.servicios) if empresa.servicios else {"bot": True},
@@ -139,8 +142,14 @@ class TenantResolver:
         id_empresa: int,
         id_rubro: int,
         id_plan: int | None,
-    ) -> tuple[RubroPrompt | None, RubroSchema | None, EmpresaPromptOverride | None, Plan | None]:
+    ) -> tuple[RubroPrompt | None, RubroSchema | None, EmpresaPromptOverride | None, Plan | None, str | None]:
         """Carga en paralelo los 4 recursos de configuración del tenant."""
+
+        # Slug del rubro (para identificar contexto en analytics y lead metadata)
+        rubro_q = await self.db.execute(
+            select(Rubro.slug).where(Rubro.id_rubro == id_rubro)
+        )
+        rubro_slug: str | None = rubro_q.scalar_one_or_none()
 
         # Prompt activo del rubro (versión más alta)
         prompt_q = await self.db.execute(
@@ -177,4 +186,4 @@ class TenantResolver:
             )
             plan = plan_q.scalar_one_or_none()
 
-        return rubro_prompt, rubro_schema, override, plan
+        return rubro_prompt, rubro_schema, override, plan, rubro_slug

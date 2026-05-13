@@ -125,12 +125,18 @@ class ChatOrchestrator:
 
     # ─── Pipeline principal ───────────────────────────────────────────────────
 
-    async def handle_message(self, request: ChatMessageRequest) -> ChatMessageResponse:
+    async def handle_message(
+        self,
+        request: ChatMessageRequest,
+        id_rubro_override: int | None = None,
+    ) -> ChatMessageResponse:
         start_ms = time.monotonic()
 
         try:
             # ── 1. Tenant ──────────────────────────────────────────────────────
-            tenant_config = await self.tenant_resolver.resolve(request.empresa_slug)
+            tenant_config = await self.tenant_resolver.resolve(
+                request.empresa_slug, id_rubro=id_rubro_override
+            )
 
             # ── 1b. Bot gate ────────────────────────────────────────────────────
             if not tenant_config.servicios.get("bot", True):
@@ -209,7 +215,11 @@ class ChatOrchestrator:
                 filters=filters if decision.actions.run_search else None,
             )
 
-            # ── 7b. WhatsApp lead capture override ────────────────────────────
+            # ── 7b. Señales comerciales SaaS ──────────────────────────────────
+            if tenant_config.rubro_slug == "saas_inmobot":
+                self._update_commercial_signals(request.mensaje, new_state)
+
+            # ── 7c. WhatsApp lead capture override ────────────────────────────
             # Si la empresa tiene WhatsApp y el usuario mostró intención comercial,
             # pedimos nombre antes del handoff (sin teléfono, para no agregar fricción).
             wa_cfg = tenant_config.notificaciones.get("whatsapp", {})
@@ -493,6 +503,7 @@ class ChatOrchestrator:
                     "intent": decision.intent,
                     "mensaje_original": request.mensaje[:200],
                     "propiedades_interes": self._build_propiedades_interes(state),
+                    **self._build_commercial_metadata(tenant_config, state),
                     **extra_meta,
                 },
             )
@@ -1058,3 +1069,82 @@ class ChatOrchestrator:
             f"Ruta: {decision.route.value} (intent: {decision.intent}). "
             f'Último mensaje: "{mensaje[:120]}".{filtros_str}{resultados_str}{signals_str}'
         )
+
+    # ─── Señales comerciales SaaS ─────────────────────────────────────────────
+
+    # Mapeo de keywords por plan, feature y rubro de negocio
+    _SAAS_PLAN_KW: dict[str, list[str]] = {
+        "basico":  ["plan básico", "plan basico", "básico", "basico"],
+        "pro":     ["plan pro", "el pro", "plan professional"],
+        "premium": ["premium", "plan premium"],
+    }
+    _SAAS_FEATURE_KW: dict[str, list[str]] = {
+        "whatsapp":       ["whatsapp", "whats app", "wapp", "mensajes", "mensajería"],
+        "instagram":      ["instagram", "publicar en ig", "publicar fotos", "redes sociales"],
+        "facebook":       ["facebook", "fb", "meta"],
+        "dashboard":      ["dashboard", "métricas", "metricas", "estadísticas", "estadisticas", "reportes"],
+        "panel_admin":    ["panel de administración", "panel admin", "panel cliente", "gestión online"],
+        "automatizacion": ["automatizar", "automatización", "respuesta automática", "respuestas automáticas"],
+        "leads":          ["captura de leads", "captura de contactos", "generar leads"],
+    }
+    _SAAS_RUBRO_KW: dict[str, list[str]] = {
+        "inmobiliaria": ["inmobiliaria", "inmuebles", "propiedades", "bienes raíces", "alquiler", "venta de casas"],
+        "automotora":   ["automotora", "autos", "vehículos", "concesionaria"],
+        "turismo":      ["turismo", "hotel", "alojamiento", "viajes", "hospedaje"],
+        "salud":        ["salud", "médico", "clínica", "consultorio", "odontología"],
+        "comercio":     ["comercio", "tienda", "local", "e-commerce", "ecommerce"],
+    }
+    _SAAS_DEMO_KW = ["demo", "quiero probar", "prueba gratuita", "ver cómo funciona", "mostrar", "probarlo"]
+
+    def _update_commercial_signals(self, mensaje: str, state: ConversationState) -> None:
+        """Detecta y acumula señales comerciales SaaS en el estado de la conversación."""
+        msg = mensaje.lower()
+
+        # Plan mencionado (toma el primero detectado y no lo sobreescribe)
+        if not state.plan_mencionado:
+            for plan, keywords in self._SAAS_PLAN_KW.items():
+                if any(kw in msg for kw in keywords):
+                    state.plan_mencionado = plan
+                    break
+
+        # Features mencionadas (acumulativo — se agrega si no estaba)
+        for feature, keywords in self._SAAS_FEATURE_KW.items():
+            if feature not in state.features_mencionadas and any(kw in msg for kw in keywords):
+                state.features_mencionadas.append(feature)
+
+        # Rubro del negocio del visitante (toma el primero y no sobreescribe)
+        if not state.rubro_negocio:
+            for rubro, keywords in self._SAAS_RUBRO_KW.items():
+                if any(kw in msg for kw in keywords):
+                    state.rubro_negocio = rubro
+                    break
+
+        # Intención de demo
+        if not state.quiere_demo and any(kw in msg for kw in self._SAAS_DEMO_KW):
+            state.quiere_demo = True
+
+    def _build_commercial_metadata(
+        self, tenant_config: TenantConfig, state: ConversationState | None
+    ) -> dict:
+        """
+        Construye el bloque de metadata comercial para el lead.
+        Siempre incluye id_rubro + tipo_lead.
+        Para el rubro saas_inmobot, agrega las señales detectadas.
+        """
+        is_saas = tenant_config.rubro_slug == "saas_inmobot"
+        meta: dict = {
+            "id_rubro": tenant_config.id_rubro,
+            "tipo_lead": "comercial_saas" if is_saas else "inmobiliario",
+        }
+        if is_saas:
+            meta["source"] = "landing_inmobot"
+            if state:
+                if state.plan_mencionado:
+                    meta["interes_plan"] = state.plan_mencionado
+                if state.features_mencionadas:
+                    meta["interes_features"] = state.features_mencionadas
+                if state.rubro_negocio:
+                    meta["rubro_negocio"] = state.rubro_negocio
+                if state.quiere_demo:
+                    meta["quiere_demo"] = True
+        return meta

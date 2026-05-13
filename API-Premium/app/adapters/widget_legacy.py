@@ -57,6 +57,7 @@ class WidgetIncomingRequest(BaseModel):
     sessionId: str
     timestamp: str = Field(default="")
     repo: str = Field(default="")
+    rubroSlug: str | None = Field(default=None, description="Slug del rubro para routing multi-contexto")
 
 
 # ─── Response legacy ──────────────────────────────────────────────────────────

@@ -19,7 +19,7 @@ from app.adapters.widget_legacy import (
     adapt_widget_request,
 )
 from app.core.database import get_db
-from app.models.db_models import Empresa
+from app.models.db_models import Empresa, Rubro
 from app.models.domain_models import ConversionEvent
 from app.services.analytics_service import AnalyticsService
 from app.services.chat_orchestrator import ChatOrchestrator
@@ -66,9 +66,24 @@ async def webhook_widget_chat(
     payload: WidgetIncomingRequest = ...,
     db: AsyncSession = Depends(get_db),
 ) -> WidgetLegacyResponse:
+    # Resolver rubro opcional (multi-contexto: demo inmobiliario vs asistente comercial)
+    id_rubro_override: int | None = None
+    if payload.rubroSlug:
+        rubro_result = await db.execute(
+            select(Rubro.id_rubro).where(
+                Rubro.slug == payload.rubroSlug,
+                Rubro.activo == True,  # noqa: E712
+            )
+        )
+        row = rubro_result.one_or_none()
+        if row:
+            id_rubro_override = row.id_rubro
+
     internal_request = adapt_widget_request(payload, empresa_slug)
     orchestrator = ChatOrchestrator(db)
-    internal_response = await orchestrator.handle_message(internal_request)
+    internal_response = await orchestrator.handle_message(
+        internal_request, id_rubro_override=id_rubro_override
+    )
     response = adapt_internal_response(internal_response, payload.sessionId)
 
     # Inyectar WhatsApp handoff tras captura de lead (nombre confirmado)
