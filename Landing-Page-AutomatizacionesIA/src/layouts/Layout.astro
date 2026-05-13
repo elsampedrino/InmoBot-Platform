@@ -68,6 +68,29 @@ const jsonLd = {
   </head>
   <body class="font-sans antialiased bg-gray-50 text-gray-900">
     <slot />
+
+    <!-- Asistente Comercial InmoBot -->
+    <script src="https://inmobot-widget.vercel.app/inmobot-widget.iife.js"></script>
+    <link rel="stylesheet" href="https://inmobot-widget.vercel.app/inmobot-widget.css" />
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        if (window.InmoBot) {
+          window.InmoBot.init({
+            apiUrl:          'https://api-premium-hyha.onrender.com/webhook/inmobot-platform/chat',
+            rubroSlug:       'saas_inmobot',
+            repo:            'inmobot-platform',
+            primaryColor:    '#8b5cf6',
+            botName:         'Asistente InmoBot',
+            welcomeMessage:  '¡Hola! Soy el asistente de InmoBot. Puedo contarte cómo funciona la plataforma, qué plan se adapta a tu negocio y resolver cualquier duda. ¿Por dónde empezamos?',
+            placeholderText: '¿Cuánto cuesta? ¿Necesito cambiar mi web?',
+            position:        'bottom-right',
+            buttonSize:      '56px',
+            chatWidth:       '420px',
+            chatHeight:      '560px',
+          });
+        }
+      });
+    </script>
   </body>
 </html>
 

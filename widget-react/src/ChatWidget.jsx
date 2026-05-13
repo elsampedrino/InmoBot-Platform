@@ -32,7 +32,8 @@ const ChatWidget = ({ config }) => {
     buttonSize = '60px',
     chatWidth = '500px',
     chatHeight = '600px',
-    repo = 'demo' // 'demo' o 'bbr'
+    repo = 'demo', // 'demo' o 'bbr'
+    rubroSlug = null  // slug del rubro para routing multi-contexto (ej: 'saas_inmobot')
   } = config || {};
 
   // Verificar estado del bot al inicializar (antes de abrir el widget)
@@ -132,7 +133,8 @@ const ChatWidget = ({ config }) => {
           message: inputValue,
           sessionId: sessionId,
           timestamp: new Date().toISOString(),
-          repo: repo // 'demo' o 'bbr'
+          repo: repo,
+          ...(rubroSlug ? { rubroSlug } : {})
         })
       });
 
