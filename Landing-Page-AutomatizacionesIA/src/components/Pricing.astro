@@ -129,12 +129,12 @@ const comparisonFeatures = [
   { feature: "Estadísticas semanales", basico: false, pro: true, premium: true },
   { feature: "Interpretación de lenguaje natural", basico: true, pro: true, premium: true },
   { feature: "Respuestas optimizadas para conversión", basico: true, pro: true, premium: true },
-  { feature: "Publicación en Instagram desde el panel", basico: false, pro: false, premium: true },
   { feature: "Dashboard con métricas avanzadas", basico: false, pro: false, premium: true },
   { feature: "Contexto conversacional por sesión", basico: false, pro: false, premium: true },
   { feature: "Refinamiento progresivo de búsqueda", basico: false, pro: false, premium: true },
-  { feature: "Actualización de Catálogo On Line", basico: false, pro: false, premium: true },
-  { feature: "Base de datos propia", basico: false, pro: false, premium: true }
+  { feature: "Administración online de propiedades", basico: false, pro: false, premium: true },
+  { feature: "Derivación automática a WhatsApp", basico: false, pro: false, premium: true },
+  { feature: "Integración Instagram/Facebook", basico: false, pro: false, premium: true, comingSoon: true },
 ];
 ---
 
@@ -355,7 +355,13 @@ const comparisonFeatures = [
                     </td>
                     {/* Premium - Color cyan */}
                     <td class="py-3 px-4 text-center">
-                      {item.premium ? (
+                      {item.premium && item.comingSoon ? (
+                        <span class="inline-flex items-center justify-center w-8 h-8 bg-amber-100 rounded-lg" title="Próximamente">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5">
+                            <path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10V2z" fill="#d97706"/>
+                          </svg>
+                        </span>
+                      ) : item.premium ? (
                         <span class="inline-flex items-center justify-center w-8 h-8 bg-cyan-600 rounded-lg">
                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="white" class="w-5 h-5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
