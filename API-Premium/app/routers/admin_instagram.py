@@ -419,16 +419,15 @@ async def publish_to_instagram(
     # ── Crear registro pending ────────────────────────────────────────────────
     post_row = await db.execute(text("""
         INSERT INTO instagram_posts
-            (id_empresa, id_item, id_usuario, caption, image_url, image_urls, status)
-        VALUES (:emp, :item_id, :user_id, :caption, :image_url, CAST(:image_urls AS jsonb), 'pending')
+            (id_empresa, id_item, id_usuario, caption, image_url, status)
+        VALUES (:emp, :item_id, :user_id, :caption, :image_url, 'pending')
         RETURNING id
     """), {
-        "emp":        emp,
-        "item_id":    body.id_item,
-        "user_id":    current_user.id_usuario,
-        "caption":    caption,
-        "image_url":  selected_urls[0],
-        "image_urls": json.dumps(selected_urls),
+        "emp":      emp,
+        "item_id":  body.id_item,
+        "user_id":  current_user.id_usuario,
+        "caption":  caption,
+        "image_url": selected_urls[0],
     })
     post_id = post_row.scalar_one()
     await db.commit()
