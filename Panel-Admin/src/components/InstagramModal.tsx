@@ -118,7 +118,13 @@ export default function InstagramModal({
           }),
         };
       } catch (e) {
-        partial.ig = { error: e instanceof ApiError ? e.message : "Error al publicar en Instagram" };
+        partial.ig = {
+          error: e instanceof ApiError
+            ? e.message
+            : e instanceof Error
+              ? e.message
+              : "Error de red al publicar en Instagram",
+        };
       }
     }
     if (publishToFB) {
@@ -127,7 +133,13 @@ export default function InstagramModal({
           result: await api.post<PublishResult>("/admin/instagram/fb/publish", { id_item: idItem, caption }),
         };
       } catch (e) {
-        partial.fb = { error: e instanceof ApiError ? e.message : "Error al publicar en Facebook" };
+        partial.fb = {
+          error: e instanceof ApiError
+            ? e.message
+            : e instanceof Error
+              ? e.message
+              : "Error de red al publicar en Facebook",
+        };
       }
     }
     setResults(partial);

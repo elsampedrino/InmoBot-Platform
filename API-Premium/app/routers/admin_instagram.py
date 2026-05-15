@@ -439,12 +439,12 @@ async def publish_to_instagram(
     is_carousel  = len(selected_urls) >= 2
 
     try:
-        async with httpx.AsyncClient(timeout=60.0) as client:
+        async with httpx.AsyncClient(timeout=120.0) as client:
             if is_carousel:
                 # ── Carrusel ──────────────────────────────────────────────────
-                # Paso 1: crear un contenedor hijo por cada imagen (sin caption)
+                # Paso 1: crear un contenedor hijo por cada imagen y esperar FINISHED
                 child_ids = []
-                for url in selected_urls:
+                for idx, url in enumerate(selected_urls):
                     rc = await client.post(
                         f"{_IG_API_BASE}/{ig_user_id}/media",
                         params={
@@ -456,9 +456,26 @@ async def publish_to_instagram(
                     rc_data = rc.json()
                     if "error" in rc_data:
                         raise RuntimeError(
-                            f"Error al subir imagen al carrusel: {rc_data['error'].get('message', '')}"
+                            f"Imagen {idx+1}: {rc_data['error'].get('message', 'error al crear contenedor hijo')}"
                         )
-                    child_ids.append(rc_data["id"])
+                    child_id = rc_data["id"]
+
+                    # Esperar FINISHED antes de continuar con la siguiente imagen
+                    for _ in range(8):
+                        await asyncio.sleep(3)
+                        cs = await client.get(
+                            f"{_IG_API_BASE}/{child_id}",
+                            params={"fields": "status_code,status", "access_token": access_token},
+                        )
+                        cs_data = cs.json()
+                        sc = cs_data.get("status_code")
+                        if sc == "FINISHED":
+                            break
+                        if sc == "ERROR":
+                            raise RuntimeError(
+                                f"Instagram rechazó la imagen {idx+1}: {cs_data.get('status', 'error')}"
+                            )
+                    child_ids.append(child_id)
 
                 # Paso 2: crear contenedor carrusel con caption
                 r1 = await client.post(
@@ -476,18 +493,21 @@ async def publish_to_instagram(
 
                 creation_id = r1_data["id"]
 
-                # Paso 2b: esperar procesamiento (carruseles tardan más)
+                # Paso 2b: esperar procesamiento del carrusel
                 for _ in range(10):
                     await asyncio.sleep(3)
                     status_r = await client.get(
                         f"{_IG_API_BASE}/{creation_id}",
-                        params={"fields": "status_code", "access_token": access_token},
+                        params={"fields": "status_code,status", "access_token": access_token},
                     )
                     status_data = status_r.json()
-                    if status_data.get("status_code") == "FINISHED":
+                    sc = status_data.get("status_code")
+                    if sc == "FINISHED":
                         break
-                    if status_data.get("status_code") == "ERROR":
-                        raise RuntimeError("Instagram rechazó el carrusel")
+                    if sc == "ERROR":
+                        raise RuntimeError(
+                            f"Instagram rechazó el carrusel: {status_data.get('status', 'error')}"
+                        )
 
             else:
                 # ── Imagen simple (V1) ────────────────────────────────────────
