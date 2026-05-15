@@ -420,7 +420,7 @@ async def publish_to_instagram(
     post_row = await db.execute(text("""
         INSERT INTO instagram_posts
             (id_empresa, id_item, id_usuario, caption, image_url, image_urls, status)
-        VALUES (:emp, :item_id, :user_id, :caption, :image_url, :image_urls::jsonb, 'pending')
+        VALUES (:emp, :item_id, :user_id, :caption, :image_url, CAST(:image_urls AS jsonb), 'pending')
         RETURNING id
     """), {
         "emp":        emp,
