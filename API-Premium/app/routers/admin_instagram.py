@@ -55,6 +55,7 @@ class InstagramPreviewResponse(BaseModel):
     external_id: str
     titulo: str
     image_url: str | None
+    image_urls: list[str]
     caption: str
     item_activo: bool
     instagram_configurado: bool
@@ -77,6 +78,7 @@ class FacebookPublishResult(BaseModel):
 class InstagramPublishRequest(BaseModel):
     id_item: str
     caption: str
+    image_urls: list[str] = []  # vacío = usar primera foto; 2-10 = carrusel
 
 
 class InstagramPublishResult(BaseModel):
@@ -164,6 +166,18 @@ def _extract_image_url(media: dict | None) -> str | None:
         urls = fotos.get("urls", [])
         return str(urls[0]) if urls else None
     return None
+
+
+def _extract_image_urls(media: dict | None) -> list[str]:
+    if not media:
+        return []
+    fotos = media.get("fotos", [])
+    if isinstance(fotos, list):
+        return [str(u) for u in fotos if u]
+    if isinstance(fotos, dict):
+        urls = fotos.get("urls", [])
+        return [str(u) for u in urls if u]
+    return []
 
 
 async def _get_ig_config(db: AsyncSession, id_empresa: int) -> dict | None:
@@ -318,6 +332,7 @@ async def get_instagram_preview(
         external_id            = item["external_id"],
         titulo                 = item["titulo"],
         image_url              = image_url,
+        image_urls             = _extract_image_urls(media),
         caption                = caption,
         item_activo            = item["activo"],
         instagram_configurado  = cfg is not None and bool(cfg.get("ig_user_id")),
@@ -353,15 +368,26 @@ async def publish_to_instagram(
             detail="Esta propiedad está inactiva. Activala en Propiedades antes de publicar en Instagram.",
         )
 
-    # ── Validar: tiene imagen ─────────────────────────────────────────────────
+    # ── Determinar imágenes a publicar ───────────────────────────────────────
     media = item["media"] or {}
     if isinstance(media, str):
         media = json.loads(media)
-    image_url = _extract_image_url(media)
-    if not image_url:
+
+    selected_urls = [u.strip() for u in body.image_urls if u.strip()] if body.image_urls else []
+    if not selected_urls:
+        first = _extract_image_url(media)
+        if first:
+            selected_urls = [first]
+
+    if not selected_urls:
         raise HTTPException(
             status_code=400,
             detail="Esta propiedad no tiene imágenes. Agregá al menos una foto antes de publicar.",
+        )
+    if len(selected_urls) > 10:
+        raise HTTPException(
+            status_code=422,
+            detail="Instagram permite máximo 10 imágenes por carrusel",
         )
 
     # ── Validar: caption ──────────────────────────────────────────────────────
@@ -393,15 +419,16 @@ async def publish_to_instagram(
     # ── Crear registro pending ────────────────────────────────────────────────
     post_row = await db.execute(text("""
         INSERT INTO instagram_posts
-            (id_empresa, id_item, id_usuario, caption, image_url, status)
-        VALUES (:emp, :item_id, :user_id, :caption, :image_url, 'pending')
+            (id_empresa, id_item, id_usuario, caption, image_url, image_urls, status)
+        VALUES (:emp, :item_id, :user_id, :caption, :image_url, :image_urls::jsonb, 'pending')
         RETURNING id
     """), {
-        "emp":       emp,
-        "item_id":   body.id_item,
-        "user_id":   current_user.id_usuario,
-        "caption":   caption,
-        "image_url": image_url,
+        "emp":        emp,
+        "item_id":    body.id_item,
+        "user_id":    current_user.id_usuario,
+        "caption":    caption,
+        "image_url":  selected_urls[0],
+        "image_urls": json.dumps(selected_urls),
     })
     post_id = post_row.scalar_one()
     await db.commit()
@@ -409,35 +436,84 @@ async def publish_to_instagram(
     # ── Llamar a Instagram Graph API ──────────────────────────────────────────
     ig_user_id   = cfg["ig_user_id"]
     access_token = cfg["access_token"]
+    is_carousel  = len(selected_urls) >= 2
 
     try:
-        async with httpx.AsyncClient(timeout=30.0) as client:
-            # Paso 1: crear contenedor de media
-            r1 = await client.post(
-                f"{_IG_API_BASE}/{ig_user_id}/media",
-                params={"image_url": image_url, "caption": caption, "access_token": access_token},
-            )
-            r1_data = r1.json()
-            if "error" in r1_data:
-                raise RuntimeError(r1_data["error"].get("message", "Error al crear contenedor de media"))
+        async with httpx.AsyncClient(timeout=60.0) as client:
+            if is_carousel:
+                # ── Carrusel ──────────────────────────────────────────────────
+                # Paso 1: crear un contenedor hijo por cada imagen (sin caption)
+                child_ids = []
+                for url in selected_urls:
+                    rc = await client.post(
+                        f"{_IG_API_BASE}/{ig_user_id}/media",
+                        params={
+                            "image_url":        url,
+                            "is_carousel_item": "true",
+                            "access_token":     access_token,
+                        },
+                    )
+                    rc_data = rc.json()
+                    if "error" in rc_data:
+                        raise RuntimeError(
+                            f"Error al subir imagen al carrusel: {rc_data['error'].get('message', '')}"
+                        )
+                    child_ids.append(rc_data["id"])
 
-            creation_id = r1_data["id"]
-
-            # Paso 1b: esperar a que Instagram procese el contenedor (hasta 15 seg)
-            for attempt in range(5):
-                await asyncio.sleep(3)
-                status_r = await client.get(
-                    f"{_IG_API_BASE}/{creation_id}",
-                    params={"fields": "status_code", "access_token": access_token},
+                # Paso 2: crear contenedor carrusel con caption
+                r1 = await client.post(
+                    f"{_IG_API_BASE}/{ig_user_id}/media",
+                    params={
+                        "media_type":   "CAROUSEL",
+                        "children":     ",".join(child_ids),
+                        "caption":      caption,
+                        "access_token": access_token,
+                    },
                 )
-                status_data = status_r.json()
-                if status_data.get("status_code") == "FINISHED":
-                    break
-                if status_data.get("status_code") == "ERROR":
-                    raise RuntimeError("Instagram rechazó el contenedor de media")
-            # Si no llegó a FINISHED igual intentamos publicar
+                r1_data = r1.json()
+                if "error" in r1_data:
+                    raise RuntimeError(r1_data["error"].get("message", "Error al crear el carrusel"))
 
-            # Paso 2: publicar el contenedor
+                creation_id = r1_data["id"]
+
+                # Paso 2b: esperar procesamiento (carruseles tardan más)
+                for _ in range(10):
+                    await asyncio.sleep(3)
+                    status_r = await client.get(
+                        f"{_IG_API_BASE}/{creation_id}",
+                        params={"fields": "status_code", "access_token": access_token},
+                    )
+                    status_data = status_r.json()
+                    if status_data.get("status_code") == "FINISHED":
+                        break
+                    if status_data.get("status_code") == "ERROR":
+                        raise RuntimeError("Instagram rechazó el carrusel")
+
+            else:
+                # ── Imagen simple (V1) ────────────────────────────────────────
+                r1 = await client.post(
+                    f"{_IG_API_BASE}/{ig_user_id}/media",
+                    params={"image_url": selected_urls[0], "caption": caption, "access_token": access_token},
+                )
+                r1_data = r1.json()
+                if "error" in r1_data:
+                    raise RuntimeError(r1_data["error"].get("message", "Error al crear contenedor de media"))
+
+                creation_id = r1_data["id"]
+
+                for _ in range(5):
+                    await asyncio.sleep(3)
+                    status_r = await client.get(
+                        f"{_IG_API_BASE}/{creation_id}",
+                        params={"fields": "status_code", "access_token": access_token},
+                    )
+                    status_data = status_r.json()
+                    if status_data.get("status_code") == "FINISHED":
+                        break
+                    if status_data.get("status_code") == "ERROR":
+                        raise RuntimeError("Instagram rechazó el contenedor de media")
+
+            # Paso final: publicar (igual para ambos flujos)
             r2 = await client.post(
                 f"{_IG_API_BASE}/{ig_user_id}/media_publish",
                 params={"creation_id": creation_id, "access_token": access_token},
@@ -449,7 +525,6 @@ async def publish_to_instagram(
             provider_post_id = r2_data["id"]
 
     except Exception as exc:
-        # Persistir error
         await db.execute(text("""
             UPDATE instagram_posts
                SET status = 'error', error_message = :msg

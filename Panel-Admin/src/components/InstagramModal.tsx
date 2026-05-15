@@ -25,6 +25,7 @@ interface PreviewResponse {
   external_id: string;
   titulo: string;
   image_url: string | null;
+  image_urls: string[];
   caption: string;
   item_activo: boolean;
   instagram_configurado: boolean;
@@ -64,15 +65,16 @@ export default function InstagramModal({
   igEnabled?: boolean;
   fbEnabled?: boolean;
 }) {
-  const [preview, setPreview]       = useState<PreviewResponse | null>(null);
-  const [titulo, setTitulo]         = useState("");
-  const [caption, setCaption]       = useState("");
-  const [loading, setLoading]       = useState(true);
-  const [loadError, setLoadError]   = useState<string | null>(null);
-  const [publishing, setPublishing] = useState(false);
-  const [results, setResults]       = useState<SocialResults | null>(null);
-  const [publishToIG, setPublishToIG]   = useState(false);
-  const [publishToFB, setPublishToFB]   = useState(false);
+  const [preview, setPreview]                 = useState<PreviewResponse | null>(null);
+  const [titulo, setTitulo]                   = useState("");
+  const [caption, setCaption]                 = useState("");
+  const [loading, setLoading]                 = useState(true);
+  const [loadError, setLoadError]             = useState<string | null>(null);
+  const [publishing, setPublishing]           = useState(false);
+  const [results, setResults]                 = useState<SocialResults | null>(null);
+  const [publishToIG, setPublishToIG]         = useState(false);
+  const [publishToFB, setPublishToFB]         = useState(false);
+  const [selectedImageUrls, setSelectedImageUrls] = useState<string[]>([]);
 
   useEffect(() => {
     async function load() {
@@ -83,6 +85,8 @@ export default function InstagramModal({
         setCaption(data.caption);
         setPublishToIG(igEnabled && data.instagram_configurado);
         setPublishToFB(fbEnabled && data.facebook_configurado);
+        // Pre-seleccionar la primera foto
+        setSelectedImageUrls(data.image_urls.length > 0 ? [data.image_urls[0]] : []);
       } catch (e) {
         setLoadError(e instanceof ApiError ? e.message : "Error al cargar preview");
       } finally {
@@ -92,20 +96,36 @@ export default function InstagramModal({
     load();
   }, [idItem]);
 
+  function toggleImage(url: string) {
+    setSelectedImageUrls(prev => {
+      if (prev.includes(url)) return prev.filter(u => u !== url);
+      if (prev.length >= 10) return prev;
+      return [...prev, url];
+    });
+  }
+
   async function handlePublish() {
     if (!preview) return;
     setPublishing(true);
     const partial: SocialResults = {};
     if (publishToIG) {
       try {
-        partial.ig = { result: await api.post<PublishResult>("/admin/instagram/publish", { id_item: idItem, caption }) };
+        partial.ig = {
+          result: await api.post<PublishResult>("/admin/instagram/publish", {
+            id_item: idItem,
+            caption,
+            image_urls: selectedImageUrls,
+          }),
+        };
       } catch (e) {
         partial.ig = { error: e instanceof ApiError ? e.message : "Error al publicar en Instagram" };
       }
     }
     if (publishToFB) {
       try {
-        partial.fb = { result: await api.post<PublishResult>("/admin/instagram/fb/publish", { id_item: idItem, caption }) };
+        partial.fb = {
+          result: await api.post<PublishResult>("/admin/instagram/fb/publish", { id_item: idItem, caption }),
+        };
       } catch (e) {
         partial.fb = { error: e instanceof ApiError ? e.message : "Error al publicar en Facebook" };
       }
@@ -114,10 +134,13 @@ export default function InstagramModal({
     setPublishing(false);
   }
 
+  const hasImages       = selectedImageUrls.length > 0;
+  const isCarousel      = selectedImageUrls.length >= 2;
+
   const canPublish =
     (publishToIG || publishToFB) &&
     !!preview?.item_activo &&
-    !!preview?.image_url &&
+    hasImages &&
     !!caption.trim();
 
   return (
@@ -164,19 +187,75 @@ export default function InstagramModal({
                 />
               </div>
 
-              {/* Imagen */}
-              {preview.image_url ? (
-                <div className="w-full aspect-square max-h-60 overflow-hidden rounded-xl bg-gray-100">
-                  <img
-                    src={preview.image_url}
-                    alt={preview.titulo}
-                    className="w-full h-full object-cover"
-                  />
+              {/* Selector de fotos */}
+              {preview.image_urls.length > 1 ? (
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <label className="text-sm font-medium text-gray-700">
+                      Fotos para Instagram
+                    </label>
+                    <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
+                      selectedImageUrls.length === 0
+                        ? "bg-red-100 text-red-600"
+                        : isCarousel
+                          ? "bg-pink-100 text-pink-700"
+                          : "bg-gray-100 text-gray-500"
+                    }`}>
+                      {selectedImageUrls.length}/10 {isCarousel ? "· carrusel" : "· imagen simple"}
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-4 gap-2">
+                    {preview.image_urls.map((url, i) => {
+                      const sel = selectedImageUrls.includes(url);
+                      const order = selectedImageUrls.indexOf(url) + 1;
+                      return (
+                        <button
+                          key={i}
+                          type="button"
+                          onClick={() => toggleImage(url)}
+                          className={`relative aspect-square rounded-lg overflow-hidden border-2 transition-all ${
+                            sel
+                              ? "border-pink-500 ring-1 ring-pink-300"
+                              : "border-transparent opacity-50 hover:opacity-80"
+                          }`}
+                        >
+                          <img src={url} alt="" className="w-full h-full object-cover" />
+                          {sel && (
+                            <div className="absolute top-1 right-1 w-5 h-5 bg-pink-500 rounded-full flex items-center justify-center shadow">
+                              <span className="text-white text-[10px] font-bold leading-none">{order}</span>
+                            </div>
+                          )}
+                          {!sel && selectedImageUrls.length >= 10 && (
+                            <div className="absolute inset-0 bg-gray-200/60 flex items-center justify-center">
+                              <span className="text-xs text-gray-500">máx.</span>
+                            </div>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  {selectedImageUrls.length === 0 && (
+                    <p className="text-xs text-red-500">Seleccioná al menos 1 foto para publicar</p>
+                  )}
+                  {selectedImageUrls.length === 1 && (
+                    <p className="text-xs text-gray-400">Seleccioná 2 o más fotos para publicar como carrusel</p>
+                  )}
                 </div>
               ) : (
-                <div className="w-full aspect-square max-h-60 flex items-center justify-center bg-gray-100 rounded-xl">
-                  <p className="text-sm text-gray-400">Sin imagen — no se puede publicar</p>
-                </div>
+                /* Vista simple cuando hay 1 sola foto */
+                preview.image_url ? (
+                  <div className="w-full aspect-square max-h-60 overflow-hidden rounded-xl bg-gray-100">
+                    <img
+                      src={preview.image_url}
+                      alt={preview.titulo}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ) : (
+                  <div className="w-full aspect-square max-h-60 flex items-center justify-center bg-gray-100 rounded-xl">
+                    <p className="text-sm text-gray-400">Sin imagen — no se puede publicar</p>
+                  </div>
+                )
               )}
 
               {/* Advertencias */}
@@ -268,7 +347,11 @@ export default function InstagramModal({
                   disabled={!canPublish || publishing}
                   className="flex items-center gap-2 px-5 py-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white text-sm font-medium rounded-lg hover:opacity-90 disabled:opacity-40 transition-opacity"
                 >
-                  {publishing ? "Publicando..." : "Publicar ahora"}
+                  {publishing
+                    ? "Publicando..."
+                    : isCarousel
+                      ? `Publicar carrusel (${selectedImageUrls.length} fotos)`
+                      : "Publicar ahora"}
                 </button>
               </div>
             </div>
