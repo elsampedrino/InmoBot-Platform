@@ -23,7 +23,7 @@ class Settings(BaseSettings):
 
     # ─── Admin JWT ────────────────────────────────────────────────────────────
     ADMIN_JWT_SECRET: str = "cambiar-en-produccion"
-    ADMIN_JWT_EXPIRE_HOURS: int = 24
+    ADMIN_JWT_EXPIRE_HOURS: int = 720  # 30 días
 
     # ─── Cloudinary ───────────────────────────────────────────────────────────
     CLOUDINARY_CLOUD_NAME: str = ""
