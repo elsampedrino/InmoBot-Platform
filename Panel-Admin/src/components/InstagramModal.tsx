@@ -130,7 +130,11 @@ export default function InstagramModal({
     if (publishToFB) {
       try {
         partial.fb = {
-          result: await api.post<PublishResult>("/admin/instagram/fb/publish", { id_item: idItem, caption }),
+          result: await api.post<PublishResult>("/admin/instagram/fb/publish", {
+            id_item: idItem,
+            caption,
+            image_urls: selectedImageUrls,
+          }),
         };
       } catch (e) {
         partial.fb = {
@@ -204,7 +208,7 @@ export default function InstagramModal({
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
                     <label className="text-sm font-medium text-gray-700">
-                      Fotos para Instagram
+                      Fotos para publicar
                     </label>
                     <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
                       selectedImageUrls.length === 0

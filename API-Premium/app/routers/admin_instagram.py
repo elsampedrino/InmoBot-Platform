@@ -66,6 +66,7 @@ class InstagramPreviewResponse(BaseModel):
 class FacebookPublishRequest(BaseModel):
     id_item: str
     caption: str
+    image_urls: list[str] = []  # vacío = usar primera foto; 2-10 = multi-foto
 
 
 class FacebookPublishResult(BaseModel):
@@ -599,12 +600,19 @@ async def publish_to_facebook(
     media = item["media"] or {}
     if isinstance(media, str):
         media = json.loads(media)
-    image_url = _extract_image_url(media)
-    if not image_url:
+
+    selected_fb_urls = [u.strip() for u in body.image_urls if u.strip()] if body.image_urls else []
+    if not selected_fb_urls:
+        first = _extract_image_url(media)
+        if first:
+            selected_fb_urls = [first]
+    if not selected_fb_urls:
         raise HTTPException(
             status_code=400,
             detail="Esta propiedad no tiene imágenes. Agregá al menos una foto antes de publicar.",
         )
+    if len(selected_fb_urls) > 10:
+        raise HTTPException(status_code=422, detail="Facebook permite máximo 10 imágenes por publicación")
 
     caption = body.caption.strip()
     if not caption:
@@ -627,18 +635,18 @@ async def publish_to_facebook(
         "item_id":   body.id_item,
         "user_id":   current_user.id_usuario,
         "caption":   caption,
-        "image_url": image_url,
+        "image_url": selected_fb_urls[0],
     })
     post_id = post_row.scalar_one()
     await db.commit()
 
-    page_id      = cfg["page_id"]
-    access_token = cfg["access_token"]
+    page_id       = cfg["page_id"]
+    access_token  = cfg["access_token"]
+    is_fb_multi   = len(selected_fb_urls) >= 2
 
     try:
-        async with httpx.AsyncClient(timeout=30.0) as client:
-            # Intentar obtener el Page Access Token desde el token almacenado (que puede ser User Token).
-            # Si ya es un Page Token, este paso devuelve error y usamos el token original.
+        async with httpx.AsyncClient(timeout=60.0) as client:
+            # Obtener Page Access Token (si el almacenado es User Token)
             page_token = access_token
             try:
                 tok_r = await client.get(
@@ -649,16 +657,43 @@ async def publish_to_facebook(
                 if "access_token" in tok_data:
                     page_token = tok_data["access_token"]
             except Exception:
-                pass  # usar el token almacenado tal cual
+                pass
 
-            r = await client.post(
-                f"{_IG_API_BASE}/{page_id}/photos",
-                params={"url": image_url, "caption": caption, "access_token": page_token},
-            )
-            r_data = r.json()
-            if "error" in r_data:
-                raise RuntimeError(r_data["error"].get("message", "Error al publicar en Facebook"))
-            provider_post_id = r_data.get("post_id") or r_data.get("id")
+            if is_fb_multi:
+                # ── Multi-foto: subir cada foto sin publicar, luego crear el post ────
+                photo_ids = []
+                for url in selected_fb_urls:
+                    rp = await client.post(
+                        f"{_IG_API_BASE}/{page_id}/photos",
+                        params={"url": url, "published": "false", "access_token": page_token},
+                    )
+                    rp_data = rp.json()
+                    if "error" in rp_data:
+                        raise RuntimeError(
+                            f"Error al subir foto a Facebook: {rp_data['error'].get('message', '')}"
+                        )
+                    photo_ids.append(rp_data["id"])
+
+                attached = json.dumps([{"media_fbid": pid} for pid in photo_ids])
+                r = await client.post(
+                    f"{_IG_API_BASE}/{page_id}/feed",
+                    params={"message": caption, "attached_media": attached, "access_token": page_token},
+                )
+                r_data = r.json()
+                if "error" in r_data:
+                    raise RuntimeError(r_data["error"].get("message", "Error al publicar en Facebook"))
+                provider_post_id = r_data.get("id")
+
+            else:
+                # ── Imagen simple (V1) ────────────────────────────────────────────
+                r = await client.post(
+                    f"{_IG_API_BASE}/{page_id}/photos",
+                    params={"url": selected_fb_urls[0], "caption": caption, "access_token": page_token},
+                )
+                r_data = r.json()
+                if "error" in r_data:
+                    raise RuntimeError(r_data["error"].get("message", "Error al publicar en Facebook"))
+                provider_post_id = r_data.get("post_id") or r_data.get("id")
 
     except Exception as exc:
         await db.execute(text("""
