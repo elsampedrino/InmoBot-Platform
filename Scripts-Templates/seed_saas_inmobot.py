@@ -18,6 +18,7 @@ Variables de entorno necesarias:
   DATABASE_URL=postgresql+asyncpg://...
 """
 import asyncio
+import json
 import os
 import sys
 from pathlib import Path
@@ -94,11 +95,11 @@ El plan Premium es la solución completa: incluye el panel de administración on
             },
             {
                 "orden": 2,
-                "texto": """Los precios de InmoBot son en dólares estadounidenses y se cobran mensualmente.
+                "texto": """InmoBot no tiene precios fijos publicados. Cada propuesta se arma en base a un análisis preliminar de la inmobiliaria: cantidad de propiedades, volumen estimado de consultas, integraciones necesarias y nivel de automatización deseado.
 
-Para conocer el precio exacto de cada plan y opciones de implementación, la mejor forma es agendar una demo breve donde el equipo puede armar una propuesta según las necesidades específicas de cada negocio.
+Para recibir una propuesta personalizada, la mejor forma es agendar una demo breve donde el equipo evalúa el caso y presenta una propuesta a medida sin compromiso.
 
-Los precios varían según la cantidad de propiedades activas, el volumen de consultas mensuales y las integraciones necesarias. No hay contratos de largo plazo — la suscripción es mes a mes.""",
+No hay contratos de largo plazo — la suscripción es mes a mes y se puede cancelar en cualquier momento.""",
                 "metadata": {"categoria": "planes", "subtema": "precios"},
             },
             {
@@ -513,7 +514,7 @@ async def seed():
 
             if existing:
                 id_rubro = existing
-                print(f"✓ Rubro saas_inmobot ya existe (id={id_rubro})")
+                print(f"[OK] Rubro saas_inmobot ya existe (id={id_rubro})")
             else:
                 result = await session.execute(
                     text("""
@@ -523,7 +524,7 @@ async def seed():
                     """)
                 )
                 id_rubro = result.scalar_one()
-                print(f"✓ Rubro saas_inmobot creado (id={id_rubro})")
+                print(f"[OK] Rubro saas_inmobot creado (id={id_rubro})")
 
             # 2. Asociar a empresa id=2
             result = await session.execute(
@@ -541,9 +542,9 @@ async def seed():
                     """),
                     {"emp": ID_EMPRESA_INMOBOT_PLATFORM, "rub": id_rubro},
                 )
-                print(f"✓ empresa_rubros: empresa 2 ↔ rubro {id_rubro}")
+                print(f"[OK] empresa_rubros: empresa 2 <-> rubro {id_rubro}")
             else:
-                print(f"✓ empresa_rubros ya existía")
+                print(f"[OK] empresa_rubros ya existía")
 
             # 3. RubroSchema (kb_text: sin catálogo de items)
             result = await session.execute(
@@ -558,9 +559,9 @@ async def seed():
                     """),
                     {"rub": id_rubro},
                 )
-                print("✓ RubroSchema creado (search_mode=kb_text)")
+                print("[OK] RubroSchema creado (search_mode=kb_text)")
             else:
-                print("✓ RubroSchema ya existía")
+                print("[OK] RubroSchema ya existía")
 
             # 4. RubroPrompt
             result = await session.execute(
@@ -575,9 +576,9 @@ async def seed():
                     """),
                     {"rub": id_rubro, "sys": SYSTEM_PROMPT, "sty": STYLE_PROMPT},
                 )
-                print("✓ RubroPrompt creado")
+                print("[OK] RubroPrompt creado")
             else:
-                print("✓ RubroPrompt ya existía (no reemplazado)")
+                print("[OK] RubroPrompt ya existía (no reemplazado)")
 
             # 5. Slug para rubro existente inmobiliaria (id=1) si no tiene slug
             await session.execute(
@@ -586,7 +587,7 @@ async def seed():
                     WHERE id_rubro = 1 AND slug IS NULL
                 """)
             )
-            print("✓ slug 'inmobiliaria_demo' asignado a rubro id=1 (si no tenía)")
+            print("[OK] slug 'inmobiliaria_demo' asignado a rubro id=1 (si no tenía)")
 
             # 6. KB Documents + Chunks
             total_chunks = 0
@@ -602,7 +603,7 @@ async def seed():
                 existing_doc = result.scalar_one_or_none()
 
                 if existing_doc:
-                    print(f"  ↷ Documento '{doc['titulo']}' ya existe, omitido")
+                    print(f"  [SKIP] Documento '{doc['titulo']}' ya existe, omitido")
                     continue
 
                 doc_result = await session.execute(
@@ -619,20 +620,20 @@ async def seed():
                     await session.execute(
                         text("""
                             INSERT INTO kb_chunks (id_documento, orden, chunk_texto, metadata)
-                            VALUES (:doc, :orden, :texto, :meta::jsonb)
+                            VALUES (:doc, :orden, :texto, CAST(:meta AS jsonb))
                         """),
                         {
                             "doc": id_documento,
                             "orden": chunk["orden"],
                             "texto": chunk["texto"],
-                            "meta": str(chunk["metadata"]).replace("'", '"'),
+                            "meta": json.dumps(chunk["metadata"]),
                         },
                     )
                     total_chunks += 1
 
-                print(f"  ✓ '{doc['titulo']}': {len(doc['chunks'])} chunks")
+                print(f"  [OK] '{doc['titulo']}': {len(doc['chunks'])} chunks")
 
-            print(f"\n✅ Seed completado. {total_chunks} chunks de KB insertados.")
+            print(f"\n[DONE] Seed completado. {total_chunks} chunks de KB insertados.")
             print(f"   id_rubro saas_inmobot = {id_rubro}")
             print(f"   Para usar el asistente comercial, el widget debe enviar:")
             print(f'   {{ "rubroSlug": "saas_inmobot", "message": "...", "sessionId": "..." }}')
