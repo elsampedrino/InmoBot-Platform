@@ -92,7 +92,7 @@ class InstagramPublishResult(BaseModel):
 # ─── Helpers ──────────────────────────────────────────────────────────────────
 
 def _generate_caption(titulo: str, tipo: str | None, precio: float | None, moneda: str | None, atributos: dict) -> str:
-    lines = []
+    lines = [titulo, ""]
 
     if precio and float(precio) > 0:
         precio_fmt = f"{int(precio):,}".replace(",", ".")
