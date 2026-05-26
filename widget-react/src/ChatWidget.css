@@ -121,12 +121,12 @@
      left → ver .anim-dot-1/2/3 para ajuste horizontal      */
   width:  5%;
   height: 5%;
-  top: 53%;
+  top: 51%;
 }
 
-.anim-dot-1 { left: 36%; }
-.anim-dot-2 { left: 43%; }
-.anim-dot-3 { left: 50%; }
+.anim-dot-1 { left: 39%; }
+.anim-dot-2 { left: 46%; }
+.anim-dot-3 { left: 53%; }
 
 @keyframes widgetDotBounce {
   0%, 65%, 100% { transform: translateY(0);    opacity: 0.55; }
