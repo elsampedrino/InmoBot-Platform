@@ -119,18 +119,18 @@
   /* Ajustá estos % si los dots no quedan centrados en la lente:
      top  → 55% = centro vertical de la lente en el PNG
      left → ver .anim-dot-1/2/3 para ajuste horizontal      */
-  width:  7%;
-  height: 7%;
-  top: 51.5%;   /* 55% − 3.5% (mitad del dot) */
+  width:  5%;
+  height: 5%;
+  top: 53%;
 }
 
-.anim-dot-1 { left: 31%;   }   /* centro − gap − mitad */
-.anim-dot-2 { left: 44.5%; }   /* centro − mitad       */
-.anim-dot-3 { left: 58%;   }   /* centro + gap − mitad */
+.anim-dot-1 { left: 32%;   }
+.anim-dot-2 { left: 45.5%; }
+.anim-dot-3 { left: 59%;   }
 
 @keyframes widgetDotBounce {
   0%, 65%, 100% { transform: translateY(0);    opacity: 0.55; }
-  30%           { transform: translateY(-70%); opacity: 1;    }
+  30%           { transform: translateY(-50%); opacity: 1;    }
 }
 
 .anim-dot-1 { animation: widgetDotBounce 0.9s ease-in-out infinite 0s;    }
