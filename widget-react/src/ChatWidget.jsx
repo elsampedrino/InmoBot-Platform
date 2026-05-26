@@ -2,6 +2,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './ChatWidget.css';
 
+const AnimatedLogo = ({ src }) => (
+  <span className="anim-logo">
+    <img src={src} alt="InmoBot" />
+    <i className="anim-dot anim-dot-1" />
+    <i className="anim-dot anim-dot-2" />
+    <i className="anim-dot anim-dot-3" />
+  </span>
+);
+
+const LOGO_SRC = '/inmobot-logo-sinpuntos.png';
+
 const ChatWidget = ({ config }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([]);
@@ -493,7 +504,7 @@ const ChatWidget = ({ config }) => {
           aria-label="Abrir chat"
           style={{ backgroundColor: primaryColor }}
         >
-          <img src="https://inmobot-widget.vercel.app/inmobot-logo.jpg" alt="InmoBot" className="chat-icon-logo" />
+          <AnimatedLogo src={LOGO_SRC} />
           {unreadCount > 0 && (
             <span className="unread-badge">{unreadCount}</span>
           )}
@@ -507,7 +518,7 @@ const ChatWidget = ({ config }) => {
           <div className="chat-header">
             <div className="chat-header-info">
               <div className="bot-avatar">
-                <img src="https://inmobot-widget.vercel.app/inmobot-logo.jpg" alt="InmoBot" />
+                <AnimatedLogo src={LOGO_SRC} />
               </div>
               <div className="bot-info">
                 <h3 className="bot-name">{botName}</h3>

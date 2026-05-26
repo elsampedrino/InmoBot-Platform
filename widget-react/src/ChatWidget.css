@@ -93,6 +93,51 @@
   color: white;
 }
 
+/* ── AnimatedLogo: wrapper + dots overlay ── */
+.anim-logo {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.anim-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Dots: posicionados como % del contenedor — escalan solos */
+.anim-dot {
+  display: block;
+  position: absolute;
+  border-radius: 50%;
+  background: #5EBBE7;
+  /* Ajustá estos % si los dots no quedan centrados en la lente:
+     top  → 55% = centro vertical de la lente en el PNG
+     left → ver .anim-dot-1/2/3 para ajuste horizontal      */
+  width:  7%;
+  height: 7%;
+  top: 51.5%;   /* 55% − 3.5% (mitad del dot) */
+}
+
+.anim-dot-1 { left: 31%;   }   /* centro − gap − mitad */
+.anim-dot-2 { left: 44.5%; }   /* centro − mitad       */
+.anim-dot-3 { left: 58%;   }   /* centro + gap − mitad */
+
+@keyframes widgetDotBounce {
+  0%, 65%, 100% { transform: translateY(0);    opacity: 0.55; }
+  30%           { transform: translateY(-70%); opacity: 1;    }
+}
+
+.anim-dot-1 { animation: widgetDotBounce 0.9s ease-in-out infinite 0s;    }
+.anim-dot-2 { animation: widgetDotBounce 0.9s ease-in-out infinite 0.18s; }
+.anim-dot-3 { animation: widgetDotBounce 0.9s ease-in-out infinite 0.36s; }
+/* ── fin AnimatedLogo ── */
+
 .chat-icon-logo {
   width: 100%;
   height: 100%;
