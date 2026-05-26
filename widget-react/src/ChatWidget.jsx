@@ -11,7 +11,7 @@ const AnimatedLogo = ({ src }) => (
   </span>
 );
 
-const LOGO_SRC = '/inmobot-logo-sinpuntos.png';
+const LOGO_SRC = 'https://inmobot-widget.vercel.app/inmobot-logo-sinpuntos.png';
 
 const ChatWidget = ({ config }) => {
   const [isOpen, setIsOpen] = useState(false);
