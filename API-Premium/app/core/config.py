@@ -40,6 +40,10 @@ class Settings(BaseSettings):
     # ─── Telegram Bot ────────────────────────────────────────────────────────
     TELEGRAM_BOT_TOKEN: str = ""
 
+    # ─── WhatsApp Business Cloud API ─────────────────────────────────────────
+    WHATSAPP_TOKEN: str = ""          # Permanent token de Meta
+    WHATSAPP_VERIFY_TOKEN: str = ""   # Token secreto que define vos para el webhook
+
     # ─── SMTP ─────────────────────────────────────────────────────────────────
     SMTP_HOST: str = ""
     SMTP_PORT: int = 465
