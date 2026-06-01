@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 # Regex que extrae el Tokko ID de URLs del tipo:
 #   https://www.pablohoughton.com.ar/p/7837181-Departamento-en-...
 #   https://www.cualquiercliente.com.ar/p/7837181-...  (mismo formato Tokko)
-_RE_TOKKO_URL = re.compile(r"/p/(\d+)[/-]")
+_RE_TOKKO_URL = re.compile(r"/p/(\d+)(?:[/-]|$|\s)")
 
 # También captura IDs de URLs de portales (ZonaProp, Argenprop, etc.)
 # que suelen incluir el ID de Tokko en la URL. Patrón más genérico:
