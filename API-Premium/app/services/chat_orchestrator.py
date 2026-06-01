@@ -558,7 +558,10 @@ class ChatOrchestrator:
                 if nombre and len(nombre) < 2:
                     nombre = None
                 # Capturar teléfono si el usuario lo incluyó junto al nombre
+                # En WhatsApp ya conocemos el número — usarlo si no hay otro
                 _, telefono, email = _parse_contact_data(nombre_raw)
+                if not telefono and request.canal == "whatsapp":
+                    telefono = request.session_id
                 extra_meta = {"handoff_type": "whatsapp"}
             else:
                 raw_text = decision.entities.get("datos_contacto", request.mensaje)

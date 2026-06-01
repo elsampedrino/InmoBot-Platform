@@ -140,7 +140,7 @@ class PropiedadDetalle(BaseModel):
     barrio: str | None = None
     dormitorios: int | None = None
     banios: int | None = None
-    superficie_cubierta: str | None = None
+    superficie_cubierta: float | None = None
 
 
 class LeadDetailResponse(LeadResponse):

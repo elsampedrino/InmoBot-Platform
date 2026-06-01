@@ -8,7 +8,7 @@ export interface PropiedadDetalle {
   barrio: string | null;
   dormitorios: number | null;
   banios: number | null;
-  superficie_cubierta: string | null;
+  superficie_cubierta: number | null;
 }
 
 export interface LeadDetalle extends Lead {
