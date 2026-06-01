@@ -160,6 +160,31 @@ class ChatOrchestrator:
                 tenant_config=tenant_config,
             )
 
+            # ── 2b. Inyectar propiedad específica si viene del property_resolver ──
+            prop_ctx = request.metadata.get("property_context")
+            if prop_ctx:
+                from app.models.domain_models import ItemSummary
+                summary = ItemSummary(
+                    id_item=prop_ctx["id_item"],
+                    label="propiedad_activa",
+                    titulo=prop_ctx["titulo"],
+                    tipo=prop_ctx.get("tipo", ""),
+                    categoria=prop_ctx.get("categoria", ""),
+                    precio=prop_ctx.get("precio"),
+                    moneda=prop_ctx.get("moneda"),
+                    barrio=prop_ctx.get("barrio", ""),
+                    ciudad=prop_ctx.get("ciudad", ""),
+                    calle=prop_ctx.get("calle", ""),
+                )
+                state = turn.conversation_state
+                if prop_ctx["id_item"] not in state.items_recientes:
+                    state.items_recientes.insert(0, prop_ctx["id_item"])
+                state.items_recientes_resumen = [summary] + [
+                    it for it in state.items_recientes_resumen
+                    if it.id_item != prop_ctx["id_item"]
+                ]
+                state.ultimo_item_referenciado = prop_ctx["id_item"]
+
             # ── 3. Persistir mensaje del usuario ───────────────────────────────
             await self.context_manager.save_user_message(
                 id_conversacion=turn.id_conversacion,

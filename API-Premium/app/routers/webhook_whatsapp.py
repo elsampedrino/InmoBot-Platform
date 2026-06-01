@@ -21,6 +21,8 @@ from app.core.database import get_db
 from app.models.api_models import ChatMessageRequest
 from app.models.db_models import Conversacion, Empresa
 from app.services.chat_orchestrator import ChatOrchestrator
+from app.services.property_resolver import resolve_property
+from app.services.tenant_resolver import TenantResolver
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -103,12 +105,23 @@ async def _handle_message(
         )
         return
 
+    # Intentar identificar propiedad específica por Tokko ID en la URL
+    metadata: dict = {"message_id": message_id}
+    try:
+        tenant = await TenantResolver(db).resolve(empresa_slug)
+        if tenant:
+            prop = await resolve_property(text, tenant.id_empresa, db)
+            if prop:
+                metadata["property_context"] = prop
+    except Exception:
+        logger.exception("Error en property_resolver para %s", from_number)
+
     req = ChatMessageRequest(
         empresa_slug=empresa_slug,
         canal="whatsapp",
         session_id=from_number,
         mensaje=text,
-        metadata={"message_id": message_id},
+        metadata=metadata,
     )
 
     try:
