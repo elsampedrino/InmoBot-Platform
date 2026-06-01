@@ -192,6 +192,17 @@ class ChatOrchestrator:
                 raw_payload=request.metadata,
             )
 
+            # ── 3b. Para mensajes de link de propiedad, adaptar mensaje para router/AI ─
+            if prop_ctx:
+                calle  = prop_ctx.get("calle", "")
+                barrio = prop_ctx.get("barrio", "")
+                ubicacion = f"{calle}, {barrio}".strip(", ")
+                turn.mensaje = (
+                    f"El usuario compartió el link de la propiedad: {prop_ctx['titulo']}"
+                    + (f" ({ubicacion})" if ubicacion else "")
+                    + ". Quiero ver los detalles de esta propiedad."
+                )
+
             # ── 4. Router conversacional ───────────────────────────────────────
             decision = await self.router.decide(turn)
 
