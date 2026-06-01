@@ -254,6 +254,77 @@ class PromptService:
         detalles = atrib.get("detalles") or []
         detalles_str = ", ".join(detalles) if detalles else "No especificados"
 
+        # Campos enriquecidos opcionales
+        disp    = atrib.get("disponibilidad") or {}
+        gastos  = atrib.get("gastos") or {}
+        extras  = atrib.get("extras") or {}
+        proyecto = atrib.get("proyecto") or {}
+
+        disp_lines = []
+        if disp.get("estado"):
+            disp_lines.append(f"Estado ocupación: {disp['estado']}")
+        if disp.get("situacion"):
+            disp_lines.append(f"Situación: {disp['situacion']}")
+        if disp.get("disponible_desde"):
+            disp_lines.append(f"Disponible desde: {disp['disponible_desde']}")
+        if disp.get("se_puede_visitar") is not None:
+            disp_lines.append(f"Se puede visitar: {'Sí' if disp['se_puede_visitar'] else 'No'}")
+        if disp.get("nota"):
+            disp_lines.append(f"Nota: {disp['nota']}")
+
+        gastos_lines = []
+        exp = gastos.get("expensas")
+        if exp:
+            moneda_exp = gastos.get("expensas_moneda", "ARS")
+            gastos_lines.append(f"Expensas: ${int(exp):,} {moneda_exp}".replace(",", "."))
+        if gastos.get("abl"):
+            gastos_lines.append(f"ABL: ${int(gastos['abl']):,}".replace(",", "."))
+        if gastos.get("rentas"):
+            gastos_lines.append(f"Rentas: ${int(gastos['rentas']):,}".replace(",", "."))
+        if gastos.get("nota"):
+            gastos_lines.append(f"Nota gastos: {gastos['nota']}")
+
+        extras_lines = []
+        bool_labels = {
+            "apto_mascotas": "Apto mascotas",
+            "apto_profesional": "Apto profesional",
+            "apto_credito": "Apto crédito",
+            "cuatro_vientos": "4 vientos",
+            "pileta": "Pileta",
+            "quincho": "Quincho",
+            "parrilla": "Parrilla",
+            "smart_building": "Smart Building",
+        }
+        for key, label in bool_labels.items():
+            val = extras.get(key)
+            if val is not None:
+                extras_lines.append(f"{label}: {'Sí' if val else 'No'}")
+        if extras.get("rubros_aptos"):
+            extras_lines.append(f"Rubros aptos: {', '.join(extras['rubros_aptos'])}")
+        if extras.get("calefaccion"):
+            extras_lines.append(f"Calefacción: {extras['calefaccion']}")
+
+        # Servicios y orientación
+        servicios = atrib.get("servicios") or []
+        orientacion = atrib.get("orientacion") or extras.get("orientacion") or atrib.get("extras", {}).get("orientacion") if isinstance(atrib.get("extras"), dict) else None
+
+        extra_blocks = ""
+        if disp_lines:
+            extra_blocks += f"Disponibilidad:\n" + "\n".join(f"  - {l}" for l in disp_lines) + "\n"
+        if gastos_lines:
+            extra_blocks += f"Gastos:\n" + "\n".join(f"  - {l}" for l in gastos_lines) + "\n"
+        if extras_lines:
+            extra_blocks += f"Características adicionales:\n" + "\n".join(f"  - {l}" for l in extras_lines) + "\n"
+        if servicios:
+            extra_blocks += f"Servicios: {', '.join(servicios)}\n"
+        if orientacion:
+            extra_blocks += f"Orientación: {orientacion}\n"
+        if proyecto.get("nombre"):
+            extra_blocks += f"Proyecto: {proyecto['nombre']}"
+            if proyecto.get("entrega_estimada"):
+                extra_blocks += f" — Entrega: {proyecto['entrega_estimada']}"
+            extra_blocks += "\n"
+
         prop_data = (
             f"Título: {item_detail.get('titulo', '')}\n"
             f"Tipo: {item_detail.get('tipo', '')} | Operación: {item_detail.get('categoria', '')}\n"
@@ -262,7 +333,8 @@ class PromptService:
             f"Sup. cubierta: {atrib.get('superficie_cubierta', 'N/D')} | Total: {atrib.get('superficie_total', 'N/D')}\n"
             f"Precio: {precio_str}\n"
             f"Amenities/Detalles: {detalles_str}\n"
-            f"Estado: {atrib.get('estado_construccion', 'N/D')}\n"
+            f"Estado construcción: {atrib.get('estado_construccion', 'N/D')}\n"
+            + extra_blocks +
             f"Descripción: {item_detail.get('descripcion') or item_detail.get('descripcion_corta', '')}"
         )
 
