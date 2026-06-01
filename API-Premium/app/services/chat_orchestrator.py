@@ -40,6 +40,7 @@ from app.models.domain_models import (
     ItemCandidate,
     ItemSummary,
     Route,
+    RouterActions,
     RouterDecision,
     SearchFilters,
     SearchResult,
@@ -192,19 +193,25 @@ class ChatOrchestrator:
                 raw_payload=request.metadata,
             )
 
-            # ── 3b. Para mensajes de link de propiedad, adaptar mensaje para router/AI ─
-            if prop_ctx:
-                calle  = prop_ctx.get("calle", "")
-                barrio = prop_ctx.get("barrio", "")
-                ubicacion = f"{calle}, {barrio}".strip(", ")
-                turn.mensaje = (
-                    f"El usuario compartió el link de la propiedad: {prop_ctx['titulo']}"
-                    + (f" ({ubicacion})" if ubicacion else "")
-                    + ". Quiero ver los detalles de esta propiedad."
-                )
-
             # ── 4. Router conversacional ───────────────────────────────────────
-            decision = await self.router.decide(turn)
+            # Si hay property_context, forzamos VER_DETALLE_ITEM directamente
+            # para que _block_detalle surfee disponibilidad, gastos y extras.
+            if prop_ctx:
+                decision = RouterDecision(
+                    route=Route.VER_DETALLE_ITEM,
+                    intent="ver_detalle_propiedad",
+                    confidence=1.0,
+                    used_ai_fallback=False,
+                    entities={"item_referenciado": prop_ctx["id_item"]},
+                    actions=RouterActions(
+                        run_parser=False,
+                        run_search=False,
+                        run_kb_search=False,
+                        run_ai_response=True,
+                    ),
+                )
+            else:
+                decision = await self.router.decide(turn)
 
             is_first_turn = turn.conversation_state.conversation_stage == ConversationStage.INICIO
 
