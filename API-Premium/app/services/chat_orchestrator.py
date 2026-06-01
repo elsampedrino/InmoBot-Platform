@@ -283,6 +283,18 @@ class ChatOrchestrator:
                 whatsapp_nombre_solicitado = True
 
             # ── 8. Construir respuesta (Sonnet → fallback plantilla) ────────────
+            # Mensaje silencioso (solo para guardar estado de propiedad)
+            if request.metadata.get("silent"):
+                return ChatMessageResponse(
+                    session_id=request.session_id,
+                    respuesta="",
+                    items=[],
+                    route=decision.route.value,
+                    stage=turn.conversation_state.conversation_stage.value,
+                    lead_capturado=False,
+                    metadata={},
+                )
+
             items_para_respuesta = search_result.items if search_result else []
             nombre_lead_capturado: str | None = None
 

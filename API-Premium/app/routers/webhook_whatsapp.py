@@ -106,16 +106,45 @@ async def _handle_message(
         return
 
     # Intentar identificar propiedad específica por Tokko ID en la URL
-    metadata: dict = {"message_id": message_id}
+    prop = None
     try:
         tenant = await TenantResolver(db).resolve(empresa_slug)
         if tenant:
             prop = await resolve_property(text, tenant.id_empresa, db)
-            if prop:
-                metadata["property_context"] = prop
     except Exception:
         logger.exception("Error en property_resolver para %s", from_number)
 
+    # Mensaje 1 del flujo Yamila: el usuario manda solo el link de la propiedad.
+    # Respondemos con un saludo fijo y guardamos la propiedad en el orchestrator
+    # vía metadata para el siguiente turno. NO llamamos al AI aquí.
+    if prop:
+        calle  = prop.get("calle", "")
+        barrio = prop.get("barrio", "")
+        ubicacion = ", ".join(filter(None, [calle, barrio]))
+        titulo = prop["titulo"]
+        reply = (
+            f"Hola! Vi que te interesa *{titulo}*"
+            + (f" ({ubicacion})" if ubicacion else "")
+            + ". Tengo informacion completa de esta propiedad. "
+            + "Contame, que queres consultar? Puedo responder sobre disponibilidad, expensas, caracteristicas y mas."
+        )
+        # Guardamos la propiedad en el estado conversacional para el siguiente turno
+        # pasando property_context al orchestrator con un mensaje interno silencioso
+        try:
+            silent_req = ChatMessageRequest(
+                empresa_slug=empresa_slug,
+                canal="whatsapp",
+                session_id=from_number,
+                mensaje="__property_link__",
+                metadata={"message_id": message_id, "property_context": prop, "silent": True},
+            )
+            await ChatOrchestrator(db).handle_message(silent_req)
+        except Exception:
+            logger.exception("Error guardando property_context en estado para %s", from_number)
+        await _send_reply(phone_number_id, from_number, reply)
+        return
+
+    metadata: dict = {"message_id": message_id}
     req = ChatMessageRequest(
         empresa_slug=empresa_slug,
         canal="whatsapp",
