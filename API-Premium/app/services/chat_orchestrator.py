@@ -285,6 +285,10 @@ class ChatOrchestrator:
             # ── 8. Construir respuesta (Sonnet → fallback plantilla) ────────────
             # Mensaje silencioso (solo para guardar estado de propiedad)
             if request.metadata.get("silent"):
+                await self.context_manager.update_context(
+                    id_conversacion=turn.id_conversacion,
+                    state=turn.conversation_state,
+                )
                 return ChatMessageResponse(
                     session_id=request.session_id,
                     respuesta="",
