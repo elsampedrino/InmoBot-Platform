@@ -215,6 +215,21 @@ class ChatOrchestrator:
 
             is_first_turn = turn.conversation_state.conversation_stage == ConversationStage.INICIO
 
+            # Si hay una propiedad activa y el router fue a KB, redirigir a detalle
+            if (
+                turn.conversation_state.ultimo_item_referenciado
+                and decision.route == Route.PREGUNTA_KB
+                and not prop_ctx  # no es el silent del link
+            ):
+                decision = RouterDecision(
+                    route=Route.VER_DETALLE_ITEM,
+                    intent="pregunta_sobre_propiedad_activa",
+                    confidence=0.9,
+                    used_ai_fallback=False,
+                    entities={"item_referenciado": turn.conversation_state.ultimo_item_referenciado},
+                    actions=RouterActions(run_ai_response=True),
+                )
+
             # ── 5+6. Parser + Search / KB (según la ruta) ─────────────────────
             search_result: SearchResult | None = None
             item_detail: dict | None = None
