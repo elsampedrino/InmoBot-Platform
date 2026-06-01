@@ -296,7 +296,8 @@ class PromptService:
             "smart_building": "Smart Building",
         }
         for key, label in bool_labels.items():
-            val = extras.get(key)
+            # Buscar primero en extras{}, luego en raíz de atributos
+            val = extras.get(key) if key in extras else atrib.get(key)
             if val is not None:
                 extras_lines.append(f"{label}: {'Sí' if val else 'No'}")
         if extras.get("rubros_aptos"):
