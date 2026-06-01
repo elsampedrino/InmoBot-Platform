@@ -84,7 +84,7 @@ async def resolve_property(
         "categoria":      row["categoria"] or "",
         "titulo":         row["titulo"],
         "descripcion_corta": row["descripcion_corta"],
-        "precio":         row["precio"],
+        "precio":         float(row["precio"]) if row["precio"] is not None else None,
         "moneda":         row["moneda"],
         "atributos":      atributos,
         "calle":          atributos.get("calle", ""),
