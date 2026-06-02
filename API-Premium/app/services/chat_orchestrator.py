@@ -215,11 +215,16 @@ class ChatOrchestrator:
 
             is_first_turn = turn.conversation_state.conversation_stage == ConversationStage.INICIO
 
-            # Si hay una propiedad activa y el router fue a KB, redirigir a detalle
+            # Si hay una propiedad activa y el router no la reconoció como pregunta de detalle,
+            # redirigir a VER_DETALLE_ITEM.
+            # - PREGUNTA_KB: siempre redirigir (expensas, trámites, etc. sobre la prop activa)
+            # - BUSCAR_CATALOGO: redirigir solo si Haiku decidió (las reglas determinísticas
+            #   no matchearon → la pregunta es sobre la propiedad, no una búsqueda nueva)
             if (
                 turn.conversation_state.ultimo_item_referenciado
-                and decision.route == Route.PREGUNTA_KB
-                and not prop_ctx  # no es el silent del link
+                and decision.route in (Route.PREGUNTA_KB, Route.BUSCAR_CATALOGO)
+                and not prop_ctx
+                and (decision.route == Route.PREGUNTA_KB or decision.used_ai_fallback)
             ):
                 decision = RouterDecision(
                     route=Route.VER_DETALLE_ITEM,

@@ -11,6 +11,7 @@ Flujo de resolución de empresa:
 
 import re
 import logging
+import time
 import httpx
 from fastapi import APIRouter, Depends, Query, Request, Response
 from sqlalchemy import select
@@ -33,6 +34,23 @@ DOMAIN_SLUG: dict[str, str] = {
     "pablohoughton.com.ar":            "houghton",
     "brucellariabienesraices.com.ar":  "cristian-inmob",
 }
+
+# Caché en memoria para deduplicar mensajes de Meta (TTL 60s).
+# Meta puede reenviar el mismo message_id si el webhook tardó en responder.
+_SEEN_MESSAGE_IDS: dict[str, float] = {}
+_MESSAGE_ID_TTL = 60.0
+
+
+def _is_duplicate(message_id: str) -> bool:
+    now = time.monotonic()
+    # Limpiar entradas viejas
+    stale = [k for k, t in _SEEN_MESSAGE_IDS.items() if now - t > _MESSAGE_ID_TTL]
+    for k in stale:
+        del _SEEN_MESSAGE_IDS[k]
+    if message_id in _SEEN_MESSAGE_IDS:
+        return True
+    _SEEN_MESSAGE_IDS[message_id] = now
+    return False
 
 
 # ── Verificación ──────────────────────────────────────────────────────────────
@@ -73,6 +91,9 @@ async def receive_whatsapp(
             phone_number_id = value.get("metadata", {}).get("phone_number_id", "")
             for msg in messages:
                 if msg.get("type") != "text":
+                    continue
+                if _is_duplicate(msg["id"]):
+                    logger.info("Mensaje duplicado ignorado: %s", msg["id"])
                     continue
                 await _handle_message(
                     db=db,
