@@ -93,6 +93,22 @@ _PAT_BUSQUEDA = re.compile(
     re.IGNORECASE,
 )
 
+# Verbos de búsqueda explícitos (sin bare keywords de tipo de propiedad).
+# Se usa para distinguir "busco un depto" (nueva búsqueda) de "tiene cochera?"
+# (pregunta sobre propiedad activa) cuando hay ultimo_item_referenciado.
+_PAT_BUSQUEDA_VERBO = re.compile(
+    r"\b("
+    r"busco|buscar|"
+    r"quiero\s+(comprar|alquilar|ver|un[ao]?|encontrar)|"
+    r"necesito\s+(un[ao]?\s+)?|"
+    r"ten[eé]s?|tienen|"
+    r"hay\s+(algún?|casas?|departamentos?|lotes?|campos?|alguna?)|"
+    r"mostrame|mu[eé]strame|"
+    r"propiedades?\s+(en\s+)?(venta|alquiler)"
+    r")\b",
+    re.IGNORECASE,
+)
+
 _PAT_REFINAMIENTO = re.compile(
     r"\b("
     r"m[aá]s\s+(barato|econ[oó]mico|accesible|caro|grande|chico|peque[nñ]o|amplio)|"
@@ -351,6 +367,11 @@ class RouterConversacional:
 
         # ── 8. Nueva búsqueda en catálogo ─────────────────────────────────────
         if _PAT_BUSQUEDA.search(msg):
+            # Si hay propiedad activa y el match vino solo de bare keywords ("cochera",
+            # "casa", etc.) sin verbo de búsqueda explícito, es una pregunta sobre la
+            # propiedad activa — delegar a Haiku para que clasifique con contexto completo.
+            if state.ultimo_item_referenciado and not _PAT_BUSQUEDA_VERBO.search(msg):
+                return None
             return RouterDecision(
                 route=Route.BUSCAR_CATALOGO,
                 intent="busqueda_nueva",
