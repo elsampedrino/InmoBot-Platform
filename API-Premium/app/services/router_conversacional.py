@@ -109,6 +109,28 @@ _PAT_BUSQUEDA_VERBO = re.compile(
     re.IGNORECASE,
 )
 
+# Preguntas sobre atributos de una propiedad activa.
+# Cubre la mayoría de las formas en que un usuario pregunta sobre una propiedad concreta:
+# "tiene cochera?", "es apto profesional?", "cuánto es el ABL?", "acepta mascotas?", etc.
+_PAT_PREGUNTA_ATRIBUTO = re.compile(
+    r"\b("
+    r"tiene\b|"                                           # tiene cochera / jardín / pileta
+    r"tien[eé]\s+\w|"
+    r"es\s+apto|"                                         # es apto profesional / crédito
+    r"est[aá]\s+(disponible|ocupad|libre|habitad)|"       # está disponible / ocupada
+    r"se\s+puede\s+visitar|"
+    r"cu[aá]nto\s+(es|sale|cuesta|son|valen?)\b|"         # cuánto es el ABL / expensas
+    r"cu[aá]ndo\s+(es|ser[ií]a|estar[ií]a|entrega)\b|"   # cuándo es la entrega
+    r"acepta\s+\w|"                                       # acepta mascotas / crédito
+    r"qu[eé]\s+(rubros?|orientaci[oó]n|piso|planta|ambientes?|dormitorios?|estado)\b|"
+    r"(orientaci[oó]n|abl|expensas?|cocheras?|pileta|jard[ií]n|balc[oó]n|terraza|"
+    r"amenities|sum|solarium|laundry|parrilla|quincho|gym|gimnasio|baulera|"
+    r"antiguedad|antig[üu]edad|superficie|metros?|frente|fondo|plantas?|"
+    r"calefacci[oó]n|aire\s+acondicionado|ascensor|portero|vigilancia)\b"
+    r")",
+    re.IGNORECASE,
+)
+
 _PAT_REFINAMIENTO = re.compile(
     r"\b("
     r"m[aá]s\s+(barato|econ[oó]mico|accesible|caro|grande|chico|peque[nñ]o|amplio)|"
@@ -326,6 +348,29 @@ class RouterConversacional:
                 confidence=0.9,
                 used_ai_fallback=False,
                 entities={"item_referenciado": item_ref},
+                actions=RouterActions(
+                    run_ai_response=True,
+                    register_conversion_event=True,
+                    conversion_event=ConversionEvent.ITEM_DETAIL_VIEWED,
+                ),
+                business_signals={},
+            )
+
+        # ── 5b. Pregunta sobre atributo de propiedad activa ───────────────────
+        # Si hay una propiedad activa y el mensaje tiene forma de pregunta sobre
+        # sus atributos, ir directo a VER_DETALLE_ITEM antes de que las reglas de
+        # búsqueda/refinamiento capturen keywords como "cochera", "pileta", etc.
+        if (
+            state.ultimo_item_referenciado
+            and _PAT_PREGUNTA_ATRIBUTO.search(msg)
+            and not _PAT_BUSQUEDA_VERBO.search(msg)  # no es una nueva búsqueda explícita
+        ):
+            return RouterDecision(
+                route=Route.VER_DETALLE_ITEM,
+                intent="pregunta_atributo_propiedad_activa",
+                confidence=0.9,
+                used_ai_fallback=False,
+                entities={"item_referenciado": state.ultimo_item_referenciado},
                 actions=RouterActions(
                     run_ai_response=True,
                     register_conversion_event=True,
