@@ -97,3 +97,22 @@ async def count_superadmins(db: AsyncSession) -> int:
 async def delete_usuario(db: AsyncSession, usuario: UsuarioAdmin) -> None:
     await db.delete(usuario)
     await db.flush()
+
+
+async def get_by_reset_token(db: AsyncSession, token: str) -> UsuarioAdmin | None:
+    result = await db.execute(
+        select(UsuarioAdmin).where(UsuarioAdmin.reset_token == token)
+    )
+    return result.scalar_one_or_none()
+
+
+async def set_reset_token(db: AsyncSession, usuario: UsuarioAdmin, token: str, expiry) -> None:
+    usuario.reset_token = token
+    usuario.reset_token_expiry = expiry
+    await db.flush()
+
+
+async def clear_reset_token(db: AsyncSession, usuario: UsuarioAdmin) -> None:
+    usuario.reset_token = None
+    usuario.reset_token_expiry = None
+    await db.flush()

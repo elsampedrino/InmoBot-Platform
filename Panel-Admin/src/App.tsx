@@ -5,6 +5,8 @@ import Shell from "./components/Shell";
 import { getSession, getToken } from "./lib/auth";
 import { api } from "./lib/api";
 import LoginPage from "./pages/LoginPage";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 import DashboardPage from "./pages/DashboardPage";
 import ClienteDashboardPage from "./pages/ClienteDashboardPage";
 import LeadsPage from "./pages/LeadsPage";
@@ -33,7 +35,9 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/login"            element={<LoginPage />} />
+        <Route path="/forgot-password"  element={<ForgotPasswordPage />} />
+        <Route path="/reset-password"   element={<ResetPasswordPage />} />
 
         <Route
           path="/"

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams, Link } from "react-router-dom";
+import { Eye, EyeOff } from "lucide-react";
 import { api, ApiError } from "../lib/api";
 import { saveSession, type AuthSession } from "../lib/auth";
 
@@ -11,6 +12,7 @@ export default function LoginPage() {
   const [error, setError]         = useState<string | null>(null);
   const [errorType, setErrorType] = useState<"error" | "info">("error");
   const [loading, setLoading]     = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     if (searchParams.get("razon") === "panel_deshabilitado") {
@@ -42,15 +44,12 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-brand-900 to-brand-700 px-4">
+    <div className="min-h-screen flex items-center justify-center px-4" style={{ background: '#061631' }}>
       <div className="w-full max-w-sm">
-        {/* Logo/título */}
+        {/* Logo completo con texto integrado */}
         <div className="text-center mb-8">
-          <div className="mb-4">
-            <img src="/inmobot-logo.jpg" alt="InmoBot" className="w-20 h-20 rounded-2xl mx-auto object-cover" />
-          </div>
-          <h1 className="text-2xl font-bold text-white">InmoBot Panel</h1>
-          <p className="text-brand-100 text-sm mt-1">Panel Administrativo</p>
+          <img src="/inmobot-logo-completo.png" alt="InmoBot" className="w-48 mx-auto" />
+          <p className="text-white font-bold text-sm mt-2">Panel Administrativo</p>
         </div>
 
         {/* Card */}
@@ -76,14 +75,24 @@ export default function LoginPage() {
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Contraseña
               </label>
-              <input
-                type="password"
-                required
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition"
-                placeholder="••••••••"
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  required
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition"
+                  placeholder="••••••••"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(v => !v)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                  tabIndex={-1}
+                >
+                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </div>
             </div>
 
             {error && (
@@ -102,6 +111,15 @@ export default function LoginPage() {
             >
               {loading ? "Ingresando..." : "Ingresar"}
             </button>
+
+            <div className="text-center pt-1">
+              <Link
+                to="/forgot-password"
+                className="text-xs text-gray-400 hover:text-brand-600 transition-colors"
+              >
+                ¿Olvidaste tu contraseña?
+              </Link>
+            </div>
           </form>
         </div>
       </div>

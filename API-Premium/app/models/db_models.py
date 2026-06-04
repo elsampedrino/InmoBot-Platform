@@ -279,6 +279,8 @@ class UsuarioAdmin(Base):
     nombre: Mapped[str | None] = mapped_column(Text)
     activo: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
     es_superadmin: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    reset_token: Mapped[str | None] = mapped_column(Text, nullable=True)
+    reset_token_expiry: Mapped[Any] = mapped_column(DateTime(timezone=True), nullable=True)
     created_at: Mapped[Any] = mapped_column(DateTime(timezone=True), server_default=func.now())
     updated_at: Mapped[Any] = mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
