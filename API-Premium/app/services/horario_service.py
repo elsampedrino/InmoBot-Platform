@@ -3,9 +3,9 @@ Evalúa si el bot debe responder según bot_mode y horario_config de la empresa.
 Desacoplado del canal — reutilizable en WhatsApp y widget web.
 """
 from datetime import datetime, time as dtime
-import pytz
+from zoneinfo import ZoneInfo
 
-_TZ = pytz.timezone("America/Argentina/Buenos_Aires")
+_TZ = ZoneInfo("America/Argentina/Buenos_Aires")
 
 # Mapeo weekday() de Python (0=lunes) → clave del JSON
 _WEEKDAY_KEYS = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
