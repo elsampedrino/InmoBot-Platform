@@ -21,12 +21,28 @@ from app.core.config import settings
 from app.core.database import get_db
 from app.models.api_models import ChatMessageRequest
 from app.models.db_models import Conversacion, Empresa
+from app.repositories.empresas_repository import get_empresa_by_slug
 from app.services.chat_orchestrator import ChatOrchestrator
+from app.services.horario_service import is_bot_active
 from app.services.property_resolver import resolve_property
 from app.services.tenant_resolver import TenantResolver
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
+
+# Cooldown anti-spam: solo enviar el aviso de horario 1 vez cada 2hs por número
+_HOURS_NOTIF_CACHE: dict[str, float] = {}
+_HOURS_NOTIF_TTL = 7200.0  # 2 horas en segundos
+
+
+def _should_notify_hours(from_number: str) -> bool:
+    """True si hay que enviar el aviso de horario (y registra el envío)."""
+    now = time.monotonic()
+    last = _HOURS_NOTIF_CACHE.get(from_number, 0.0)
+    if now - last > _HOURS_NOTIF_TTL:
+        _HOURS_NOTIF_CACHE[from_number] = now
+        return True
+    return False
 
 # Dominio del sitio web del cliente → empresa_slug en nuestra DB
 # Agregar nuevos clientes acá cuando se sumen al canal WhatsApp
@@ -125,6 +141,20 @@ async def _handle_message(
             "¡Hola! Para ayudarte mejor, por favor incluí el link a la propiedad que te interesa.",
         )
         return
+
+    # ── Check modo de atención ────────────────────────────────────────────────
+    empresa = await get_empresa_by_slug(db, empresa_slug)
+    if empresa:
+        active, reason = is_bot_active(empresa)
+        if not active:
+            if reason == "business_hours" and _should_notify_hours(from_number):
+                await _send_reply(
+                    phone_number_id, from_number,
+                    f"¡Hola! 👋 Estamos en horario de atención. "
+                    f"Un asesor de {empresa.nombre} se comunicará con vos a la brevedad por este mismo WhatsApp.",
+                )
+            logger.info("Bot inactivo (%s) para %s — sin respuesta IA", reason, from_number)
+            return
 
     # Intentar identificar propiedad específica por Tokko ID en la URL
     prop = None

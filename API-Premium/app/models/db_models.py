@@ -79,6 +79,8 @@ class Empresa(Base):
     slug: Mapped[str | None] = mapped_column(Text, unique=True)
     servicios: Mapped[dict] = mapped_column(JSONB, nullable=False, server_default='{"bot": true}')
     notificaciones: Mapped[dict] = mapped_column(JSONB, nullable=False, server_default='{}')
+    bot_mode: Mapped[str] = mapped_column(Text, nullable=False, server_default="always_on")
+    horario_config: Mapped[dict | None] = mapped_column(JSONB, nullable=True)
     created_at: Mapped[Any] = mapped_column(DateTime(timezone=True), server_default=func.now())
     updated_at: Mapped[Any] = mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 

@@ -18,6 +18,7 @@ import EmpresaFormPage from "./pages/EmpresaFormPage";
 import UsuariosPage from "./pages/UsuariosPage";
 import UsuarioFormPage from "./pages/UsuarioFormPage";
 import ImportacionesPage from "./pages/ImportacionesPage";
+import BotConfigPage from "./pages/BotConfigPage";
 
 function DashboardRouter() {
   const session = getSession();
@@ -53,6 +54,7 @@ export default function App() {
           <Route path="propiedades/nueva"                element={<PropiedadFormPage />} />
           <Route path="propiedades/:id/editar"           element={<PropiedadFormPage />} />
           <Route path="leads"                            element={<LeadsPage />} />
+          <Route path="bot-config"                       element={<BotConfigPage />} />
           <Route path="leads/:id"                        element={<LeadDetailPage />} />
           <Route path="empresas" element={<ProtectedRoute requireSuperadmin><EmpresasPage /></ProtectedRoute>} />
           <Route path="empresas/:id/editar" element={<ProtectedRoute requireSuperadmin><EmpresaFormPage /></ProtectedRoute>} />

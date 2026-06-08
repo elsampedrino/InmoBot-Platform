@@ -13,6 +13,7 @@ import {
   Eye,
   EyeOff,
   X,
+  Clock,
 } from "lucide-react";
 import { clearSession, getSession } from "../lib/auth";
 import { api, ApiError } from "../lib/api";
@@ -21,6 +22,7 @@ const navItems = [
   { to: "/dashboard",    label: "Inicio",       icon: LayoutDashboard, superadmin: false, soloEmpresa: false },
   { to: "/propiedades",  label: "Propiedades",  icon: Building2,       superadmin: false, soloEmpresa: true  },
   { to: "/leads",        label: "Leads",        icon: Users,           superadmin: false, soloEmpresa: true  },
+  { to: "/bot-config",   label: "Modo bot",     icon: Clock,           superadmin: false, soloEmpresa: true  },
   { to: "/empresas",     label: "Empresas",     icon: Briefcase,       superadmin: true,  soloEmpresa: false },
   { to: "/usuarios",     label: "Usuarios",     icon: UserCog,         superadmin: true,  soloEmpresa: false },
   { to: "/importaciones",label: "Importaciones",icon: FileInput,       superadmin: true,  soloEmpresa: false },
@@ -73,6 +75,7 @@ export default function Shell() {
   );
 
   return (
+    <>
     <div className="flex h-screen bg-gray-50">
 
       {/* ── Sidebar — solo desktop ─────────────────────────────────────── */}
@@ -282,5 +285,6 @@ export default function Shell() {
         </div>
       </div>
     )}
+    </>
   );
 }
