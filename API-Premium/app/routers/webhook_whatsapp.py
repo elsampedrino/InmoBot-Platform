@@ -150,9 +150,10 @@ async def _handle_message(
             if reason == "business_hours" and _should_notify_hours(from_number):
                 await _send_reply(
                     phone_number_id, from_number,
-                    f"¡Hola! 👋 Estamos en horario de atención. "
-                    f"Un asesor de {empresa.nombre} se comunicará con vos a la brevedad por este mismo WhatsApp.",
+                    f"¡Hola! 👋 Recibimos tu consulta. "
+                    f"Un asesor de {empresa.nombre} se comunicará con vos a la brevedad.",
                 )
+                await _notify_agent_handoff(phone_number_id, empresa, from_number, text)
             logger.info("Bot inactivo (%s) para %s — sin respuesta IA", reason, from_number)
             return
 
@@ -256,3 +257,59 @@ async def _send_reply(phone_number_id: str, to: str, text: str) -> None:
         )
     if resp.status_code != 200:
         logger.error("Meta Graph API error %s: %s", resp.status_code, resp.text)
+
+
+async def _send_template(
+    phone_number_id: str,
+    to: str,
+    template_name: str,
+    params: list[str],
+    language: str = "es_AR",
+) -> None:
+    """Envía un template message aprobado por Meta al número indicado."""
+    url = f"https://graph.facebook.com/v19.0/{phone_number_id}/messages"
+    components = [{
+        "type": "body",
+        "parameters": [{"type": "text", "text": p} for p in params],
+    }]
+    async with httpx.AsyncClient(timeout=10.0) as client:
+        resp = await client.post(
+            url,
+            headers={"Authorization": f"Bearer {settings.WHATSAPP_TOKEN}"},
+            json={
+                "messaging_product": "whatsapp",
+                "to": to,
+                "type": "template",
+                "template": {
+                    "name": template_name,
+                    "language": {"code": language},
+                    "components": components,
+                },
+            },
+        )
+    if resp.status_code != 200:
+        logger.error("Template '%s' → %s error %s: %s", template_name, to, resp.status_code, resp.text)
+
+
+async def _notify_agent_handoff(
+    phone_number_id: str,
+    empresa: "Empresa",
+    from_number: str,
+    text: str,
+) -> None:
+    """Notifica al agente configurado vía WhatsApp template cuando el bot está en business_hours."""
+    template_name = settings.WHATSAPP_HANDOFF_TEMPLATE_NAME
+    if not template_name:
+        return
+    # Solo empresas con canal WhatsApp activo (no confundir con handoff del widget)
+    if not (empresa.servicios or {}).get("canal_whatsapp", False):
+        return
+    agent_phone = (empresa.notificaciones or {}).get("whatsapp", {}).get("phone", "").strip()
+    if not agent_phone:
+        return
+    await _send_template(
+        phone_number_id,
+        agent_phone,
+        template_name,
+        params=[from_number, text[:1000]],
+    )

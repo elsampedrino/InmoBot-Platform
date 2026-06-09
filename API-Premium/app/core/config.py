@@ -43,6 +43,7 @@ class Settings(BaseSettings):
     # ─── WhatsApp Business Cloud API ─────────────────────────────────────────
     WHATSAPP_TOKEN: str = ""          # Permanent token de Meta
     WHATSAPP_VERIFY_TOKEN: str = ""   # Token secreto que define vos para el webhook
+    WHATSAPP_HANDOFF_TEMPLATE_NAME: str = ""  # Template aprobado por Meta para notificar al agente
 
     # ─── SMTP ─────────────────────────────────────────────────────────────────
     SMTP_HOST: str = ""

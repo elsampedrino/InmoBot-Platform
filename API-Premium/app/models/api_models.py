@@ -262,6 +262,7 @@ class EmpresaServiciosSchema(BaseModel):
     panel_cliente: bool = False
     instagram: bool = False
     facebook: bool = False
+    canal_whatsapp: bool = False
 
 class EmpresaTelegramSchema(BaseModel):
     enabled: bool = False
