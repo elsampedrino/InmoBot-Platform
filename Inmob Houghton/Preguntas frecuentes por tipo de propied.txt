@@ -1,0 +1,20 @@
+Preguntas frecuentes por tipo de propiedad
+Campo	Deptos	Locales
+Libre / ocupado	✓	✓
+Cuándo se puede ingresar	✓	✓
+Expensas / gastos	✓	✓
+Impuestos (ABL, etc.)	✓	—
+Orientación	✓	—
+Apto mascotas	✓	—
+Apto profesional	✓	—
+4 vientos	—	✓
+Rubros habilitables	—	✓
+Se puede visitar	✓	✓
+
+
+Propiedad	Tokko URL	Preguntas estrella
+1	PROP-001 — Depto Palermo	            https://www.pablohoughton.com.ar/p/7837181-Departamento-en-Venta-en-Palermo-Uriarte-al-2200	        (disponibilidad + expensas)                                             - testeado OK
+2	PROP-005 — Depto Caballito	            https://www.pablohoughton.com.ar/p/8067630-Departamento-en-Venta-en-Caballito-Doblas-al-400	        (es apto profesional + orientación)                                     - testeado OK
+3	PROP-010 — Casa Florida	                https://www.pablohoughton.com.ar/p/4966210-Casa-en-Venta-en-Florida-Mitre/Este-Libertad--al-2800	(disponibilidad (habitada) + cocheras)                                  - testeado OK
+4	PROP-015 — Depto Núñez en construcción	https://www.pablohoughton.com.ar/p/7522782-Departamento-en-Venta-en-Nu%C3%B1ez-Larralde--al-2200	(fecha entrega + amenities (SUM, solarium) + apto profesional)          - testeado OK
+5   PROP-025 - Local Palermo Hollywood      https://www.pablohoughton.com.ar/p/2389275-Local-en-Alquiler-en-Palermo-Hollywood-Fitz-Roy-2200     (cuatro_vientos + apto_profesional + rubros_habilitados + ABL $22.000)  - testeado OK

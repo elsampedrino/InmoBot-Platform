@@ -1,43 +1,23 @@
 {
   "metadata": {
-    "total_propiedades": 8,
-    "ultima_actualizacion": "2025-12-28T10:45:00.000000",
-    "version": "2.0.1",
-    "formato": "estandarizado_bbr",
-    "descripcion": "Catálogo de propiedades demo para testing",
-    "notas": [
-      {
-        "fecha": "2025-12-28T10:39:06.442531",
-        "accion": "Estandarización al formato BBR",
-        "cambios": [
-          "Normalización de tipo/operacion/estado_construccion a minúsculas",
-          "Conversión de detalles de objeto a array",
-          "Ajuste de expensas dentro de precio",
-          "Formato de superficie con unidades"
-        ]
-      },
-      {
-        "fecha": "2025-12-28T10:45:00.000000",
-        "accion": "Limpieza de campos no estandarizados",
-        "cambios": [
-          "Eliminado campo 'periodo' de precio (no es parte del estándar BBR)",
-          "Eliminado campo 'superficie_jardin' de características (no es parte del estándar BBR)"
-        ]
-      }
-    ]
+    "ultima_actualizacion": "2026-05-05T00:00:00Z",
+    "total": 8,
+    "fuente": "Panel Admin InmoBot"
   },
   "propiedades": [
     {
       "id": "PROP-001",
       "tipo": "departamento",
       "operacion": "alquiler",
-      "estado_construccion": "usado",
       "titulo": "Departamento Alquiler 2 ambientes",
+      "destacado": false,
+      "activo": true,
       "direccion": {
         "calle": "Noguera 532, Piso 3° B",
         "barrio": "San Antonio de Padua",
         "ciudad": "San Antonio de Padua",
-        "cp": "C1718"
+        "lat": null,
+        "lng": null
       },
       "precio": {
         "valor": 500000,
@@ -45,6 +25,7 @@
         "expensas": 85000
       },
       "descripcion": "Hermoso departamento de 2 ambientes cerca de la estacion. Living-comedor integrado con cocina equipada, dormitorio amplio con placard, baño completo con bañera. Muy luminoso con balcón al frente.",
+      "descripcion_corta": "2 ambientes luminoso con balcón, cerca de la estación. Cocina equipada.",
       "fotos": {
         "carpeta": "fotos_demo/depto-palermo-001",
         "urls": [
@@ -54,11 +35,14 @@
         ]
       },
       "caracteristicas": {
+        "antiguedad": null,
+        "estado_construccion": "usado",
         "ambientes": 2,
         "dormitorios": 1,
-        "baños": 1,
-        "superficie_total": "45 m²",
-        "superficie_cubierta": "42 m²"
+        "banios": 1,
+        "superficie_total": 45,
+        "superficie_cubierta": 42,
+        "superficie_unidad": "m²"
       },
       "detalles": [
         "balcon",
@@ -69,33 +53,40 @@
       "id": "PROP-002",
       "tipo": "casa",
       "operacion": "venta",
-      "estado_construccion": "a estrenar",
       "titulo": "Casa 4 ambientes con jardín y parrilla Padua",
+      "destacado": true,
+      "activo": true,
       "direccion": {
         "calle": "Escalabrini Ortiz 145",
         "barrio": "San Antonio de Padua",
         "ciudad": "San Antonio de Padua",
-        "cp": "C1718"
+        "lat": null,
+        "lng": null
       },
       "precio": {
         "valor": 215000,
-        "moneda": "USD"
+        "moneda": "USD",
+        "expensas": null
       },
       "descripcion": "Hermosa casa reciclada hace solo 5 años en excelente estado. Planta Baja: Living-comedor amplio con salida al jardín, cocina moderna integrada, toilette y lavadero. Primer Piso: 3 dormitorios (principal en suite con vestidor), baño completo y terraza con parrilla. Su ubicación es inmejorable, cerca de colegio, plaza y comercios. Excelente conectividad.",
+      "descripcion_corta": "Casa reciclada 4 amb. con jardín, parrilla y cochera. A estrenar.",
       "fotos": {
         "carpeta": "fotos_demo/casa-villa-urquiza-002",
         "urls": [
           "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420190/fotos_demo/casa-villa-urquiza-002/foto01.jpg",
           "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420190/fotos_demo/casa-villa-urquiza-002/foto02.jpg",
-          "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420191/fotos_demo/casa-villa-urquiza-002/foto03.jpg"        
+          "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420191/fotos_demo/casa-villa-urquiza-002/foto03.jpg"
         ]
       },
       "caracteristicas": {
+        "antiguedad": null,
+        "estado_construccion": "a estrenar",
         "ambientes": 4,
         "dormitorios": 3,
-        "superficie_total": "300 m²",
-        "superficie_cubierta": "120 m²",
-        "banios": 2
+        "banios": 2,
+        "superficie_total": 300,
+        "superficie_cubierta": 120,
+        "superficie_unidad": "m²"
       },
       "detalles": [
         "cochera",
@@ -106,13 +97,15 @@
       "id": "PROP-003",
       "tipo": "local comercial",
       "operacion": "alquiler",
-      "estado_construccion": "usado",
       "titulo": "Local comercial 60m² en Libertador",
+      "destacado": false,
+      "activo": true,
       "direccion": {
         "calle": "Av. del Libertador 240",
         "barrio": "Merlo",
         "ciudad": "Merlo",
-        "cp": "C1718"
+        "lat": null,
+        "lng": null
       },
       "precio": {
         "valor": 1000000,
@@ -120,6 +113,7 @@
         "expensas": 45000
       },
       "descripcion": "Excelente local comercial en plena Libertador. 60m² con amplia vidriera a la calle. Baño completo y depósito. Aire acondicionado frío/calor. Ideal para oficina, comercio minorista, o showroom. Ubicación estratégica a 2 cuadras de la estación.",
+      "descripcion_corta": "60m² sobre Libertador, vidriera a la calle. Ideal oficina o comercio.",
       "fotos": {
         "carpeta": "fotos_demo/local-microcentro-003",
         "urls": [
@@ -129,11 +123,14 @@
         ]
       },
       "caracteristicas": {
+        "antiguedad": null,
+        "estado_construccion": "usado",
         "ambientes": null,
         "dormitorios": null,
-        "superficie_total": "60 m²",
-        "superficie_cubierta": "60 m²",
-        "banios": 1
+        "banios": 1,
+        "superficie_total": 60,
+        "superficie_cubierta": 60,
+        "superficie_unidad": "m²"
       },
       "detalles": []
     },
@@ -141,34 +138,40 @@
       "id": "PROP-004",
       "tipo": "casa",
       "operacion": "venta",
-      "estado_construccion": "en construccion",
       "titulo": "Emprendimiento barrio cerrado Altos del Oeste",
+      "destacado": true,
+      "activo": true,
       "direccion": {
         "calle": "Camino de la Rivera",
         "barrio": "Merlo",
         "ciudad": "Merlo",
-        "cp": "C1718"
+        "lat": null,
+        "lng": null
       },
       "precio": {
         "valor": 220000,
         "moneda": "USD",
         "expensas": 100000
       },
-      "descripcion": "Empremdimiento nuevo barrio privado Altos del Oeste, casas de 2 plantas de gran categoría",
+      "descripcion": "Emprendimiento nuevo en barrio privado Altos del Oeste. Casas de 2 plantas de gran categoría con 4 dormitorios, living amplio, cocina integrada y jardín propio. Amenities completos: pileta, quincho, parrilla y cochera.",
+      "descripcion_corta": "Casas a estrenar en barrio privado. 4 dorm., pileta, quincho y cochera.",
       "fotos": {
         "carpeta": "fotos_demo/depto-belgrano-004",
         "urls": [
           "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420190/fotos_demo/casa-villa-urquiza-002/foto01.jpg",
           "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420190/fotos_demo/casa-villa-urquiza-002/foto02.jpg",
-          "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420191/fotos_demo/casa-villa-urquiza-002/foto03.jpg"        
+          "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420191/fotos_demo/casa-villa-urquiza-002/foto03.jpg"
         ]
       },
       "caracteristicas": {
+        "antiguedad": null,
+        "estado_construccion": "en construccion",
         "ambientes": 5,
         "dormitorios": 4,
-        "superficie_total": "650 m²",
-        "superficie_cubierta": "125 m²",
-        "banios": 3
+        "banios": 3,
+        "superficie_total": 650,
+        "superficie_cubierta": 125,
+        "superficie_unidad": "m²"
       },
       "detalles": [
         "cochera",
@@ -182,33 +185,40 @@
       "id": "PROP-005",
       "tipo": "casa",
       "operacion": "venta",
-      "estado_construccion": "usado",
-      "titulo": "Casa de gran categoria con jardín y pileta en Padua",
+      "titulo": "Casa de gran categoría con jardín y pileta en Padua",
+      "destacado": true,
+      "activo": true,
       "direccion": {
         "calle": "Lavallol de Acosta 345",
         "barrio": "San Antonio de Padua",
         "ciudad": "San Antonio de Padua",
-        "cp": "C1718"
+        "lat": null,
+        "lng": null
       },
       "precio": {
         "valor": 280000,
-        "moneda": "USD"
+        "moneda": "USD",
+        "expensas": null
       },
       "descripcion": "Hermosa casa de gran categoría. Planta Baja: Living-comedor amplio con salida al jardín, cocina moderna integrada, toilette y lavadero. Primer Piso: 3 dormitorios (principal en suite con vestidor), baño completo y terraza con parrilla. Su ubicación es inmejorable.",
+      "descripcion_corta": "Casa premium 3 dorm. en suite, jardín, pileta y quincho. Excelente ubicación.",
       "fotos": {
         "carpeta": "fotos_demo/casa-villa-urquiza-002",
         "urls": [
           "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420190/fotos_demo/casa-villa-urquiza-002/foto01.jpg",
           "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420190/fotos_demo/casa-villa-urquiza-002/foto02.jpg",
-          "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420191/fotos_demo/casa-villa-urquiza-002/foto03.jpg"        
+          "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420191/fotos_demo/casa-villa-urquiza-002/foto03.jpg"
         ]
       },
       "caracteristicas": {
+        "antiguedad": null,
+        "estado_construccion": "usado",
         "ambientes": null,
         "dormitorios": 3,
-        "superficie_total": "400 m²",
-        "superficie_cubierta": "180 m²",
-        "banios": 3
+        "banios": 3,
+        "superficie_total": 400,
+        "superficie_cubierta": 180,
+        "superficie_unidad": "m²"
       },
       "detalles": [
         "cochera",
@@ -222,21 +232,25 @@
       "id": "PROP-006",
       "tipo": "departamento",
       "operacion": "venta",
-      "estado_construccion": "en pozo",
       "titulo": "Emprendimiento Renata 25 en Padua",
+      "destacado": false,
+      "activo": true,
       "direccion": {
         "calle": "Maza 250",
         "barrio": "San Antonio de Padua",
         "ciudad": "San Antonio de Padua",
-        "cp": "C1718"
+        "lat": null,
+        "lng": null
       },
       "precio": {
         "valor": 78000,
-        "moneda": "USD"
+        "moneda": "USD",
+        "expensas": null
       },
-      "descripcion": "Edificio Renata 25 inauguracion 2027. Departamento 2 ambientes, cocina moderna integrada, toilette y lavadero. 1 dormitorio), baño completo y terraza con parrilla y SUM.",
+      "descripcion": "Edificio Renata 25, inauguración 2027. Departamento 2 ambientes con cocina moderna integrada, 1 dormitorio, baño completo, terraza con parrilla y SUM compartido. Excelente oportunidad de inversión en pozo.",
+      "descripcion_corta": "Depto en pozo 2 amb., entrega 2027. SUM, parrilla y terraza.",
       "fotos": {
-        "carpeta": "fotos_demo/casa-villa-urquiza-002",
+        "carpeta": "fotos_demo/depto-belgrano-004",
         "urls": [
           "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420193/fotos_demo/depto-belgrano-004/foto01.jpg",
           "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420194/fotos_demo/depto-belgrano-004/foto02.jpg",
@@ -244,38 +258,44 @@
         ]
       },
       "caracteristicas": {
+        "antiguedad": null,
+        "estado_construccion": "en pozo",
         "ambientes": 2,
         "dormitorios": 1,
-        "superficie_total": "65 m²",
-        "superficie_cubierta": "65 m²",
-        "banios": 1
+        "banios": 1,
+        "superficie_total": 65,
+        "superficie_cubierta": 65,
+        "superficie_unidad": "m²"
       },
       "detalles": [
         "ascensor",
         "balcon",
-        "baulera"        
+        "baulera"
       ]
     },
     {
       "id": "PROP-007",
       "tipo": "departamento",
       "operacion": "alquiler",
-      "estado_construccion": "usado",
-      "titulo": "Departamento alquiler 3 ambientes",
+      "titulo": "Departamento alquiler 3 ambientes en Padua Sur",
+      "destacado": false,
+      "activo": true,
       "direccion": {
         "calle": "Noguera 650, Piso 2° B",
         "barrio": "San Antonio de Padua",
         "ciudad": "San Antonio de Padua",
-        "cp": "C1718"
+        "lat": null,
+        "lng": null
       },
       "precio": {
         "valor": 650000,
         "moneda": "ARS",
         "expensas": 70000
       },
-      "descripcion": "Amplio departamento de 3 ambientes en Padua sur, Living-comedor, cocina equipada completa, 2 dormitorios con placards (principal en suite), baño completo. Incluye baulera. Semi-amoblado (cocina equipada, placards empotrados).",
+      "descripcion": "Amplio departamento de 3 ambientes en Padua sur. Living-comedor, cocina equipada completa, 2 dormitorios con placards (principal en suite), baño completo. Incluye baulera. Semi-amoblado (cocina equipada, placards empotrados).",
+      "descripcion_corta": "3 ambientes en Padua Sur, cocina equipada, baulera. Semi-amoblado.",
       "fotos": {
-        "carpeta": "fotos_demo/depto-belgrano-004",
+        "carpeta": "fotos_demo/depto-palermo-001",
         "urls": [
           "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420197/fotos_demo/depto-palermo-001/foto01.jpg",
           "https://res.cloudinary.com/dikb9wzup/image/upload/v1763420198/fotos_demo/depto-palermo-001/foto02.jpg",
@@ -283,11 +303,14 @@
         ]
       },
       "caracteristicas": {
+        "antiguedad": null,
+        "estado_construccion": "usado",
         "ambientes": 3,
         "dormitorios": 2,
-        "superficie_total": "75 m²",
-        "superficie_cubierta": "70 m²",
-        "banios": 2
+        "banios": 2,
+        "superficie_total": 75,
+        "superficie_cubierta": 70,
+        "superficie_unidad": "m²"
       },
       "detalles": [
         "baulera",
@@ -300,20 +323,23 @@
       "id": "PROP-008",
       "tipo": "departamento",
       "operacion": "alquiler",
-      "estado_construccion": "usado",
-      "titulo": "Departamento alquiler 3 ambientes",
+      "titulo": "Departamento alquiler 3 ambientes en Merlo",
+      "destacado": false,
+      "activo": true,
       "direccion": {
         "calle": "Juncal 650, Piso 5° A",
         "barrio": "Merlo",
         "ciudad": "Merlo",
-        "cp": "C1718"
+        "lat": null,
+        "lng": null
       },
       "precio": {
         "valor": 850000,
         "moneda": "ARS",
         "expensas": 120000
       },
-      "descripcion": "Amplio departamento de 3 ambientes en Merlo sur, Living-comedor con balcón corrido, cocina equipada completa, 2 dormitorios con placards (principal en suite), baño completo. Incluye cochera cubierta y baulera. Semi-amoblado (cocina equipada, placards empotrados).",
+      "descripcion": "Amplio departamento de 3 ambientes en Merlo sur. Living-comedor con balcón corrido, cocina equipada completa, 2 dormitorios con placards (principal en suite), baño completo. Incluye cochera cubierta y baulera. Semi-amoblado.",
+      "descripcion_corta": "3 ambientes con balcón corrido, cochera cubierta y baulera. Merlo.",
       "fotos": {
         "carpeta": "fotos_demo/depto-belgrano-004",
         "urls": [
@@ -323,11 +349,14 @@
         ]
       },
       "caracteristicas": {
+        "antiguedad": null,
+        "estado_construccion": "usado",
         "ambientes": 3,
         "dormitorios": 2,
-        "superficie_total": "75 m²",
-        "superficie_cubierta": "70 m²",
-        "banios": 2
+        "banios": 2,
+        "superficie_total": 75,
+        "superficie_cubierta": 70,
+        "superficie_unidad": "m²"
       },
       "detalles": [
         "cochera",

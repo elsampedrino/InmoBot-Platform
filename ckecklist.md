@@ -109,10 +109,23 @@ BLOQUE 1 — Cierre actual
  Observás uso real
  Ajustás UX
 
+🧪 BLOQUE 7 — (alto impacto comercial)
+WhatsApp integrado
+Automatización básica (follow-ups)
+Integraciones simples (webhooks)
+
+🚀 BLOQUE 8 — (producto serio)
+Roles de usuario
+Analytics avanzados
+Mejoras IA (insights)
+
+🧠 BLOQUE 9 — (enterprise real)
+Infraestructura / monitoreo
+Seguridad
+Multi-rubro
 
 Creacion de App developer para IG
 La arquitectura queda así:
-
 
 Tu cuenta Meta Developer
 └── App "InmoBot" (tuya, una sola vez)
@@ -134,3 +147,33 @@ Necesitás cuenta en developers.facebook.com con tu usuario de Facebook
 Crear la app "InmoBot" una sola vez
 ¿Querés que te guíe paso a paso por la creación de la app ahora?
 
+
+Acá el instructivo para mandarle por WhatsApp:
+
+Hola Cristian! Necesito que hagas 2 cosas rápidas para activar la publicación automática en Instagram y Facebook de la inmobiliaria:
+
+PASO 1 — Registrarte como desarrollador de Meta (1 vez, 2 minutos)
+
+Entrá a este link desde tu celu o compu, logueado con tu Facebook: https://developers.facebook.com
+Tocá "Comenzar"
+Aceptá los términos → te va a pedir verificar tu número de teléfono → ingresá el código que te llega por SMS
+Listo, ya está
+PASO 2 — Autorizar la app (después de que yo te confirme)
+(Esperá mi confirmación antes de hacer este paso)
+
+Una vez que te avise, entrá a este link logueado con tu Facebook:
+
+https://www.facebook.com/v21.0/dialog/oauth?client_id=4427867694155743&redirect_uri=https%3A%2F%2Fpanel.automatizacionia.com.ar%2Flogin&scope=instagram_basic,pages_show_list,pages_read_engagement,instagram_content_publish,pages_manage_posts&response_type=code
+
+Tocá "Continuar como Cristian" → "Aceptar"
+Te va a redirigir a una página — copiame la URL completa de la barra de direcciones y mandámela por acá
+Vos mientras tanto lo agregás como Evaluador en la app de Meta y le avisás cuando esté listo para el Paso 2. ¿Querés que también te prepare el mensaje de confirmación para el Paso 2?
+
+ahi le mande las instrucciones pero justa ahora esta en el trabajo asi que lo mas probable es que lo vea recien mañana, vamos a hacer una call y lo vemos juntos
+
+*******************************************************************
+
+user BBR : cristian.brucellaria
+contraseña BBR: @BBRgrupoinmob2021
+
+correo : cristian.brucellaria@hotmail.com

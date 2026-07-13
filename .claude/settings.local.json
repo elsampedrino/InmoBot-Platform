@@ -71,7 +71,13 @@
       "Bash(netstat -ano)",
       "Bash(taskkill //F //PID 4412 //T)",
       "Bash(wmic process:*)",
-      "Bash(source venv/Scripts/activate)"
+      "Bash(source venv/Scripts/activate)",
+      "Bash(npx tsc *)",
+      "Bash(cp -r /c/Desarrollo/InmoBot/ChatBOT-Inmobiliaria-VCode/Panel-Admin/src /tmp/panel-admin-push/)",
+      "Bash(cp -r /c/Desarrollo/InmoBot/ChatBOT-Inmobiliaria-VCode/Panel-Admin/public /tmp/panel-admin-push/)",
+      "Bash(cp /c/Desarrollo/InmoBot/ChatBOT-Inmobiliaria-VCode/Panel-Admin/package*.json /tmp/panel-admin-push/)",
+      "Bash(cp /c/Desarrollo/InmoBot/ChatBOT-Inmobiliaria-VCode/Panel-Admin/vite.config.ts /tmp/panel-admin-push/)",
+      "Bash(cp /c/Desarrollo/InmoBot/ChatBOT-Inmobiliaria-VCode/Panel-Admin/tailwind.config.js /tmp/panel-admin-push/)"
     ],
     "deny": [],
     "ask": []

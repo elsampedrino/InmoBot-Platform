@@ -1,0 +1,29 @@
+
+Pagina Web Demo para probar el robot
+
+https://navines-landing-page.vercel.app/
+
+Consultas de test — Navines Inmobiliaria
+1. Búsqueda amplia = "Estoy buscando una propiedad en San Pedro, no sé bien qué quiero todavía"
+
+2. Búsqueda por zona = "¿Tienen propiedades sobre el río o cerca de las barrancas?"
+
+3. Búsqueda por precio = "¿Qué lotes tienen por menos de 30.000 dólares?"
+
+4. Búsqueda por tipo de propiedad = "Quiero ver las casas que tienen disponibles con al menos 2 dormitorios"
+
+5. Búsqueda por características específicas = "Busco una casa con pileta, no importa si hay que arreglar algo"
+
+6. Refinamiento de búsqueda = "Busco lotes para comprar , tengo un presupuesto de 250000 USD" 
+   Después de recibir la lista de opciones consultar --> "me das mas detalles sobre el de 17000 m²"
+
+7. Consulta de superficie = "Tenes alguna propiedad con al menos 200 m de superficie cubierta?"
+
+8. Consulta sin resultado exacto = "¿Tienen casas en alquiler? Busco algo temporario por 6 meses"
+
+9. Consulta en barrio cerrado / privado = "¿Tienen algo en algún barrio privado o countries de la zona?"
+
+10. Pedido de contacto o visita = "Me interesa la casa de 3 dormitorios cerca del centro, ¿cómo hago para visitarla?"
+
+11. Consulta de base de conocimiento (KB) = "¿Cuánto cobran de comisión para vender una propiedad?"
+

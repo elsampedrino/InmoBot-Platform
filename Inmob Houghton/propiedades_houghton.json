@@ -1,0 +1,1810 @@
+﻿{
+    "metadata":  {
+                     "ultima_actualizacion":  "2026-05-21T00:00:00Z",
+                     "total":  38,
+                     "fuente":  "Scraping pablohoughton.com.ar"
+                 },
+    "propiedades":  [
+                        {
+                            "id":  "PROP-001",
+                            "tipo":  "departamento",
+                            "operacion":  "venta",
+                            "titulo":  "Departamento en Venta - Palermo",
+                            "destacado":  false,
+                            "activo":  true,
+                            "direccion":  {
+                                              "calle":  "Uriarte 2217",
+                                              "barrio":  "Palermo",
+                                              "ciudad":  "Capital Federal",
+                                              "lat":  null,
+                                              "lng":  null
+                                          },
+                            "precio":  {
+                                           "valor":  167000,
+                                           "moneda":  "USD",
+                                           "expensas":  null
+                                       },
+                            "descripcion":  "Departamento de 2 ambientes al frente, a estrenar, ubicado en Palermo. Living comedor con balcón, cocina integrada, dormitorio y baño. Pre instalación de aire acondicionado. Excelente iluminación natural con orientación norte. Edificio con amenities completos: terraza con parrilla, SUM, gimnasio, laundry y bicicletero.",
+                            "descripcion_corta":  "Departamento de 2 ambientes al frente, a estrenar, ubicado en Palermo. Living comedor con balcón, cocina integrada, dormitorio y baño. Pre instalación de aire acondicionado. Excelente iluminación natural con orientación norte. Edificio con amenities completos: terraza con parrilla, SUM, gimnasio, laundry y bicicletero.",
+                            "fotos":  {
+                                          "carpeta":  null,
+                                          "urls":  [
+                                                       "https://static.tokkobroker.com/pictures/7837181_58105639988535778397433245546461270595747442242872091269569518378651887395786.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7837181_45472637501685265714539621171933198640691052629789517930265680674829523342205.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7837181_104402056617859317896880649166420755873528261702050599361029447472268872993036.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7837181_8563426710845934734545564222385424850404573811234189260745567891273949192347.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7837181_89806300546186957619401976609013409481510022541126249547303352162862324000738.jpg"
+                                                   ]
+                                      },
+                            "caracteristicas":  {
+                                                    "antiguedad":  null,
+                                                    "estado_construccion":  "usado",
+                                                    "ambientes":  2,
+                                                    "dormitorios":  1,
+                                                    "banios":  1,
+                                                    "superficie_total":  49,
+                                                    "superficie_cubierta":  40,
+                                                    "superficie_unidad":  "m2"
+                                                },
+                            "detalles":  [
+                                             "terraza",
+                                             "parrilla",
+                                             "sum",
+                                             "gimnasio",
+                                             "laundry",
+                                             "bicicletero",
+                                             "balcon",
+                                             "aire_acondicionado",
+                                             "apto_mascotas"
+                                         ]
+                        },
+                        {
+                            "id":  "PROP-002",
+                            "tipo":  "casa",
+                            "operacion":  "venta",
+                            "titulo":  "Casa Quinta en Venta - Merlo",
+                            "destacado":  false,
+                            "activo":  true,
+                            "direccion":  {
+                                              "calle":  "Curupayti 190",
+                                              "barrio":  "Merlo",
+                                              "ciudad":  "Merlo",
+                                              "lat":  null,
+                                              "lng":  null
+                                          },
+                            "precio":  {
+                                           "valor":  185000,
+                                           "moneda":  "USD",
+                                           "expensas":  null
+                                       },
+                            "descripcion":  "Casa quinta con quincho, desarrollada íntegramente en planta baja sobre dos lotes sin unificar. Incluye living-comedor con salamandra, 3 dormitorios, baño completo, cocina, galería, área de servicio, despensa y lavadero. Estado regular; quincho en mal estado. Ideal para dos familias que quieran vivir juntas pero en casas separadas. Antigüedad 80 años.",
+                            "descripcion_corta":  "Casa quinta con quincho, desarrollada íntegramente en planta baja sobre dos lotes sin unificar. Incluye living-comedor con salamandra, 3 dormitorios, baño completo, cocina, galería, área de servicio, despensa y lavadero. Estado regular; quincho en mal estado. Ideal para dos familias que quieran vivir juntas pero en casas separadas. Antigüedad 80 años.",
+                            "fotos":  {
+                                          "carpeta":  null,
+                                          "urls":  [
+                                                       "https://static.tokkobroker.com/pictures/8064329_46779311478530029369743473210443715783447643655825073781456972249819994421829.jpg",
+                                                       "https://static.tokkobroker.com/pictures/8064329_27360225486016237424970502977776271311481899024612157024570382442103928913918.jpg",
+                                                       "https://static.tokkobroker.com/pictures/8064329_89450938393286337425874588875684669096531217875133546142143132791622596507201.jpg",
+                                                       "https://static.tokkobroker.com/pictures/8064329_56951159569273890764032837537173248587996204971518114695448006058469991520055.jpg",
+                                                       "https://static.tokkobroker.com/pictures/8064329_67078684241505987143837781959866741488245759573617361069431006632554957622196.jpg"
+                                                   ]
+                                      },
+                            "caracteristicas":  {
+                                                    "antiguedad":  null,
+                                                    "estado_construccion":  "usado",
+                                                    "ambientes":  7,
+                                                    "dormitorios":  4,
+                                                    "banios":  2,
+                                                    "superficie_total":  1792,
+                                                    "superficie_cubierta":  250,
+                                                    "superficie_unidad":  "m2"
+                                                },
+                            "detalles":  [
+                                             "quincho",
+                                             "parrilla",
+                                             "cochera",
+                                             "jardin",
+                                             "chimenea",
+                                             "aire_acondicionado",
+                                             "apto_mascotas"
+                                         ]
+                        },
+                        {
+                            "id":  "PROP-003",
+                            "tipo":  "local",
+                            "operacion":  "venta",
+                            "titulo":  "Local Comercial en Venta - San Isidro Centro",
+                            "destacado":  true,
+                            "activo":  true,
+                            "direccion":  {
+                                              "calle":  "Chacabuco 444",
+                                              "barrio":  "San Isidro Centro",
+                                              "ciudad":  "San Isidro",
+                                              "lat":  null,
+                                              "lng":  null
+                                          },
+                            "precio":  {
+                                           "valor":  2650000,
+                                           "moneda":  "USD",
+                                           "expensas":  null
+                                       },
+                            "descripcion":  "Propiedad institucional sobre lote propio, ex entidad bancaria. Salón comercial de doble altura (406 m²), oficinas adaptables (219 m²), subsuelo con ex bóvedas (541 m²) y espacio verde/parque (459 m²). 14 cocheras exclusivas. Sin expensas (lote propio). Especialmente apta para entidades financieras, retail, gastronomía o sedes corporativas. 3 plantas, 16 años de antigüedad.",
+                            "descripcion_corta":  "Propiedad institucional sobre lote propio, ex entidad bancaria. Salón comercial de doble altura (406 m²), oficinas adaptables (219 m²), subsuelo con ex bóvedas (541 m²) y espacio verde/parque (459 m²). 14 cocheras exclusivas. Sin expensas (lote propio). Especialmente apta para entidades financieras, retail, gastronomía o sedes corporativas. 3 plantas, 16 años de antigüedad.",
+                            "fotos":  {
+                                          "carpeta":  null,
+                                          "urls":  [
+                                                       "https://static.tokkobroker.com/pictures/6997861_45786529939568933710619903432433156967032932004664470110576128099262650137239.jpg",
+                                                       "https://static.tokkobroker.com/pictures/6997861_40246323858538666893702490698214512481071422420958450499453770500193659090586.jpg",
+                                                       "https://static.tokkobroker.com/pictures/6997861_86950608114747412670157059623832136063676055593560302928892091275018111206624.jpg",
+                                                       "https://static.tokkobroker.com/pictures/6997861_76085717406729020681235191524395786494169054512297459433337901218376089447423.jpg",
+                                                       "https://static.tokkobroker.com/pictures/6997861_66088270281890302730096508529037486942067345270660268263860816493555141758869.jpg"
+                                                   ]
+                                      },
+                            "caracteristicas":  {
+                                                    "antiguedad":  null,
+                                                    "estado_construccion":  "usado",
+                                                    "ambientes":  null,
+                                                    "dormitorios":  null,
+                                                    "banios":  4,
+                                                    "superficie_total":  1600,
+                                                    "superficie_cubierta":  1187,
+                                                    "superficie_unidad":  "m2"
+                                                },
+                            "detalles":  [
+                                             "cochera",
+                                             "sotano",
+                                             "accesibilidad",
+                                             "energia_trifasica",
+                                             "grupo_electrogeno"
+                                         ]
+                        },
+                        {
+                            "id":  "PROP-004",
+                            "tipo":  "casa",
+                            "operacion":  "venta",
+                            "titulo":  "Casa en Venta - Vicente López",
+                            "destacado":  true,
+                            "activo":  true,
+                            "direccion":  {
+                                              "calle":  "Agustín Alvarez 1275",
+                                              "barrio":  "Barrio Vicente López",
+                                              "ciudad":  "Vicente López",
+                                              "lat":  null,
+                                              "lng":  null
+                                          },
+                            "precio":  {
+                                           "valor":  475000,
+                                           "moneda":  "USD",
+                                           "expensas":  null
+                                       },
+                            "descripcion":  "Casa de 3 dormitorios más espacio escritorio con planta abierta. Planta baja con cocina-comedor integrada, living dividido en zonas de entretenimiento y TV, biblioteca/playroom y jardín con pileta descubierta. Planta alta con dormitorio principal en suite con walk-in closet, dos dormitorios al frente (uno con posible acceso a estudio). 10 años de antigüedad, excelente estado.",
+                            "descripcion_corta":  "Casa de 3 dormitorios más espacio escritorio con planta abierta. Planta baja con cocina-comedor integrada, living dividido en zonas de entretenimiento y TV, biblioteca/playroom y jardín con pileta descubierta. Planta alta con dormitorio principal en suite con walk-in closet, dos dormitorios al frente (uno con posible acceso a estudio). 10 años de antigüedad, excelente estado.",
+                            "fotos":  {
+                                          "carpeta":  null,
+                                          "urls":  [
+                                                       "https://static.tokkobroker.com/pictures/7682678_78031098423746215561966480629437597234289471763227925607647857460442327813412.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7682678_84933866855963861856863264565224653446109073740701387501890607765458627497701.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7682678_29265671304058010337743852807261489655823419623862163050453387255687063385169.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7682678_75365002039053812926639853000615029472375542129312625322092680214800599658322.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7682678_66772299928916591497195481144215374837364222195697939983090916560167885354673.jpg"
+                                                   ]
+                                      },
+                            "caracteristicas":  {
+                                                    "antiguedad":  null,
+                                                    "estado_construccion":  "usado",
+                                                    "ambientes":  5,
+                                                    "dormitorios":  3,
+                                                    "banios":  2,
+                                                    "superficie_total":  193,
+                                                    "superficie_cubierta":  215,
+                                                    "superficie_unidad":  "m2"
+                                                },
+                            "detalles":  [
+                                             "pileta",
+                                             "cochera",
+                                             "alarma",
+                                             "aire_acondicionado",
+                                             "jardin",
+                                             "lavadero"
+                                         ]
+                        },
+                        {
+                            "id":  "PROP-005",
+                            "tipo":  "departamento",
+                            "operacion":  "venta",
+                            "titulo":  "Departamento en Venta - Caballito",
+                            "destacado":  false,
+                            "activo":  true,
+                            "direccion":  {
+                                              "calle":  "Doblas 497",
+                                              "barrio":  "Caballito",
+                                              "ciudad":  "Capital Federal",
+                                              "lat":  null,
+                                              "lng":  null
+                                          },
+                            "precio":  {
+                                           "valor":  185000,
+                                           "moneda":  "USD",
+                                           "expensas":  null
+                                       },
+                            "descripcion":  "Departamento luminoso de 3 ambientes con orientación noreste y vista abierta, ubicado en piso 5. Living-comedor al frente con balcón corrido, dormitorio principal con placard, cocina amplia integrada a comedor diario, segundo dormitorio con placard y lavadero independiente. Parquet en pisos, calefacción por tiro balanceado. Apto para mascotas y crédito.",
+                            "descripcion_corta":  "Departamento luminoso de 3 ambientes con orientación noreste y vista abierta, ubicado en piso 5. Living-comedor al frente con balcón corrido, dormitorio principal con placard, cocina amplia integrada a comedor diario, segundo dormitorio con placard y lavadero independiente. Parquet en pisos, calefacción por tiro balanceado. Apto para mascotas y crédito.",
+                            "fotos":  {
+                                          "carpeta":  null,
+                                          "urls":  [
+                                                       "https://static.tokkobroker.com/pictures/5023783_89290580120508476890064041379259486849898237593040158085940436170505286000348.jpg",
+                                                       "https://static.tokkobroker.com/pictures/5023783_97067993357921272659152050998089718431006021314457634672485314194983090793008.jpg",
+                                                       "https://static.tokkobroker.com/pictures/5023783_30560522557003494140415479284918788624797160546684676204405419097296007850757.jpg"
+                                                   ]
+                                      },
+                            "caracteristicas":  {
+                                                    "antiguedad":  null,
+                                                    "estado_construccion":  "usado",
+                                                    "ambientes":  3,
+                                                    "dormitorios":  2,
+                                                    "banios":  1,
+                                                    "superficie_total":  74,
+                                                    "superficie_cubierta":  68,
+                                                    "superficie_unidad":  "m2"
+                                                },
+                            "detalles":  [
+                                             "balcon",
+                                             "aire_acondicionado",
+                                             "apto_mascotas",
+                                             "apto_credito"
+                                         ]
+                        },
+                        {
+                            "id":  "PROP-006",
+                            "tipo":  "departamento",
+                            "operacion":  "venta",
+                            "titulo":  "Departamento en Venta - Once",
+                            "destacado":  false,
+                            "activo":  true,
+                            "direccion":  {
+                                              "calle":  "Ecuador 354",
+                                              "barrio":  "Once",
+                                              "ciudad":  "Capital Federal",
+                                              "lat":  null,
+                                              "lng":  null
+                                          },
+                            "precio":  {
+                                           "valor":  100000,
+                                           "moneda":  "USD",
+                                           "expensas":  null
+                                       },
+                            "descripcion":  "Departamento tipo \u0027chorizo\u0027 ubicado en primer piso, con vista lateral. En la planta baja cuenta con una cocina, un baño completo y 3 ambientes originalmente dormitorios. Antigüedad 70 años, condición regular. Actualmente con inquilino. Oportunidad de inversión en zona de alta demanda.",
+                            "descripcion_corta":  "Departamento tipo \u0027chorizo\u0027 ubicado en primer piso, con vista lateral. En la planta baja cuenta con una cocina, un baño completo y 3 ambientes originalmente dormitorios. Antigüedad 70 años, condición regular. Actualmente con inquilino. Oportunidad de inversión en zona de alta demanda.",
+                            "fotos":  {
+                                          "carpeta":  null,
+                                          "urls":  [
+                                                       "https://static.tokkobroker.com/pictures/8028232_45472637501685265714539621171933198640691052629789517930265680674829523342205.jpg",
+                                                       "https://static.tokkobroker.com/pictures/8028232_58105639988535778397433245546461270595747442242872091269569518378651887395786.jpg",
+                                                       "https://static.tokkobroker.com/pictures/8028232_104402056617859317896880649166420755873528261702050599361029447472268872993036.jpg"
+                                                   ]
+                                      },
+                            "caracteristicas":  {
+                                                    "antiguedad":  null,
+                                                    "estado_construccion":  "usado",
+                                                    "ambientes":  4,
+                                                    "dormitorios":  2,
+                                                    "banios":  1,
+                                                    "superficie_total":  93,
+                                                    "superficie_cubierta":  93,
+                                                    "superficie_unidad":  "m2"
+                                                },
+                            "detalles":  {
+
+                                         }
+                        },
+                        {
+                            "id":  "PROP-007",
+                            "tipo":  "departamento",
+                            "operacion":  "venta",
+                            "titulo":  "Departamento en Venta - Villa Crespo",
+                            "destacado":  false,
+                            "activo":  true,
+                            "direccion":  {
+                                              "calle":  "Loyola 440",
+                                              "barrio":  "Villa Crespo",
+                                              "ciudad":  "Capital Federal",
+                                              "lat":  null,
+                                              "lng":  null
+                                          },
+                            "precio":  {
+                                           "valor":  190000,
+                                           "moneda":  "USD",
+                                           "expensas":  null
+                                       },
+                            "descripcion":  "Departamento de 3 ambientes en piso 7, con cochera cubierta fija incluida. Living-comedor amplio, cocina independiente, 2 baños (uno en suite), lavadero con conexión para lavarropas y armarios empotrados de gran capacidad. Edificio con parrilla, solárium y gimnasio. 6 años de antigüedad, muy buen estado. Bajas expensas.",
+                            "descripcion_corta":  "Departamento de 3 ambientes en piso 7, con cochera cubierta fija incluida. Living-comedor amplio, cocina independiente, 2 baños (uno en suite), lavadero con conexión para lavarropas y armarios empotrados de gran capacidad. Edificio con parrilla, solárium y gimnasio. 6 años de antigüedad, muy buen estado. Bajas expensas.",
+                            "fotos":  {
+                                          "carpeta":  null,
+                                          "urls":  [
+                                                       "https://static.tokkobroker.com/pictures/8052293_45472637501685265714539621171933198640691052629789517930265680674829523342205.jpg",
+                                                       "https://static.tokkobroker.com/pictures/8052293_58105639988535778397433245546461270595747442242872091269569518378651887395786.jpg",
+                                                       "https://static.tokkobroker.com/pictures/8052293_104402056617859317896880649166420755873528261702050599361029447472268872993036.jpg"
+                                                   ]
+                                      },
+                            "caracteristicas":  {
+                                                    "antiguedad":  null,
+                                                    "estado_construccion":  "usado",
+                                                    "ambientes":  3,
+                                                    "dormitorios":  2,
+                                                    "banios":  1,
+                                                    "superficie_total":  81,
+                                                    "superficie_cubierta":  76,
+                                                    "superficie_unidad":  "m2"
+                                                },
+                            "detalles":  [
+                                             "cochera",
+                                             "parrilla",
+                                             "solarium",
+                                             "gimnasio",
+                                             "balcon",
+                                             "apto_credito"
+                                         ]
+                        },
+                        {
+                            "id":  "PROP-008",
+                            "tipo":  "nave_industrial",
+                            "operacion":  "venta",
+                            "titulo":  "Galpón en Venta - General San Martín",
+                            "destacado":  false,
+                            "activo":  true,
+                            "direccion":  {
+                                              "calle":  "Primera Junta 4990",
+                                              "barrio":  "General San Martín",
+                                              "ciudad":  "General San Martín",
+                                              "lat":  null,
+                                              "lng":  null
+                                          },
+                            "precio":  {
+                                           "valor":  550000,
+                                           "moneda":  "USD",
+                                           "expensas":  null
+                                       },
+                            "descripcion":  "Inmueble industrial con dos naves. Primera nave: loza con 250 m² planta baja y 250 m² planta alta. Segunda nave: 500 m² con parabólico. Oficinas de 150 m² aproximados. Portón corredizo doble chapa (3m x 3,5m). Alambrado Olímpico sobre muro perimetral. Terreno nivelado. 20 cocheras. Actualmente alquilado a USD 2.500/mes (renta con inversión).",
+                            "descripcion_corta":  "Inmueble industrial con dos naves. Primera nave: loza con 250 m² planta baja y 250 m² planta alta. Segunda nave: 500 m² con parabólico. Oficinas de 150 m² aproximados. Portón corredizo doble chapa (3m x 3,5m). Alambrado Olímpico sobre muro perimetral. Terreno nivelado. 20 cocheras. Actualmente alquilado a USD 2.500/mes (renta con inversión).",
+                            "fotos":  {
+                                          "carpeta":  null,
+                                          "urls":  [
+                                                       "https://static.tokkobroker.com/pictures/2389357_104113982981654565338309602384784542006814487194633956121489583020586284473110.jpg",
+                                                       "https://static.tokkobroker.com/pictures/111069645032209991815337379715554806950844550848003857599303381829462489521388.jpg",
+                                                       "https://static.tokkobroker.com/pictures/52350391965657356275321266902702403108636849209209093015882121346270273026977.jpg",
+                                                       "https://static.tokkobroker.com/pictures/105148381388363568590757864153762152341550845227197517196720399676469996897861.jpg"
+                                                   ]
+                                      },
+                            "caracteristicas":  {
+                                                    "antiguedad":  null,
+                                                    "estado_construccion":  "usado",
+                                                    "ambientes":  null,
+                                                    "dormitorios":  null,
+                                                    "banios":  2,
+                                                    "superficie_total":  2046,
+                                                    "superficie_cubierta":  1680,
+                                                    "superficie_unidad":  "m2"
+                                                },
+                            "detalles":  [
+                                             "cochera",
+                                             "oficinas",
+                                             "portón_corredizo",
+                                             "accesibilidad"
+                                         ]
+                        },
+                        {
+                            "id":  "PROP-009",
+                            "tipo":  "departamento",
+                            "operacion":  "venta",
+                            "titulo":  "Departamento en Venta - Florida, Vicente López",
+                            "destacado":  false,
+                            "activo":  true,
+                            "direccion":  {
+                                              "calle":  "Vergara 2251",
+                                              "barrio":  "Florida",
+                                              "ciudad":  "Vicente López",
+                                              "lat":  null,
+                                              "lng":  null
+                                          },
+                            "precio":  {
+                                           "valor":  270000,
+                                           "moneda":  "USD",
+                                           "expensas":  null
+                                       },
+                            "descripcion":  "Departamento impecable en piso 1° al contrafrente. Living-comedor con acceso a balcón, cocina separada con espacio de lavadero, dormitorio principal en suite, segundo dormitorio con placard, segundo baño completo. Pisos de madera, aberturas PVC con doble vidrio hermético, calefacción central, aire acondicionado. Complejo con piscina cubierta/descubierta, sauna, SUM y sector parrilla.",
+                            "descripcion_corta":  "Departamento impecable en piso 1° al contrafrente. Living-comedor con acceso a balcón, cocina separada con espacio de lavadero, dormitorio principal en suite, segundo dormitorio con placard, segundo baño completo. Pisos de madera, aberturas PVC con doble vidrio hermético, calefacción central, aire acondicionado. Complejo con piscina cubierta/descubierta, sauna, SUM y sector parrilla.",
+                            "fotos":  {
+                                          "carpeta":  null,
+                                          "urls":  [
+                                                       "https://static.tokkobroker.com/pictures/7133473_45472637501685265714539621171933198640691052629789517930265680674829523342205.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7133473_58105639988535778397433245546461270595747442242872091269569518378651887395786.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7133473_104402056617859317896880649166420755873528261702050599361029447472268872993036.jpg"
+                                                   ]
+                                      },
+                            "caracteristicas":  {
+                                                    "antiguedad":  null,
+                                                    "estado_construccion":  "usado",
+                                                    "ambientes":  3,
+                                                    "dormitorios":  2,
+                                                    "banios":  2,
+                                                    "superficie_total":  77,
+                                                    "superficie_cubierta":  70,
+                                                    "superficie_unidad":  "m2"
+                                                },
+                            "detalles":  [
+                                             "cochera",
+                                             "baulera",
+                                             "pileta",
+                                             "sauna",
+                                             "sum",
+                                             "parrilla",
+                                             "balcon",
+                                             "apto_mascotas"
+                                         ]
+                        },
+                        {
+                            "id":  "PROP-010",
+                            "tipo":  "casa",
+                            "operacion":  "venta",
+                            "titulo":  "Casa en Venta - Florida, Vicente López",
+                            "destacado":  true,
+                            "activo":  true,
+                            "direccion":  {
+                                              "calle":  "Libertad 2860",
+                                              "barrio":  "Florida",
+                                              "ciudad":  "Vicente López",
+                                              "lat":  null,
+                                              "lng":  null
+                                          },
+                            "precio":  {
+                                           "valor":  680000,
+                                           "moneda":  "USD",
+                                           "expensas":  null
+                                       },
+                            "descripcion":  "Casa señorial de 2 plantas en terreno de 750 m². Pileta con cascada, parrilla, quincho con 2 dorm + 2 baños, lavadero, garage para 4 autos, chimenea, hogar de ladrillo, balcón, terraza, jardín privado, portón levadizo. 50 años de antigüedad en excelente estado. Ideal para familia grande o casa de familia con dependencia de servicio independiente.",
+                            "descripcion_corta":  "Casa señorial de 2 plantas en terreno de 750 m². Pileta con cascada, parrilla, quincho con 2 dorm + 2 baños, lavadero, garage para 4 autos, chimenea, hogar de ladrillo, balcón, terraza, jardín privado, portón levadizo. 50 años de antigüedad en excelente estado. Ideal para familia grande o casa de familia con dependencia de servicio independiente.",
+                            "fotos":  {
+                                          "carpeta":  null,
+                                          "urls":  [
+                                                       "https://static.tokkobroker.com/pictures/4966210_28510348539629938577868678187283059741165069960136020581514282763514132593443.jpg",
+                                                       "https://static.tokkobroker.com/pictures/4966210_83146795916324107716510643928061240297857751492195349307933363901743626812794.jpg",
+                                                       "https://static.tokkobroker.com/pictures/4966210_4341144580605776269844421335330526494443337732582268168584034584035348231536.jpg",
+                                                       "https://static.tokkobroker.com/pictures/4966210_17946039005734148271627112034780762174279440502244561651343620296247571339137.jpg",
+                                                       "https://static.tokkobroker.com/pictures/4966210_92662036442505896678987860079993864290209739620182150153453935467960049195703.jpg"
+                                                   ]
+                                      },
+                            "caracteristicas":  {
+                                                    "antiguedad":  null,
+                                                    "estado_construccion":  "usado",
+                                                    "ambientes":  7,
+                                                    "dormitorios":  6,
+                                                    "banios":  3,
+                                                    "superficie_total":  750,
+                                                    "superficie_cubierta":  541,
+                                                    "superficie_unidad":  "m2"
+                                                },
+                            "detalles":  [
+                                             "pileta",
+                                             "quincho",
+                                             "parrilla",
+                                             "cochera",
+                                             "jardin",
+                                             "chimenea",
+                                             "balcon",
+                                             "terraza"
+                                         ]
+                        },
+                        {
+                            "id":  "PROP-011",
+                            "tipo":  "departamento",
+                            "operacion":  "venta",
+                            "titulo":  "Departamento en Venta - Balvanera",
+                            "destacado":  false,
+                            "activo":  true,
+                            "direccion":  {
+                                              "calle":  "Junín 632",
+                                              "barrio":  "Balvanera",
+                                              "ciudad":  "Capital Federal",
+                                              "lat":  null,
+                                              "lng":  null
+                                          },
+                            "precio":  {
+                                           "valor":  154500,
+                                           "moneda":  "USD",
+                                           "expensas":  null
+                                       },
+                            "descripcion":  "Departamento de 4 ambientes con dependencia, ubicado en piso 9 al contrafrente con vista abierta y orientación oeste. Muy luminoso. Balcón corrido, tres dormitorios con placard, cocina renovada, pisos de madera. Cerca de Recoleta. Edificio con 2 ascensores y encargado. 50 años de antigüedad, buen estado.",
+                            "descripcion_corta":  "Departamento de 4 ambientes con dependencia, ubicado en piso 9 al contrafrente con vista abierta y orientación oeste. Muy luminoso. Balcón corrido, tres dormitorios con placard, cocina renovada, pisos de madera. Cerca de Recoleta. Edificio con 2 ascensores y encargado. 50 años de antigüedad, buen estado.",
+                            "fotos":  {
+                                          "carpeta":  null,
+                                          "urls":  [
+                                                       "https://static.tokkobroker.com/pictures/7856353_45472637501685265714539621171933198640691052629789517930265680674829523342205.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7856353_58105639988535778397433245546461270595747442242872091269569518378651887395786.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7856353_104402056617859317896880649166420755873528261702050599361029447472268872993036.jpg"
+                                                   ]
+                                      },
+                            "caracteristicas":  {
+                                                    "antiguedad":  null,
+                                                    "estado_construccion":  "usado",
+                                                    "ambientes":  5,
+                                                    "dormitorios":  3,
+                                                    "banios":  1,
+                                                    "superficie_total":  93,
+                                                    "superficie_cubierta":  88,
+                                                    "superficie_unidad":  "m2"
+                                                },
+                            "detalles":  [
+                                             "balcon",
+                                             "aire_acondicionado",
+                                             "apto_mascotas"
+                                         ]
+                        },
+                        {
+                            "id":  "PROP-012",
+                            "tipo":  "departamento",
+                            "operacion":  "venta",
+                            "titulo":  "Departamento en Venta - Villa Crespo (Scalabrini Ortiz)",
+                            "destacado":  false,
+                            "activo":  true,
+                            "direccion":  {
+                                              "calle":  "Av. Scalabrini Ortiz 326",
+                                              "barrio":  "Villa Crespo",
+                                              "ciudad":  "Capital Federal",
+                                              "lat":  null,
+                                              "lng":  null
+                                          },
+                            "precio":  {
+                                           "valor":  153000,
+                                           "moneda":  "USD",
+                                           "expensas":  null
+                                       },
+                            "descripcion":  "Moderno departamento de 2 ambientes a estrenar al frente, en piso 8. Cocina americana integrada, balcón con vistas despejadas y dormitorio en suite con placard. Orientación sudeste. Edificio con SUM, sector parrilla, solarium, gimnasio, laundry, bicicletero y video cámaras.",
+                            "descripcion_corta":  "Moderno departamento de 2 ambientes a estrenar al frente, en piso 8. Cocina americana integrada, balcón con vistas despejadas y dormitorio en suite con placard. Orientación sudeste. Edificio con SUM, sector parrilla, solarium, gimnasio, laundry, bicicletero y video cámaras.",
+                            "fotos":  {
+                                          "carpeta":  null,
+                                          "urls":  [
+                                                       "https://static.tokkobroker.com/pictures/7837770_45472637501685265714539621171933198640691052629789517930265680674829523342205.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7837770_58105639988535778397433245546461270595747442242872091269569518378651887395786.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7837770_104402056617859317896880649166420755873528261702050599361029447472268872993036.jpg"
+                                                   ]
+                                      },
+                            "caracteristicas":  {
+                                                    "antiguedad":  null,
+                                                    "estado_construccion":  "usado",
+                                                    "ambientes":  2,
+                                                    "dormitorios":  1,
+                                                    "banios":  1,
+                                                    "superficie_total":  53,
+                                                    "superficie_cubierta":  45,
+                                                    "superficie_unidad":  "m2"
+                                                },
+                            "detalles":  [
+                                             "sum",
+                                             "parrilla",
+                                             "solarium",
+                                             "gimnasio",
+                                             "laundry",
+                                             "bicicletero",
+                                             "balcon",
+                                             "aire_acondicionado",
+                                             "apto_mascotas"
+                                         ]
+                        },
+                        {
+                            "id":  "PROP-013",
+                            "tipo":  "departamento",
+                            "operacion":  "venta",
+                            "titulo":  "Departamento en Venta - Vicente López (Maipú)",
+                            "destacado":  false,
+                            "activo":  true,
+                            "direccion":  {
+                                              "calle":  "Av. Maipú 685",
+                                              "barrio":  "Vicente López",
+                                              "ciudad":  "Vicente López",
+                                              "lat":  null,
+                                              "lng":  null
+                                          },
+                            "precio":  {
+                                           "valor":  217000,
+                                           "moneda":  "USD",
+                                           "expensas":  null
+                                       },
+                            "descripcion":  "Departamento de 4 ambientes con espacios exteriores propios, incluyendo patio interno y balcón corrido al contrafrente en forma de L. Living-comedor con parquet, cocina independiente, lavadero. Posibilidad de ampliar con quincho o parrilla. 40 años de antigüedad, muy buen estado. Cámaras de seguridad, encargado.",
+                            "descripcion_corta":  "Departamento de 4 ambientes con espacios exteriores propios, incluyendo patio interno y balcón corrido al contrafrente en forma de L. Living-comedor con parquet, cocina independiente, lavadero. Posibilidad de ampliar con quincho o parrilla. 40 años de antigüedad, muy buen estado. Cámaras de seguridad, encargado.",
+                            "fotos":  {
+                                          "carpeta":  null,
+                                          "urls":  [
+                                                       "https://static.tokkobroker.com/pictures/7816954_45472637501685265714539621171933198640691052629789517930265680674829523342205.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7816954_58105639988535778397433245546461270595747442242872091269569518378651887395786.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7816954_104402056617859317896880649166420755873528261702050599361029447472268872993036.jpg"
+                                                   ]
+                                      },
+                            "caracteristicas":  {
+                                                    "antiguedad":  null,
+                                                    "estado_construccion":  "usado",
+                                                    "ambientes":  4,
+                                                    "dormitorios":  3,
+                                                    "banios":  2,
+                                                    "superficie_total":  115,
+                                                    "superficie_cubierta":  80,
+                                                    "superficie_unidad":  "m2"
+                                                },
+                            "detalles":  [
+                                             "balcon",
+                                             "patio",
+                                             "aire_acondicionado",
+                                             "terraza"
+                                         ]
+                        },
+                        {
+                            "id":  "PROP-014",
+                            "tipo":  "departamento",
+                            "operacion":  "venta",
+                            "titulo":  "Departamento en Venta - Belgrano",
+                            "destacado":  false,
+                            "activo":  true,
+                            "direccion":  {
+                                              "calle":  "11 de Septiembre de 1888 2121",
+                                              "barrio":  "Belgrano",
+                                              "ciudad":  "Capital Federal",
+                                              "lat":  null,
+                                              "lng":  null
+                                          },
+                            "precio":  {
+                                           "valor":  269000,
+                                           "moneda":  "USD",
+                                           "expensas":  null
+                                       },
+                            "descripcion":  "Departamento de 4 ambientes + dependencia en el corazón de Belgrano, a metros de Barrancas. Living-comedor luminoso con balcón, dos dormitorios con placards, escritorio/tercer dormitorio, baño completo, toilette, cocina con espacio para desayunador y dependencia de servicio con baño. 50 años de antigüedad, a refaccionar. Excelente ubicación.",
+                            "descripcion_corta":  "Departamento de 4 ambientes + dependencia en el corazón de Belgrano, a metros de Barrancas. Living-comedor luminoso con balcón, dos dormitorios con placards, escritorio/tercer dormitorio, baño completo, toilette, cocina con espacio para desayunador y dependencia de servicio con baño. 50 años de antigüedad, a refaccionar. Excelente ubicación.",
+                            "fotos":  {
+                                          "carpeta":  null,
+                                          "urls":  [
+                                                       "https://static.tokkobroker.com/pictures/7591728_45472637501685265714539621171933198640691052629789517930265680674829523342205.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7591728_58105639988535778397433245546461270595747442242872091269569518378651887395786.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7591728_104402056617859317896880649166420755873528261702050599361029447472268872993036.jpg"
+                                                   ]
+                                      },
+                            "caracteristicas":  {
+                                                    "antiguedad":  null,
+                                                    "estado_construccion":  "usado",
+                                                    "ambientes":  4,
+                                                    "dormitorios":  3,
+                                                    "banios":  2,
+                                                    "superficie_total":  125,
+                                                    "superficie_cubierta":  115,
+                                                    "superficie_unidad":  "m2"
+                                                },
+                            "detalles":  [
+                                             "balcon",
+                                             "aire_acondicionado",
+                                             "apto_credito"
+                                         ]
+                        },
+                        {
+                            "id":  "PROP-015",
+                            "tipo":  "departamento",
+                            "operacion":  "venta",
+                            "titulo":  "Departamento en Venta - Nuñez (Larralde, en construcción)",
+                            "destacado":  false,
+                            "activo":  true,
+                            "direccion":  {
+                                              "calle":  "Larralde 2227",
+                                              "barrio":  "Nuñez",
+                                              "ciudad":  "Capital Federal",
+                                              "lat":  null,
+                                              "lng":  null
+                                          },
+                            "precio":  {
+                                           "valor":  125000,
+                                           "moneda":  "USD",
+                                           "expensas":  null
+                                       },
+                            "descripcion":  "Departamento en emprendimiento \u0027Mood Larralde\u0027, arquitectura minimalista y materiales nobles. En construcción, entrega estimada octubre/diciembre 2026. Smart Building (domotizado), terraza verde con parrilla, fogón, solarium, laundry, bicicletero y lockers. Excelente propuesta de inversión con potencial de renta. Proyecto de Rosbaco \u0026 Partners.",
+                            "descripcion_corta":  "Departamento en emprendimiento \u0027Mood Larralde\u0027, arquitectura minimalista y materiales nobles. En construcción, entrega estimada octubre/diciembre 2026. Smart Building (domotizado), terraza verde con parrilla, fogón, solarium, laundry, bicicletero y lockers. Excelente propuesta de inversión con potencial de renta. Proyecto de Rosbaco \u0026 Partners.",
+                            "fotos":  {
+                                          "carpeta":  null,
+                                          "urls":  [
+                                                       "https://static.tokkobroker.com/pictures/7522782_45472637501685265714539621171933198640691052629789517930265680674829523342205.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7522782_58105639988535778397433245546461270595747442242872091269569518378651887395786.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7522782_104402056617859317896880649166420755873528261702050599361029447472268872993036.jpg"
+                                                   ]
+                                      },
+                            "caracteristicas":  {
+                                                    "antiguedad":  null,
+                                                    "estado_construccion":  "usado",
+                                                    "ambientes":  2,
+                                                    "dormitorios":  1,
+                                                    "banios":  1,
+                                                    "superficie_total":  42,
+                                                    "superficie_cubierta":  null,
+                                                    "superficie_unidad":  "m2"
+                                                },
+                            "detalles":  [
+                                             "terraza",
+                                             "parrilla",
+                                             "laundry",
+                                             "bicicletero",
+                                             "balcon",
+                                             "apto_mascotas"
+                                         ]
+                        },
+                        {
+                            "id":  "PROP-016",
+                            "tipo":  "oficina",
+                            "operacion":  "venta",
+                            "titulo":  "Oficina en Venta - San Nicolás",
+                            "destacado":  false,
+                            "activo":  true,
+                            "direccion":  {
+                                              "calle":  "Viamonte 377",
+                                              "barrio":  "San Nicolás",
+                                              "ciudad":  "Capital Federal",
+                                              "lat":  null,
+                                              "lng":  null
+                                          },
+                            "precio":  {
+                                           "valor":  98500,
+                                           "moneda":  "USD",
+                                           "expensas":  null
+                                       },
+                            "descripcion":  "Oficina de 124 m² actualmente habilitada como consultorio odontológico. Recepción, sala de espera, pasillo central, 6 consultorios (3 a cada lado), baño general, toilette y kitchenette. Piso 3, 48 años de antigüedad en muy buen estado. Orientación sudeste. Apto crédito. Excelente para uso profesional médico, jurídico o corporativo.",
+                            "descripcion_corta":  "Oficina de 124 m² actualmente habilitada como consultorio odontológico. Recepción, sala de espera, pasillo central, 6 consultorios (3 a cada lado), baño general, toilette y kitchenette. Piso 3, 48 años de antigüedad en muy buen estado. Orientación sudeste. Apto crédito. Excelente para uso profesional médico, jurídico o corporativo.",
+                            "fotos":  {
+                                          "carpeta":  null,
+                                          "urls":  [
+                                                       "https://static.tokkobroker.com/pictures/7118418_15978686919434632130068430259269066739145069616464638082456938907845133162606.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7118418_59486341738576628954688967133023823836910021768510956154867067593297452459651.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7118418_15671101215569029290768290693380376705715028473793528970524635218527568674799.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7118418_5811059730671882182581064813878109749347958031483390090596857927487555217128.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7118418_41213089329261937918033852080745370050537624867795016157343468857722302539495.jpg"
+                                                   ]
+                                      },
+                            "caracteristicas":  {
+                                                    "antiguedad":  null,
+                                                    "estado_construccion":  "usado",
+                                                    "ambientes":  6,
+                                                    "dormitorios":  null,
+                                                    "banios":  4,
+                                                    "superficie_total":  124,
+                                                    "superficie_cubierta":  124,
+                                                    "superficie_unidad":  "m2"
+                                                },
+                            "detalles":  [
+                                             "aire_acondicionado",
+                                             "accesibilidad",
+                                             "apto_credito"
+                                         ]
+                        },
+                        {
+                            "id":  "PROP-017",
+                            "tipo":  "departamento",
+                            "operacion":  "venta",
+                            "titulo":  "Departamento en Venta - Chacarita",
+                            "destacado":  false,
+                            "activo":  true,
+                            "direccion":  {
+                                              "calle":  "Santos Dumont 4028",
+                                              "barrio":  "Chacarita",
+                                              "ciudad":  "Capital Federal",
+                                              "lat":  null,
+                                              "lng":  null
+                                          },
+                            "precio":  {
+                                           "valor":  90000,
+                                           "moneda":  "USD",
+                                           "expensas":  null
+                                       },
+                            "descripcion":  "Departamento completamente renovado en piso 2 al contrafrente. Distribución funcional con living-comedor con cocina integrada, dormitorio con placard y baño de amplias dimensiones. Muy luminoso y ventilado, pisos tipo madera, ventanas en todos los ambientes. 65 años de antigüedad, reciclado. Apto profesional. Edificio de 11 unidades.",
+                            "descripcion_corta":  "Departamento completamente renovado en piso 2 al contrafrente. Distribución funcional con living-comedor con cocina integrada, dormitorio con placard y baño de amplias dimensiones. Muy luminoso y ventilado, pisos tipo madera, ventanas en todos los ambientes. 65 años de antigüedad, reciclado. Apto profesional. Edificio de 11 unidades.",
+                            "fotos":  {
+                                          "carpeta":  null,
+                                          "urls":  [
+                                                       "https://static.tokkobroker.com/pictures/7922959_45472637501685265714539621171933198640691052629789517930265680674829523342205.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7922959_58105639988535778397433245546461270595747442242872091269569518378651887395786.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7922959_104402056617859317896880649166420755873528261702050599361029447472268872993036.jpg"
+                                                   ]
+                                      },
+                            "caracteristicas":  {
+                                                    "antiguedad":  null,
+                                                    "estado_construccion":  "usado",
+                                                    "ambientes":  2,
+                                                    "dormitorios":  1,
+                                                    "banios":  1,
+                                                    "superficie_total":  34,
+                                                    "superficie_cubierta":  34,
+                                                    "superficie_unidad":  "m2"
+                                                },
+                            "detalles":  [
+                                             "aire_acondicionado",
+                                             "apto_profesional",
+                                             "apto_credito",
+                                             "terraza"
+                                         ]
+                        },
+                        {
+                            "id":  "PROP-018",
+                            "tipo":  "departamento",
+                            "operacion":  "venta",
+                            "titulo":  "Departamento en Venta - Nuñez (monoambiente)",
+                            "destacado":  false,
+                            "activo":  true,
+                            "direccion":  {
+                                              "calle":  "Larralde 2227",
+                                              "barrio":  "Nuñez",
+                                              "ciudad":  "Capital Federal",
+                                              "lat":  null,
+                                              "lng":  null
+                                          },
+                            "precio":  {
+                                           "valor":  85000,
+                                           "moneda":  "USD",
+                                           "expensas":  null
+                                       },
+                            "descripcion":  "Monoambiente en emprendimiento \u0027Mood Larralde\u0027, piso 3, orientación norte con balcón. En construcción, entrega diciembre 2026. Smart Building (domotizado), terraza verde con parrilla, fogón, solarium, laundry, bicicletero y lockers. Proyecto Rosbaco \u0026 Partners con arquitectura minimalista y materiales nobles.",
+                            "descripcion_corta":  "Monoambiente en emprendimiento \u0027Mood Larralde\u0027, piso 3, orientación norte con balcón. En construcción, entrega diciembre 2026. Smart Building (domotizado), terraza verde con parrilla, fogón, solarium, laundry, bicicletero y lockers. Proyecto Rosbaco \u0026 Partners con arquitectura minimalista y materiales nobles.",
+                            "fotos":  {
+                                          "carpeta":  null,
+                                          "urls":  [
+                                                       "https://static.tokkobroker.com/pictures/7520462_106140764373038891920224657307715024652510915025145825956728464795812132704624.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7520462_80852446109845262396158202432976196571127291549367751023386302139957630376422.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7520462_85861588950932119562769688974317522890240617267902955656877738773268187084301.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7520462_90996186722697620750188487129140582061679655353761579268012074820458082919847.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7520462_31385746160894976882070911733163455084490712556163049226048942457359017238965.jpg"
+                                                   ]
+                                      },
+                            "caracteristicas":  {
+                                                    "antiguedad":  null,
+                                                    "estado_construccion":  "usado",
+                                                    "ambientes":  1,
+                                                    "dormitorios":  1,
+                                                    "banios":  1,
+                                                    "superficie_total":  33,
+                                                    "superficie_cubierta":  25,
+                                                    "superficie_unidad":  "m2"
+                                                },
+                            "detalles":  [
+                                             "terraza",
+                                             "parrilla",
+                                             "laundry",
+                                             "bicicletero",
+                                             "balcon",
+                                             "apto_mascotas"
+                                         ]
+                        },
+                        {
+                            "id":  "PROP-019",
+                            "tipo":  "departamento",
+                            "operacion":  "venta",
+                            "titulo":  "Departamento en Venta - Martínez",
+                            "destacado":  false,
+                            "activo":  true,
+                            "direccion":  {
+                                              "calle":  "Av. Santa Fe 2180",
+                                              "barrio":  "Martínez",
+                                              "ciudad":  "San Isidro",
+                                              "lat":  null,
+                                              "lng":  null
+                                          },
+                            "precio":  {
+                                           "valor":  265000,
+                                           "moneda":  "USD",
+                                           "expensas":  null
+                                       },
+                            "descripcion":  "Departamento en edificio de 10 pisos, contrafrente con vista al río, orientación este, piso 9°. Living comedor con piso flotante, dormitorio principal con placard y aire acondicionado, dormitorio secundario, tercer dormitorio/escritorio, cocina comedor diario con lavadero, 2 baños completos y baño de servicio. Cochera y baulera incluidas. Terraza común con jaula propia. 40 años, reciclado.",
+                            "descripcion_corta":  "Departamento en edificio de 10 pisos, contrafrente con vista al río, orientación este, piso 9°. Living comedor con piso flotante, dormitorio principal con placard y aire acondicionado, dormitorio secundario, tercer dormitorio/escritorio, cocina comedor diario con lavadero, 2 baños completos y baño de servicio. Cochera y baulera incluidas. Terraza común con jaula propia. 40 años, reciclado.",
+                            "fotos":  {
+                                          "carpeta":  null,
+                                          "urls":  [
+                                                       "https://static.tokkobroker.com/pictures/7272023_54205252091084462966162046441257379727457495174712923638266528398208598912359.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7272023_10394331672470893585473602153782990850770979496920426841558868111957308830246.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7272023_79325880734113563996078515634496702085895734811008375746589612757127271922841.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7272023_2841429809031594052356500746782778775415923860884195553332457385390161361520.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7272023_60552358733955757851088300478881967180572755182070877521924053973882993037546.jpg"
+                                                   ]
+                                      },
+                            "caracteristicas":  {
+                                                    "antiguedad":  null,
+                                                    "estado_construccion":  "usado",
+                                                    "ambientes":  4,
+                                                    "dormitorios":  3,
+                                                    "banios":  2,
+                                                    "superficie_total":  104,
+                                                    "superficie_cubierta":  103,
+                                                    "superficie_unidad":  "m2"
+                                                },
+                            "detalles":  [
+                                             "cochera",
+                                             "baulera",
+                                             "terraza",
+                                             "aire_acondicionado",
+                                             "apto_credito"
+                                         ]
+                        },
+                        {
+                            "id":  "PROP-020",
+                            "tipo":  "local",
+                            "operacion":  "alquiler",
+                            "titulo":  "Local Comercial en Alquiler - Puerto Madero",
+                            "destacado":  false,
+                            "activo":  true,
+                            "direccion":  {
+                                              "calle":  "Av. Juana Manso 123",
+                                              "barrio":  "Puerto Madero",
+                                              "ciudad":  "Capital Federal",
+                                              "lat":  null,
+                                              "lng":  null
+                                          },
+                            "precio":  {
+                                           "valor":  3000,
+                                           "moneda":  "USD",
+                                           "expensas":  null
+                                       },
+                            "descripcion":  "Local semilibre de columnas con subsuelo, sala de reunión y dos baños (uno con ducha), en el Edificio Forum. Planta baja 130 m² + subsuelo 112 m². Frente 11,3 m. Apto para diversos destinos comerciales excepto funeraria, tintorería, pescadería, locutorios ni gastronomía. Disponible desde 1 de julio de 2026. 10 años de antigüedad, muy buen estado.",
+                            "descripcion_corta":  "Local semilibre de columnas con subsuelo, sala de reunión y dos baños (uno con ducha), en el Edificio Forum. Planta baja 130 m² + subsuelo 112 m². Frente 11,3 m. Apto para diversos destinos comerciales excepto funeraria, tintorería, pescadería, locutorios ni gastronomía. Disponible desde 1 de julio de 2026. 10 años de antigüedad, muy buen estado.",
+                            "fotos":  {
+                                          "carpeta":  null,
+                                          "urls":  [
+                                                       "https://static.tokkobroker.com/pictures/5730321_45472637501685265714539621171933198640691052629789517930265680674829523342205.jpg",
+                                                       "https://static.tokkobroker.com/pictures/5730321_58105639988535778397433245546461270595747442242872091269569518378651887395786.jpg",
+                                                       "https://static.tokkobroker.com/pictures/5730321_104402056617859317896880649166420755873528261702050599361029447472268872993036.jpg"
+                                                   ]
+                                      },
+                            "caracteristicas":  {
+                                                    "antiguedad":  null,
+                                                    "estado_construccion":  "usado",
+                                                    "ambientes":  null,
+                                                    "dormitorios":  null,
+                                                    "banios":  2,
+                                                    "superficie_total":  242,
+                                                    "superficie_cubierta":  242,
+                                                    "superficie_unidad":  "m2"
+                                                },
+                            "detalles":  [
+                                             "sotano",
+                                             "accesibilidad"
+                                         ]
+                        },
+                        {
+                            "id":  "PROP-021",
+                            "tipo":  "nave_industrial",
+                            "operacion":  "alquiler",
+                            "titulo":  "Nave Industrial en Alquiler - Moreno",
+                            "destacado":  false,
+                            "activo":  true,
+                            "direccion":  {
+                                              "calle":  "Colectora Norte Acceso Oeste 5200",
+                                              "barrio":  "Moreno",
+                                              "ciudad":  "Moreno",
+                                              "lat":  null,
+                                              "lng":  null
+                                          },
+                            "precio":  {
+                                           "valor":  20000,
+                                           "moneda":  "USD",
+                                           "expensas":  null
+                                       },
+                            "descripcion":  "Nave de aproximadamente 3.200 m², con nave accesoria de aproximadamente 600 m² + sector de oficinas. Techos parabólicos de chapa acanalada con buena altura (11,38 m a punta de viga). Pisos de hormigón de alto tránsito. Estado general bueno. Disponibilidad inmediata. Ideal para logística, industria o depósito.",
+                            "descripcion_corta":  "Nave de aproximadamente 3.200 m², con nave accesoria de aproximadamente 600 m² + sector de oficinas. Techos parabólicos de chapa acanalada con buena altura (11,38 m a punta de viga). Pisos de hormigón de alto tránsito. Estado general bueno. Disponibilidad inmediata. Ideal para logística, industria o depósito.",
+                            "fotos":  {
+                                          "carpeta":  null,
+                                          "urls":  [
+                                                       "https://static.tokkobroker.com/pictures/8069098_10018851358633837414199154876560092282311232659573962247399657916741090284884.jpg",
+                                                       "https://static.tokkobroker.com/pictures/8069098_5135549143481836500609230037334298914772500311919407571513675285916900738579.jpg",
+                                                       "https://static.tokkobroker.com/pictures/8069098_54086910413718656662961599655914046215456500048857036403714497646023035715660.jpg",
+                                                       "https://static.tokkobroker.com/pictures/8069098_19002802188193886186786145889244151633179812929383189087784854032199317684203.jpg",
+                                                       "https://static.tokkobroker.com/pictures/8069098_75813918578403978772152755816772086673556490430675625818818958563243820294633.jpg"
+                                                   ]
+                                      },
+                            "caracteristicas":  {
+                                                    "antiguedad":  null,
+                                                    "estado_construccion":  "usado",
+                                                    "ambientes":  null,
+                                                    "dormitorios":  null,
+                                                    "banios":  null,
+                                                    "superficie_total":  5700,
+                                                    "superficie_cubierta":  4000,
+                                                    "superficie_unidad":  "m2"
+                                                },
+                            "detalles":  [
+                                             "oficinas",
+                                             "energia_trifasica",
+                                             "accesibilidad"
+                                         ]
+                        },
+                        {
+                            "id":  "PROP-022",
+                            "tipo":  "departamento",
+                            "operacion":  "alquiler",
+                            "titulo":  "Departamento en Alquiler - Olivos (Libertador)",
+                            "destacado":  false,
+                            "activo":  true,
+                            "direccion":  {
+                                              "calle":  "Av. Libertador 2487",
+                                              "barrio":  "Olivos",
+                                              "ciudad":  "Vicente López",
+                                              "lat":  null,
+                                              "lng":  null
+                                          },
+                            "precio":  {
+                                           "valor":  800000,
+                                           "moneda":  "ARS",
+                                           "expensas":  null
+                                       },
+                            "descripcion":  "Departamento de 2 ambientes en segundo piso al contrafrente, con mucha luz y comodidad. Ubicado en Puerto de Olivos con acceso a transporte público. Cochera fija incluida en planta baja. 20 años de antigüedad, muy buen estado. Expensas $89.000.",
+                            "descripcion_corta":  "Departamento de 2 ambientes en segundo piso al contrafrente, con mucha luz y comodidad. Ubicado en Puerto de Olivos con acceso a transporte público. Cochera fija incluida en planta baja. 20 años de antigüedad, muy buen estado. Expensas $89.000.",
+                            "fotos":  {
+                                          "carpeta":  null,
+                                          "urls":  [
+                                                       "https://static.tokkobroker.com/pictures/6129636_45472637501685265714539621171933198640691052629789517930265680674829523342205.jpg",
+                                                       "https://static.tokkobroker.com/pictures/6129636_58105639988535778397433245546461270595747442242872091269569518378651887395786.jpg",
+                                                       "https://static.tokkobroker.com/pictures/6129636_104402056617859317896880649166420755873528261702050599361029447472268872993036.jpg"
+                                                   ]
+                                      },
+                            "caracteristicas":  {
+                                                    "antiguedad":  null,
+                                                    "estado_construccion":  "usado",
+                                                    "ambientes":  2,
+                                                    "dormitorios":  1,
+                                                    "banios":  1,
+                                                    "superficie_total":  41,
+                                                    "superficie_cubierta":  40,
+                                                    "superficie_unidad":  "m2"
+                                                },
+                            "detalles":  [
+                                             "cochera",
+                                             "lavadero"
+                                         ]
+                        },
+                        {
+                            "id":  "PROP-023",
+                            "tipo":  "departamento",
+                            "operacion":  "alquiler",
+                            "titulo":  "Departamento en Alquiler - Olivos (Alberdi)",
+                            "destacado":  false,
+                            "activo":  true,
+                            "direccion":  {
+                                              "calle":  "JB Alberdi 410",
+                                              "barrio":  "Olivos",
+                                              "ciudad":  "Vicente López",
+                                              "lat":  null,
+                                              "lng":  null
+                                          },
+                            "precio":  {
+                                           "valor":  1300,
+                                           "moneda":  "USD",
+                                           "expensas":  null
+                                       },
+                            "descripcion":  "Hermoso departamento en alquiler con balcón al frente ubicado en Edificio Regatta, 2do piso. A estrenar, buena iluminación y en perfectas condiciones. Sistema de calefacción eléctrico. Expensas $300.000 (incluyen AySA). Complejo con pileta comunitaria, gimnasio, sauna, parrilla techada y seguridad 24hs con cámaras.",
+                            "descripcion_corta":  "Hermoso departamento en alquiler con balcón al frente ubicado en Edificio Regatta, 2do piso. A estrenar, buena iluminación y en perfectas condiciones. Sistema de calefacción eléctrico. Expensas $300.000 (incluyen AySA). Complejo con pileta comunitaria, gimnasio, sauna, parrilla techada y seguridad 24hs con cámaras.",
+                            "fotos":  {
+                                          "carpeta":  null,
+                                          "urls":  [
+                                                       "https://static.tokkobroker.com/pictures/6851021_15716265612262282372208448138209783389308850692974798841616593112091343770507.jpg",
+                                                       "https://static.tokkobroker.com/pictures/6851021_35298534224091774639429965055151009636485168994340726504628668301057910172772.jpg",
+                                                       "https://static.tokkobroker.com/pictures/6851021_62641707936816694030187750076298466282894104147093325916112663666022778915507.jpg",
+                                                       "https://static.tokkobroker.com/pictures/6851021_74421658067422336069743560479531541143299878135433373785927630372765538914856.jpg",
+                                                       "https://static.tokkobroker.com/pictures/6851021_15969533454518522328361926379712399049353009725026436071761912762552221657322.jpg"
+                                                   ]
+                                      },
+                            "caracteristicas":  {
+                                                    "antiguedad":  null,
+                                                    "estado_construccion":  "usado",
+                                                    "ambientes":  3,
+                                                    "dormitorios":  2,
+                                                    "banios":  2,
+                                                    "superficie_total":  80,
+                                                    "superficie_cubierta":  70,
+                                                    "superficie_unidad":  "m2"
+                                                },
+                            "detalles":  [
+                                             "pileta",
+                                             "gimnasio",
+                                             "sauna",
+                                             "parrilla",
+                                             "cochera",
+                                             "balcon"
+                                         ]
+                        },
+                        {
+                            "id":  "PROP-024",
+                            "tipo":  "departamento",
+                            "operacion":  "alquiler",
+                            "titulo":  "Departamento en Alquiler - Recoleta",
+                            "destacado":  false,
+                            "activo":  true,
+                            "direccion":  {
+                                              "calle":  "Paraguay 2033",
+                                              "barrio":  "Recoleta",
+                                              "ciudad":  "Capital Federal",
+                                              "lat":  null,
+                                              "lng":  null
+                                          },
+                            "precio":  {
+                                           "valor":  550000,
+                                           "moneda":  "ARS",
+                                           "expensas":  null
+                                       },
+                            "descripcion":  "Departamento monoambiente amueblado y equipado, interno, lateral. Con cocina empotrada que puede cerrarse. Incluye cama, placard, heladera, televisión, cocina y horno eléctrico, lavarropas. 50 años de antigüedad, buen estado. Orientación norte, luminoso. Expensas $120.000.",
+                            "descripcion_corta":  "Departamento monoambiente amueblado y equipado, interno, lateral. Con cocina empotrada que puede cerrarse. Incluye cama, placard, heladera, televisión, cocina y horno eléctrico, lavarropas. 50 años de antigüedad, buen estado. Orientación norte, luminoso. Expensas $120.000.",
+                            "fotos":  {
+                                          "carpeta":  null,
+                                          "urls":  [
+                                                       "https://static.tokkobroker.com/pictures/7052333_45472637501685265714539621171933198640691052629789517930265680674829523342205.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7052333_58105639988535778397433245546461270595747442242872091269569518378651887395786.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7052333_104402056617859317896880649166420755873528261702050599361029447472268872993036.jpg"
+                                                   ]
+                                      },
+                            "caracteristicas":  {
+                                                    "antiguedad":  null,
+                                                    "estado_construccion":  "usado",
+                                                    "ambientes":  1,
+                                                    "dormitorios":  1,
+                                                    "banios":  1,
+                                                    "superficie_total":  31,
+                                                    "superficie_cubierta":  31,
+                                                    "superficie_unidad":  "m2"
+                                                },
+                            "detalles":  "amueblado"
+                        },
+                        {
+                            "id":  "PROP-025",
+                            "tipo":  "local",
+                            "operacion":  "alquiler",
+                            "titulo":  "Local Comercial en Alquiler - Palermo Hollywood",
+                            "destacado":  false,
+                            "activo":  true,
+                            "direccion":  {
+                                              "calle":  "Fitz Roy 2210",
+                                              "barrio":  "Palermo Hollywood",
+                                              "ciudad":  "Capital Federal",
+                                              "lat":  null,
+                                              "lng":  null
+                                          },
+                            "precio":  {
+                                           "valor":  2650000,
+                                           "moneda":  "ARS",
+                                           "expensas":  null
+                                       },
+                            "descripcion":  "Hermoso local en alquiler con doble altura y frente vidriado en Palermo Hollywood. 2 años de antigüedad, excelente estado. Zonificación C, apto para gastronomía con tiraje a 4 vientos. Anteriormente funcionaron cafetería y marmolería. Planta baja 40 m² + subsuelo 20 m². Frente 4,92 m.",
+                            "descripcion_corta":  "Hermoso local en alquiler con doble altura y frente vidriado en Palermo Hollywood. 2 años de antigüedad, excelente estado. Zonificación C, apto para gastronomía con tiraje a 4 vientos. Anteriormente funcionaron cafetería y marmolería. Planta baja 40 m² + subsuelo 20 m². Frente 4,92 m.",
+                            "fotos":  {
+                                          "carpeta":  null,
+                                          "urls":  [
+                                                       "https://static.tokkobroker.com/pictures/2389275_45472637501685265714539621171933198640691052629789517930265680674829523342205.jpg",
+                                                       "https://static.tokkobroker.com/pictures/2389275_58105639988535778397433245546461270595747442242872091269569518378651887395786.jpg",
+                                                       "https://static.tokkobroker.com/pictures/2389275_104402056617859317896880649166420755873528261702050599361029447472268872993036.jpg"
+                                                   ]
+                                      },
+                            "caracteristicas":  {
+                                                    "antiguedad":  null,
+                                                    "estado_construccion":  "usado",
+                                                    "ambientes":  null,
+                                                    "dormitorios":  null,
+                                                    "banios":  1,
+                                                    "superficie_total":  60,
+                                                    "superficie_cubierta":  60,
+                                                    "superficie_unidad":  "m2"
+                                                },
+                            "detalles":  [
+                                             "sotano",
+                                             "energia_trifasica",
+                                             "accesibilidad"
+                                         ]
+                        },
+                        {
+                            "id":  "PROP-026",
+                            "tipo":  "casa",
+                            "operacion":  "alquiler",
+                            "titulo":  "Casa en Alquiler - Florida, Vicente López",
+                            "destacado":  true,
+                            "activo":  true,
+                            "direccion":  {
+                                              "calle":  "Urquiza 2350",
+                                              "barrio":  "Florida",
+                                              "ciudad":  "Vicente López",
+                                              "lat":  null,
+                                              "lng":  null
+                                          },
+                            "precio":  {
+                                           "valor":  5500000,
+                                           "moneda":  "ARS",
+                                           "expensas":  null
+                                       },
+                            "descripcion":  "Casa amplia de 2 plantas con hermoso jardín, pileta y quincho. Se alquila con o sin muebles. Cocheras para 2 autos, área de servicio independiente, galería semicubierta, cocina exterior equipada con horno Orbis profesional. Portones eléctricos. 85 años de antigüedad, con carácter. Mascotas permitidas.",
+                            "descripcion_corta":  "Casa amplia de 2 plantas con hermoso jardín, pileta y quincho. Se alquila con o sin muebles. Cocheras para 2 autos, área de servicio independiente, galería semicubierta, cocina exterior equipada con horno Orbis profesional. Portones eléctricos. 85 años de antigüedad, con carácter. Mascotas permitidas.",
+                            "fotos":  {
+                                          "carpeta":  null,
+                                          "urls":  [
+                                                       "https://static.tokkobroker.com/pictures/7999424_97921736789758730666254694507712034473083101139715371101955442267206192599003.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7999424_56485813424430050534513765250414350645830041680228415272541231530860655728512.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7999424_7354709885911593710653564069141837721832357712247050080136483725708978208695.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7999424_112110761432942661651059545211425781881854569059813914650172241532813498364591.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7999424_97057495897210611708901777023532327937249874591980384560320580623282004261159.jpg"
+                                                   ]
+                                      },
+                            "caracteristicas":  {
+                                                    "antiguedad":  null,
+                                                    "estado_construccion":  "usado",
+                                                    "ambientes":  6,
+                                                    "dormitorios":  4,
+                                                    "banios":  4,
+                                                    "superficie_total":  670,
+                                                    "superficie_cubierta":  315,
+                                                    "superficie_unidad":  "m2"
+                                                },
+                            "detalles":  [
+                                             "pileta",
+                                             "quincho",
+                                             "parrilla",
+                                             "cochera",
+                                             "jardin",
+                                             "lavadero",
+                                             "apto_mascotas"
+                                         ]
+                        },
+                        {
+                            "id":  "PROP-027",
+                            "tipo":  "deposito",
+                            "operacion":  "alquiler",
+                            "titulo":  "Depósito en Alquiler - San Miguel",
+                            "destacado":  false,
+                            "activo":  true,
+                            "direccion":  {
+                                              "calle":  "Av. Pres. Arturo Umberto Illia 4345",
+                                              "barrio":  "San Miguel",
+                                              "ciudad":  "San Miguel",
+                                              "lat":  null,
+                                              "lng":  null
+                                          },
+                            "precio":  {
+                                           "valor":  12000,
+                                           "moneda":  "USD",
+                                           "expensas":  null
+                                       },
+                            "descripcion":  "Depósito/galpón con tres accesos vehiculares sobre Avenida Illia, Pringles y Guemes. Casa al fondo para uso de oficinas. Ubicación estratégica a 850 metros del cruce de Ruta 8 con Ruta 202, con excelente visibilidad y acceso directo desde arteria principal. 30 años de antigüedad, buen estado. También disponible para venta.",
+                            "descripcion_corta":  "Depósito/galpón con tres accesos vehiculares sobre Avenida Illia, Pringles y Guemes. Casa al fondo para uso de oficinas. Ubicación estratégica a 850 metros del cruce de Ruta 8 con Ruta 202, con excelente visibilidad y acceso directo desde arteria principal. 30 años de antigüedad, buen estado. También disponible para venta.",
+                            "fotos":  {
+                                          "carpeta":  null,
+                                          "urls":  [
+                                                       "https://static.tokkobroker.com/pictures/7852472_8227079643422072870959622994429690461560091432928786555575904188067939376965.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7852472_27719258163833746588925433345415503296308796914659620196255259624768895144363.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7852472_49571144118252584248688373916310447635303982361515226644361283306415256851750.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7852472_18434590184411340167046714700176672337242825354888507880738917695868273147738.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7852472_99670515444893984430834133967034043657598393993190714432987473920500847484824.jpg"
+                                                   ]
+                                      },
+                            "caracteristicas":  {
+                                                    "antiguedad":  null,
+                                                    "estado_construccion":  "usado",
+                                                    "ambientes":  null,
+                                                    "dormitorios":  null,
+                                                    "banios":  2,
+                                                    "superficie_total":  5906,
+                                                    "superficie_cubierta":  1500,
+                                                    "superficie_unidad":  "m2"
+                                                },
+                            "detalles":  [
+                                             "oficinas",
+                                             "accesibilidad",
+                                             "pavimento"
+                                         ]
+                        },
+                        {
+                            "id":  "PROP-028",
+                            "tipo":  "departamento",
+                            "operacion":  "alquiler",
+                            "titulo":  "Departamento en Alquiler - Nordelta (Sendero)",
+                            "destacado":  false,
+                            "activo":  true,
+                            "direccion":  {
+                                              "calle":  "Av. del Golf 1570",
+                                              "barrio":  "Nordelta - Sendero",
+                                              "ciudad":  "Tigre",
+                                              "lat":  null,
+                                              "lng":  null
+                                          },
+                            "precio":  {
+                                           "valor":  850,
+                                           "moneda":  "USD",
+                                           "expensas":  null
+                                       },
+                            "descripcion":  "Cómodo departamento duplex con cochera incluida, vista a la Laguna. A estrenar. Cocina integrada, sector lavadero, balcón aterrazado con parrilla, aire acondicionado en todos los ambientes. Planta baja con living/comedor abierto, toilette y cocina. Planta alta con 2 dormitorios, baño completo y balcón. Complejo con piscina, 2 canchas de tenis, cancha de fútbol, gimnasio y SUM.",
+                            "descripcion_corta":  "Cómodo departamento duplex con cochera incluida, vista a la Laguna. A estrenar. Cocina integrada, sector lavadero, balcón aterrazado con parrilla, aire acondicionado en todos los ambientes. Planta baja con living/comedor abierto, toilette y cocina. Planta alta con 2 dormitorios, baño completo y balcón. Complejo con piscina, 2 canchas de tenis, cancha de fútbol, gimnasio y SUM.",
+                            "fotos":  {
+                                          "carpeta":  null,
+                                          "urls":  [
+                                                       "https://static.tokkobroker.com/pictures/7964223_21845215955070792872241976180484349694774638236071883678376754221044080729529.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7964223_73754546471226125243334849354797185726327883843563929021356229152757282071183.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7964223_107360898615087577068695499050891388339698680321353412746672334989519536331176.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7964223_37539639023864812509340444278511310060143501839235788657456267554770860126302.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7964223_9949263386194392242129149298532749426958484615109987107635028620960664338998.jpg"
+                                                   ]
+                                      },
+                            "caracteristicas":  {
+                                                    "antiguedad":  null,
+                                                    "estado_construccion":  "usado",
+                                                    "ambientes":  3,
+                                                    "dormitorios":  2,
+                                                    "banios":  1,
+                                                    "superficie_total":  80,
+                                                    "superficie_cubierta":  72,
+                                                    "superficie_unidad":  "m2"
+                                                },
+                            "detalles":  [
+                                             "pileta",
+                                             "cochera",
+                                             "parrilla",
+                                             "balcon",
+                                             "gimnasio",
+                                             "sum",
+                                             "aire_acondicionado",
+                                             "apto_mascotas"
+                                         ]
+                        },
+                        {
+                            "id":  "PROP-029",
+                            "tipo":  "oficina",
+                            "operacion":  "alquiler",
+                            "titulo":  "Oficina en Alquiler - Recoleta (Montevideo)",
+                            "destacado":  true,
+                            "activo":  true,
+                            "direccion":  {
+                                              "calle":  "Montevideo 825",
+                                              "barrio":  "Recoleta",
+                                              "ciudad":  "Capital Federal",
+                                              "lat":  null,
+                                              "lng":  null
+                                          },
+                            "precio":  {
+                                           "valor":  8250,
+                                           "moneda":  "USD",
+                                           "expensas":  null
+                                       },
+                            "descripcion":  "Oficinas corporativas en alquiler en Barrio Norte, ubicadas estratégicamente sobre Montevideo esquina Av. Córdoba, a metros de Tribunales. Plantas abiertas con gran luminosidad, flexibilidad para distintos layouts corporativos y vistas abiertas. A estrenar. Climatización VRV, curtain wall con DVH, pisos técnicos elevados, sistema contra incendios, 4 cocheras fijas.",
+                            "descripcion_corta":  "Oficinas corporativas en alquiler en Barrio Norte, ubicadas estratégicamente sobre Montevideo esquina Av. Córdoba, a metros de Tribunales. Plantas abiertas con gran luminosidad, flexibilidad para distintos layouts corporativos y vistas abiertas. A estrenar. Climatización VRV, curtain wall con DVH, pisos técnicos elevados, sistema contra incendios, 4 cocheras fijas.",
+                            "fotos":  {
+                                          "carpeta":  null,
+                                          "urls":  [
+                                                       "https://static.tokkobroker.com/pictures/7837727_82709642106554761810101854235410950224678944002869184736123406856242251724089.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7837727_105215634371769449383674927867219101300123790760679282489494786057486497385651.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7837727_25101435848458571271349822743436542193719338429628282675645039809635692938285.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7837727_113025679556805019121398060578289709114620712331260033021733648213555606226246.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7837727_114970779503309610997246502583300830144017628639081075512023063870616545086497.jpg"
+                                                   ]
+                                      },
+                            "caracteristicas":  {
+                                                    "antiguedad":  null,
+                                                    "estado_construccion":  "usado",
+                                                    "ambientes":  null,
+                                                    "dormitorios":  null,
+                                                    "banios":  3,
+                                                    "superficie_total":  475,
+                                                    "superficie_cubierta":  472,
+                                                    "superficie_unidad":  "m2"
+                                                },
+                            "detalles":  [
+                                             "cochera",
+                                             "aire_acondicionado",
+                                             "terraza",
+                                             "accesibilidad",
+                                             "grupo_electrogeno"
+                                         ]
+                        },
+                        {
+                            "id":  "PROP-030",
+                            "tipo":  "departamento",
+                            "operacion":  "alquiler",
+                            "titulo":  "Departamento en Alquiler - Morón",
+                            "destacado":  false,
+                            "activo":  true,
+                            "direccion":  {
+                                              "calle":  "Santa Fe 981",
+                                              "barrio":  "Morón",
+                                              "ciudad":  "Morón",
+                                              "lat":  null,
+                                              "lng":  null
+                                          },
+                            "precio":  {
+                                           "valor":  490000,
+                                           "moneda":  "ARS",
+                                           "expensas":  null
+                                       },
+                            "descripcion":  "Departamento de 2 ambientes en alquiler en Morón, a metros del centro, con excelente conectividad y amplia oferta educativa. Edificio de baja densidad (6 pisos, 2 unidades por planta). Luminosidad natural, ventilación cruzada, living orientado al norte y dormitorio al sur. Placard, calefactor de tiro balanceado y termotanque eléctrico. Expensas $140.000.",
+                            "descripcion_corta":  "Departamento de 2 ambientes en alquiler en Morón, a metros del centro, con excelente conectividad y amplia oferta educativa. Edificio de baja densidad (6 pisos, 2 unidades por planta). Luminosidad natural, ventilación cruzada, living orientado al norte y dormitorio al sur. Placard, calefactor de tiro balanceado y termotanque eléctrico. Expensas $140.000.",
+                            "fotos":  {
+                                          "carpeta":  null,
+                                          "urls":  [
+                                                       "https://static.tokkobroker.com/pictures/7935906_45472637501685265714539621171933198640691052629789517930265680674829523342205.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7935906_58105639988535778397433245546461270595747442242872091269569518378651887395786.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7935906_104402056617859317896880649166420755873528261702050599361029447472268872993036.jpg"
+                                                   ]
+                                      },
+                            "caracteristicas":  {
+                                                    "antiguedad":  null,
+                                                    "estado_construccion":  "usado",
+                                                    "ambientes":  2,
+                                                    "dormitorios":  1,
+                                                    "banios":  1,
+                                                    "superficie_total":  42,
+                                                    "superficie_cubierta":  40,
+                                                    "superficie_unidad":  "m2"
+                                                },
+                            "detalles":  [
+                                             "balcon",
+                                             "apto_mascotas",
+                                             "lavadero"
+                                         ]
+                        },
+                        {
+                            "id":  "PROP-031",
+                            "tipo":  "local",
+                            "operacion":  "alquiler",
+                            "titulo":  "Local Comercial en Alquiler - Caballito",
+                            "destacado":  false,
+                            "activo":  true,
+                            "direccion":  {
+                                              "calle":  "Av. Pedro Goyena 399",
+                                              "barrio":  "Caballito",
+                                              "ciudad":  "Capital Federal",
+                                              "lat":  null,
+                                              "lng":  null
+                                          },
+                            "precio":  {
+                                           "valor":  15000,
+                                           "moneda":  "USD",
+                                           "expensas":  null
+                                       },
+                            "descripcion":  "Espacio comercial de esquina en avenida principal, sin columnas. Anterior local de gomería con estructura abierta, doble altura en planta baja, entresuelo, baños y pequeño subsuelo. Sin expensas (lote propio). Apto para gastronomía, concesionario o farmacia. 20 años de antigüedad, muy buen estado.",
+                            "descripcion_corta":  "Espacio comercial de esquina en avenida principal, sin columnas. Anterior local de gomería con estructura abierta, doble altura en planta baja, entresuelo, baños y pequeño subsuelo. Sin expensas (lote propio). Apto para gastronomía, concesionario o farmacia. 20 años de antigüedad, muy buen estado.",
+                            "fotos":  {
+                                          "carpeta":  null,
+                                          "urls":  [
+                                                       "https://static.tokkobroker.com/pictures/6593203_45472637501685265714539621171933198640691052629789517930265680674829523342205.jpg",
+                                                       "https://static.tokkobroker.com/pictures/6593203_58105639988535778397433245546461270595747442242872091269569518378651887395786.jpg",
+                                                       "https://static.tokkobroker.com/pictures/6593203_104402056617859317896880649166420755873528261702050599361029447472268872993036.jpg"
+                                                   ]
+                                      },
+                            "caracteristicas":  {
+                                                    "antiguedad":  null,
+                                                    "estado_construccion":  "usado",
+                                                    "ambientes":  null,
+                                                    "dormitorios":  null,
+                                                    "banios":  2,
+                                                    "superficie_total":  337,
+                                                    "superficie_cubierta":  552,
+                                                    "superficie_unidad":  "m2"
+                                                },
+                            "detalles":  [
+                                             "energia_trifasica",
+                                             "accesibilidad"
+                                         ]
+                        },
+                        {
+                            "id":  "PROP-032",
+                            "tipo":  "local",
+                            "operacion":  "alquiler",
+                            "titulo":  "Local Comercial en Alquiler - Morón Norte",
+                            "destacado":  false,
+                            "activo":  true,
+                            "direccion":  {
+                                              "calle":  "Sarmiento 837",
+                                              "barrio":  "Morón Norte",
+                                              "ciudad":  "Morón",
+                                              "lat":  null,
+                                              "lng":  null
+                                          },
+                            "precio":  {
+                                           "valor":  6500,
+                                           "moneda":  "USD",
+                                           "expensas":  null
+                                       },
+                            "descripcion":  "Local en alquiler en Morón, ubicado en el lado Norte, justo frente a la estación de Tren. Zona de alto tránsito peatonal. Planta baja 280 m² + entrepiso 100 m². Frente 8,5 m, profundidad 32 m, altura 2,8 m. Apto para gastronomía. 20 años de antigüedad, muy buen estado.",
+                            "descripcion_corta":  "Local en alquiler en Morón, ubicado en el lado Norte, justo frente a la estación de Tren. Zona de alto tránsito peatonal. Planta baja 280 m² + entrepiso 100 m². Frente 8,5 m, profundidad 32 m, altura 2,8 m. Apto para gastronomía. 20 años de antigüedad, muy buen estado.",
+                            "fotos":  {
+                                          "carpeta":  null,
+                                          "urls":  [
+                                                       "https://static.tokkobroker.com/pictures/7983843_45472637501685265714539621171933198640691052629789517930265680674829523342205.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7983843_58105639988535778397433245546461270595747442242872091269569518378651887395786.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7983843_104402056617859317896880649166420755873528261702050599361029447472268872993036.jpg"
+                                                   ]
+                                      },
+                            "caracteristicas":  {
+                                                    "antiguedad":  null,
+                                                    "estado_construccion":  "usado",
+                                                    "ambientes":  null,
+                                                    "dormitorios":  null,
+                                                    "banios":  1,
+                                                    "superficie_total":  380,
+                                                    "superficie_cubierta":  380,
+                                                    "superficie_unidad":  "m2"
+                                                },
+                            "detalles":  [
+                                             "energia_trifasica",
+                                             "accesibilidad"
+                                         ]
+                        },
+                        {
+                            "id":  "PROP-033",
+                            "tipo":  "local",
+                            "operacion":  "alquiler",
+                            "titulo":  "Local Comercial en Alquiler - Las Cañitas",
+                            "destacado":  false,
+                            "activo":  true,
+                            "direccion":  {
+                                              "calle":  "Maure 1567",
+                                              "barrio":  "Las Cañitas",
+                                              "ciudad":  "Capital Federal",
+                                              "lat":  null,
+                                              "lng":  null
+                                          },
+                            "precio":  {
+                                           "valor":  14000,
+                                           "moneda":  "USD",
+                                           "expensas":  null
+                                       },
+                            "descripcion":  "Espacio comercial con planta libre de columnas en el centro de La Imprenta. Actualmente en obra con entrega estimada fines de 2027. Frente 6,62 m, profundidad 34,61 m. Incluye patio de 33 m². Apto para gastronomía liviana, cafeterías, centros de estética y similares. Altura 2,80 m.",
+                            "descripcion_corta":  "Espacio comercial con planta libre de columnas en el centro de La Imprenta. Actualmente en obra con entrega estimada fines de 2027. Frente 6,62 m, profundidad 34,61 m. Incluye patio de 33 m². Apto para gastronomía liviana, cafeterías, centros de estética y similares. Altura 2,80 m.",
+                            "fotos":  {
+                                          "carpeta":  null,
+                                          "urls":  [
+                                                       "https://static.tokkobroker.com/pictures/7994742_2974184928868439029428988754563060648987308746648679705665161949666556911852.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7994742_45146589654515425356064444386481084628047026340457840362479379260985111520890.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7994742_104283357851609239497449792174916306197847473608391900949538467461005428934789.jpg"
+                                                   ]
+                                      },
+                            "caracteristicas":  {
+                                                    "antiguedad":  null,
+                                                    "estado_construccion":  "usado",
+                                                    "ambientes":  null,
+                                                    "dormitorios":  null,
+                                                    "banios":  2,
+                                                    "superficie_total":  214,
+                                                    "superficie_cubierta":  181,
+                                                    "superficie_unidad":  "m2"
+                                                },
+                            "detalles":  [
+                                             "patio",
+                                             "energia_trifasica",
+                                             "accesibilidad"
+                                         ]
+                        },
+                        {
+                            "id":  "PROP-034",
+                            "tipo":  "local",
+                            "operacion":  "alquiler",
+                            "titulo":  "Local Comercial en Alquiler - Constitución",
+                            "destacado":  false,
+                            "activo":  true,
+                            "direccion":  {
+                                              "calle":  "Av. Brasil 1253",
+                                              "barrio":  "Constitución",
+                                              "ciudad":  "Capital Federal",
+                                              "lat":  null,
+                                              "lng":  null
+                                          },
+                            "precio":  {
+                                           "valor":  3000,
+                                           "moneda":  "USD",
+                                           "expensas":  null
+                                       },
+                            "descripcion":  "Local comercial de 152 m² con visibilidad excepcional en zona de tránsito peatonal intenso. Ideal para negocios que necesiten alta exposición. Acceso a transporte público. Apto para gastronomía y todo destino. 15 años de antigüedad, buen estado. Disponible inmediatamente.",
+                            "descripcion_corta":  "Local comercial de 152 m² con visibilidad excepcional en zona de tránsito peatonal intenso. Ideal para negocios que necesiten alta exposición. Acceso a transporte público. Apto para gastronomía y todo destino. 15 años de antigüedad, buen estado. Disponible inmediatamente.",
+                            "fotos":  {
+                                          "carpeta":  null,
+                                          "urls":  [
+                                                       "https://static.tokkobroker.com/pictures/5576619_31057829305524677101967132017792614033553119766446309284760116000724018505111.jpg",
+                                                       "https://static.tokkobroker.com/pictures/5576619_84461152113996073818731204856282794537675073136074812143225671220851984348396.jpg",
+                                                       "https://static.tokkobroker.com/pictures/5576619_63695177266823979867681856381166634820703863043050526856296363337555763062387.jpg",
+                                                       "https://static.tokkobroker.com/pictures/5576619_71669198359073936958167421608403809388723664854179332416903669742473970360872.jpg",
+                                                       "https://static.tokkobroker.com/pictures/5576619_29220117932497120606120491947214714187078353602313189260452757248265424006308.jpg"
+                                                   ]
+                                      },
+                            "caracteristicas":  {
+                                                    "antiguedad":  null,
+                                                    "estado_construccion":  "usado",
+                                                    "ambientes":  null,
+                                                    "dormitorios":  null,
+                                                    "banios":  2,
+                                                    "superficie_total":  152,
+                                                    "superficie_cubierta":  152,
+                                                    "superficie_unidad":  "m2"
+                                                },
+                            "detalles":  [
+                                             "energia_trifasica",
+                                             "accesibilidad",
+                                             "grupo_electrogeno"
+                                         ]
+                        },
+                        {
+                            "id":  "PROP-035",
+                            "tipo":  "local",
+                            "operacion":  "alquiler",
+                            "titulo":  "Local Comercial en Alquiler - Microcentro (Reconquista)",
+                            "destacado":  false,
+                            "activo":  true,
+                            "direccion":  {
+                                              "calle":  "Reconquista 536",
+                                              "barrio":  "San Nicolás",
+                                              "ciudad":  "Capital Federal",
+                                              "lat":  null,
+                                              "lng":  null
+                                          },
+                            "precio":  {
+                                           "valor":  3600000,
+                                           "moneda":  "ARS",
+                                           "expensas":  null
+                                       },
+                            "descripcion":  "Local comercial en muy buen estado distribuido en 2 plantas (PB + subsuelo). Ubicado en la peatonal del Microcentro, entre Tucumán y Lavalle. Apto para gastronomía con tiraje a 4 vientos, patio interno exclusivo, 2 baños completos. Estado a estrenar. Expensas incluidas en precio.",
+                            "descripcion_corta":  "Local comercial en muy buen estado distribuido en 2 plantas (PB + subsuelo). Ubicado en la peatonal del Microcentro, entre Tucumán y Lavalle. Apto para gastronomía con tiraje a 4 vientos, patio interno exclusivo, 2 baños completos. Estado a estrenar. Expensas incluidas en precio.",
+                            "fotos":  {
+                                          "carpeta":  null,
+                                          "urls":  [
+                                                       "https://static.tokkobroker.com/pictures/7872092_26997866375394641631480418632815312993569738903602085830976581634474390477121.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7872092_76539350991248860348421788955335601874145652748688850375833776480389880019785.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7872092_35123947835068442352644460868206589316238203981819452248473554526364895548509.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7872092_74531063255485854141700493560191534436479725074552492114345727847641295878495.jpg",
+                                                       "https://static.tokkobroker.com/pictures/7872092_102779845410386692166540477519715131645637642355863171087959689214471178190877.jpg"
+                                                   ]
+                                      },
+                            "caracteristicas":  {
+                                                    "antiguedad":  null,
+                                                    "estado_construccion":  "usado",
+                                                    "ambientes":  null,
+                                                    "dormitorios":  null,
+                                                    "banios":  2,
+                                                    "superficie_total":  405,
+                                                    "superficie_cubierta":  405,
+                                                    "superficie_unidad":  "m2"
+                                                },
+                            "detalles":  [
+                                             "sotano",
+                                             "patio",
+                                             "energia_trifasica",
+                                             "accesibilidad"
+                                         ]
+                        },
+                        {
+                            "id":  "PROP-036",
+                            "tipo":  "oficina",
+                            "operacion":  "alquiler",
+                            "titulo":  "Oficina en Alquiler - Retiro (Torre Alem Plaza)",
+                            "destacado":  true,
+                            "activo":  true,
+                            "direccion":  {
+                                              "calle":  "Leandro N. Alem 855",
+                                              "barrio":  "Retiro",
+                                              "ciudad":  "Capital Federal",
+                                              "lat":  null,
+                                              "lng":  null
+                                          },
+                            "precio":  {
+                                           "valor":  37000,
+                                           "moneda":  "USD",
+                                           "expensas":  null
+                                       },
+                            "descripcion":  "Piso de oficina amoblado de planta libre, redistribuible en dos semi pisos en Torre Alem Plaza. Excelente estado, 2do piso. Incluye recepción, múltiples oficinas, salas de reuniones, cocina con comedor, sala IT y 3 salidas de emergencia. Climatización central, pisos técnicos, DVH en ventanas. 17 cocheras asignadas. Seguridad 24 horas.",
+                            "descripcion_corta":  "Piso de oficina amoblado de planta libre, redistribuible en dos semi pisos en Torre Alem Plaza. Excelente estado, 2do piso. Incluye recepción, múltiples oficinas, salas de reuniones, cocina con comedor, sala IT y 3 salidas de emergencia. Climatización central, pisos técnicos, DVH en ventanas. 17 cocheras asignadas. Seguridad 24 horas.",
+                            "fotos":  {
+                                          "carpeta":  null,
+                                          "urls":  [
+                                                       "https://static.tokkobroker.com/pictures/5870938_68762632159948760511319054046061895930990173072291091219083231647306068590430.jpg",
+                                                       "https://static.tokkobroker.com/pictures/5870938_2125120204064077293417490650070531908414614505800318217729359274701102314868.jpg",
+                                                       "https://static.tokkobroker.com/pictures/5870938_758372135661371076396366125763732790319301807643835540358618932231878380393.jpg",
+                                                       "https://static.tokkobroker.com/pictures/5870938_65342259649643203512940573564180808284700168436149607030632192544102769271895.jpg",
+                                                       "https://static.tokkobroker.com/pictures/5870938_28676455813341379688552031982726891953860258298790397229222379742649977989808.jpg"
+                                                   ]
+                                      },
+                            "caracteristicas":  {
+                                                    "antiguedad":  null,
+                                                    "estado_construccion":  "usado",
+                                                    "ambientes":  null,
+                                                    "dormitorios":  null,
+                                                    "banios":  5,
+                                                    "superficie_total":  1700,
+                                                    "superficie_cubierta":  1700,
+                                                    "superficie_unidad":  "m2"
+                                                },
+                            "detalles":  [
+                                             "cochera",
+                                             "aire_acondicionado",
+                                             "accesibilidad",
+                                             "grupo_electrogeno"
+                                         ]
+                        },
+                        {
+                            "id":  "PROP-037",
+                            "tipo":  "local",
+                            "operacion":  "alquiler",
+                            "titulo":  "Local Comercial en Alquiler - Diagonal Norte",
+                            "destacado":  false,
+                            "activo":  true,
+                            "direccion":  {
+                                              "calle":  "Av. Pres. Roque Sáenz Peña 625",
+                                              "barrio":  "San Nicolás",
+                                              "ciudad":  "Capital Federal",
+                                              "lat":  null,
+                                              "lng":  null
+                                          },
+                            "precio":  {
+                                           "valor":  7250,
+                                           "moneda":  "USD",
+                                           "expensas":  null
+                                       },
+                            "descripcion":  "Local comercial desarrollado en 4 niveles. Planta baja semi libre de columnas, montacargas, entrepiso con oficinas, subsuelo con vestuarios y cocina, segundo subsuelo con ductos de AACC. Frente sobre Diagonal Norte. Apto gastronomía. 80 años de antigüedad, buen estado. Expensas USD 2.175.",
+                            "descripcion_corta":  "Local comercial desarrollado en 4 niveles. Planta baja semi libre de columnas, montacargas, entrepiso con oficinas, subsuelo con vestuarios y cocina, segundo subsuelo con ductos de AACC. Frente sobre Diagonal Norte. Apto gastronomía. 80 años de antigüedad, buen estado. Expensas USD 2.175.",
+                            "fotos":  {
+                                          "carpeta":  null,
+                                          "urls":  [
+                                                       "https://static.tokkobroker.com/pictures/5560419_45472637501685265714539621171933198640691052629789517930265680674829523342205.jpg",
+                                                       "https://static.tokkobroker.com/pictures/5560419_58105639988535778397433245546461270595747442242872091269569518378651887395786.jpg",
+                                                       "https://static.tokkobroker.com/pictures/5560419_104402056617859317896880649166420755873528261702050599361029447472268872993036.jpg"
+                                                   ]
+                                      },
+                            "caracteristicas":  {
+                                                    "antiguedad":  null,
+                                                    "estado_construccion":  "usado",
+                                                    "ambientes":  null,
+                                                    "dormitorios":  null,
+                                                    "banios":  3,
+                                                    "superficie_total":  725,
+                                                    "superficie_cubierta":  725,
+                                                    "superficie_unidad":  "m2"
+                                                },
+                            "detalles":  [
+                                             "sotano",
+                                             "montacargas",
+                                             "energia_trifasica",
+                                             "accesibilidad"
+                                         ]
+                        },
+                        {
+                            "id":  "PROP-038",
+                            "tipo":  "local",
+                            "operacion":  "alquiler",
+                            "titulo":  "Local Comercial en Alquiler - San Isidro Centro",
+                            "destacado":  true,
+                            "activo":  true,
+                            "direccion":  {
+                                              "calle":  "Chacabuco 444",
+                                              "barrio":  "San Isidro Centro",
+                                              "ciudad":  "San Isidro",
+                                              "lat":  null,
+                                              "lng":  null
+                                          },
+                            "precio":  {
+                                           "valor":  19000,
+                                           "moneda":  "USD",
+                                           "expensas":  null
+                                       },
+                            "descripcion":  "Propiedad institucional sobre lote propio, ex entidad bancaria, disponible también en alquiler. Salón comercial de doble altura (406 m²), oficinas adaptables (219 m²), subsuelo con ex bóvedas (541 m²) y espacio verde/parque (459 m²). 14 cocheras exclusivas. Sin expensas. Ideal para entidades financieras, retail, gastronomía o sedes corporativas.",
+                            "descripcion_corta":  "Propiedad institucional sobre lote propio, ex entidad bancaria, disponible también en alquiler. Salón comercial de doble altura (406 m²), oficinas adaptables (219 m²), subsuelo con ex bóvedas (541 m²) y espacio verde/parque (459 m²). 14 cocheras exclusivas. Sin expensas. Ideal para entidades financieras, retail, gastronomía o sedes corporativas.",
+                            "fotos":  {
+                                          "carpeta":  null,
+                                          "urls":  [
+                                                       "https://static.tokkobroker.com/pictures/6997861_45786529939568933710619903432433156967032932004664470110576128099262650137239.jpg",
+                                                       "https://static.tokkobroker.com/pictures/6997861_40246323858538666893702490698214512481071422420958450499453770500193659090586.jpg",
+                                                       "https://static.tokkobroker.com/pictures/6997861_86950608114747412670157059623832136063676055593560302928892091275018111206624.jpg",
+                                                       "https://static.tokkobroker.com/pictures/6997861_76085717406729020681235191524395786494169054512297459433337901218376089447423.jpg"
+                                                   ]
+                                      },
+                            "caracteristicas":  {
+                                                    "antiguedad":  null,
+                                                    "estado_construccion":  "usado",
+                                                    "ambientes":  null,
+                                                    "dormitorios":  null,
+                                                    "banios":  4,
+                                                    "superficie_total":  1600,
+                                                    "superficie_cubierta":  1187,
+                                                    "superficie_unidad":  "m2"
+                                                },
+                            "detalles":  [
+                                             "cochera",
+                                             "sotano",
+                                             "accesibilidad",
+                                             "energia_trifasica",
+                                             "grupo_electrogeno"
+                                         ]
+                        }
+                    ]
+}
