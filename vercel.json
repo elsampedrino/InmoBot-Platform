@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "public": true,
   "buildCommand": "cd widget-react && npm install && npm run build",
   "outputDirectory": "widget-react/dist",
   "headers": [
