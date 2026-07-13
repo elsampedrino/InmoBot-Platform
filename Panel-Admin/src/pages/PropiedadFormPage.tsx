@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
+import { Camera, CameraResultType, CameraSource } from "@capacitor/camera";
 import { useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, X, ImagePlus, Loader2 } from "lucide-react";
+import { ArrowLeft, X, ImagePlus, Camera as CameraIcon, Loader2 } from "lucide-react";
 import { api, ApiError } from "../lib/api";
 import {
   type ItemAdmin,
@@ -159,6 +160,33 @@ export default function PropiedadFormPage() {
     }
   }
 
+  async function handleCameraCapture() {
+    setUploading(true);
+    setError(null);
+    try {
+      const photo = await Camera.getPhoto({
+        quality: 90,
+        allowEditing: false,
+        resultType: CameraResultType.DataUrl,
+        source: CameraSource.Camera,
+      });
+      if (!photo.dataUrl) throw new Error("No se pudo capturar la foto");
+      // Convertir dataUrl a File para reutilizar uploadToCloudinary
+      const res  = await fetch(photo.dataUrl);
+      const blob = await res.blob();
+      const file = new File([blob], `foto_${Date.now()}.jpg`, { type: "image/jpeg" });
+      const url  = await uploadToCloudinary(file);
+      setField("fotos", [...form.fotos, url]);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "";
+      if (!msg.includes("cancelled") && !msg.includes("cancel")) {
+        setError(msg || "Error al capturar foto");
+      }
+    } finally {
+      setUploading(false);
+    }
+  }
+
   function addDetalle() {
     const v = detalle.trim();
     if (!v) return;
@@ -305,14 +333,24 @@ export default function PropiedadFormPage() {
                 </div>
               )}
               <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
-              <button
-                type="button"
-                disabled={uploading}
-                onClick={() => fileRef.current?.click()}
-                className="flex items-center gap-2 px-4 py-2 border border-dashed border-gray-300 text-gray-500 text-sm rounded-lg hover:border-brand-400 hover:text-brand-600 transition-colors disabled:opacity-40"
-              >
-                {uploading ? <><Loader2 size={16} className="animate-spin" />Subiendo...</> : <><ImagePlus size={16} />Subir foto</>}
-              </button>
+              <div className="flex gap-2 flex-wrap">
+                <button
+                  type="button"
+                  disabled={uploading}
+                  onClick={() => fileRef.current?.click()}
+                  className="flex items-center gap-2 px-4 py-2 border border-dashed border-gray-300 text-gray-500 text-sm rounded-lg hover:border-brand-400 hover:text-brand-600 transition-colors disabled:opacity-40"
+                >
+                  {uploading ? <><Loader2 size={16} className="animate-spin" />Subiendo...</> : <><ImagePlus size={16} />Galería</>}
+                </button>
+                <button
+                  type="button"
+                  disabled={uploading}
+                  onClick={handleCameraCapture}
+                  className="flex items-center gap-2 px-4 py-2 border border-dashed border-gray-300 text-gray-500 text-sm rounded-lg hover:border-brand-400 hover:text-brand-600 transition-colors disabled:opacity-40"
+                >
+                  <CameraIcon size={16} />Cámara
+                </button>
+              </div>
             </Section>
 
           </div>

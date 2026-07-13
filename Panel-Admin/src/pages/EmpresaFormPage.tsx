@@ -95,6 +95,7 @@ export default function EmpresaFormPage() {
           notificaciones: {
             telegram: { ...data.notificaciones.telegram },
             email: { ...data.notificaciones.email },
+            whatsapp: { ...data.notificaciones.whatsapp },
           },
         });
         if (cat) {
@@ -330,6 +331,21 @@ export default function EmpresaFormPage() {
                 <Toggle
                   value={form.servicios?.facebook ?? false}
                   onChange={(v) => setServicios({ facebook: v })}
+                />
+              </FieldRow>
+              <div className="pt-2 pb-1">
+                <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Canales de atención</p>
+              </div>
+              <FieldRow label="Canal Web (widget)">
+                <Toggle
+                  value={form.servicios?.canal_web ?? true}
+                  onChange={(v) => setServicios({ canal_web: v })}
+                />
+              </FieldRow>
+              <FieldRow label="Canal WhatsApp (bot)">
+                <Toggle
+                  value={form.servicios?.canal_whatsapp ?? false}
+                  onChange={(v) => setServicios({ canal_whatsapp: v })}
                 />
               </FieldRow>
             </Card>

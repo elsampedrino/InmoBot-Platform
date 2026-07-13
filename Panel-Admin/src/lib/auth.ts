@@ -22,16 +22,16 @@ export interface AuthSession {
 }
 
 export function saveSession(session: AuthSession): void {
-  sessionStorage.setItem(TOKEN_KEY, session.access_token);
-  sessionStorage.setItem(USER_KEY, JSON.stringify({ usuario: session.usuario, empresa: session.empresa }));
+  localStorage.setItem(TOKEN_KEY, session.access_token);
+  localStorage.setItem(USER_KEY, JSON.stringify({ usuario: session.usuario, empresa: session.empresa }));
 }
 
 export function getToken(): string | null {
-  return sessionStorage.getItem(TOKEN_KEY);
+  return localStorage.getItem(TOKEN_KEY);
 }
 
 export function getSession(): { usuario: AdminUser; empresa: AdminEmpresa } | null {
-  const raw = sessionStorage.getItem(USER_KEY);
+  const raw = localStorage.getItem(USER_KEY);
   if (!raw) return null;
   try {
     return JSON.parse(raw);
@@ -43,12 +43,12 @@ export function getSession(): { usuario: AdminUser; empresa: AdminEmpresa } | nu
 export function updateSessionEmpresa(empresa: AdminEmpresa): void {
   const session = getSession();
   if (!session) return;
-  sessionStorage.setItem(USER_KEY, JSON.stringify({ ...session, empresa }));
+  localStorage.setItem(USER_KEY, JSON.stringify({ ...session, empresa }));
 }
 
 export function clearSession(): void {
-  sessionStorage.removeItem(TOKEN_KEY);
-  sessionStorage.removeItem(USER_KEY);
+  localStorage.removeItem(TOKEN_KEY);
+  localStorage.removeItem(USER_KEY);
 }
 
 export function isAuthenticated(): boolean {

@@ -10,6 +10,9 @@
 }
 
 @layer base {
+  button, [role="button"], select, label[for], a {
+    cursor: pointer;
+  }
   body {
     margin: 0;
     background-color: #f9fafb;

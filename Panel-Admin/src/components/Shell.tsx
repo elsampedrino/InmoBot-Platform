@@ -19,13 +19,13 @@ import { clearSession, getSession } from "../lib/auth";
 import { api, ApiError } from "../lib/api";
 
 const navItems = [
-  { to: "/dashboard",    label: "Inicio",       icon: LayoutDashboard, superadmin: false, soloEmpresa: false },
-  { to: "/propiedades",  label: "Propiedades",  icon: Building2,       superadmin: false, soloEmpresa: true  },
-  { to: "/leads",        label: "Leads",        icon: Users,           superadmin: false, soloEmpresa: true  },
-  { to: "/bot-config",   label: "Modo bot",     icon: Clock,           superadmin: false, soloEmpresa: true  },
-  { to: "/empresas",     label: "Empresas",     icon: Briefcase,       superadmin: true,  soloEmpresa: false },
-  { to: "/usuarios",     label: "Usuarios",     icon: UserCog,         superadmin: true,  soloEmpresa: false },
-  { to: "/importaciones",label: "Importaciones",icon: FileInput,       superadmin: true,  soloEmpresa: false },
+  { to: "/dashboard",    label: "Inicio",       icon: LayoutDashboard, superadmin: false, soloEmpresa: false, requiredServicio: undefined },
+  { to: "/propiedades",  label: "Propiedades",  icon: Building2,       superadmin: false, soloEmpresa: true,  requiredServicio: undefined },
+  { to: "/leads",        label: "Leads",        icon: Users,           superadmin: false, soloEmpresa: true,  requiredServicio: undefined },
+  { to: "/bot-config",   label: "Modo bot",     icon: Clock,           superadmin: false, soloEmpresa: true,  requiredServicio: "canal_whatsapp" },
+  { to: "/empresas",     label: "Empresas",     icon: Briefcase,       superadmin: true,  soloEmpresa: false, requiredServicio: undefined },
+  { to: "/usuarios",     label: "Usuarios",     icon: UserCog,         superadmin: true,  soloEmpresa: false, requiredServicio: undefined },
+  { to: "/importaciones",label: "Importaciones",icon: FileInput,       superadmin: true,  soloEmpresa: false, requiredServicio: undefined },
 ];
 
 export default function Shell() {
@@ -69,9 +69,10 @@ export default function Shell() {
     }
   }
 
-  const visibleItems = navItems.filter(({ superadmin, soloEmpresa }) =>
+  const visibleItems = navItems.filter(({ superadmin, soloEmpresa, requiredServicio }) =>
     (!superadmin || session?.usuario.es_superadmin) &&
-    (!soloEmpresa || !session?.usuario.es_superadmin)
+    (!soloEmpresa || !session?.usuario.es_superadmin) &&
+    (!requiredServicio || session?.empresa.servicios?.[requiredServicio] === true)
   );
 
   return (

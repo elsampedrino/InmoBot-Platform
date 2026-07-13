@@ -5,6 +5,8 @@ export interface EmpresaServicios {
   panel_cliente: boolean;
   instagram: boolean;
   facebook: boolean;
+  canal_web: boolean;
+  canal_whatsapp: boolean;
 }
 
 export interface CatalogoRepoConfig {

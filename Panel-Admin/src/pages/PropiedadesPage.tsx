@@ -103,30 +103,32 @@ export default function PropiedadesPage() {
   const catLabel  = (cat: string | null) => CATEGORIAS_PROPIEDAD.find(c => c.value === cat)?.label ?? cat ?? "—";
 
   return (
-    <div className="p-8">
+    <div className="p-4 md:p-8">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-start justify-between gap-3 mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Propiedades</h1>
+          <h1 className="text-xl md:text-2xl font-bold text-gray-900">Propiedades</h1>
           <p className="text-sm text-gray-400 mt-0.5">{total} propiedades en total</p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 flex-wrap justify-end">
           {hasLanding && (
             <button
               onClick={handleExportLanding}
               disabled={exporting}
-              className="flex items-center gap-2 px-4 py-2 border border-brand-600 text-brand-600 text-sm font-medium rounded-lg hover:bg-brand-50 disabled:opacity-40 transition-colors"
+              className="flex items-center gap-1.5 px-3 py-2 border border-brand-600 text-brand-600 text-xs md:text-sm font-medium rounded-lg hover:bg-brand-50 disabled:opacity-40 transition-colors"
             >
-              <Upload size={16} />
-              {exporting ? "Publicando..." : "Publicar Catálogo"}
+              <Upload size={14} />
+              <span className="hidden sm:inline">{exporting ? "Publicando..." : "Publicar Catálogo"}</span>
+              <span className="sm:hidden">{exporting ? "..." : "Catálogo"}</span>
             </button>
           )}
           <button
             onClick={() => navigate("/propiedades/nueva")}
-            className="flex items-center gap-2 px-4 py-2 bg-brand-600 text-white text-sm font-medium rounded-lg hover:bg-brand-700 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-2 bg-brand-600 text-white text-xs md:text-sm font-medium rounded-lg hover:bg-brand-700 transition-colors"
           >
-            <Plus size={16} />
-            Nueva propiedad
+            <Plus size={14} />
+            <span className="hidden sm:inline">Nueva propiedad</span>
+            <span className="sm:hidden">Nueva</span>
           </button>
         </div>
       </div>
@@ -138,20 +140,20 @@ export default function PropiedadesPage() {
       )}
 
       {/* Filtros */}
-      <div className="flex gap-3 mb-4">
+      <div className="flex flex-wrap gap-2 mb-4">
         <select
           value={filterActivo}
           onChange={e => { setFilterActivo(e.target.value as "" | "true" | "false"); setPage(1); }}
-          className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+          className="flex-1 min-w-[140px] px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
         >
-          <option value="">Todas (activas e inactivas)</option>
+          <option value="">Todas</option>
           <option value="true">Solo activas</option>
           <option value="false">Solo inactivas</option>
         </select>
         <select
           value={filterTipo}
           onChange={e => { setFilterTipo(e.target.value); setPage(1); }}
-          className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+          className="flex-1 min-w-[140px] px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
         >
           <option value="">Todos los tipos</option>
           {TIPOS_PROPIEDAD.map(t => (
@@ -162,134 +164,161 @@ export default function PropiedadesPage() {
 
       {error && <div className="mb-4 bg-red-50 text-red-700 text-sm rounded-lg p-4">{error}</div>}
 
-      {/* Tabla */}
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+      {/* Lista / Tabla */}
+      <div className="bg-white rounded-xl border-2 border-brand-700 overflow-hidden">
         {loading ? (
           <div className="p-8 text-center text-gray-400 text-sm">Cargando...</div>
         ) : items.length === 0 ? (
           <div className="p-8 text-center text-gray-400 text-sm">No hay propiedades.</div>
         ) : (
-          <table className="w-full text-sm">
-            <thead className="bg-brand-700 border-b border-brand-900">
-              <tr>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">ID</th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Propiedad</th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Tipo</th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Operación</th>
-                <th className="text-right px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Precio</th>
-                <th className="text-center px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Activa</th>
-                <th className="text-center px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Destacada</th>
-                {hasSocialPublish && (
-                  <th className="text-center px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Redes</th>
-                )}
-                <th className="text-right px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Editar</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
+          <>
+            {/* ── Mobile: cards ─────────────────────────────────────── */}
+            <div className="md:hidden divide-y divide-gray-100">
               {items.map(item => {
                 const fotos = item.media?.fotos ?? [];
                 return (
-                  <tr key={item.id_item} className="hover:bg-gray-50">
-                    <td className="px-4 py-3 text-gray-400 font-mono text-xs">{item.external_id}</td>
-                    <td className="px-4 py-3">
-                      <div className="flex items-center gap-3">
-                        {fotos[0] ? (
-                          <img src={fotos[0]} alt="" className="w-10 h-10 object-cover rounded-lg shrink-0" />
-                        ) : (
-                          <div className="w-10 h-10 rounded-lg bg-gray-100 shrink-0" />
-                        )}
-                        <div>
-                          <p className="font-medium text-gray-800 leading-tight">{item.titulo}</p>
-                          {(item.atributos?.calle || item.atributos?.ciudad) && (
-                            <p className="text-xs text-gray-400 mt-0.5">
-                              {[item.atributos?.calle, item.atributos?.ciudad].filter(Boolean).join(", ")}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-4 py-3 text-gray-600">{tipoLabel(item.tipo)}</td>
-                    <td className="px-4 py-3 text-gray-600">{catLabel(item.categoria)}</td>
-                    <td className="px-4 py-3 text-right text-gray-800 font-medium">
-                      {item.precio ? `${item.moneda ?? ""} ${item.precio.toLocaleString("es-AR")}` : "—"}
-                    </td>
-
-                    {/* Toggle Activo */}
-                    <td className="px-4 py-3 text-center">
-                      <button
-                        onClick={() => handleToggleActivo(item)}
-                        title={item.activo ? "Desactivar" : "Activar"}
-                        className={`inline-flex items-center justify-center w-8 h-8 rounded-lg transition-colors ${
-                          item.activo
-                            ? "bg-green-100 text-green-700 hover:bg-red-100 hover:text-red-600"
-                            : "bg-gray-100 text-gray-400 hover:bg-green-100 hover:text-green-700"
-                        }`}
-                      >
-                        {item.activo ? <Power size={14} /> : <PowerOff size={14} />}
-                      </button>
-                    </td>
-
-                    {/* Toggle Destacado */}
-                    <td className="px-4 py-3 text-center">
-                      <button
-                        onClick={() => handleToggleDestacado(item)}
-                        title={item.destacado ? "Quitar destacado" : "Marcar como destacada"}
-                        className={`inline-flex items-center justify-center w-8 h-8 rounded-lg transition-colors ${
-                          item.destacado
-                            ? "bg-yellow-100 text-yellow-600 hover:bg-gray-100 hover:text-gray-400"
-                            : "bg-gray-100 text-gray-300 hover:bg-yellow-100 hover:text-yellow-600"
-                        }`}
-                      >
-                        <Star size={14} />
-                      </button>
-                    </td>
-
-                    {/* Redes sociales */}
-                    {hasSocialPublish && (
-                      <td className="px-4 py-3 text-center">
-                        <button
-                          onClick={() => setIgItemId(item.id_item)}
-                          title="Publicar en redes sociales"
-                          className="inline-flex items-center justify-center w-8 h-8 text-gray-400 hover:text-pink-600 hover:bg-pink-50 rounded-lg transition-colors"
-                        >
-                          <IGIcon size={15} />
-                        </button>
-                      </td>
+                  <div key={item.id_item} className="p-4 flex gap-3">
+                    {fotos[0] ? (
+                      <img src={fotos[0]} alt="" className="w-16 h-16 object-cover rounded-lg shrink-0" />
+                    ) : (
+                      <div className="w-16 h-16 rounded-lg bg-gray-100 shrink-0" />
                     )}
-
-                    {/* Editar */}
-                    <td className="px-4 py-3 text-right">
-                      <button
-                        onClick={() => navigate(`/propiedades/${item.id_item}/editar`)}
-                        title="Editar"
-                        className="inline-flex items-center justify-center w-8 h-8 text-gray-400 hover:text-brand-600 hover:bg-brand-50 rounded-lg transition-colors"
-                      >
-                        <Pencil size={15} />
-                      </button>
-                    </td>
-                  </tr>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-gray-800 text-sm leading-tight">{item.titulo}</p>
+                      <p className="text-xs text-gray-400 mt-0.5">{tipoLabel(item.tipo)} · {catLabel(item.categoria)}</p>
+                      {(item.atributos?.calle || item.atributos?.ciudad) && (
+                        <p className="text-xs text-gray-400 truncate">
+                          {[item.atributos?.calle, item.atributos?.ciudad].filter(Boolean).join(", ")}
+                        </p>
+                      )}
+                      {item.precio && (
+                        <p className="text-xs font-semibold text-gray-700 mt-0.5">
+                          {item.moneda ?? ""} {item.precio.toLocaleString("es-AR")}
+                        </p>
+                      )}
+                      <div className="flex items-center gap-2 mt-2">
+                        <button
+                          onClick={() => handleToggleActivo(item)}
+                          className={`inline-flex items-center justify-center w-9 h-9 rounded-lg transition-colors ${item.activo ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-400"}`}
+                        >
+                          {item.activo ? <Power size={15} /> : <PowerOff size={15} />}
+                        </button>
+                        <button
+                          onClick={() => handleToggleDestacado(item)}
+                          className={`inline-flex items-center justify-center w-9 h-9 rounded-lg transition-colors ${item.destacado ? "bg-yellow-100 text-yellow-600" : "bg-gray-100 text-gray-300"}`}
+                        >
+                          <Star size={15} />
+                        </button>
+                        {hasSocialPublish && (
+                          <button
+                            onClick={() => setIgItemId(item.id_item)}
+                            className="inline-flex items-center justify-center w-9 h-9 text-gray-400 bg-gray-100 rounded-lg"
+                          >
+                            <IGIcon size={15} />
+                          </button>
+                        )}
+                        <button
+                          onClick={() => navigate(`/propiedades/${item.id_item}/editar`)}
+                          className="inline-flex items-center justify-center w-9 h-9 text-gray-400 bg-gray-100 rounded-lg ml-auto"
+                        >
+                          <Pencil size={15} />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                 );
               })}
-            </tbody>
-          </table>
+            </div>
+
+            {/* ── Desktop: tabla ────────────────────────────────────── */}
+            <table className="hidden md:table w-full text-sm">
+              <thead className="bg-brand-700 border-b border-brand-900">
+                <tr>
+                  <th className="text-left px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">ID</th>
+                  <th className="text-left px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Propiedad</th>
+                  <th className="text-left px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Tipo</th>
+                  <th className="text-left px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Operación</th>
+                  <th className="text-right px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Precio</th>
+                  <th className="text-center px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Activa</th>
+                  <th className="text-center px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Destacada</th>
+                  {hasSocialPublish && (
+                    <th className="text-center px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Redes</th>
+                  )}
+                  <th className="text-right px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Editar</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {items.map(item => {
+                  const fotos = item.media?.fotos ?? [];
+                  return (
+                    <tr key={item.id_item} className="hover:bg-gray-50">
+                      <td className="px-4 py-3 text-gray-400 font-mono text-xs">{item.external_id}</td>
+                      <td className="px-4 py-3">
+                        <div className="flex items-center gap-3">
+                          {fotos[0] ? (
+                            <img src={fotos[0]} alt="" className="w-10 h-10 object-cover rounded-lg shrink-0" />
+                          ) : (
+                            <div className="w-10 h-10 rounded-lg bg-gray-100 shrink-0" />
+                          )}
+                          <div>
+                            <p className="font-medium text-gray-800 leading-tight">{item.titulo}</p>
+                            {(item.atributos?.calle || item.atributos?.ciudad) && (
+                              <p className="text-xs text-gray-400 mt-0.5">
+                                {[item.atributos?.calle, item.atributos?.ciudad].filter(Boolean).join(", ")}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-4 py-3 text-gray-600">{tipoLabel(item.tipo)}</td>
+                      <td className="px-4 py-3 text-gray-600">{catLabel(item.categoria)}</td>
+                      <td className="px-4 py-3 text-right text-gray-800 font-medium">
+                        {item.precio ? `${item.moneda ?? ""} ${item.precio.toLocaleString("es-AR")}` : "—"}
+                      </td>
+                      <td className="px-4 py-3 text-center">
+                        <button onClick={() => handleToggleActivo(item)} title={item.activo ? "Desactivar" : "Activar"}
+                          className={`inline-flex items-center justify-center w-8 h-8 rounded-lg transition-colors ${item.activo ? "bg-green-100 text-green-700 hover:bg-red-100 hover:text-red-600" : "bg-gray-100 text-gray-400 hover:bg-green-100 hover:text-green-700"}`}>
+                          {item.activo ? <Power size={14} /> : <PowerOff size={14} />}
+                        </button>
+                      </td>
+                      <td className="px-4 py-3 text-center">
+                        <button onClick={() => handleToggleDestacado(item)} title={item.destacado ? "Quitar destacado" : "Marcar como destacada"}
+                          className={`inline-flex items-center justify-center w-8 h-8 rounded-lg transition-colors ${item.destacado ? "bg-yellow-100 text-yellow-600 hover:bg-gray-100 hover:text-gray-400" : "bg-gray-100 text-gray-300 hover:bg-yellow-100 hover:text-yellow-600"}`}>
+                          <Star size={14} />
+                        </button>
+                      </td>
+                      {hasSocialPublish && (
+                        <td className="px-4 py-3 text-center">
+                          <button onClick={() => setIgItemId(item.id_item)} title="Publicar en redes sociales"
+                            className="inline-flex items-center justify-center w-8 h-8 text-gray-400 hover:text-pink-600 hover:bg-pink-50 rounded-lg transition-colors">
+                            <IGIcon size={15} />
+                          </button>
+                        </td>
+                      )}
+                      <td className="px-4 py-3 text-right">
+                        <button onClick={() => navigate(`/propiedades/${item.id_item}/editar`)} title="Editar"
+                          className="inline-flex items-center justify-center w-8 h-8 text-gray-400 hover:text-brand-600 hover:bg-brand-50 rounded-lg transition-colors">
+                          <Pencil size={15} />
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </>
         )}
 
         {totalPages > 1 && (
           <div className="px-4 py-3 border-t border-gray-100 flex items-center justify-between">
-            <p className="text-xs text-gray-400">Página {page} de {totalPages} ({total} propiedades)</p>
+            <p className="text-xs text-gray-400">Pág. {page} de {totalPages}</p>
             <div className="flex gap-2">
-              <button
-                onClick={() => setPage(p => Math.max(1, p - 1))}
-                disabled={page === 1}
-                className="px-3 py-1.5 text-xs border border-gray-300 rounded-lg disabled:opacity-40 hover:bg-gray-50"
-              >
+              <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}
+                className="px-3 py-1.5 text-xs bg-brand-600 text-white font-medium rounded-lg hover:bg-brand-700 disabled:opacity-40 transition-colors">
                 Anterior
               </button>
-              <button
-                onClick={() => setPage(p => Math.min(totalPages, p + 1))}
-                disabled={page === totalPages}
-                className="px-3 py-1.5 text-xs border border-gray-300 rounded-lg disabled:opacity-40 hover:bg-gray-50"
-              >
+              <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages}
+                className="px-3 py-1.5 text-xs bg-brand-600 text-white font-medium rounded-lg hover:bg-brand-700 disabled:opacity-40 transition-colors">
                 Siguiente
               </button>
             </div>

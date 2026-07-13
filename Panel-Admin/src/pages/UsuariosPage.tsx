@@ -302,8 +302,41 @@ export default function UsuariosPage() {
         ))}
       </div>
 
-      {/* Tabla */}
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+      {/* Mobile cards */}
+      {!loading && usuarios.length > 0 && (
+        <div className="md:hidden space-y-3 mb-4">
+          {usuarios.map(usuario => {
+            const isOwn = usuario.id_usuario === ownUserId;
+            return (
+              <div key={usuario.id_usuario} className="bg-white rounded-xl border border-gray-200 px-4 py-3">
+                <div className="flex items-start justify-between gap-2">
+                  <div className="min-w-0">
+                    <p className="font-medium text-gray-900 truncate">{usuario.nombre ?? "—"}</p>
+                    <p className="text-xs text-gray-400 font-mono truncate">{usuario.email}</p>
+                    <p className="text-xs text-gray-500 mt-0.5">{usuario.es_superadmin ? "Superadmin" : (usuario.empresa_nombre ?? "Sin empresa")}</p>
+                  </div>
+                  <div className="flex items-center gap-3 shrink-0">
+                    <button onClick={() => handleToggleActivo(usuario)} disabled={isOwn || togglingId === usuario.id_usuario}
+                      className={`transition-colors disabled:opacity-30 ${isOwn ? "cursor-not-allowed" : usuario.activo ? "text-green-500" : "text-gray-300"}`}>
+                      <Power size={16} />
+                    </button>
+                    <button onClick={() => navigate(`/usuarios/${usuario.id_usuario}/editar`)} className="text-gray-400 hover:text-brand-600">
+                      <Pencil size={16} />
+                    </button>
+                    <button onClick={() => handleDelete(usuario)} disabled={isOwn || deletingId === usuario.id_usuario}
+                      className="text-gray-400 hover:text-red-500 disabled:opacity-30 disabled:cursor-not-allowed">
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* Desktop tabla */}
+      <div className="hidden md:block bg-white rounded-xl border border-gray-200 overflow-hidden">
         {loading ? (
           <div className="py-16 text-center text-sm text-gray-400">Cargando...</div>
         ) : usuarios.length === 0 ? (

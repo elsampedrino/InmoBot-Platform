@@ -82,8 +82,8 @@ export default function BotConfigPage() {
 
   return (
     <div className="p-6 max-w-2xl mx-auto">
-      <h1 className="text-xl font-semibold text-gray-800 mb-1">Modo de atención del bot</h1>
-      <p className="text-sm text-gray-500 mb-6">
+      <h1 className="text-xl md:text-2xl font-bold text-gray-900 mb-1">Modo de atención del bot</h1>
+      <p className="text-sm text-gray-400 mt-0.5 mb-6">
         Configurá cuándo responde el bot automáticamente por WhatsApp.
       </p>
 

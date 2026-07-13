@@ -93,13 +93,13 @@ function KPICard({ icon, label, value, sub }: {
   icon: ReactNode; label: string; value: string | number; sub?: string;
 }) {
   return (
-    <div className="bg-gradient-to-br from-violet-50 to-cyan-50 rounded-xl border border-violet-100 p-5 flex items-start gap-4 hover:border-violet-300 hover:shadow-xl hover:scale-105 transition-all duration-300">
-      <div className="p-2.5 rounded-lg bg-gray-900 text-white shrink-0">{icon}</div>
-      <div>
-        <p className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-1">{label}</p>
+    <div className="bg-gradient-to-br from-violet-50 to-cyan-50 rounded-xl border border-violet-100 p-4 flex flex-col gap-2 hover:border-violet-300 hover:shadow-xl hover:scale-105 transition-all duration-300">
+      <p className="text-xs font-medium text-gray-400 uppercase tracking-wide leading-tight">{label}</p>
+      <div className="flex items-center gap-2">
+        <div className="p-2 rounded-lg bg-gray-900 text-white shrink-0">{icon}</div>
         <p className="text-2xl font-bold text-gray-900">{value}</p>
-        {sub && <p className="text-xs text-gray-400 mt-0.5">{sub}</p>}
       </div>
+      {sub && <p className="text-xs text-gray-400">{sub}</p>}
     </div>
   );
 }
@@ -146,7 +146,7 @@ export default function DashboardPage() {
   const totalCosto = uso_por_empresa.reduce((s, e) => s + e.costo_usd, 0);
 
   return (
-    <div className="p-8 space-y-8">
+    <div className="p-4 md:p-8 space-y-8">
 
       {/* Header */}
       <div className="flex items-center justify-between">
@@ -200,7 +200,24 @@ export default function DashboardPage() {
       {/* Uso por empresa */}
       <div>
         <h2 className="text-sm font-semibold text-gray-700 mb-3">Uso por empresa — mes en curso</h2>
-        <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+
+        {/* Mobile */}
+        <div className="md:hidden bg-white rounded-xl border border-gray-200 divide-y divide-gray-100">
+          {uso_por_empresa.length === 0 ? (
+            <p className="px-4 py-8 text-center text-gray-400 text-sm">Sin datos de uso este mes.</p>
+          ) : uso_por_empresa.map(emp => (
+            <div key={emp.id_empresa} className="px-4 py-3 space-y-1">
+              <div className="flex items-center justify-between gap-2">
+                <p className="font-medium text-gray-800 truncate">{emp.nombre}</p>
+                <span className={`shrink-0 px-2 py-0.5 rounded-full text-xs font-medium ${CONSUMO_STYLES[emp.estado_consumo]}`}>{emp.estado_consumo}</span>
+              </div>
+              <p className="text-xs text-gray-400">{emp.plan ?? "Sin plan"} · {emp.leads_mes} leads · {fmtTokens(emp.tokens_mes)} tokens{emp.costo_usd > 0 ? ` · US$ ${emp.costo_usd.toFixed(3)}` : ""}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Desktop */}
+        <div className="hidden md:block bg-white rounded-xl border border-gray-200 overflow-hidden">
           <table className="w-full text-sm">
             <thead className="bg-brand-700 border-b border-brand-900">
               <tr>
@@ -238,9 +255,7 @@ export default function DashboardPage() {
               ))}
               {uso_por_empresa.length === 0 && (
                 <tr>
-                  <td colSpan={8} className="px-4 py-8 text-center text-gray-400 text-sm">
-                    Sin datos de uso este mes.
-                  </td>
+                  <td colSpan={8} className="px-4 py-8 text-center text-gray-400 text-sm">Sin datos de uso este mes.</td>
                 </tr>
               )}
             </tbody>
@@ -251,7 +266,29 @@ export default function DashboardPage() {
       {/* Actividad reciente */}
       <div>
         <h2 className="text-sm font-semibold text-gray-700 mb-3">Actividad reciente</h2>
-        <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+
+        {/* Mobile */}
+        <div className="md:hidden bg-white rounded-xl border border-gray-200 divide-y divide-gray-100">
+          {actividad_reciente.length === 0 ? (
+            <p className="px-4 py-8 text-center text-gray-400 text-sm">Sin actividad registrada.</p>
+          ) : actividad_reciente.map((a, i) => (
+            <div key={i} className="px-4 py-3">
+              <div className="flex items-center gap-2 mb-1">
+                <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${a.accion === "publicar_github" ? "bg-purple-100 text-purple-700" : "bg-blue-100 text-blue-700"}`}>
+                  {accionLabel(a.accion)}
+                </span>
+                <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${a.resultado === "ok" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
+                  {a.resultado}
+                </span>
+              </div>
+              <p className="text-sm font-medium text-gray-700">{a.empresa}</p>
+              <p className="text-xs text-gray-400">{fmtFecha(a.fecha)}{a.usuario ? ` · ${a.usuario}` : ""}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Desktop */}
+        <div className="hidden md:block bg-white rounded-xl border border-gray-200 overflow-hidden">
           <table className="w-full text-sm">
             <thead className="bg-brand-700 border-b border-brand-900">
               <tr>
@@ -269,38 +306,23 @@ export default function DashboardPage() {
                   <td className="px-4 py-3 text-gray-400 text-xs whitespace-nowrap">{fmtFecha(a.fecha)}</td>
                   <td className="px-4 py-3 text-gray-700 font-medium">{a.empresa}</td>
                   <td className="px-4 py-3">
-                    <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${
-                      a.accion === "publicar_github"
-                        ? "bg-purple-100 text-purple-700"
-                        : "bg-blue-100 text-blue-700"
-                    }`}>
+                    <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${a.accion === "publicar_github" ? "bg-purple-100 text-purple-700" : "bg-blue-100 text-blue-700"}`}>
                       {accionLabel(a.accion)}
                     </span>
                   </td>
                   <td className="px-4 py-3">
-                    <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${
-                      a.resultado === "ok" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
-                    }`}>
+                    <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${a.resultado === "ok" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
                       {a.resultado}
                     </span>
                   </td>
                   <td className="px-4 py-3 text-gray-500 text-xs">{a.usuario ?? "—"}</td>
                   <td className="px-4 py-3 text-gray-400 text-xs">
-                    {a.detalle
-                      ? Object.entries(a.detalle)
-                          .filter(([, v]) => v !== null && v !== undefined)
-                          .map(([k, v]) => `${k}: ${v}`)
-                          .join(" · ")
-                      : "—"}
+                    {a.detalle ? Object.entries(a.detalle).filter(([, v]) => v !== null && v !== undefined).map(([k, v]) => `${k}: ${v}`).join(" · ") : "—"}
                   </td>
                 </tr>
               ))}
               {actividad_reciente.length === 0 && (
-                <tr>
-                  <td colSpan={6} className="px-4 py-8 text-center text-gray-400 text-sm">
-                    Sin actividad registrada.
-                  </td>
-                </tr>
+                <tr><td colSpan={6} className="px-4 py-8 text-center text-gray-400 text-sm">Sin actividad registrada.</td></tr>
               )}
             </tbody>
           </table>
