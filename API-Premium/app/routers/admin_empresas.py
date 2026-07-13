@@ -52,6 +52,7 @@ def _to_response(e) -> EmpresaAdminResponse:
             panel_cliente=srv.get("panel_cliente", False),
             instagram=srv.get("instagram", False),
             facebook=srv.get("facebook", False),
+            canal_web=srv.get("canal_web", True),
             canal_whatsapp=srv.get("canal_whatsapp", False),
         ),
         notificaciones=EmpresaNotificacionesSchema.model_validate({

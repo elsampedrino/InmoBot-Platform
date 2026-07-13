@@ -27,7 +27,8 @@ from app.services.whatsapp_handoff import build_whatsapp_handoff
 
 router = APIRouter()
 
-_BOT_DISABLED_MSG = "El asistente virtual no está disponible en este momento."
+_BOT_DISABLED_MSG  = "El asistente virtual no está disponible en este momento."
+_WEB_DISABLED_MSG  = "El canal web no está disponible. Contactanos por WhatsApp."
 
 
 # ── Status público ─────────────────────────────────────────────────────────────
@@ -51,11 +52,11 @@ async def widget_status(
         return WidgetStatusResponse(bot_enabled=False, message=_BOT_DISABLED_MSG)
 
     servicios: dict = row.servicios or {}
-    bot_enabled = bool(servicios.get("bot", True))
-    return WidgetStatusResponse(
-        bot_enabled=bot_enabled,
-        message=None if bot_enabled else _BOT_DISABLED_MSG,
-    )
+    if not servicios.get("bot", True):
+        return WidgetStatusResponse(bot_enabled=False, message=_BOT_DISABLED_MSG)
+    if not servicios.get("canal_web", True):
+        return WidgetStatusResponse(bot_enabled=False, message=_WEB_DISABLED_MSG)
+    return WidgetStatusResponse(bot_enabled=True)
 
 
 # ── Chat ───────────────────────────────────────────────────────────────────────
@@ -66,6 +67,19 @@ async def webhook_widget_chat(
     payload: WidgetIncomingRequest = ...,
     db: AsyncSession = Depends(get_db),
 ) -> WidgetLegacyResponse:
+    # Verificar canal web habilitado antes de cualquier proceso
+    svc_result = await db.execute(
+        select(Empresa.servicios, Empresa.activa).where(Empresa.slug == empresa_slug)
+    )
+    svc_row = svc_result.one_or_none()
+    if not svc_row or not svc_row.activa:
+        return WidgetLegacyResponse(sessionId=payload.sessionId, response=_BOT_DISABLED_MSG)
+    _svc: dict = svc_row.servicios or {}
+    if not _svc.get("bot", True):
+        return WidgetLegacyResponse(sessionId=payload.sessionId, response=_BOT_DISABLED_MSG)
+    if not _svc.get("canal_web", True):
+        return WidgetLegacyResponse(sessionId=payload.sessionId, response=_WEB_DISABLED_MSG)
+
     # Resolver rubro opcional (multi-contexto: demo inmobiliario vs asistente comercial)
     id_rubro_override: int | None = None
     if payload.rubroSlug:

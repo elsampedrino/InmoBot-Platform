@@ -43,7 +43,13 @@ class Settings(BaseSettings):
     # ─── WhatsApp Business Cloud API ─────────────────────────────────────────
     WHATSAPP_TOKEN: str = ""          # Permanent token de Meta
     WHATSAPP_VERIFY_TOKEN: str = ""   # Token secreto que define vos para el webhook
-    WHATSAPP_HANDOFF_TEMPLATE_NAME: str = ""  # Template aprobado por Meta para notificar al agente
+    WHATSAPP_HANDOFF_TEMPLATE_NAME: str = ""      # Template aprobado por Meta para notificar al agente
+    WHATSAPP_HANDOFF_TEMPLATE_LANGUAGE: str = "es_AR"  # Código de idioma del template (es_AR, es_ES, es_MX...)
+
+    # ─── Twilio ───────────────────────────────────────────────────────────────
+    TWILIO_ACCOUNT_SID: str = ""
+    TWILIO_AUTH_TOKEN: str = ""
+    TWILIO_WHATSAPP_FROM: str = ""    # ej: whatsapp:+14155238886
 
     # ─── SMTP ─────────────────────────────────────────────────────────────────
     SMTP_HOST: str = ""
